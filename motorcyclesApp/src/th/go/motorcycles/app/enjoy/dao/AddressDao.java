@@ -6,15 +6,15 @@ import java.util.List;
 
 import th.go.motorcycles.app.enjoy.bean.AddressBean;
 import th.go.motorcycles.app.enjoy.exception.EnjoyException;
-import th.go.motorcycles.app.enjoy.utils.EnjoyConectDb;
+import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
 public class AddressDao {	
 	
-	private EnjoyConectDb db = null;
+	private EnjoyConectDbs db = null;
 	
 	public AddressDao(){
-		db = new EnjoyConectDb();
+		db = new EnjoyConectDbs();
 	}
 	
 	public List<String> provinceList(String province){

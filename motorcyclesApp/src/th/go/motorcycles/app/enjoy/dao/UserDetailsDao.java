@@ -3,13 +3,13 @@ package th.go.motorcycles.app.enjoy.dao;
 import java.sql.ResultSet;
 
 import th.go.motorcycles.app.enjoy.bean.UserDetailsBean;
-import th.go.motorcycles.app.enjoy.utils.EnjoyConectDb;
+import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
 import th.go.motorcycles.app.enjoy.utils.EnjoyEncryptDecrypt;
 
 public class UserDetailsDao {	
-	private EnjoyConectDb db = null;	
+	private EnjoyConectDbs db = null;	
 	public UserDetailsDao(){
-		db = new EnjoyConectDb();
+		db = new EnjoyConectDbs();
 	}
 	
 	public UserDetailsBean userSelect(String userId, String pass){

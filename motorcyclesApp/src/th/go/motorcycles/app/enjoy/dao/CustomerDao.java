@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import th.go.motorcycles.app.enjoy.bean.CustomerBean;
-import th.go.motorcycles.app.enjoy.utils.EnjoyConectDb; 
+import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs; 
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
 public class CustomerDao {	
 	final static String TABLE = "customer";
-	private EnjoyConectDb db = null;	
+	private EnjoyConectDbs db = null;	
 	
 	public CustomerDao(){
-		db = new EnjoyConectDb();
+		db = new EnjoyConectDbs();
 	}
 	
 	public List<CustomerBean> findCustomer(CustomerBean bean){

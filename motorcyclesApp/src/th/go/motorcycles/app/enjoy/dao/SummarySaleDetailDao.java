@@ -6,15 +6,15 @@ import java.util.List;
 
 import th.go.motorcycles.app.enjoy.bean.SummarySaleDetailBean;
 import th.go.motorcycles.app.enjoy.form.SummarySaleDetailForm;
-import th.go.motorcycles.app.enjoy.utils.EnjoyConectDb;
+import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
 public class SummarySaleDetailDao {	
 	
-	private EnjoyConectDb db = null;
+	private EnjoyConectDbs db = null;
 	
 	public SummarySaleDetailDao(){
-		db = new EnjoyConectDb();
+		db = new EnjoyConectDbs();
 	}
 	
 	public List<SummarySaleDetailBean> searchSaleDetails(SummarySaleDetailForm form){
