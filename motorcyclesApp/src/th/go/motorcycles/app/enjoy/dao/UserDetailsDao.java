@@ -22,7 +22,7 @@ public class UserDetailsDao {
 		
 		try{
 			passWord	= EnjoyEncryptDecrypt.enCryption(userId, pass);
-			sql 		= " SELECT userUniqueId, userId, userName, userSurname, userPrivilege, userLevel ";
+			sql 		= " SELECT userUniqueId, userId, userName, userSurname, userPrivilege, userLevel, companyId, companyName, companyAddress ";
 			sql 		= sql + " FROM userdetails where userId = '" + userId + "' and userPassword = '" + passWord + "' and userStatus = 'A'";
 			
 			System.out.println("[EnjoyMotorUserDao][userSelect] sql :: " + sql);
@@ -38,8 +38,10 @@ public class UserDetailsDao {
 		    	userBean.setUserSurname(rs.getString("userSurname"));
 		    	userBean.setUserPrivilege(rs.getString("userSurname"));
 		    	userBean.setUserLevel(rs.getString("userLevel"));
+		    	userBean.setCompanyId(rs.getString("companyId"));
+		    	userBean.setCompanyName(rs.getString("companyName"));
+		    	userBean.setCompanyAddress(rs.getString("companyAddress"));
 		    }
-			
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{

@@ -9,6 +9,9 @@ public class UserDetailsBean {
 	private String userPrivilege;
 	private String userLevel;
 	private String userStatus;
+	private String companyId;
+	private String companyName;
+	private String companyAddress;
 	
 	public UserDetailsBean(){
 		this.userUniqueId 	= "";
@@ -19,6 +22,9 @@ public class UserDetailsBean {
 		this.userPrivilege 	= "";
 		this.userLevel 		= "";
 		this.userStatus 	= "";
+		this.companyId 		= "";
+		this.companyName 	= "";
+		this.companyAddress	= "";
 	}
 
 	public String getUserUniqueId() {
@@ -84,4 +90,29 @@ public class UserDetailsBean {
 	public void setUserStatus(String userStatus) {
 		this.userStatus = userStatus;
 	}
+
+	public String getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getCompanyAddress() {
+		return companyAddress;
+	}
+
+	public void setCompanyAddress(String companyAddress) {
+		this.companyAddress = companyAddress;
+	}
+	
 }
