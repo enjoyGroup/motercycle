@@ -99,7 +99,12 @@
 				            success: function(data){
 				            	//gp_progressBarOff();
 				            	if(data.indexOf('OK') > -1){
-							 		window.location.replace('/motorcyclesWeb/pages/menu/index.jsp');
+				            		la_data		= data.split(":");
+				            		if (la_data[1] == "1") {
+								 		window.location.replace('/motorcyclesWeb/pages/menu/index_red.jsp');
+				            		} else {
+								 		window.location.replace('/motorcyclesWeb/pages/menu/index_blue.jsp');
+				            		}
 								}else{
 									alert(data);
 								}

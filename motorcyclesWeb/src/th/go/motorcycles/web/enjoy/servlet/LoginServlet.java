@@ -45,7 +45,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
         		easUtil.writeMSG("รหัสผ่านไม่ถูกต้อง");
         	}else{
         		session.setAttribute("userBean", userBean);
-        		easUtil.writeMSG("OK");
+        		easUtil.writeMSG("OK:" + userBean.getCompanyId());
         	}
         	
         }catch(Exception e){
