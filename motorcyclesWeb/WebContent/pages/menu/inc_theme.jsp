@@ -38,4 +38,6 @@
 <script src="/motorcyclesWeb/js/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="/motorcyclesWeb/js/bootstrap.min.js" type="text/javascript"></script> 
 <script src="/motorcyclesWeb/js/menu-script.js" type="text/javascript"></script>
+<script src="/motorcyclesWeb/js/EnjoyUtil.js" type="text/javascript"></script>
+
  

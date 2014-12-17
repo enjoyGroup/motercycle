@@ -35,9 +35,8 @@
 		            data: lv_params,
 		            beforeSend: "",
 		            success: function(data){
-		            	if(data.indexOf('OK') > -1){  
-						}else{ 
-						}
+		            	if(data.indexOf('OK') > -1){ 
+		            	}else{}
 		            }
 		        });
 			}catch(err){
@@ -218,11 +217,8 @@
 							</form>
 						</section>
 					</section>
-				</section>
-				<a href="#" class="hide nav-off-screen-block"
-					data-toggle="class:nav-off-screen" data-target="#nav"></a>
-			</section>
-
+				</section> 
+			</section> 
 		</section>
 	</section>
 </body>
