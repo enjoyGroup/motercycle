@@ -38,10 +38,9 @@ public class CustomerDao {
 					sql += " and cusCode = '"+bean.getCusCode()+"'";
 				}
 				if(!bean.getCustFullname().equals("")){
-					
+					sql += " and (SELECT CONCAT(cusName, ' ', cusSurname) as fullName FROM customer) = '"+bean.getCustFullname()+"'";
 				}
-			}
-				 
+			} 	 
 			   
 			list		= new ArrayList<CustomerBean>();
 			

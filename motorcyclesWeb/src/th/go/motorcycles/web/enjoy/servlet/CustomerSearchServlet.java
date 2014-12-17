@@ -106,7 +106,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			if(dataRet==true){
 				this.easUtil.writeMSG("OK"); 
 			}else{
-				//this.easUtil.writeMSG("ไม่พบข้อมูลที่ระบุ!!");
+				this.easUtil.writeMSG("ไม่พบข้อมูลที่ระบุ!!");
 			}
 			
 		}catch(Exception e){
