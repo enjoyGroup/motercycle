@@ -1,9 +1,17 @@
 package th.go.motorcycles.app.enjoy.bean;
 
-public class CustomerBean {
+import java.io.Serializable;
+
+public class CustomerBean implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String cusCode;
 	private String custName;
 	private String custSurname;
+	private String custFullname;
 	private String houseNumber;
 	private String mooNumber;
 	private String soiName;
@@ -16,13 +24,14 @@ public class CustomerBean {
 	private String provinceCode;
 	private String idType;
 	private String idNumber;
-	private String cusStatus;
-	 
+	private String cusStatus; 
+	private String address ;
 	
 	public CustomerBean(){
 		this.cusCode 			= "";
 		this.custName 			= "";
 		this.custSurname 		= "";
+		this.custFullname       = "";
 		this.houseNumber 		= "";
 		this.mooNumber 			= "";
 		this.soiName 		    = "";
@@ -35,7 +44,8 @@ public class CustomerBean {
 		this.provinceCode 		= "";
 		this.idType 		    = "";
 		this.idNumber 		    = "";
-		this.cusStatus          = "A";
+		this.cusStatus          = "A"; 
+		this.address            = "";
 	}
 
  
@@ -44,16 +54,12 @@ public class CustomerBean {
 	public String getCusCode() {
 		return cusCode;
 	}
-
-
-
+ 
 
 	public void setCusCode(String cusCode) {
 		this.cusCode = cusCode;
 	}
-
-
-
+ 
 
 	public String getCusStatus() {
 		return cusStatus;
@@ -66,8 +72,7 @@ public class CustomerBean {
 	public String getIdType() {
 		return idType;
 	}
- 
-
+  
 	public void setIdType(String idType) {
 		this.idType = idType;
 	} 
@@ -75,8 +80,7 @@ public class CustomerBean {
 	public String getIdNumber() {
 		return idNumber;
 	}
- 
-
+  
 	public void setIdNumber(String idNumber) {
 		this.idNumber = idNumber;
 	}
@@ -98,6 +102,21 @@ public class CustomerBean {
 		this.custSurname = custSurname;
 	}
 
+	public String getCustFullname() {
+		return custFullname;
+	} 
+
+	public void setCustFullname(String custFullname) {
+		this.custFullname = custFullname;
+	}
+ 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+
+
 	public String getHouseNumber() {
 		return houseNumber;
 	}
@@ -113,22 +132,17 @@ public class CustomerBean {
 	public void setMooNumber(String mooNumber) {
 		this.mooNumber = mooNumber;
 	}
-
  
 
 	public String getSoiName() {
 		return soiName;
 	}
 
-
-
-
+  
 	public void setSoiName(String soiName) {
 		this.soiName = soiName;
 	}
-
-
-
+ 
 
 	public String getStreetName() {
 		return streetName;
@@ -185,8 +199,14 @@ public class CustomerBean {
 	public void setProvinceCode(String provinceCode) {
 		this.provinceCode = provinceCode;
 	}
-	
-	
-
+ 
+	public String getAddress() {
+		return address;
+	}
+ 
+	public void setAddress(String address) {
+		this.address = address;
+	}
+ 
 	
 }

@@ -8,12 +8,11 @@ import th.go.motorcycles.app.enjoy.bean.CustomerBean;
 public class CustomerForm {
 	
 	private List<CustomerBean>  listCustomer;
-	private String 				custCode;
-	private String 				proPrice;
+	private CustomerBean 		customerBean; 
 	
 	public CustomerForm(){
 		this.listCustomer 	= new ArrayList<CustomerBean>();
-		this.custCode 		= ""; 
+		this.customerBean 	= new CustomerBean(); 
 	}
 
 	public List<CustomerBean> getListCustomer() {
@@ -24,21 +23,15 @@ public class CustomerForm {
 		this.listCustomer = listCustomer;
 	}
 
-	public String getCustCode() {
-		return custCode;
+	public CustomerBean getCustomerBean() {
+		return customerBean;
 	}
 
-	public void setCustCode(String custCode) {
-		this.custCode = custCode;
+	public void setCustomerBean(CustomerBean customerBean) {
+		this.customerBean = customerBean;
 	}
 
-	public String getProPrice() {
-		return proPrice;
-	}
-
-	public void setProPrice(String proPrice) {
-		this.proPrice = proPrice;
-	}
+	 
 
 	 
 }

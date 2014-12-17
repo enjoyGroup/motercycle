@@ -17,20 +17,32 @@ public class CustomerDao {
 	}
 	
 	public List<CustomerBean> findCustomer(CustomerBean bean){
-		System.out.println("[CustomerDao][findCustomer][Begin]");
+		System.out.println("[CustomerDao][findCustomer][Begin] :"+bean.getCusCode());
 		
 		String 				sql			 		= null;
 		ResultSet 			rs 					= null;
 		CustomerBean		customerBean		= null;
-		List<CustomerBean>	list				= null;		
+		List<CustomerBean>	list				= null;	
+		StringBuilder       address             = null;           
 		
-		try{
-			if(bean.getCusCode()==null){
-				sql 	= "SELECT * FROM " + TABLE + " order by cusCode";
-			}else{
-				sql 	= "SELECT * FROM " + TABLE +" where  cusCode = '"+bean.getCusCode()+"'";
-			}
+		try{ 
+			System.out.println(bean.getCusCode());
+			System.out.println(bean.getCustFullname());
+
+			sql = "SELECT * FROM " + TABLE +" where  cusStatus = 'A'";
 			
+			if(!bean.getCusCode().equals("")  && (!bean.getCustFullname().equals(""))){
+				sql += " order by cusCode";
+			}else{
+				if(!bean.getCusCode().equals("")){
+					sql += " and cusCode = '"+bean.getCusCode()+"'";
+				}
+				if(!bean.getCustFullname().equals("")){
+					
+				}
+			}
+				 
+			   
 			list		= new ArrayList<CustomerBean>();
 			
 			System.out.println("[CustomerDao][findCustomer] sql :: " + sql);
@@ -38,8 +50,7 @@ public class CustomerDao {
 		    rs 			= this.db.executeQuery(sql);
 		    
 		    while(rs.next()){
-                customerBean	= new CustomerBean(); 
-		    	
+                customerBean	= new CustomerBean();  
 		    	customerBean.setCusCode(EnjoyUtils.nullToStr(rs.getString("cusCode")));
 		    	customerBean.setCustName(EnjoyUtils.nullToStr(rs.getString("cusName"))); 
 		    	customerBean.setCustSurname(EnjoyUtils.nullToStr(rs.getString("cusSurname"))); 
@@ -53,7 +64,17 @@ public class CustomerDao {
 				customerBean.setIdType(EnjoyUtils.nullToStr(rs.getString("idType")));
 				customerBean.setIdNumber(EnjoyUtils.nullToStr(rs.getString("idNumber")));
 				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
-		    	
+				
+				address  =  new StringBuilder();
+				address.append(bean.getHouseNumber());
+				address.append(" À¡ŸË  ").append(EnjoyUtils.nullToStr(rs.getString("houseNumber")));
+				address.append(" ´Õ¬   ").append(EnjoyUtils.nullToStr(rs.getString("SoiName"))); 
+				address.append(" ∂ππ   ").append(EnjoyUtils.nullToStr(rs.getString("streetName"))); 
+				address.append(" µ”∫≈   ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictCode")));
+				address.append(" Õ”‡¿Õ   ").append(EnjoyUtils.nullToStr(rs.getString("districtCode"))); 
+				address.append(" ®—ßÀ«—¥   ").append(EnjoyUtils.nullToStr(rs.getString("provinceCode")));  
+			    customerBean.setAddress(address.toString());
+			    System.out.println(customerBean.getAddress());
 		    	list.add(customerBean);
 		    }
 			
@@ -66,6 +87,47 @@ public class CustomerDao {
 		return list;
 	}
 	
+	public CustomerBean findCustomerByCusCode(CustomerBean bean){
+		System.out.println("[CustomerDao][findCustomerByCusCode][Begin]");
+		
+		String 				sql			 		= null;
+		ResultSet 			rs 					= null;
+		CustomerBean		customerBean		= null; 	
+		
+		try{
+			if(bean.getCusCode()!=null && bean.getCusCode()!=""){ 
+				sql = "SELECT * FROM " + TABLE +" where  cusStatus = '"+"A"+"' and cusCode = '"+bean.getCusCode()+"'";
+			}
+			
+			customerBean	= new CustomerBean();   
+			System.out.println("[CustomerDao][findCustomerByCusCode] sql :: " + sql); 
+		    rs 			= this.db.executeQuery(sql);
+		    
+		    while(rs.next()){ 
+		    	customerBean.setCusCode(EnjoyUtils.nullToStr(rs.getString("cusCode")));
+		    	customerBean.setCustName(EnjoyUtils.nullToStr(rs.getString("cusName"))); 
+		    	customerBean.setCustSurname(EnjoyUtils.nullToStr(rs.getString("cusSurname"))); 
+				customerBean.setHouseNumber(EnjoyUtils.nullToStr(rs.getString("houseNumber")));
+				customerBean.setMooNumber(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
+				customerBean.setSoiName(EnjoyUtils.nullToStr(rs.getString("SoiName")));
+				customerBean.setStreetName(EnjoyUtils.nullToStr(rs.getString("streetName")));
+				customerBean.setSubdistrictCode(EnjoyUtils.nullToStr(rs.getString("subdistrictCode")));
+				customerBean.setDistrictCode(EnjoyUtils.nullToStr(rs.getString("districtCode")));
+				customerBean.setProvinceCode(EnjoyUtils.nullToStr(rs.getString("provinceCode")));
+				customerBean.setIdType(EnjoyUtils.nullToStr(rs.getString("idType")));
+				customerBean.setIdNumber(EnjoyUtils.nullToStr(rs.getString("idNumber")));
+				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
+		    }	 
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[CustomerDao][findCustomerByCusCode][End]");
+		}
+		
+		return customerBean;
+	}
+	
 	public List<CustomerBean> findCustomerAll(){
         System.out.println("[CustomerDao][findCustomerAll][Begin]");
 		
@@ -75,7 +137,7 @@ public class CustomerDao {
 		List<CustomerBean>	list				= null;		
 		
 		try{
-			sql 		= "SELECT * FROM " + TABLE + " order by cusCode";
+			sql = "SELECT * FROM " + TABLE +" where  cusStatus = 'A' order by cusCode";
 			list		= new ArrayList<CustomerBean>();
 			
 			System.out.println("[CustomerDao][findCustomerAll] sql :: " + sql);
@@ -84,7 +146,6 @@ public class CustomerDao {
 		    
 		    while(rs.next()){
 		    	customerBean	= new CustomerBean(); 
-		    	
 		    	customerBean.setCusCode(EnjoyUtils.nullToStr(rs.getString("cusCode")));
 		    	customerBean.setCustName(EnjoyUtils.nullToStr(rs.getString("cusName"))); 
 		    	customerBean.setCustSurname(EnjoyUtils.nullToStr(rs.getString("cusSurname"))); 
@@ -157,12 +218,13 @@ public class CustomerDao {
 		
 		String 				sql			 		= null;
 		boolean				lv_ret				= false; 
-		String				custCode			= null;
 		
-		try{
-			custCode	= EnjoyUtils.nullToStr(bean.getCusCode()); 
-			
-//			sql 		= "update " + TABLE + " set proName = '"+proName+"', proPrice='"+proPrice+"' where  proId = "+proId;
+		try{ 
+			sql 	= "update " + TABLE + " set cusStatus = '"+bean.getCusStatus()+"', cusName='"+bean.getCustName()+
+					"', cusSurname='"+bean.getCustSurname()+"', houseNumber='"+bean.getHouseNumber()+"', mooNumber='"+bean.getMooNumber()+
+					"', SoiName='"+bean.getSoiName()+"', streetName='"+bean.getStreetName()+"', subdistrictCode='"+bean.getSubdistrictCode()+
+					"', districtCode='"+bean.getDistrictCode()+"', provinceCode='"+bean.getProvinceCode()+"', idType='"+bean.getIdType()+
+					"', idNumber='"+bean.getIdNumber()+"' where  cusCode = '"+bean.getCusCode()+"'";
 			
 			System.out.println("[CustomerDao][updateCustomer] sql :: " + sql);
 			
@@ -184,18 +246,20 @@ public class CustomerDao {
 		String 				sql			 		= null;
 		boolean				lv_ret				= false;
 		String				cusCode		        = null;
+		String				cusStatus	        = null;
 		
 		try{
 			cusCode    = EnjoyUtils.nullToStr(bean.getCusCode());
+			cusStatus    = EnjoyUtils.nullToStr(bean.getCusStatus());
 			
-			sql 		= "delete from " + TABLE + " where cusCode = " + cusCode;
-			
+			sql 		= "update " + TABLE + " set cusStatus = '"+ cusStatus +"'  where cusCode = '" + cusCode +"'";
+		 
 			System.out.println("[CustomerDao][deleteCustomer] sql :: " + sql);
 			
 			lv_ret 			= this.db.execute(sql);
 			
 			System.out.println("[CustomerDao][deleteCustomer] lv_ret :: " + lv_ret);
-			
+			findCustomerAll();
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{

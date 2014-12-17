@@ -116,7 +116,7 @@ public class EnjoyUtils {
 		} 
 		return strTemp.toString(); 
 	}
-	
+	/*
 	public static String getCustNext(String code) {
     	StringBuffer codeReturn = new StringBuffer("CUS000");
     	String lv_strData 	 = nullToStr(code); 	
@@ -131,5 +131,16 @@ public class EnjoyUtils {
 	    	System.out.println("codeReturn:"+codeReturn);
 		}
         return codeReturn.toString();
+    }*/
+	
+    public static String getCustNext(String code) {
+    	String returnValue      = "";
+    	String lv_strData 	    = nullToStr(code); 
+    	int codeInt  = Integer.parseInt(lv_strData);
+    	codeInt++;
+    	System.out.println("codeInt:"+codeInt);
+    	returnValue             = String.valueOf(codeInt); 
+        return returnValue;
     }
 }
+
