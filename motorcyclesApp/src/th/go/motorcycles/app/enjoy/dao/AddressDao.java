@@ -25,7 +25,7 @@ public class AddressDao {
         List<String> 					list 				= new ArrayList<String>();
 		
 		try{
-//			province	= "ก";
+//			province	= "�";
 			sql 		= " select provinceName from province where provinceId <> 00 and provinceName like ('"+province+"%') order by provinceName asc limit 10 ";
 			
 			System.out.println("[AddressDao][provinceList] sql :: " + sql);
@@ -68,7 +68,7 @@ public class AddressDao {
 		    /*End check province section*/
 		    
 		    if(provinceId==null){
-		    	list.add("กรุณาระบุจังหวัด");
+		    	list.add("��س��кبѧ��Ѵ");
 		    }else{
 		    	sql 		= "select districtName from district where districtId <> 0000 and provinceId <> 00 and districtName like ('"+district+"%') and provinceId = "+provinceId+" order by districtName asc limit 10";
 				
@@ -125,9 +125,9 @@ public class AddressDao {
 		    /*End check district section*/
 		    
 		    if(provinceId==null){
-		    	list.add("กรุณาระบุจังหวัด");
+		    	list.add("��س��кبѧ��Ѵ");
 		    }else if(districtId==null){
-		    	list.add("กรุณาระบุอำเภอ");
+		    	list.add("��س��к������");
 		    }else{
 		    	sql 		= "select subdistrictName" 
 								   + " from subdistrict "
@@ -175,7 +175,7 @@ public class AddressDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())provinceId = rs.getString("provinceId").trim();
-		    if(provinceId==null)throw new EnjoyException("ระบุจังหวัดผิด");
+		    if(provinceId==null)throw new EnjoyException("�кبѧ��Ѵ�Դ");
 		    /*End check province section*/
 		    
 		    /*Begin check district section*/
@@ -185,7 +185,7 @@ public class AddressDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())districtId = rs.getString("districtId").trim();
-		    if(districtId==null)throw new EnjoyException("ระบุอำเภอผิด");
+		    if(districtId==null)throw new EnjoyException("�к�����ͼԴ");
 		    /*End check district section*/
 		    
 		    /*Begin check subDistrict section*/
@@ -195,7 +195,7 @@ public class AddressDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())subdistrictId = rs.getString("subdistrictId").trim();
-		    if(subdistrictId==null)throw new EnjoyException("ระบุตำบลผิด");
+		    if(subdistrictId==null)throw new EnjoyException("�кصӺżԴ");
 		    /*End check subDistrict section*/
 		    
 		    System.out.println("[AddressDao][validateAddress] " + provinceId + ", " + districtId + ", " + subdistrictId);
