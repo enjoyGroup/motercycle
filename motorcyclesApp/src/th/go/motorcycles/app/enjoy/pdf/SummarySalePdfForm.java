@@ -55,11 +55,13 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 	private PdfPTable genHeader() throws DocumentException, MalformedURLException, IOException {
 		
 		PdfPTable 	table 			= new PdfPTable(1);
+		JSONObject 	jsonObjectMain  = this.formDataObj;
+		String      companyName		= (String) jsonObjectMain.get("CompanyName");
+		String      companyAddress	= (String) jsonObjectMain.get("CompanyAddress");
 		
-		table.addCell(setCellWB("∫√‘…—∑§≈‘π‘§¬“π¬πµÏ ®”°—¥", getFont10Bold(), 1, Element.ALIGN_CENTER, 0));
-		table.addCell(setCellWB("16/29-32 À¡ŸË1 ∂ππ  “¬‰À¡ ·¢«ß “¬‰À¡ ·¢µ “¬‰À¡ °√ÿß‡∑æ¡À“π§√ 10220", getFont8Bold(), 1, Element.ALIGN_CENTER, 0));
-		table.addCell(setCellWB("‚∑√»—æ∑Ï : 02-992-8233 ·ø°´Ï 02-530-7035 ‡≈¢ª√–®”µ—«ºŸÈ‡ ’¬¿“…’Õ“°√ : 0105549002794", getFont8Bold(), 1, Element.ALIGN_CENTER, 0));
-//		table.addCell(setCellWB("«—π∑’Ë 24 æƒ»®‘°“¬π 2557 ∂÷ß«—π∑’Ë 26 æƒ»®‘°“¬π 2557", getFont10Bold(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB(companyName, getFont10Bold(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB(companyAddress, getFont8Bold(), 1, Element.ALIGN_CENTER, 0));
+//		table.addCell(setCellWB("‡πÇ‡∏ó‡∏£‡∏®‡∏±‡∏û‡∏ó‡πå : 02-992-8233 ‡πÅ‡∏ü‡∏Å‡∏ã‡πå 02-530-7035 ‡πÄ‡∏•‡∏Ç‡∏õ‡∏£‡∏∞‡∏à‡∏≥‡∏ï‡∏±‡∏ß‡∏ú‡∏π‡πâ‡πÄ‡∏™‡∏µ‡∏¢‡∏†‡∏≤‡∏©‡∏µ‡∏≠‡∏≤‡∏Å‡∏£ : 0105549002794", getFont8Bold(), 1, Element.ALIGN_CENTER, 0));
 		
 		table.setWidthPercentage(100);
 	
@@ -75,18 +77,18 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 		JSONArray 	listJSONArray 	= null;
 		
 		try {
-			table.addCell(setCellWB("«—π∑’Ë 24 æƒ»®‘°“¬π 2557 ∂÷ß «—π∑’Ë 26 æƒ»®‘°“¬π 2557", getFont8Bold(), 8, Element.ALIGN_CENTER, 0));
+			table.addCell(setCellWB("‡∏ß‡∏±‡∏ô‡∏ó‡∏µ‡πà 24 ‡∏û‡∏§‡∏®‡∏à‡∏¥‡∏Å‡∏≤‡∏¢‡∏ô 2557 ‡∏ñ‡∏∂‡∏á ‡∏ß‡∏±‡∏ô‡∏ó‡∏µ‡πà 26 ‡∏û‡∏§‡∏®‡∏à‡∏¥‡∏Å‡∏≤‡∏¢‡∏ô 2557", getFont8Bold(), 8, Element.ALIGN_CENTER, 0));
 			
-			table.addCell(setCell("≈”¥—∫", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("‡≈¢„∫°”°—∫¿“…’", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("™◊ËÕ≈Ÿ°§È“", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("√“¬≈–‡Õ’¬¥√∂¬πµÏ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("√“§“¢“¬", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("√“§“¿“…’", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("√“§“¢“¬ ÿ∑∏‘", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("À¡“¬‡Àµÿ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("‡∏•‡∏≥‡∏î‡∏±‡∏ö", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("‡πÄ‡∏•‡∏Ç‡πÉ‡∏ö‡∏Å‡∏≥‡∏Å‡∏±‡∏ö‡∏†‡∏≤‡∏©‡∏µ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("‡∏ä‡∏∑‡πà‡∏≠‡∏•‡∏π‡∏Å‡∏Ñ‡πâ‡∏≤", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("‡∏£‡∏≤‡∏¢‡∏•‡∏∞‡πÄ‡∏≠‡∏µ‡∏¢‡∏î‡∏£‡∏ñ‡∏¢‡∏ô‡∏ï‡πå", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("‡∏£‡∏≤‡∏Ñ‡∏≤‡∏Ç‡∏≤‡∏¢", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("‡∏£‡∏≤‡∏Ñ‡∏≤‡∏†‡∏≤‡∏©‡∏µ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("‡∏£‡∏≤‡∏Ñ‡∏≤‡∏Ç‡∏≤‡∏¢‡∏™‡∏∏‡∏ó‡∏ò‡∏¥", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("‡∏´‡∏°‡∏≤‡∏¢‡πÄ‡∏´‡∏ï‡∏∏", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
 				
-			// ¥÷ß¢ÈÕ¡Ÿ≈¢÷Èπ¡“· ¥ß∫πÀπÈ“®Õ
+			// ‡∏î‡∏∂‡∏á‡∏Ç‡πâ‡∏≠‡∏°‡∏π‡∏•‡∏Ç‡∏∂‡πâ‡∏ô‡∏°‡∏≤‡πÅ‡∏™‡∏î‡∏á‡∏ö‡∏ô‡∏´‡∏ô‡πâ‡∏≤‡∏à‡∏≠
 			jsonObjectMain = this.formDataObj;
 			listJSONArray  = (JSONArray) jsonObjectMain.get("invoicelist");
 			
@@ -103,8 +105,8 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 				table.addCell(setCell((String) jsonObjectDetail.get("remark"), 			getFont8(), 1, 1, Element.ALIGN_RIGHT));
 			}
 						
-			table.addCell(setCellWB("", getFont8(), 4, Element.ALIGN_CENTER, 0));
-			table.addCell(setCellWB("√«¡", getFont8Bold(), 1, Element.ALIGN_RIGHT, 0));
+			table.addCell(setCellWB("", getFont8(), 5, Element.ALIGN_CENTER, 0));
+			table.addCell(setCellWB("‡∏£‡∏ß‡∏°", getFont8Bold(), 1, Element.ALIGN_RIGHT, 0));
 			table.addCell(setCellWB("117,757.01", getFont8(), 1, Element.ALIGN_RIGHT, 0));
 			table.addCell(setCellWB("", getFont8(), 1, Element.ALIGN_LEFT, 0));
 			

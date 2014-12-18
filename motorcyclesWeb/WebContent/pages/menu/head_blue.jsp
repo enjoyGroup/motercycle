@@ -25,7 +25,10 @@
 	
 	}
 </style>
-
+<script>
+function lp_initialize(){}
+function lp_ul_click(){}
+</script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="generator" content="editplus">
 <meta name="author" content="">
@@ -62,8 +65,7 @@
                 <div class="font12"></div>
                 
                 <ul>
-                    <li><a class="logout" href="#">Logout</a></li>
-                	<li class="date">เข้าใช้ระบบ : <span class="text_white">24/08/2557 14:00:09</span> </li>
+                	<li class="date">เข้าใช้ระบบ : <span class="text_white"><%=userDeatil.getCurrentDate() %></span> </li>
                 </ul>
                 
             </div>

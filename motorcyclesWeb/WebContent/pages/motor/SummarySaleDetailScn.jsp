@@ -66,9 +66,32 @@
 		    
 		});
 		
-		$('#trigger-myDate').on('click',function(){
-
+		$('#btnPrint').click(function(){
+		    var lo_pageAction			= null;
+		    var lo_frm					= null;
+		    var url 					= '<%=servURL%>/EnjoyGenericSrv';
+		    var lv_pdfForm;
+		    var lv_feature;
+		    var lv_objWindow;
+		    try{
+		    	lv_pdfForm = "SummarySalePdfForm";
+				lv_feature = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes,height=800,width=600";
+				
+				lv_objWindow   = window.open(url + "?service=servlet.SummarySaleDetailServlet&pageAction=pdf" , "detailWindow" , lv_feature );
+				lv_objWindow.focus();
+		    }catch(e){
+		    	alert("btnPrint :: " + e);
+		    }
+		    
+		});
+		
+		$('#trigger-DateFrom').on('click',function(){
 			$('#invoiceDateFrom').focus();
+		})
+		
+		$('#trigger-DateTo').on('click',function(){
+
+			$('#invoiceDateTo').focus();
 		})
 		
 	});
@@ -96,9 +119,9 @@
 												<table border="0" cellpadding="0" cellspacing="5" class="table span12" >
 													<colgroup>
 														<col align="left" width="20%" />
-														<col align="right" />
+														<col align="left" />
 														<col align="left" width="20%" />
-														<col align="right" />
+														<col align="left" />
 													</colgroup>
 													<tr>
 														<td>เลขที่ใบกำกับ : </td>
@@ -107,10 +130,11 @@
 														</td>
 														<td>วันที่ขาย : </td>
 														<td>
-															<input type="text" class="input-sm input-s datepicker-input form-control" data-date-format="dd-mm-yyyy" id="invoiceDateFrom" name="invoiceDateFrom" value="<%=summarySaleDetailForm.getInvoiceDateFrom()%>" />
-															<i class="fa fa-fw fa-calendar" id='trigger-myDate' style='cursor:pointer'></i>
+															<input type="text" style="width:100px;" class="input-sm input-s datepicker-input form-control" data-date-format="dd/mm/yyyy" id="invoiceDateFrom" name="invoiceDateFrom" value="<%=summarySaleDetailForm.getInvoiceDateFrom()%>" />
+															<i class="fa fa-fw fa-calendar" id='trigger-DateFrom' style='cursor:pointer'></i>
 															&nbsp;-&nbsp;
-															<input type="text" id="invoiceDateTo" name="invoiceDateTo" value="<%=summarySaleDetailForm.getInvoiceDateTo()%>" />
+															<input type="text" style="width:100px;" class="input-sm input-s datepicker-input form-control" data-date-format="dd/mm/yyyy" id="invoiceDateTo" name="invoiceDateTo" value="<%=summarySaleDetailForm.getInvoiceDateTo()%>" />
+															<i class="fa fa-fw fa-calendar" id='trigger-DateTo' style='cursor:pointer'></i>
 														</td>
 													</tr>
 													<tr>
@@ -126,11 +150,7 @@
 													<tr>
 														<td>ชื่อลูกค้า : </td>
 														<td colspan="4">
-															<input type="text" id="cusName" name="cusName" value="<%=summarySaleDetailForm.getCusName()%>" />
-														</td>
-													</tr>
-													<tr>
-														<td colspan="4" align="center">
+															<input type="text" id="cusName" name="cusName" value="<%=summarySaleDetailForm.getCusName()%>" size="40" />
 															<input type="button" class="btn btn-danger" id="btnSearch" name="btnSearch" value="ค้นหา" />
 														</td>
 													</tr>

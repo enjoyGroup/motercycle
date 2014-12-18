@@ -25,7 +25,7 @@ public class AddressDao {
         List<String> 					list 				= new ArrayList<String>();
 		
 		try{
-//			province	= "�";
+//			province	= "ก";
 			sql 		= " select provinceName from province where provinceId <> 00 and provinceName like ('"+province+"%') order by provinceName asc limit 10 ";
 			
 			System.out.println("[AddressDao][provinceList] sql :: " + sql);
@@ -68,7 +68,7 @@ public class AddressDao {
 		    /*End check province section*/
 		    
 		    if(provinceId==null){
-		    	list.add("��س��кبѧ��Ѵ");
+		    	list.add("กรุณาระบุจังหวัด");
 		    }else{
 		    	sql 		= "select districtName from district where districtId <> 0000 and provinceId <> 00 and districtName like ('"+district+"%') and provinceId = "+provinceId+" order by districtName asc limit 10";
 				
@@ -125,9 +125,9 @@ public class AddressDao {
 		    /*End check district section*/
 		    
 		    if(provinceId==null){
-		    	list.add("��س��кبѧ��Ѵ");
+		    	list.add("กรุณาระบุจังหวัด");
 		    }else if(districtId==null){
-		    	list.add("��س��к������");
+		    	list.add("กรุณาระบุอำเภอ");
 		    }else{
 		    	sql 		= "select subdistrictName" 
 								   + " from subdistrict "
@@ -175,7 +175,7 @@ public class AddressDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())provinceId = rs.getString("provinceId").trim();
-		    if(provinceId==null)throw new EnjoyException("�кبѧ��Ѵ�Դ");
+		    if(provinceId==null)throw new EnjoyException("ระบุจังหวัดผิด");
 		    /*End check province section*/
 		    
 		    /*Begin check district section*/
@@ -185,7 +185,7 @@ public class AddressDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())districtId = rs.getString("districtId").trim();
-		    if(districtId==null)throw new EnjoyException("�к�����ͼԴ");
+		    if(districtId==null)throw new EnjoyException("ระบุอำเภอผิด");
 		    /*End check district section*/
 		    
 		    /*Begin check subDistrict section*/
@@ -195,7 +195,7 @@ public class AddressDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())subdistrictId = rs.getString("subdistrictId").trim();
-		    if(subdistrictId==null)throw new EnjoyException("�кصӺżԴ");
+		    if(subdistrictId==null)throw new EnjoyException("ระบุตำบลผิด");
 		    /*End check subDistrict section*/
 		    
 		    System.out.println("[AddressDao][validateAddress] " + provinceId + ", " + districtId + ", " + subdistrictId);
@@ -216,6 +216,84 @@ public class AddressDao {
 			System.out.println("[AddressDao][validateAddress][End]");
 		}
 		return addressBean;
+	}
+	
+	public String getProvinceName(String provinceId){
+		System.out.println("[AddressDao][getProvinceName][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        String							provinceName		= null;
+		
+		try{
+			sql 		= " select provinceName from province where provinceId <> 00 and provinceId = " + provinceId;
+			
+			System.out.println("[AddressDao][getProvinceName] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    
+		    while(rs.next()){
+		    	
+		    	provinceName = EnjoyUtils.nullToStr(rs.getString("provinceName"));
+		    }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[AddressDao][getProvinceName][End]");
+		}
+		
+		return provinceName;
+	}
+	
+	public String getSubdistrictName(String subdistrictId){
+		System.out.println("[AddressDao][getSubdistrictName][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        String							subdistrictName		= null;
+		
+		try{
+			sql 		= " select subdistrictName from subdistrict where subdistrictId <> 00 and subdistrictId = " + subdistrictId;
+			
+			System.out.println("[AddressDao][getSubdistrictName] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    while(rs.next())subdistrictName = EnjoyUtils.nullToStr(rs.getString("subdistrictName"));
+		    
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[AddressDao][getSubdistrictName][End]");
+		}
+		
+		return subdistrictName;
+	}
+	
+	public String getDistrictName(String districtId){
+		System.out.println("[AddressDao][getDistrictName][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        String							districtName		= null;
+		
+		try{
+			sql 		= " select districtName from district where districtId <> 00 and districtId = " + districtId;
+			
+			System.out.println("[AddressDao][getDistrictName] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    while(rs.next())districtName = EnjoyUtils.nullToStr(rs.getString("districtName"));
+		    
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[AddressDao][getDistrictName][End]");
+		}
+		
+		return districtName;
 	}
 	
 }

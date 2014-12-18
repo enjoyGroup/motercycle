@@ -12,6 +12,7 @@ public class UserDetailsBean {
 	private String companyId;
 	private String companyName;
 	private String companyAddress;
+	private String currentDate;
 	
 	public UserDetailsBean(){
 		this.userUniqueId 	= "";
@@ -25,6 +26,7 @@ public class UserDetailsBean {
 		this.companyId 		= "";
 		this.companyName 	= "";
 		this.companyAddress	= "";
+		this.currentDate	= "";
 	}
 
 	public String getUserUniqueId() {
@@ -113,6 +115,14 @@ public class UserDetailsBean {
 
 	public void setCompanyAddress(String companyAddress) {
 		this.companyAddress = companyAddress;
+	}
+
+	public String getCurrentDate() {
+		return currentDate;
+	}
+
+	public void setCurrentDate(String currentDate) {
+		this.currentDate = currentDate;
 	}
 	
 }
