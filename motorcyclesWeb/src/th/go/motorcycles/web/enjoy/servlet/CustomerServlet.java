@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
   
 
 
+
 import org.json.simple.JSONObject;
 
 import th.go.motorcycles.app.enjoy.bean.AddressBean;
@@ -113,52 +114,83 @@ public class CustomerServlet extends EnjoyStandardSvc {
 		 String 		houseNumber 	= null; 
 		 String 		mooNumber   	= null; 
 		 String 		soiName  	    = null;   
-         String 		streetName  	= null;   
-		 String 		subdistrictCode = null;   
-		 String 		districtCode 	= null;   
-		 String 		provinceCode 	= null; 
+         String 		streetName  	= null;    
 		 String 		idType 			= null; 
 		 String 		idNumber		= null; 
 		 String 		cusStatus		= null;
 		 boolean	    dataRet			= false; 
-		
-		try{
-			customerBean 	= new CustomerBean();
-			custName 		= this.request.getParameter("custName"); 
-			custSurname 	= this.request.getParameter("custSurname");
-			houseNumber 	= this.request.getParameter("houseNumber");
-			mooNumber 	    = this.request.getParameter("mooNumber");
-			soiName 	    = this.request.getParameter("soiName");
-			streetName 	    = this.request.getParameter("streetName");
-			subdistrictCode = this.request.getParameter("subdistrictCode");
-			districtCode 	= this.request.getParameter("districtCode");
-			provinceCode 	= this.request.getParameter("provinceCode");
-			idType 	        = this.request.getParameter("idType");
-			idNumber 	    = this.request.getParameter("idNumber"); 
-			cusStatus 	    = "A";  
-			
-			customerBean.setCustName(custName); 
-			customerBean.setCustSurname(custSurname);
-			customerBean.setHouseNumber(houseNumber);
-			customerBean.setMooNumber(mooNumber);
-			customerBean.setSoiName(soiName);
-			customerBean.setStreetName(streetName);
-			customerBean.setSubdistrictCode(subdistrictCode);
-			customerBean.setDistrictCode(districtCode);
-			customerBean.setProvinceCode(provinceCode);
-			customerBean.setIdType(idType);
-			customerBean.setIdNumber(idNumber);
-			customerBean.setCusStatus(cusStatus);
+		 String			province	    = null;
+		 String			district		= null;
+		 String			subdistrict		= null;
+		 AddressBean	addressBean		= null;
+		 JSONObject 	obj 			= null;
 		 
-		   cusCode = this.dao.insertCustomer(customerBean);
-		    if(cusCode!=null){
-				this.motorUtil.writeMSG("OK:" + cusCode); 
-			}else{
-				this.motorUtil.writeMSG("Insert fail !!");
-			}
-			 
+		try{
+			   province					= EnjoyUtils.nullToStr(this.request.getParameter("provinceName"));
+			   district					= EnjoyUtils.nullToStr(this.request.getParameter("districtName"));
+			   subdistrict				= EnjoyUtils.nullToStr(this.request.getParameter("subdistrictName")); 
+			   obj 						= new JSONObject();
+			   logger.info("[lp_save] province 			:: " + province);
+			   logger.info("[lp_save] district 			:: " + district);
+			   logger.info("[lp_save] subdistrict 		:: " + subdistrict);
+			   
+			   addressBean 		= this.dao.validateAddress(province, district, subdistrict);
+			   
+			   if(addressBean.getErrMsg().equals("")){
+				   obj.put("status","SUCCESS");
+				   obj.put("provinceCode",addressBean.getProvinceId());
+				   obj.put("districtCode",addressBean.getDistrictId());
+				   obj.put("subdistrictCode",addressBean.getSubdistrictId());
+				   
+				   
+				   logger.info("[lp_save] provinceId 			:: " + addressBean.getProvinceId());
+				   logger.info("[lp_save] districtId 			:: " + addressBean.getDistrictId());
+				   logger.info("[lp_save] subdistrictId 		:: " + addressBean.getSubdistrictId());
+				   
+				    customerBean 	= new CustomerBean();
+					custName 		= this.request.getParameter("custName"); 
+					custSurname 	= this.request.getParameter("custSurname");
+					houseNumber 	= this.request.getParameter("houseNumber");
+					mooNumber 	    = this.request.getParameter("mooNumber");
+					soiName 	    = this.request.getParameter("soiName");
+					streetName 	    = this.request.getParameter("streetName"); 
+					idType 	        = this.request.getParameter("idType");
+					idNumber 	    = this.request.getParameter("idNumber"); 
+					cusStatus 	    = "A";  
+					
+					customerBean.setCustName(custName); 
+					customerBean.setCustSurname(custSurname);
+					customerBean.setHouseNumber(houseNumber);
+					customerBean.setMooNumber(mooNumber);
+					customerBean.setSoiName(soiName);
+					customerBean.setStreetName(streetName);
+					customerBean.setSubdistrictCode(addressBean.getSubdistrictId());
+					customerBean.setDistrictCode(addressBean.getDistrictId());
+					customerBean.setProvinceCode(addressBean.getProvinceId());
+					customerBean.setIdType(idType);
+					customerBean.setIdNumber(idNumber);
+					customerBean.setCusStatus(cusStatus);
+			
+				    cusCode = this.dao.insertCustomer(customerBean); 
+					logger.info("customerBean:"+customerBean.getCusCode());
+					
+				   if(!cusCode.equals(null)){
+					   obj.put("cusCode",cusCode);
+						//this.motorUtil.writeMSG("OK:" + cusCode); 
+				   }else{
+						//this.motorUtil.writeMSG("Insert fail !!");
+				   }
+				 
+			   }else{
+				   obj.put("status", "ERROR");
+				   obj.put("errMsg", addressBean.getErrMsg());
+			   } 
+			   
 		}catch(Exception e){
+			obj.put("status", 			"ERROR");
+			obj.put("errMsg", 			e.getMessage());
 			e.printStackTrace();
+			logger.info("[lp_save] " + e.getMessage());
 			throw new Exception(e.getMessage());
 		}finally{
 			customerBean 	= null;
@@ -169,12 +201,14 @@ public class CustomerServlet extends EnjoyStandardSvc {
 			mooNumber   	= null; 
 			soiName  	    = null;   
 	        streetName  	= null;   
-			subdistrictCode = null;   
-			districtCode 	= null;   
-			provinceCode 	= null; 
 			idType 			= null; 
 			idNumber		= null; 
 			cusStatus		= null;
+			province	    = null;
+			district		= null;
+			subdistrict		= null;
+			addressBean		= null;
+			obj 			= null;
 			System.out.println("[CustomerInsertServlet][addRecord][End]");
 		}
 	}
@@ -277,12 +311,8 @@ public class CustomerServlet extends EnjoyStandardSvc {
 			customerBean = (CustomerBean)this.dao.findCustomerByCusCode(bean); 
 			System.out.println("[CustomerInsertServlet][findData][Begin]:"+customerBean.getCusCode());
 			this.form.setCustomerBean(customerBean);
-			 
-		  //ObjectMapper mapper = new ObjectMapper();
-		  //  String temp = mapper.writeValueAsString(customerBean);
-		    
-			if(customerBean.getCusCode()!=null){
-			//	this.easUtil.writeMSG(temp); 
+			  
+			if(customerBean.getCusCode()!=null){ 
 				
 				this.motorUtil.writeMSG("OK:" +   customerBean.getCusCode()+":"+
 											    customerBean.getCusStatus()+":"+

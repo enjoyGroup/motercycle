@@ -106,7 +106,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			if(dataRet==true){
 				this.easUtil.writeMSG("OK"); 
 			}else{
-				this.easUtil.writeMSG("ไม่พบข้อมูลที่ระบุ!!");
+				this.easUtil.writeMSG("No record!!");
 			}
 			
 		}catch(Exception e){
@@ -118,35 +118,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			System.out.println("[CustomerInsertServlet][onLoad][End]");
 		}
 	}
-	
-	private void onSearchAll() throws Exception{ 
-		System.out.println("[CustomerInsertServlet][onSearchAll][Begin]");
-		List<CustomerBean> listCustomer = null;  
-		boolean	     dataRet			= false;
-		
-		try{ 
-			listCustomer = (List <CustomerBean>) this.dao.findCustomerAll(); 
-			this.form.setListCustomer(listCustomer); 
-			
-			if(listCustomer.size()>0){
-				dataRet	= true;
-			}
-			
-			if(dataRet==true){
-				this.easUtil.writeMSG("OK"); 
-			}else{
-				this.easUtil.writeMSG("search failed!!");
-			}
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			throw new Exception(e.getMessage());
-		}finally{ 
-			System.out.println("[CustomerInsertServlet][onSearchAll][End]");
-		}
-	}
-	
-	
+	 
 	private void delRecord() throws Exception{
 		System.out.println("[MotorDemoSvc][delRecord][Begin]");
 		
@@ -167,7 +139,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			 
 			if(dataRet==true){
 				this.easUtil.writeMSG("OK");
-				this.onSearchAll(); 
+				this.onSearch(); 
 			}else{
 				this.easUtil.writeMSG("Delete failed !!");
 			}
