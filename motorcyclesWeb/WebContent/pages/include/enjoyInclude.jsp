@@ -54,9 +54,11 @@ if(session == null || session.getAttribute("userBean") == null){
 <script src="/motorcyclesWeb/theme/js/select2/select2.min.js"></script>
 <script src="/motorcyclesWeb/theme/js/wysiwyg/jquery.hotkeys.js"></script>
 <script src="/motorcyclesWeb/theme/js/wysiwyg/bootstrap-wysiwyg.js"></script>
+<!-- 
 <script src="/motorcyclesWeb/theme/js/wysiwyg/demo.js"></script>
 <script src="/motorcyclesWeb/theme/js/markdown/epiceditor.min.js"></script>
 <script src="/motorcyclesWeb/theme/js/markdown/demo.js"></script>
+ -->
 <script src="/motorcyclesWeb/theme/js/app.plugin.js"></script>
 
 <!-- css -->

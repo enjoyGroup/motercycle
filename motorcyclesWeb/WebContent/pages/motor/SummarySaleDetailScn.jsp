@@ -66,9 +66,13 @@
 		    
 		});
 		
-		$('#trigger-myDate').on('click',function(){
-
+		$('#trigger-DateFrom').on('click',function(){
 			$('#invoiceDateFrom').focus();
+		})
+		
+		$('#trigger-DateTo').on('click',function(){
+
+			$('#invoiceDateTo').focus();
 		})
 		
 	});
@@ -96,9 +100,9 @@
 												<table border="0" cellpadding="0" cellspacing="5" class="table span12" >
 													<colgroup>
 														<col align="left" width="20%" />
-														<col align="right" />
+														<col align="left" />
 														<col align="left" width="20%" />
-														<col align="right" />
+														<col align="left" />
 													</colgroup>
 													<tr>
 														<td>เลขที่ใบกำกับ : </td>
@@ -107,10 +111,11 @@
 														</td>
 														<td>วันที่ขาย : </td>
 														<td>
-															<input type="text" class="input-sm input-s datepicker-input form-control" data-date-format="dd-mm-yyyy" id="invoiceDateFrom" name="invoiceDateFrom" value="<%=summarySaleDetailForm.getInvoiceDateFrom()%>" />
-															<i class="fa fa-fw fa-calendar" id='trigger-myDate' style='cursor:pointer'></i>
+															<input type="text" style="width:100px;" class="input-sm input-s datepicker-input form-control" data-date-format="dd/mm/yyyy" id="invoiceDateFrom" name="invoiceDateFrom" value="<%=summarySaleDetailForm.getInvoiceDateFrom()%>" />
+															<i class="fa fa-fw fa-calendar" id='trigger-DateFrom' style='cursor:pointer'></i>
 															&nbsp;-&nbsp;
-															<input type="text" id="invoiceDateTo" name="invoiceDateTo" value="<%=summarySaleDetailForm.getInvoiceDateTo()%>" />
+															<input type="text" style="width:100px;" class="input-sm input-s datepicker-input form-control" data-date-format="dd/mm/yyyy" id="invoiceDateTo" name="invoiceDateTo" value="<%=summarySaleDetailForm.getInvoiceDateTo()%>" />
+															<i class="fa fa-fw fa-calendar" id='trigger-DateTo' style='cursor:pointer'></i>
 														</td>
 													</tr>
 													<tr>
