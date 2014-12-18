@@ -157,7 +157,7 @@ public class PdfTest {
 			
 			// สร้าง json Object มาจาก DB
 			invoicedetailsDao			= new InvoicedetailsDao();
-			jsonObject 					= invoicedetailsDao.SummarySalePDF("5700000001", "", "" , "","","");
+			jsonObject 					= invoicedetailsDao.SummarySalePDF("5700000001", "", "" , "","","",null);
 					
 			pdfForm.setJSONObject(writer, jsonObject);
 			pdfForm.createForm(document);

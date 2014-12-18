@@ -66,6 +66,25 @@
 		    
 		});
 		
+		$('#btnPrint').click(function(){
+		    var lo_pageAction			= null;
+		    var lo_frm					= null;
+		    var url 					= '<%=servURL%>/EnjoyGenericSrv';
+		    var lv_pdfForm;
+		    var lv_feature;
+		    var lv_objWindow;
+		    try{
+		    	lv_pdfForm = "SummarySalePdfForm";
+				lv_feature = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes,height=800,width=600";
+				
+				lv_objWindow   = window.open(url + "?service=servlet.SummarySaleDetailServlet&pageAction=pdf" , "detailWindow" , lv_feature );
+				lv_objWindow.focus();
+		    }catch(e){
+		    	alert("btnPrint :: " + e);
+		    }
+		    
+		});
+		
 		$('#trigger-DateFrom').on('click',function(){
 			$('#invoiceDateFrom').focus();
 		})
@@ -131,11 +150,7 @@
 													<tr>
 														<td>ชื่อลูกค้า : </td>
 														<td colspan="4">
-															<input type="text" id="cusName" name="cusName" value="<%=summarySaleDetailForm.getCusName()%>" />
-														</td>
-													</tr>
-													<tr>
-														<td colspan="4" align="center">
+															<input type="text" id="cusName" name="cusName" value="<%=summarySaleDetailForm.getCusName()%>" size="40" />
 															<input type="button" class="btn btn-danger" id="btnSearch" name="btnSearch" value="ค้นหา" />
 														</td>
 													</tr>

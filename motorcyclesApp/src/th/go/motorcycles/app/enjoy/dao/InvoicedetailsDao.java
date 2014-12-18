@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import th.go.motorcycles.app.enjoy.bean.UserDetailsBean;
 import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
@@ -19,7 +20,8 @@ public class InvoicedetailsDao {
 									 String	invoiceDateTo,
 									 String	brandName,
 									 String	model,
-									 String	cusName){
+									 String	cusName,
+									 UserDetailsBean userBean){
 		System.out.println("[InvoicedetailsDao][SummarySalePDF][Begin]");
 		String 				sql			 	= null;
 		ResultSet 			rs 				= null;
@@ -97,6 +99,8 @@ public class InvoicedetailsDao {
 		    	listJSONArray.add(jsonObjectDetail);
 		    }
 		    jsonObjectMain.put("invoicelist", listJSONArray);
+		    jsonObjectMain.put("CompanyName", userBean.getCompanyName());
+		    jsonObjectMain.put("CompanyAddress", userBean.getCompanyAddress());		    
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
