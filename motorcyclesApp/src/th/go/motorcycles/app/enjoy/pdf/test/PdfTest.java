@@ -22,9 +22,9 @@ public class PdfTest {
 //			writePDF("SlipPdfTypeTwoForm", "D:/motor/JSON/motor.json", "D:/motor/PDF/SlipPdfTypeTwoForm.pdf");
 //			writePDF("SummarySalePdfForm", "D:/motor/JSON/motor.json", "D:/motor/PDF/SummarySalePdfForm.pdf");
 
-			writeSlipPdfFormPDFFormDB("SlipPdfForm", "5700000001", "D:/SlipPdfForm.pdf");
+//			writeSlipPdfFormPDFFormDB("SlipPdfForm", "5700000001", "D:/SlipPdfForm.pdf");
 //			writeSlipPdfTypeTwoFormPDFFormDB("SlipPdfTypeTwoForm", "D:/SlipPdfTypeTwoForm.pdf");
-//			writeSummarySalePDFFormDB("SummarySalePdfForm", "D:/SummarySalePdfForm.pdf");
+			writeSummarySalePDFFormDB("SummarySalePdfForm", "D:/SummarySalePdfForm.pdf");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -157,7 +157,7 @@ public class PdfTest {
 			
 			// สร้าง json Object มาจาก DB
 			invoicedetailsDao			= new InvoicedetailsDao();
-			jsonObject 					= invoicedetailsDao.SummarySalePDF("", "");
+			jsonObject 					= invoicedetailsDao.SummarySalePDF("5700000001", "", "" , "","","");
 					
 			pdfForm.setJSONObject(writer, jsonObject);
 			pdfForm.createForm(document);

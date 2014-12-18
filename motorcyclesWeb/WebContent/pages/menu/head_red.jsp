@@ -66,7 +66,7 @@ function lp_ul_click(){}
                 
                 <ul>
                     <li><a class="logout" href="#">Logout</a></li>
-                	<li class="date">เข้าใช้ระบบ : <span class="text_white">24/08/2557 14:00:09</span> </li>
+                	<li class="date">เข้าใช้ระบบ : <span class="text_white"><%=userDeatil.getCurrentDate() %></span> </li>
                 </ul>
                 
             </div>
