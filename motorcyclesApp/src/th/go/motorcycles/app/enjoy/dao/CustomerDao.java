@@ -36,13 +36,13 @@ public class CustomerDao {
 
 			sql = "SELECT * FROM " + TABLE +" where  cusStatus = 'A'";
 			
-			if(!bean.getCusCode().equals("")  && (!bean.getCustFullname().equals(""))){
+			if(bean.getCusCode()=="" && (bean.getCustFullname()=="")){
 				sql += " order by cusCode";
 			}else{
-				if(!bean.getCusCode().equals("")){
+				if(bean.getCusCode()!=""){
 					sql += " and cusCode = '"+bean.getCusCode()+"'";
 				}
-				if(!bean.getCustFullname().equals("")){
+				if(bean.getCustFullname()!=""){
 					sql += " and (SELECT CONCAT(cusName, ' ', cusSurname) as fullName FROM customer) = '"+bean.getCustFullname()+"'";
 				}
 				 
@@ -270,7 +270,7 @@ public class CustomerDao {
 			lv_ret 			= this.db.execute(sql);
 			
 			System.out.println("[CustomerDao][deleteCustomer] lv_ret :: " + lv_ret);
-	 
+			findCustomer(new CustomerBean());
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{

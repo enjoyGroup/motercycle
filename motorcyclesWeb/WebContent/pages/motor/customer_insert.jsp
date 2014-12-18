@@ -116,7 +116,7 @@
 		    var la_idName               = new Array("provinceName", "districtName", "subdistrictName");
 		    var la_msg               	= new Array("จังหวัด", "อำเภอ", "ตำบล");
 	        var lo_obj;
-		    
+	        var flagUpdate              = false;
 		    try{
 		    	
 		       /*   for(var i=0;i<la_idName.length;i++){
@@ -140,6 +140,7 @@
 		    	
 				if($('#custCode').val()!=""){
 					params 	= $('#frm').serialize() + "&pageAction=updateRecord"; 
+					flagUpdate = true;
 				}
 				
 				
@@ -157,6 +158,20 @@
 		            	var subdistrictCode		= null;
 		            	var errMsg				= null;
 		            	
+		            	if(data.indexOf('OK') > -1){ 
+		            		la_data		= data.split(":");
+		            		newCusCode 	= la_data[1]; 
+		            		if(flagUpdate){
+		            		   alert("แก้ไขรายการเรียบร้อย  "); 
+		            		   lp_reset_page();
+		            		}else{
+		            		   alert("บันทึกรายการเรียบร้อย  cusCode ="+newCusCode); 
+		            		   $('#custCode').val(newCusCode);
+		            		}
+						}else{
+							alert(data);
+						}
+		            	/* 
 		            	try{
 		            		jsonObj = JSON.parse(data);
 		            		status	= jsonObj.status;
@@ -170,10 +185,10 @@
 		            		}else{ 
 		            			errMsg = jsonObj.errMsg; 
 		            		    alert(errMsg);
-		            		}
+		            		} 
 		            	}catch(e){
 		            		alert("in btnSubmit :: " + e);
-		            	}
+		            	} */
 		            }
 		        });
 		    	

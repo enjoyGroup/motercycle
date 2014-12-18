@@ -139,7 +139,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			 
 			if(dataRet==true){
 				this.easUtil.writeMSG("OK");
-				this.onSearch(); 
+//				this.onSearch(); 
 			}else{
 				this.easUtil.writeMSG("Delete failed !!");
 			}

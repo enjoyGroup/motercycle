@@ -60,7 +60,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
          String pageAction = null;
  		
  		try{
- 			 pageAction 				= MotorUtil.nullToStr(request.getParameter("pageAction")); 
+ 			 pageAction 			 = MotorUtil.nullToStr(request.getParameter("pageAction")); 
  			 this.motorUtil 		 = new MotorUtil(request, response);
  			 this.request            = request;
              this.response           = response;
@@ -137,10 +137,10 @@ public class CustomerServlet extends EnjoyStandardSvc {
 			   addressBean 		= this.dao.validateAddress(province, district, subdistrict);
 			   
 			   if(addressBean.getErrMsg().equals("")){
-				   obj.put("status","SUCCESS");
-				   obj.put("provinceCode",addressBean.getProvinceId());
-				   obj.put("districtCode",addressBean.getDistrictId());
-				   obj.put("subdistrictCode",addressBean.getSubdistrictId());
+//				   obj.put("status","SUCCESS");
+//				   obj.put("provinceCode",addressBean.getProvinceId());
+//				   obj.put("districtCode",addressBean.getDistrictId());
+//				   obj.put("subdistrictCode",addressBean.getSubdistrictId());
 				   
 				   
 				   logger.info("[lp_save] provinceId 			:: " + addressBean.getProvinceId());
@@ -174,21 +174,22 @@ public class CustomerServlet extends EnjoyStandardSvc {
 				    cusCode = this.dao.insertCustomer(customerBean); 
 					logger.info("customerBean:"+customerBean.getCusCode());
 					
-				   if(!cusCode.equals(null)){
-					   obj.put("cusCode",cusCode);
-						//this.motorUtil.writeMSG("OK:" + cusCode); 
+//				   if(!cusCode.equals(null)){
+				   if(cusCode!=null){
+					   //obj.put("cusCode",cusCode);
+						this.motorUtil.writeMSG("OK:" + cusCode); 
 				   }else{
-						//this.motorUtil.writeMSG("Insert fail !!");
+						this.motorUtil.writeMSG("Insert fail !!");
 				   }
 				 
 			   }else{
-				   obj.put("status", "ERROR");
-				   obj.put("errMsg", addressBean.getErrMsg());
+				   //obj.put("status", "ERROR");
+				   //obj.put("errMsg", addressBean.getErrMsg());
 			   } 
 			   
 		}catch(Exception e){
-			obj.put("status", 			"ERROR");
-			obj.put("errMsg", 			e.getMessage());
+			//obj.put("status", 			"ERROR");
+			//obj.put("errMsg", 			e.getMessage());
 			e.printStackTrace();
 			logger.info("[lp_save] " + e.getMessage());
 			throw new Exception(e.getMessage());
@@ -265,8 +266,8 @@ public class CustomerServlet extends EnjoyStandardSvc {
  
 		    dataRet	= this.dao.updateCustomer(customerBean);
 		    if(dataRet==true){
-				this.motorUtil.writeMSG("OK:" + cusCode);
-				this.onLoad();
+				this.motorUtil.writeMSG("OK:" + customerBean.getCusCode());
+				//this.onLoad();
 			}else{
 				this.motorUtil.writeMSG("updateRecord failed !!");
 			}
@@ -276,7 +277,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}finally{
-			customerBean 	= null;
+			customerBean 	= null; 
 			cusCode		    = null; 
 			custName    	= null; 
 			custSurname 	= null; 
