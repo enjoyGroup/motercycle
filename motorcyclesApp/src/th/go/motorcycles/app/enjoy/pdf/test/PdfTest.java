@@ -23,9 +23,9 @@ public class PdfTest {
 //			writePDF("SlipPdfTypeTwoForm", "D:/motor/JSON/motor.json", "D:/motor/PDF/SlipPdfTypeTwoForm.pdf");
 //			writePDF("SummarySalePdfForm", "D:/motor/JSON/motor.json", "D:/motor/PDF/SummarySalePdfForm.pdf");
 
-//			writeSlipPdfFormPDFFormDB("SlipPdfForm", "5700000001", "D:/SlipPdfForm.pdf");
+			writeSlipPdfFormPDFFormDB("SlipPdfForm", "5700000001", "D:/SlipPdfForm.pdf");
 //			writeSlipPdfTypeTwoFormPDFFormDB("SlipPdfTypeTwoForm", "D:/SlipPdfTypeTwoForm.pdf");
-			writeSummarySalePDFFormDB("SummarySalePdfForm", "D:/SummarySalePdfForm.pdf");
+//			writeSummarySalePDFFormDB("SummarySalePdfForm", "D:/SummarySalePdfForm.pdf");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -86,15 +86,12 @@ public class PdfTest {
 //		Object 				obj 						= null;
 		JSONObject 			jsonObject 					= null;
 		InvoicedetailsDao   invoicedetailsDao			= null;
+		UserDetailsBean 	userBean					= null;
 		try{
 			System.out.println("formName :: " + formName);
 			
 			formClass					= "th.go.motorcycles.app.enjoy.pdf."+formName;
-			if (formName.equals("SummarySalePdfForm")) {
-				document 				= new Document(PageSize.A4);
-			} else {
-				document 				= new Document(PageSize.A4);
-			}	
+			document 					= new Document(PageSize.A4);
 			//parser 						= new JSONParser();
 			f 							= new File(pdfPath);
 			fos            				= new FileOutputStream(f.getAbsolutePath());			
@@ -110,7 +107,10 @@ public class PdfTest {
 			
 			// สร้าง json Object มาจาก DB
 			invoicedetailsDao			= new InvoicedetailsDao();
-			jsonObject 					= invoicedetailsDao.InvoiceSalePDF(invoiceId);
+			userBean					= new UserDetailsBean();
+			userBean.setCompanyName("ห้างหุ้นส่วนจำกัด รุ่งโรจน์สหยานยนต์");
+			userBean.setCompanyAddress("16/108-109 ถนนสรงประภา แขวงสีกัน เขตดอนเมือง กรุงเทพ 10210");
+			jsonObject 					= invoicedetailsDao.InvoiceSalePDF(invoiceId,userBean);
 					
 			pdfForm.setJSONObject(writer, jsonObject);
 			pdfForm.createForm(document);
