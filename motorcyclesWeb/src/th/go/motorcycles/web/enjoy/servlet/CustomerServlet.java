@@ -70,9 +70,9 @@ public class CustomerServlet extends EnjoyStandardSvc {
              this.dao				 = new CustomerDao();
              this.addressDao         = new AddressDao();
  			
- 			if(this.form == null || pageAction.equals("new")) this.form = new CustomerForm();
+ 			if(pageAction.equals("new")) this.form = new CustomerForm();
  			
- 			if(pageAction.equals("") || pageAction.equals("new")){
+ 			if(pageAction.equals("")){
  				this.onLoad();
  				request.setAttribute("target", Constants.PAGE_URL +"/customer_insert.jsp");
  			}else if(pageAction.equals("addRecord")){
@@ -86,7 +86,9 @@ public class CustomerServlet extends EnjoyStandardSvc {
 			}else if(pageAction.equals(DISTRICT)){
 				this.lp_district();
 			}else if(pageAction.equals(SUBDISTRICT)){
-				this.lp_subdistrict();
+				this.lp_subdistrict(); 
+	 		}else if(pageAction.equals("reset")){
+				this.onReset();
 			}
  			
  			
@@ -98,9 +100,14 @@ public class CustomerServlet extends EnjoyStandardSvc {
  			System.out.println("[CustomerInsertServlet][execute][End]");
  		}
 	}
- 
+	
 	private void onLoad() throws Exception{ 
+		System.out.println("[CustomerInsertServlet][onLoad][Begin]");   
+	}
+ 
+	private void onReset() throws Exception{ 
 		System.out.println("[CustomerInsertServlet][onLoad][Begin]");  
+		this.form = new CustomerForm();
 	}
 	 
 	
@@ -177,6 +184,8 @@ public class CustomerServlet extends EnjoyStandardSvc {
 //				   if(!cusCode.equals(null)){
 				   if(cusCode!=null){
 					   //obj.put("cusCode",cusCode);
+					    customerBean.setCusCode(cusCode);
+					    this.form.setCustomerBean(customerBean);
 						this.motorUtil.writeMSG("OK:" + cusCode); 
 				   }else{
 						this.motorUtil.writeMSG("Insert fail !!");
@@ -267,7 +276,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
 		    dataRet	= this.dao.updateCustomer(customerBean);
 		    if(dataRet==true){
 				this.motorUtil.writeMSG("OK:" + customerBean.getCusCode());
-				//this.onLoad();
+				this.form = new CustomerForm(); 
 			}else{
 				this.motorUtil.writeMSG("updateRecord failed !!");
 			}

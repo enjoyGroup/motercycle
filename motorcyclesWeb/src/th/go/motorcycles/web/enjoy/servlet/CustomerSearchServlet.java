@@ -56,7 +56,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
              this.form               = (CustomerForm)session.getAttribute(FORM_NAME);
              this.dao				= new CustomerDao();
  			
- 			if(this.form == null || pageAction.equals("new")) this.form = new CustomerForm();
+ 			if(pageAction.equals("new")) this.form = new CustomerForm();
  			
  			if(pageAction.equals("")){
  				this.onLoad();
@@ -82,7 +82,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 	}
 	 
 	private void onSearch() throws Exception{ 
-		System.out.println("[CustomerInsertServlet][onLoad][Begin]");
+		System.out.println("[CustomerInsertServlet][onSearch][Begin]");
 		List<CustomerBean> listCustomer = null;
 		CustomerBean bean               = null; 
 		String       cusCode            = null;
@@ -113,9 +113,12 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}finally{
+			listCustomer       = null;
+			bean               = null; 
 			cusCode            = null;
-			bean               = null;
-			System.out.println("[CustomerInsertServlet][onLoad][End]");
+			name               = null; 
+			dataRet			   = false;
+			System.out.println("[CustomerInsertServlet][onSearch][End]");
 		}
 	}
 	 
@@ -139,7 +142,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			 
 			if(dataRet==true){
 				this.easUtil.writeMSG("OK");
-//				this.onSearch(); 
+				this.onSearchAll(); 
 			}else{
 				this.easUtil.writeMSG("Delete failed !!");
 			}
@@ -149,12 +152,42 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}finally{
+			customerBean 	= null;
+			cusCode			= null;
+			dataRet			= false;
 			System.out.println("[MotorDemoSvc][delRecord][End]");
 		}
 	}
 	
 	
-
+	private void onSearchAll() throws Exception{ 
+		System.out.println("[CustomerInsertServlet][onSearchAll][Begin]");
+		List<CustomerBean> listCustomer = null; 
+		boolean	     dataRet			= false;
+		try{ 
+			
+			listCustomer = (List <CustomerBean>) this.dao.findAllCustomer(); 
+			this.form.setListCustomer(listCustomer); 
+			
+			if(listCustomer.size()>0){
+				dataRet	= true;
+			}
+			
+			if(dataRet==true){
+				this.easUtil.writeMSG("OK"); 
+			}else{
+				this.easUtil.writeMSG("No record!!");
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
+		}finally{
+			listCustomer    = null; 
+			dataRet			= false;
+			System.out.println("[CustomerInsertServlet][onSearchAll][End]");
+		}
+	}
 	
 	
 }

@@ -105,6 +105,7 @@
 								rowNumber = i+1;
 								lo_tabResultDtl.rows[i+1].cells[0].innerHTML=rowNumber;
 				    		}
+				    		
 						}else{
 							alert(data);
 						}

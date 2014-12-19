@@ -195,73 +195,7 @@
 		    }catch(e){
 		    	alert("btnSubmit :: " + e);
 		    }
-		    <%-- var url		    = '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet'; 
-		    var pageAction			= "addRecord";
-		    var newCusCode 			= "";
-		    var lv_radio			= "";
-		    var lv_params			= "";
-			var flagUpdate          = false;
-			
-			if($('#custCode').val()!=""){
-				flagUpdate          = true;
-				pageAction          = "updateRecord";  
-			}
-			
-			try{ 
-				
-				if($('#custName').val()=="" || $('#custSurname').val()=="" ||
-			 	   $('#houseNumber').val()=="" || $('#subdistrictName').val()=="" ||
-			 	   $('#districtName').val()=="" || $('#provinceName').val()==""){
-					alert("please input require field !!");
-					return;
-				}
-				
-				if($('#idType1').is(':checked') === true) {
-					lv_radio = "1";
-				}else if($('#idType2').is(':checked') === true) {
-					lv_radio = "2";
-				}
-		       		  
-				lv_params 	= "service=" + $('#service').val()
-				            + "&cusCode=" + gp_sanitizeURLString($('#custCode').val()); 
-							+ "&custName=" + gp_sanitizeURLString($('#custName').val()) 
-							+ "&custSurname=" + gp_sanitizeURLString($('#custSurname').val()) 
-							+ "&houseNumber=" + gp_sanitizeURLString($('#houseNumber').val()) 
-							+ "&mooNumber=" + gp_sanitizeURLString($('#mooNumber').val())
-							+ "&soiName=" + gp_sanitizeURLString($('#soiName').val()) 
-							+ "&streetName=" + gp_sanitizeURLString($('#streetName').val())
-							+ "&subdistrictName=" + gp_sanitizeURLString($('#subdistrictName').val()) 
-							+ "&districtName=" + gp_sanitizeURLString($('#districtName').val()) 
-							+ "&provinceName=" + gp_sanitizeURLString($('#provinceName').val())  
-							+ "&idType=" + lv_radio 
-							+ "&idNumber=" + gp_sanitizeURLString($('#idNumber').val()) 
-							+ "&cusStatus=" + gp_sanitizeURLString($('#cusStatus').val()) 
-							+ "&pageAction=" + pageAction; 
-				$.ajax({
-		            type: "POST",
-		            async: false,
-		            url: url,
-		            data: lv_params,
-		            beforeSend: "",
-		            success: function(data){
-		            	if(data.indexOf('OK') > -1){ 
-		            		la_data		= data.split(":");
-		            		newCusCode 	= la_data[1]; 
-		            		if(flagUpdate){
-		            		   alert("แก้ไขรายการเรียบร้อย  newCusCode ="+newCusCode); 
-		            		}else{
-		            		   alert("บันทึกรายการเรียบร้อย  newCusCode ="+newCusCode); 
-		            		   $('#custCode').val(newCusCode);
-		            		}
-						}else{
-							alert(data);
-						}
-		            }
-		        });
-			}catch(err){
-				alert("btnAdd :: " + err);
-			} --%>
-			
+		   
 		});
 	 
  
@@ -269,6 +203,25 @@
 	
 	
     function lp_reset_page(){
+    	var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet'; 
+	    var pageAction			= "reset"; 
+	    var lv_params			= ""; 
+		try{  
+			
+			lv_params 	= "&pageAction=" + pageAction;
+
+			$.ajax({
+	            type: "POST", 
+	            async: false,
+	            url: url,
+	            data: lv_params,
+	            beforeSend: "",
+	            success: function(data){} 
+		    });
+		}catch(err){
+			alert("reset :: " + err);
+		}
+		
     	 $('#custCode').val(""); 
 		 $('#custName').val("");
 		 $('#custSurname').val("");
@@ -285,6 +238,7 @@
 		 $('#idType').val("");
 		 $('#idNumber').val("");
 		 $('#cusStatus').val("");
+		 
 	}
     
 
@@ -361,6 +315,25 @@
 				}catch(err){
 					alert("updateData :: " + err);
 				} 
+    		}else{
+    			var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet'; 
+			    var pageAction			= "reset"; 
+			    var lv_params			= ""; 
+				try{  
+					
+					lv_params ="&pageAction=" + pageAction;
+	
+					$.ajax({
+			            type: "POST", 
+			            async: false,
+			            url: url,
+			            data: lv_params,
+			            beforeSend: "",
+			            success: function(data){ }
+				   });
+				}catch(err){
+					alert("updateData :: " + err);
+				} 
     		}  
         }
     
@@ -371,7 +344,7 @@
 </head>
 <body> 
 <form class="form-horizontal" id="frm" action="<%=servURL%>/EnjoyGenericSrv">
-	<input type="hidden" id="service" name="service" value="servlet.CustomerServlet" />  
+	<input type="hidden" id="service" name="service" value="servlet.CustomerServlet" />   
 	<section class="vbox"> 
 		<section>
 			<section class="hbox stretch"> 
@@ -388,7 +361,7 @@
 										<div class="panel-body">  
 												<div class="form-group">
 												    <label class="col-sm-2 control-label"  style="text-align:right" >รหัสลูกค้า <font color="red">*</font>:</label>
-													<input type="text" id="custCode" name="custCode" disabled> 
+													<input type="text" id="custCode" name="custCode" value="<%=customerForm.getCustomerBean().getCusCode()%>" disabled> 
 													<input type="hidden" id="cusStatus" name="cusStatus" value="A" />
 												</div>  
 										</div>
@@ -455,17 +428,17 @@
 													<div class="row">  
 														<label class="col-sm-1 control-label" style="text-align:right">จังหวัด <font color="red">*</font>:</label>
 														<div class="col-md-2">  
-															<input class="form-control" id="provinceName" name="provinceName" value="<%=customerForm.getCustomerBean().getProvinceName()%>"  placeholder="จังหวัด" title="จังหวัด">
+															<input class="form-control" id="provinceName" name="provinceName"  placeholder="จังหวัด" title="จังหวัด">
 															<input type="hidden" id="provinceCode" name="provinceCode" >
 														</div> 
 														<label class="col-sm-2 control-label" style="text-align:right">อำเภอ/เขต <font color="red">*</font>:</label>
 														<div class="col-md-2"> 
-															<input  class="form-control" id="districtName" name="districtName" value="<%=customerForm.getCustomerBean().getDistrictName()%>" placeholder="อำเภอ" title="อำเภอ" >
+															<input  class="form-control" id="districtName" name="districtName"  placeholder="อำเภอ" title="อำเภอ" >
 															<input type="hidden" id="districtCode" name="districtCode" >
 														</div>
 													    <label class="col-sm-2 control-label" style="text-align:right">ตำบล/แขวง <font color="red">*</font>:</label>
 														<div class="col-md-2"> 
-															<input  class="form-control" id="subdistrictName" name="subdistrictName" value="<%=customerForm.getCustomerBean().getSubdistrictName()%>"  placeholder="ตำบล" title="ตำบล"  > 
+															<input  class="form-control" id="subdistrictName" name="subdistrictName"  placeholder="ตำบล" title="ตำบล"  > 
 															<input type="hidden" id="subdistrictCode" name="subdistrictCode"> 
 														</div>
 													</div>
