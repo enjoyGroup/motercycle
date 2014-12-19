@@ -1,12 +1,11 @@
 <%@page import="th.go.motorcycles.app.enjoy.form.CustomerForm"%> 
 <%@page import="com.sun.xml.internal.txw2.Document"%>
-<%@ include file="/pages/include/enjoyLoginInclude.jsp"%>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<jsp:useBean id="customerForm" class="th.go.motorcycles.app.enjoy.form.CustomerForm" scope="session"/> 
-<%@ page import="th.go.motorcycles.app.enjoy.bean.CustomerBean"%>
-<%@ page import="java.util.*"%> 
+<%@ include file="/pages/include/enjoyInclude.jsp"%>
+<%@ page import="java.util.*"%>  
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%> 
+<jsp:useBean id="customerForm" class="th.go.motorcycles.app.enjoy.form.CustomerForm" scope="session"/>  
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html> 
 <head>
 <title> เพิ่มรายละเอียดลูกค้า </title>  
@@ -109,91 +108,120 @@
 		      }
 		});
 		 
-		//Add new
-		$('#custName').focus();
-		$('#btnAdd').click(function(){ 
-		    var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet'; 
-		    var pageAction			= "addRecord";
-		    var newCusCode 			= "";
-		    var lv_radio			= "";
-		    var lv_params			= "";
-			var flagUpdate          = false;
-			
-			if($('#custCode').val()!=""){
-				flagUpdate          = true;
-				pageAction          = "updateRecord";  
-			}
-			
-			try{ 
-				
-				if($('#custName').val()=="" || $('#custSurname').val()=="" ||
-			 	   $('#houseNumber').val()=="" || $('#subdistrictName').val()=="" ||
-			 	   $('#districtName').val()=="" || $('#provinceName').val()==""){
-					alert("please input require field !!");
-					return;
+		//Add new 
+		$('#btnAdd').click(function(){
+			var lo_pageAction			= null;
+		    var lo_frm					= null;
+		    var url 					= '<%=servURL%>/EnjoyGenericSrv';
+		    var la_idName               = new Array("provinceName", "districtName", "subdistrictName");
+		    var la_msg               	= new Array("จังหวัด", "อำเภอ", "ตำบล");
+	        var lo_obj;
+	        var flagUpdate              = false;
+		    try{
+		    	
+		       /*   for(var i=0;i<la_idName.length;i++){
+		            lo_obj          = eval('document.getElementById("' + la_idName[i] + '")');
+		            
+		            if(gp_trim(lo_obj.value)==""){
+		            	alert("กรุณาระบุ " + la_msg[i]);
+		                return false;
+		            }
+		            
+		        } */
+		        
+		    	if($('#custName').val()=="" || $('#custSurname').val()=="" ||
+					 	   $('#houseNumber').val()=="" || $('#subdistrictName').val()=="" ||
+					 	   $('#districtName').val()=="" || $('#provinceName').val()==""){
+							alert("please input require field !!");
+							return;
+				}
+		    	
+		    	params 	= $('#frm').serialize() + "&pageAction=addRecord"; 
+		    	
+				if($('#custCode').val()!=""){
+					params 	= $('#frm').serialize() + "&pageAction=updateRecord"; 
+					flagUpdate = true;
 				}
 				
-				if($('#idType1').is(':checked') === true) {
-					lv_radio = "1";
-				}else if($('#idType2').is(':checked') === true) {
-					lv_radio = "2";
-				}
-		        //alert(lv_radio);		  
-				lv_params 	= "service=" + $('#service').val()
-				            + "&cusCode=" + gp_sanitizeURLString($('#custCode').val()); 
-							+ "&custName=" + gp_sanitizeURLString($('#custName').val()) 
-							+ "&custSurname=" + gp_sanitizeURLString($('#custSurname').val()) 
-							+ "&houseNumber=" + gp_sanitizeURLString($('#houseNumber').val()) 
-							+ "&mooNumber=" + gp_sanitizeURLString($('#mooNumber').val())
-							+ "&soiName=" + gp_sanitizeURLString($('#soiName').val()) 
-							+ "&streetName=" + gp_sanitizeURLString($('#streetName').val()) 
-							+ "&subdistrictCode=" + gp_sanitizeURLString($('#subdistrictCode').val()) 
-							+ "&districtCode=" + gp_sanitizeURLString($('#districtCode').val()) 
-							+ "&provinceCode=" + gp_sanitizeURLString($('#provinceCode').val()) 
-							+ "&idType=" + lv_radio 
-							+ "&idNumber=" + gp_sanitizeURLString($('#idNumber').val()) 
-							+ "&cusStatus=" + gp_sanitizeURLString($('#cusStatus').val()) 
-							+ "&pageAction=" + pageAction; 
+				
 				$.ajax({
+					async:false,
 		            type: "POST",
-		            async: false,
 		            url: url,
-		            data: lv_params,
+		            data: params,
 		            beforeSend: "",
 		            success: function(data){
+		            	var jsonObj 			= null;
+		            	var status				= null;
+		            	var provinceCode		= null;
+		            	var districtCode		= null;
+		            	var subdistrictCode		= null;
+		            	var errMsg				= null;
+		            	
 		            	if(data.indexOf('OK') > -1){ 
 		            		la_data		= data.split(":");
 		            		newCusCode 	= la_data[1]; 
 		            		if(flagUpdate){
-		            		   alert("แก้ไขรายการเรียบร้อย  newCusCode ="+newCusCode); 
+		            		   alert("แก้ไขรายการเรียบร้อย  "); 
+		            		   lp_reset_page();
 		            		}else{
-		            		   alert("บันทึกรายการเรียบร้อย  newCusCode ="+newCusCode); 
+		            		   alert("บันทึกรายการเรียบร้อย  cusCode ="+newCusCode); 
 		            		   $('#custCode').val(newCusCode);
 		            		}
 						}else{
 							alert(data);
 						}
+		            	/* 
+		            	try{
+		            		jsonObj = JSON.parse(data);
+		            		status	= jsonObj.status;
+		            		alert(status);
+		            		if(status=="SUCCESS"){
+		            			provinceCode		= jsonObj.provinceCode;
+		            			districtCode		= jsonObj.districtCode;
+		            			subdistrictCode	    = jsonObj.subdistrictCode;
+		            		    alert(jsonObj.cusCode);	
+		            			alert("provinceId::" + provinceCode + ", districtId::" + districtCode + ", subdistrictId::" + subdistrictCode);
+		            		}else{ 
+		            			errMsg = jsonObj.errMsg; 
+		            		    alert(errMsg);
+		            		} 
+		            	}catch(e){
+		            		alert("in btnSubmit :: " + e);
+		            	} */
 		            }
 		        });
-			}catch(err){
-				alert("btnAdd :: " + err);
-			}
-			
+		    	
+		    }catch(e){
+		    	alert("btnSubmit :: " + e);
+		    }
+		   
 		});
-		
-	    $.getJSON( "ajax/test.json", function( data ) {
-	    	 var items = [];
-	         $.each( data, function( key, val ) {
-	           items.push( "<li id='" + key + "'>" + val + "</li>" );
-	         });
-	        
-	         console.log(items);
-	    });
+	 
  
 	});
 	
 	
     function lp_reset_page(){
+    	var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet'; 
+	    var pageAction			= "reset"; 
+	    var lv_params			= ""; 
+		try{  
+			
+			lv_params 	= "&pageAction=" + pageAction;
+
+			$.ajax({
+	            type: "POST", 
+	            async: false,
+	            url: url,
+	            data: lv_params,
+	            beforeSend: "",
+	            success: function(data){} 
+		    });
+		}catch(err){
+			alert("reset :: " + err);
+		}
+		
     	 $('#custCode').val(""); 
 		 $('#custName').val("");
 		 $('#custSurname').val("");
@@ -210,38 +238,11 @@
 		 $('#idType').val("");
 		 $('#idNumber').val("");
 		 $('#cusStatus').val("");
+		 
 	}
     
 
-    function lp_onblur_province(){
-    	if($('#provinceName').val()!="" ){  
-    		document.getElementById("districtName").removeAttribute('disabled');
-        }else{
-        	document.getElementById("districtName").setAttribute('disabled', 'disabled'); 
-   		 	$('#districtName').val("");
-   		 	$('#districtCode').val("");
-   		    $('#subdistrictName').val("");
-   		 	$('#subdistrictCode').val("");
-        }
-    }
-    
-    function lp_onblur_district(){
-        if($('#districtName').val()!=""){
-        	document.getElementById("subdistrictName").removeAttribute('disabled');
-        }else{
-        	document.getElementById("subdistrictName").setAttribute('disabled', 'disabled'); 
-   		    $('#subdistrictName').val("");
-   		 	$('#subdistrictCode').val("");
-        }
-    }
  
-    function lp_onblur_subdistrict(){
-        if($('#subdistrictName').val()==""){
-    		
-        }
-    }
-    
-
     window.onload = function () {
 	    	var stringURL    = window.document.URL.toString();  
 	       // alert(stringURL);   
@@ -262,12 +263,10 @@
 		        if(cusCode[0]=="cusCode"){
 		        	customerCode  = cusCode[1];
 	        	} 
-	        }else{
-	        	lp_reset_page();
 	        }
 	         
 	        if(action=="updateData"){
-	            alert(action+" and "+customerCode);
+	           // alert(action+" and "+customerCode);
 		        var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet'; 
 			    var pageAction			= "findData"; 
 			    var lv_params			= ""; 
@@ -316,27 +315,42 @@
 				}catch(err){
 					alert("updateData :: " + err);
 				} 
+    		}else{
+    			var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet'; 
+			    var pageAction			= "reset"; 
+			    var lv_params			= ""; 
+				try{  
+					
+					lv_params ="&pageAction=" + pageAction;
+	
+					$.ajax({
+			            type: "POST", 
+			            async: false,
+			            url: url,
+			            data: lv_params,
+			            beforeSend: "",
+			            success: function(data){ }
+				   });
+				}catch(err){
+					alert("updateData :: " + err);
+				} 
     		}  
         }
     
 
  
 </script>
-	
-<%@ include file="../menu/inc_theme.jsp"%>
-
+	 
 </head>
 <body> 
-<form class="form-horizontal"  id="from_insert" action="<%=servURL%>/EnjoyGen ericSrv"> 
-	<input type="hidden" id="service" name="service" value="servlet.CustomerServlet" />  
+<form class="form-horizontal" id="frm" action="<%=servURL%>/EnjoyGenericSrv">
+	<input type="hidden" id="service" name="service" value="servlet.CustomerServlet" />   
 	<section class="vbox"> 
 		<section>
 			<section class="hbox stretch"> 
 				<section id="content">
 					<section class="vbox">
-						<section class="scrollable padder">
-						
-						
+						<section class="scrollable padder">  
 							<div class="alert alert-block alert-error fade in">
 				            	<h4 class="alert-heading">เพิ่มรายละเอียดลูกค้า</h4>
 				          	</div>
@@ -347,7 +361,7 @@
 										<div class="panel-body">  
 												<div class="form-group">
 												    <label class="col-sm-2 control-label"  style="text-align:right" >รหัสลูกค้า <font color="red">*</font>:</label>
-													<input type="text" id="custCode" name="custCode" disabled> 
+													<input type="text" id="custCode" name="custCode" value="<%=customerForm.getCustomerBean().getCusCode()%>" disabled> 
 													<input type="hidden" id="cusStatus" name="cusStatus" value="A" />
 												</div>  
 										</div>
@@ -414,18 +428,18 @@
 													<div class="row">  
 														<label class="col-sm-1 control-label" style="text-align:right">จังหวัด <font color="red">*</font>:</label>
 														<div class="col-md-2">  
-															<input class="form-control" id="provinceName" name="provinceName" value="<%=customerForm.getCustomerBean().getProvinceName()%>"  placeholder="จังหวัด" title="จังหวัด">
-															<input type="hidden" id="provinceCode" name="provinceCode"  value="10" >
+															<input class="form-control" id="provinceName" name="provinceName"  placeholder="จังหวัด" title="จังหวัด">
+															<input type="hidden" id="provinceCode" name="provinceCode" >
 														</div> 
 														<label class="col-sm-2 control-label" style="text-align:right">อำเภอ/เขต <font color="red">*</font>:</label>
 														<div class="col-md-2"> 
-															<input  class="form-control" id="districtName" name="districtName" value="<%=customerForm.getCustomerBean().getDistrictName()%>" placeholder="อำเภอ" title="อำเภอ"  disabled>
-															<input type="hidden" id="districtCode" name="districtCode" value="100"  >
+															<input  class="form-control" id="districtName" name="districtName"  placeholder="อำเภอ" title="อำเภอ" >
+															<input type="hidden" id="districtCode" name="districtCode" >
 														</div>
 													    <label class="col-sm-2 control-label" style="text-align:right">ตำบล/แขวง <font color="red">*</font>:</label>
 														<div class="col-md-2"> 
-															<input  class="form-control" id="subdistrictName" name="subdistrictName" placeholder="ตำบล" title="ตำบล"  value="<%=customerForm.getCustomerBean().getSubdistrictName()%>"  disabled> 
-															<input type="hidden" id="subdistrictCode" name="subdistrictCode" value="122" > 
+															<input  class="form-control" id="subdistrictName" name="subdistrictName"  placeholder="ตำบล" title="ตำบล"  > 
+															<input type="hidden" id="subdistrictCode" name="subdistrictCode"> 
 														</div>
 													</div>
 												</div>

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
   
 
 
+
 import org.json.simple.JSONObject;
 
 import th.go.motorcycles.app.enjoy.bean.AddressBean;
@@ -59,7 +60,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
          String pageAction = null;
  		
  		try{
- 			 pageAction 				= MotorUtil.nullToStr(request.getParameter("pageAction")); 
+ 			 pageAction 			 = MotorUtil.nullToStr(request.getParameter("pageAction")); 
  			 this.motorUtil 		 = new MotorUtil(request, response);
  			 this.request            = request;
              this.response           = response;
@@ -69,9 +70,9 @@ public class CustomerServlet extends EnjoyStandardSvc {
              this.dao				 = new CustomerDao();
              this.addressDao         = new AddressDao();
  			
- 			if(this.form == null || pageAction.equals("new")) this.form = new CustomerForm();
+ 			if(pageAction.equals("new")) this.form = new CustomerForm();
  			
- 			if(pageAction.equals("") || pageAction.equals("new")){
+ 			if(pageAction.equals("")){
  				this.onLoad();
  				request.setAttribute("target", Constants.PAGE_URL +"/customer_insert.jsp");
  			}else if(pageAction.equals("addRecord")){
@@ -85,7 +86,9 @@ public class CustomerServlet extends EnjoyStandardSvc {
 			}else if(pageAction.equals(DISTRICT)){
 				this.lp_district();
 			}else if(pageAction.equals(SUBDISTRICT)){
-				this.lp_subdistrict();
+				this.lp_subdistrict(); 
+	 		}else if(pageAction.equals("reset")){
+				this.onReset();
 			}
  			
  			
@@ -97,9 +100,14 @@ public class CustomerServlet extends EnjoyStandardSvc {
  			System.out.println("[CustomerInsertServlet][execute][End]");
  		}
 	}
- 
+	
 	private void onLoad() throws Exception{ 
+		System.out.println("[CustomerInsertServlet][onLoad][Begin]");   
+	}
+ 
+	private void onReset() throws Exception{ 
 		System.out.println("[CustomerInsertServlet][onLoad][Begin]");  
+		this.form = new CustomerForm();
 	}
 	 
 	
@@ -113,52 +121,86 @@ public class CustomerServlet extends EnjoyStandardSvc {
 		 String 		houseNumber 	= null; 
 		 String 		mooNumber   	= null; 
 		 String 		soiName  	    = null;   
-         String 		streetName  	= null;   
-		 String 		subdistrictCode = null;   
-		 String 		districtCode 	= null;   
-		 String 		provinceCode 	= null; 
+         String 		streetName  	= null;    
 		 String 		idType 			= null; 
 		 String 		idNumber		= null; 
 		 String 		cusStatus		= null;
 		 boolean	    dataRet			= false; 
-		
-		try{
-			customerBean 	= new CustomerBean();
-			custName 		= this.request.getParameter("custName"); 
-			custSurname 	= this.request.getParameter("custSurname");
-			houseNumber 	= this.request.getParameter("houseNumber");
-			mooNumber 	    = this.request.getParameter("mooNumber");
-			soiName 	    = this.request.getParameter("soiName");
-			streetName 	    = this.request.getParameter("streetName");
-			subdistrictCode = this.request.getParameter("subdistrictCode");
-			districtCode 	= this.request.getParameter("districtCode");
-			provinceCode 	= this.request.getParameter("provinceCode");
-			idType 	        = this.request.getParameter("idType");
-			idNumber 	    = this.request.getParameter("idNumber"); 
-			cusStatus 	    = "A";  
-			
-			customerBean.setCustName(custName); 
-			customerBean.setCustSurname(custSurname);
-			customerBean.setHouseNumber(houseNumber);
-			customerBean.setMooNumber(mooNumber);
-			customerBean.setSoiName(soiName);
-			customerBean.setStreetName(streetName);
-			customerBean.setSubdistrictCode(subdistrictCode);
-			customerBean.setDistrictCode(districtCode);
-			customerBean.setProvinceCode(provinceCode);
-			customerBean.setIdType(idType);
-			customerBean.setIdNumber(idNumber);
-			customerBean.setCusStatus(cusStatus);
+		 String			province	    = null;
+		 String			district		= null;
+		 String			subdistrict		= null;
+		 AddressBean	addressBean		= null;
+		 JSONObject 	obj 			= null;
 		 
-		   cusCode = this.dao.insertCustomer(customerBean);
-		    if(cusCode!=null){
-				this.motorUtil.writeMSG("OK:" + cusCode); 
-			}else{
-				this.motorUtil.writeMSG("Insert fail !!");
-			}
-			 
+		try{
+			   province					= EnjoyUtils.nullToStr(this.request.getParameter("provinceName"));
+			   district					= EnjoyUtils.nullToStr(this.request.getParameter("districtName"));
+			   subdistrict				= EnjoyUtils.nullToStr(this.request.getParameter("subdistrictName")); 
+			   obj 						= new JSONObject();
+			   logger.info("[lp_save] province 			:: " + province);
+			   logger.info("[lp_save] district 			:: " + district);
+			   logger.info("[lp_save] subdistrict 		:: " + subdistrict);
+			   
+			   addressBean 		= this.dao.validateAddress(province, district, subdistrict);
+			   
+			   if(addressBean.getErrMsg().equals("")){
+//				   obj.put("status","SUCCESS");
+//				   obj.put("provinceCode",addressBean.getProvinceId());
+//				   obj.put("districtCode",addressBean.getDistrictId());
+//				   obj.put("subdistrictCode",addressBean.getSubdistrictId());
+				   
+				   
+				   logger.info("[lp_save] provinceId 			:: " + addressBean.getProvinceId());
+				   logger.info("[lp_save] districtId 			:: " + addressBean.getDistrictId());
+				   logger.info("[lp_save] subdistrictId 		:: " + addressBean.getSubdistrictId());
+				   
+				    customerBean 	= new CustomerBean();
+					custName 		= this.request.getParameter("custName"); 
+					custSurname 	= this.request.getParameter("custSurname");
+					houseNumber 	= this.request.getParameter("houseNumber");
+					mooNumber 	    = this.request.getParameter("mooNumber");
+					soiName 	    = this.request.getParameter("soiName");
+					streetName 	    = this.request.getParameter("streetName"); 
+					idType 	        = this.request.getParameter("idType");
+					idNumber 	    = this.request.getParameter("idNumber"); 
+					cusStatus 	    = "A";  
+					
+					customerBean.setCustName(custName); 
+					customerBean.setCustSurname(custSurname);
+					customerBean.setHouseNumber(houseNumber);
+					customerBean.setMooNumber(mooNumber);
+					customerBean.setSoiName(soiName);
+					customerBean.setStreetName(streetName);
+					customerBean.setSubdistrictCode(addressBean.getSubdistrictId());
+					customerBean.setDistrictCode(addressBean.getDistrictId());
+					customerBean.setProvinceCode(addressBean.getProvinceId());
+					customerBean.setIdType(idType);
+					customerBean.setIdNumber(idNumber);
+					customerBean.setCusStatus(cusStatus);
+			
+				    cusCode = this.dao.insertCustomer(customerBean); 
+					logger.info("customerBean:"+customerBean.getCusCode());
+					
+//				   if(!cusCode.equals(null)){
+				   if(cusCode!=null){
+					   //obj.put("cusCode",cusCode);
+					    customerBean.setCusCode(cusCode);
+					    this.form.setCustomerBean(customerBean);
+						this.motorUtil.writeMSG("OK:" + cusCode); 
+				   }else{
+						this.motorUtil.writeMSG("Insert fail !!");
+				   }
+				 
+			   }else{
+				   //obj.put("status", "ERROR");
+				   //obj.put("errMsg", addressBean.getErrMsg());
+			   } 
+			   
 		}catch(Exception e){
+			//obj.put("status", 			"ERROR");
+			//obj.put("errMsg", 			e.getMessage());
 			e.printStackTrace();
+			logger.info("[lp_save] " + e.getMessage());
 			throw new Exception(e.getMessage());
 		}finally{
 			customerBean 	= null;
@@ -169,12 +211,14 @@ public class CustomerServlet extends EnjoyStandardSvc {
 			mooNumber   	= null; 
 			soiName  	    = null;   
 	        streetName  	= null;   
-			subdistrictCode = null;   
-			districtCode 	= null;   
-			provinceCode 	= null; 
 			idType 			= null; 
 			idNumber		= null; 
 			cusStatus		= null;
+			province	    = null;
+			district		= null;
+			subdistrict		= null;
+			addressBean		= null;
+			obj 			= null;
 			System.out.println("[CustomerInsertServlet][addRecord][End]");
 		}
 	}
@@ -231,8 +275,8 @@ public class CustomerServlet extends EnjoyStandardSvc {
  
 		    dataRet	= this.dao.updateCustomer(customerBean);
 		    if(dataRet==true){
-				this.motorUtil.writeMSG("OK:" + cusCode);
-				this.onLoad();
+				this.motorUtil.writeMSG("OK:" + customerBean.getCusCode());
+				this.form = new CustomerForm(); 
 			}else{
 				this.motorUtil.writeMSG("updateRecord failed !!");
 			}
@@ -242,7 +286,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}finally{
-			customerBean 	= null;
+			customerBean 	= null; 
 			cusCode		    = null; 
 			custName    	= null; 
 			custSurname 	= null; 
@@ -277,12 +321,8 @@ public class CustomerServlet extends EnjoyStandardSvc {
 			customerBean = (CustomerBean)this.dao.findCustomerByCusCode(bean); 
 			System.out.println("[CustomerInsertServlet][findData][Begin]:"+customerBean.getCusCode());
 			this.form.setCustomerBean(customerBean);
-			 
-		  //ObjectMapper mapper = new ObjectMapper();
-		  //  String temp = mapper.writeValueAsString(customerBean);
-		    
-			if(customerBean.getCusCode()!=null){
-			//	this.easUtil.writeMSG(temp); 
+			  
+			if(customerBean.getCusCode()!=null){ 
 				
 				this.motorUtil.writeMSG("OK:" +   customerBean.getCusCode()+":"+
 											    customerBean.getCusStatus()+":"+

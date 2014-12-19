@@ -1,5 +1,5 @@
 <%@page import="th.go.motorcycles.app.enjoy.form.CustomerForm"%>
-<%@ include file="/pages/include/enjoyLoginInclude.jsp"%>
+<%@ include file="/pages/include/enjoyInclude.jsp"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
@@ -105,6 +105,7 @@
 								rowNumber = i+1;
 								lo_tabResultDtl.rows[i+1].cells[0].innerHTML=rowNumber;
 				    		}
+				    		
 						}else{
 							alert(data);
 						}
