@@ -103,14 +103,16 @@ function lp_set_title( av_title , av_screen){
                            <li class='has-sub'><a href='#'><span>รายละเอียดการขาย</span></a>
                               <ul onclick="lp_ul_click();">
 								<li onclick="lp_li_click(event , '0001');">
-									<a href="javascript:lp_home('sale_detail');">บันทึกการขายรถ</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.EntrySaleDetailServlet" target="frame_main">บันทึกการขายรถ</a>
 								</li>
 								<li onclick="lp_li_click(event , '0002');">
 									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.SummarySaleDetailServlet" target="frame_main">สรุปการขายรถ</a>
 								</li>
+								<!-- 
 								<li onclick="lp_li_click(event , '0003');">
 									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.AddressDemoServlet" target="frame_main">ตัวอย่างตำบล อำเภอ จังหวัด</a>
 								</li>
+								 -->
 							  </ul>
                            </li>
                            <li class='has-sub'><a href='#'><span>ข้อมูลลูกค้า</span></a>
@@ -127,9 +129,6 @@ function lp_set_title( av_title , av_screen){
                               <ul onclick="lp_ul_click();">
 								<li onclick="lp_li_click(event , '0005');">
 									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandSearchServlet" target="frame_main">ข้อมูลยี่ห้อรถ</a>
-								</li>
-								<li onclick="lp_li_click(event , '0006');">
-									<a href="javascript:lp_home('model');">ข้อมูลรุ่น</a>
 								</li>
 								<li onclick="lp_li_click(event , '0007');">
 									<a href="javascript:lp_home('motorcycle_detail');">ข้อมูลรถ</a>

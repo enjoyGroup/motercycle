@@ -11,20 +11,40 @@ public class EntrySaleDetailForm {
 	private String								recordAddDate;
 	private String 								priceAmount;
 	private String 								vatAmount;
+	private String 								totalAmount;
 	private String 								remark;
 	private String 								commAmount;
 	private String 								flagAddSales;
+	private String 								printType;
 	
 	public EntrySaleDetailForm(){
 		this.customerBean 				= new CustomerBean();
 		this.productBean 				= new ProductBean();
 		this.invoiceId					= "";
 		this.recordAddDate				= "";
-		this.priceAmount				= "";
-		this.vatAmount					= "";
+		this.priceAmount				= "0.00";
+		this.vatAmount					= "0.00";
+		this.totalAmount				= "0.00";
 		this.remark						= "";
-		this.commAmount					= "";
-		this.flagAddSales				= "";
+		this.commAmount					= "0.00";
+		this.flagAddSales				= "N";
+		this.printType					= "1";
+	}
+
+	public String getPrintType() {
+		return printType;
+	}
+
+	public void setPrintType(String printType) {
+		this.printType = printType;
+	}
+
+	public String getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(String totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 	public CustomerBean getCustomerBean() {

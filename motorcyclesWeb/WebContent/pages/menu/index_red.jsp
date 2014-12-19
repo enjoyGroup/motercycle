@@ -36,7 +36,7 @@
 	<frame name="frame_head" src="/motorcyclesWeb/pages/menu/head_red.jsp" />
 	<frameset cols="222px,*" rows="100%">
 		<frame name="frame_menu"   style="border:0px solid gray; " height="100%" src="/motorcyclesWeb/pages/menu/menu_red.jsp" />
-		<frame name="frame_main"  style="border:0px solid gray;" src="/motorcyclesWeb/pages/menu/welcome.jsp" />
+		<frame name="frame_main"  style="border:0px solid gray;" src="/motorcyclesWeb/pages/menu/welcome_blank.jsp" />
 	</frameset>
 </frameset>
 </html>
