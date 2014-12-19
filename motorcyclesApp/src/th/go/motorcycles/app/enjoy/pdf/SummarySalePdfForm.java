@@ -78,6 +78,7 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 		String		summaryAmount   = "";
 		try {
 			//table.addCell(setCellWB("วันที่ 24 พฤศจิกายน 2557 ถึง วันที่ 26 พฤศจิกายน 2557", getFont8Bold(), 8, Element.ALIGN_CENTER, 0));
+			table.addCell(setCellWB("", getFont8Bold(), 8, Element.ALIGN_CENTER, 0));
 			
 			table.addCell(setCell("ลำดับ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
 			table.addCell(setCell("เลขใบกำกับภาษี", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
@@ -105,10 +106,11 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 				table.addCell(setCell((String) jsonObjectDetail.get("remark"), 			getFont8(), 1, 1, Element.ALIGN_LEFT));
 			}
 						
+			table.addCell(setCellWB("", getFont8Bold(), 8, Element.ALIGN_CENTER, 0));
 			table.addCell(setCellWB("", getFont8(), 5, Element.ALIGN_CENTER, 0));
 			table.addCell(setCellWB("รวม", getFont8Bold(), 1, Element.ALIGN_RIGHT, 0));
 			table.addCell(setCellWB(summaryAmount, getFont8(), 1, Element.ALIGN_RIGHT, 0));
-			table.addCell(setCellWB("บาท", getFont8(), 1, Element.ALIGN_RIGHT, 0));
+			table.addCell(setCellWB("บาท", getFont8(), 1, Element.ALIGN_LEFT, 0));
 			
 			table.setWidthPercentage(100);
 		} catch (Exception e) {

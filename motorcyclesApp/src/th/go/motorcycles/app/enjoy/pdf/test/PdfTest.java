@@ -7,6 +7,7 @@ import java.io.FileReader;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import th.go.motorcycles.app.enjoy.bean.UserDetailsBean;
 import th.go.motorcycles.app.enjoy.dao.InvoicedetailsDao;
 import th.go.motorcycles.app.enjoy.pdf.utils.PdfFormService;
 
@@ -133,15 +134,12 @@ public class PdfTest {
 //		Object 				obj 						= null;
 		JSONObject 			jsonObject 					= null;
 		InvoicedetailsDao   invoicedetailsDao			= null;
+		UserDetailsBean 	userBean					= null;
 		try{
 			System.out.println("formName :: " + formName);
 			
 			formClass					= "th.go.motorcycles.app.enjoy.pdf."+formName;
-			if (formName.equals("SummarySalePdfForm")) {
-				document 				= new Document(PageSize.A4);
-			} else {
-				document 				= new Document(PageSize.A5);
-			}	
+			document 				= new Document(PageSize.A4.rotate());
 			//parser 						= new JSONParser();
 			f 							= new File(pdfPath);
 			fos            				= new FileOutputStream(f.getAbsolutePath());			
@@ -157,7 +155,10 @@ public class PdfTest {
 			
 			// สร้าง json Object มาจาก DB
 			invoicedetailsDao			= new InvoicedetailsDao();
-			jsonObject 					= invoicedetailsDao.SummarySalePDF("5700000001", "", "" , "","","",null);
+			userBean					= new UserDetailsBean();
+			userBean.setCompanyName("ห้างหุ้นส่วนจำกัด รุ่งโรจน์สหยานยนต์");
+			userBean.setCompanyAddress("16/108-109 ถนนสรงประภา แขวงสีกัน เขตดอนเมือง กรุงเทพ 10210");
+			jsonObject 					= invoicedetailsDao.SummarySalePDF("", "", "" , "","","",userBean);
 					
 			pdfForm.setJSONObject(writer, jsonObject);
 			pdfForm.createForm(document);
