@@ -106,6 +106,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		String      invoiceId		= (String) jsonObjectMain.get("invoiceId");
 		String      invoiceDate		= (String) jsonObjectMain.get("invoiceDate");
 		String      cusNameDisp		= (String) jsonObjectMain.get("cusNameDisp");
+		String      cusAddress		= (String) jsonObjectMain.get("cusAddress");
 		
 		table.addCell(setCellWB("", getFont12Bold(), 3, Element.ALIGN_LEFT, 0));
 		
@@ -114,7 +115,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		subTabL.addCell(setCellWB(cusNameDisp , getFont8(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("", getFont6(), 2, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("ที่อยู่ ", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
-		subTabL.addCell(setCellWB("9/250-251 หมู่. 8 แขวง อนุเสาวรีย์ เขต บางเขน จังหวัด กรุงเทพหมานคร 10220", getFont8(), 1, Element.ALIGN_LEFT, 0));
+		subTabL.addCell(setCellWB(cusAddress, getFont8(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("", getFont6(), 2, Element.ALIGN_LEFT, 0));
 		table.addCell(setCell(subTabL, 1));
 		

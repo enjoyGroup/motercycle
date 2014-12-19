@@ -1,10 +1,13 @@
 package th.go.motorcycles.app.enjoy.dao;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import th.go.motorcycles.app.enjoy.bean.CustomerBean;
 import th.go.motorcycles.app.enjoy.bean.UserDetailsBean;
 import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
@@ -120,10 +123,11 @@ public class InvoicedetailsDao {
 		ResultSet 			rs 				= null;
 		JSONObject 			jsonObjectDetail= null;
 		double				totleAmount     = 0;
-		
+		String				cusCode		    = "";
 		try{
 			sql = " select t.* from (select  i.invoiceId invoiceId"
 					+ " , CONCAT(c.cusName, ' ', c.cusSurname) cusName"
+					+ " , CONCAT(c.houseNumber, ' หมู่ที่ ' , c.mooNumber, ' ถนน ' , c.streetName, ' ตำบล ' , i.EngineNoDisp, ' อำเภอ ' , i.EngineNoDisp, ' จังหวัด ' , i.EngineNoDisp ) cusAddress"
 					+ " , b.brandName brandName"
 					+ " , m.model model"
 					+ " , i.chassisDisp chassisDisp"
@@ -134,6 +138,7 @@ public class InvoicedetailsDao {
 					+ " , i.commAmount commAmount"
 					+ " , i.invoiceDate invoiceDate"
 					+ " , i.remark remark"
+					+ " , i.cusCode cusCode"
 					+ " from  invoicedetails i, customer c, motorcyclesdetails m, branddetails b"
 					+ " where c.cusCode         = i.cusCode"
 					+ "  and m.motorcyclesCode  = i.motorcyclesCode"
@@ -147,6 +152,7 @@ public class InvoicedetailsDao {
 		    	jsonObjectDetail 	= new JSONObject();
 		    	jsonObjectDetail.put("invoiceId",       rs.getString("invoiceId"));
 		    	jsonObjectDetail.put("invoiceDate",     EnjoyUtils.displayDateThai(rs.getString("invoiceDate")));
+		    	cusCode 			= rs.getString("cusCode");
 		    	jsonObjectDetail.put("cusNameDisp",     rs.getString("cusName"));
 	    		jsonObjectDetail.put("brandName", 		rs.getString("brandName"));
 		    	jsonObjectDetail.put("model",           rs.getString("model"));
@@ -159,8 +165,11 @@ public class InvoicedetailsDao {
 		    	jsonObjectDetail.put("totalAmount",     EnjoyUtils.convertFloatToDisplay(String.valueOf(totleAmount),2));
 		    	jsonObjectDetail.put("totalAmountThai", EnjoyUtils.displayAmountThai(String.valueOf(totleAmount)));
 		    	jsonObjectDetail.put("CompanyName",     userBean.getCompanyName());
-		    	jsonObjectDetail.put("CompanyAddress",  userBean.getCompanyAddress());		    
+		    	jsonObjectDetail.put("CompanyAddress",  userBean.getCompanyAddress());	
 		    }
+		    if (! cusCode.equals("")) { 
+		    	jsonObjectDetail.put("cusAddress",  findCustomerById(cusCode));
+		    }	
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
@@ -168,5 +177,38 @@ public class InvoicedetailsDao {
 		}
 		
 		return jsonObjectDetail;
+	}
+
+	private String findCustomerById(String cusCode){
+		System.out.println("[InvoicedetailsDao][findCustomerById][Begin] :" + cusCode);
+		
+		String 				sql			 		= null;
+		ResultSet 			rs 					= null; 
+		StringBuilder       address             = null;           
+		
+		try{ 
+			sql = "SELECT * FROM customer a  LEFT JOIN  subdistrict s ON a.subdistrictCode=s.subdistrictId LEFT JOIN district d "
+				+ "ON a.districtCode=d.districtId LEFT JOIN province p ON a.provinceCode=p.provinceId where  cusStatus = 'A'"			
+				+ " and cusCode = '" + cusCode + "'";		   
+			System.out.println("[CustomerDao][findCustomer] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    while(rs.next()){
+				address  =  new StringBuilder();
+				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber"))); 
+				address.append(" หมู่ที่  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
+				address.append(" ถนน   ").append(EnjoyUtils.nullToStr(rs.getString("streetName"))); 
+				address.append(" ตำบล  ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
+				address.append(" อำเภอ  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
+				address.append(" จังหวัด  ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
+		    	
+		    } 
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[InvoicedetailsDao][findCustomerById][End]");
+		}		
+		return address.toString();
 	}
 }

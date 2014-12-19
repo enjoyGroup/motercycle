@@ -70,13 +70,8 @@
 		
 		$('#btnPrint').click(function(){
 		    try{
-		    	if ((document.getElementById("invoiceId").value		  == "") &&
-	    			(document.getElementById("invoiceDateFrom").value == "") &&
-	    			(document.getElementById("invoiceDateTo").value   == "") &&
-	    			(document.getElementById("brandName").value 	  == "") &&
-	    			(document.getElementById("model").value 		  == "") &&
-	    			(document.getElementById("cusName").value 		  == ""))	{
-		    		alert("กรุณาระบุเงื่อนไขอย่างน้อย 1 อย่างก่อนทำการพิมพ์รายงาน");
+		    	if (document.getElementById("tableResult").rows.length <= 1)	{
+		    		alert("กรุณาค้นหาข้อมูลก่อนทำการพิมพ์รายงาน");
 		    	} else {
 					document.getElementById("pageAction").value 	= "pdf";
 					document.getElementById("frm").target 			= "_blank";
@@ -162,7 +157,7 @@
 											</div>
 											<header class="panel-heading font-bold">ข้อมูลสรุปการขาย</header>
 											<div class="panel-body">
-												<table border="1" class="table span12" style="width:95%;POSITION: relative;  TOP: expression(offsetParent.scrollTop);" >
+												<table id="tableResult" border="1" class="table span12" style="width:95%;POSITION: relative;  TOP: expression(offsetParent.scrollTop);" >
 													<tr bgcolor="#473636"  class="text_white">
 														<td width="50px">ลำดับ</td>
 														<td width="100px">เลขกำกับภาษี</td>

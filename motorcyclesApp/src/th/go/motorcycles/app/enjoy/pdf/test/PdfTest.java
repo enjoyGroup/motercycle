@@ -91,7 +91,7 @@ public class PdfTest {
 			System.out.println("formName :: " + formName);
 			
 			formClass					= "th.go.motorcycles.app.enjoy.pdf."+formName;
-			document 					= new Document(PageSize.A4);
+			document 					= new Document(PageSize.A5.rotate());
 			//parser 						= new JSONParser();
 			f 							= new File(pdfPath);
 			fos            				= new FileOutputStream(f.getAbsolutePath());			
