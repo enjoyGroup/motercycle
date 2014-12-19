@@ -3,6 +3,7 @@ package th.go.motorcycles.app.enjoy.utils;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Locale;
 
 public class EnjoyUtils {
@@ -142,5 +143,124 @@ public class EnjoyUtils {
     	returnValue             = String.valueOf(codeInt); 
         return returnValue;
     }
+    
+    public static String displayAmountThai(String amt)
+    {
+        String CurText,Thai_CurText = "";
+        char ch;
+        String st_ch;
+        int idx,Digit;
+
+        String[] GetNum   = { "หนึ่ง","สอง","สาม","สี่","ห้า","หก","เจ็ด","แปด","เก้า","ยี่","เอ็ด" };
+        String[] GetDigit = { "","สิบ","ร้อย","พัน","หมื่น","แสน","ล้าน"};
+
+        CurText = amt;
+        Digit = 0;
+        for ( idx = CurText.length() ; idx >= 1 ;idx-- )
+        {
+           if ( Digit == 6 ){
+              Digit = 0;
+              Thai_CurText = "ล้าน" + Thai_CurText;
+           }
+
+           ch      = CurText.substring(idx-1,idx).toCharArray()[0];
+           st_ch   = CurText.substring(idx-1,idx);
+           switch (ch){
+              case '.' :  Digit = 0;
+                          Thai_CurText = "บาท" + Thai_CurText;
+                          break;
+              case ',' :  break;
+
+              case '0' :  Digit = Digit + 1;
+                          break;
+              case '1' :  Digit = Digit + 1;
+                      switch (Digit){
+                          case 1 : if ( st_ch.equals(CurText.substring(0,idx))) {
+                                       Thai_CurText = GetNum[0] + Thai_CurText;
+                                   }else if (! CurText.substring(idx-1,idx).equals("0") ){
+                                	   if(CurText.substring(idx-2,idx-1).equals("0")){
+                                		   Thai_CurText = GetNum[0] + Thai_CurText;
+                                	   }else{
+                                		   Thai_CurText = GetNum[10] + Thai_CurText;
+                                	   }
+                                   }else {
+                                       Thai_CurText = GetNum[0] + Thai_CurText;
+                                   }
+                                   break;
+                          case 2 : Thai_CurText = GetDigit[Digit-1] + Thai_CurText;
+                                   break;
+                          case 3 : Thai_CurText = GetNum[0] + GetDigit[Digit-1] + Thai_CurText;
+                                   break;
+                          case 4 : Thai_CurText = GetNum[0] + GetDigit[Digit-1] + Thai_CurText;
+                                   break;
+                          case 5 : Thai_CurText = GetNum[0] + GetDigit[Digit-1] + Thai_CurText;
+                                   break;
+                          case 6 : Thai_CurText = GetNum[0] + GetDigit[Digit-1] + Thai_CurText;
+                                   break;
+                          }
+                          break;
+              case '2' :  Digit = Digit + 1;
+                          if ( Digit == 2 ) {
+                              Thai_CurText = GetNum[9] + GetDigit[Digit-1] + Thai_CurText;
+                          }else{
+                              Thai_CurText = GetNum[1] + GetDigit[Digit-1] + Thai_CurText;
+                          }
+                          break;
+              default  :  Digit = Digit + 1;
+                          Thai_CurText = GetNum[Integer.parseInt(st_ch)-1] + GetDigit[Digit-1] + Thai_CurText;
+                          break;
+
+           }
+        }
+
+        int pos_dot = CurText.indexOf(".");
+        if (Integer.parseInt(CurText.substring(pos_dot+1,CurText.length())) == 0 ){
+        	if(amt.equals("0.00")){
+        		Thai_CurText = "ศูนย์" + Thai_CurText + "ถ้วน";
+        	}else{
+        		Thai_CurText = Thai_CurText + "ถ้วน";
+        	}
+        }else{
+        	Thai_CurText = Thai_CurText + "สตางค์";
+        }
+        return Thai_CurText;
+    }
+    
+	public static String displayDateThai(String dateThai) {
+        Hashtable tblMonth = new Hashtable();
+        String    day      = "";
+        int       month    = 0;
+        int       year     = 0;
+        String	  dateDisplay = "";
+        try {
+        	if (!dateThai.equals(""))
+			{	
+	            tblMonth.put("1", "มกราคม");
+	            tblMonth.put("2", "กุมภาพันธ์");
+	            tblMonth.put("3", "มีนาคม");
+	            tblMonth.put("4", "เมษายน");
+	            tblMonth.put("5", "พฤษภาคม");
+	            tblMonth.put("6", "มิถุนายน");
+	            tblMonth.put("7", "กรกฏาคม");
+	            tblMonth.put("8", "สิงหาคม");
+	            tblMonth.put("9", "กันยายน");
+	            tblMonth.put("10","ตุลาคม");
+	            tblMonth.put("11","พฤศจิกายน");
+	            tblMonth.put("12","ธันวาคม");
+	
+	            day    = dateThai.substring(6, 8);
+				month  = Integer.parseInt(dateThai.substring(4, 6));
+		        year   = Integer.parseInt(dateThai.substring(0, 4));
+		        dateDisplay = day + " " + tblMonth.get(String.valueOf(month)).toString() +" พ.ศ. " + year;
+			} else {
+				dateDisplay = "";			
+			}
+        } catch (Exception e) {
+        	e.printStackTrace();
+        } finally {
+            tblMonth = null;
+        }
+        return dateDisplay;
+	}
 }
 

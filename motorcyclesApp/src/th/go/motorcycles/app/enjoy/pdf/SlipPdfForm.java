@@ -68,20 +68,23 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		
 		float[] 	subW	 		= {20f, 40f};
 		PdfPTable 	subTab 			= new PdfPTable(subW);
+		JSONObject 	jsonObjectMain  = this.formDataObj;
+		String      companyName		= (String) jsonObjectMain.get("CompanyName");
+		String      companyAddress	= (String) jsonObjectMain.get("CompanyAddress");
 		
-		table.addCell(setCellWB("∫√‘…—∑§≈‘π‘§¬“π¬πµÏ ®”°—¥", getFont12Bold(), 2, Element.ALIGN_LEFT, 0));
+		table.addCell(setCellWB(companyName, getFont12Bold(), 2, Element.ALIGN_LEFT, 0));
 		
-		table.addCell(setCellWB("16/29-32 À¡ŸË1 ∂ππ  “¬‰À¡ ·¢«ß “¬‰À¡ ·¢µ “¬‰À¡ °√ÿß‡∑æ¡À“π§√ 10220", getFont8(), 1, Element.ALIGN_LEFT, 0));
-		table.addCell(setCellWB("„∫°”°—∫¿“…’/„∫‡ √Á®√—∫‡ß‘π", getFont12Bold(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB(companyAddress, getFont8(), 1, Element.ALIGN_LEFT, 0));
+		table.addCell(setCellWB("‡πÉ‡∏ö‡∏Å‡∏≥‡∏Å‡∏±‡∏ö‡∏†‡∏≤‡∏©‡∏µ/‡πÉ‡∏ö‡πÄ‡∏™‡∏£‡πá‡∏à‡∏£‡∏±‡∏ö‡πÄ‡∏á‡∏¥‡∏ô", getFont12Bold(), 1, Element.ALIGN_CENTER, 0));
 		
-		subTab.addCell(setCellWB("‚∑√»—æ∑Ï :", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
+		subTab.addCell(setCellWB("‡πÇ‡∏ó‡∏£‡∏®‡∏±‡∏û‡∏ó‡πå :", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
 		subTab.addCell(setCellWB("02-992-8233", getFont8(), 1, Element.ALIGN_LEFT, 0));
 		table.addCell(setCellWB(subTab, 1, Element.ALIGN_LEFT, 0, false, false));
 		
-		table.addCell(setCellWB("‡Õ° “√ÕÕ°‡ªÁπ™ÿ¥", getFont8(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB("‡πÄ‡∏≠‡∏Å‡∏™‡∏≤‡∏£‡∏≠‡∏≠‡∏Å‡πÄ‡∏õ‡πá‡∏ô‡∏ä‡∏∏‡∏î", getFont8(), 1, Element.ALIGN_CENTER, 0));
 		
-		subTab.addCell(setCellWB("‡≈¢ª√–®”µ—«ºŸÈ‡ ’¬¿“…’Õ“°√:", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
-		subTab.addCell(setCellWB("0105549002794", getFont8(), 1, Element.ALIGN_LEFT, 0));
+		subTab.addCell(setCellWB("‡πÄ‡∏•‡∏Ç‡∏õ‡∏£‡∏∞‡∏à‡∏≥‡∏ï‡∏±‡∏ß‡∏ú‡∏π‡πâ‡πÄ‡∏™‡∏µ‡∏¢‡∏†‡∏≤‡∏©‡∏µ‡∏≠‡∏≤‡∏Å‡∏£:", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
+		subTab.addCell(setCellWB("xxxxxxxxxxxx", getFont8(), 1, Element.ALIGN_LEFT, 0));
 		table.addCell(setCellWB(subTab, 1, Element.ALIGN_LEFT, 0, false, false));
 		
 		table.setWidthPercentage(100);
@@ -99,24 +102,28 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		
 		float[] 	subWR	 		= {10f, 20f};
 		PdfPTable 	subTabR 		= new PdfPTable(subWR);
+		JSONObject 	jsonObjectMain  = this.formDataObj;
+		String      invoiceId		= (String) jsonObjectMain.get("invoiceId");
+		String      invoiceDate		= (String) jsonObjectMain.get("invoiceDate");
+		String      cusNameDisp		= (String) jsonObjectMain.get("cusNameDisp");
 		
 		table.addCell(setCellWB("", getFont12Bold(), 3, Element.ALIGN_LEFT, 0));
 		
 		subTabL.addCell(setCellWB("", getFont6(), 2, Element.ALIGN_LEFT, 0));
-		subTabL.addCell(setCellWB("™◊ËÕ ", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
-		subTabL.addCell(setCellWB("ÀÈ“ßÀÿÈπ Ë«π®”°—¥ √ÿËß‚√®πÏ¬“π¬πµÏ ( “¢“ ”π—°ß“π„À≠Ë) 0103535010232", getFont8(), 1, Element.ALIGN_LEFT, 0));
+		subTabL.addCell(setCellWB("‡∏ä‡∏∑‡πà‡∏≠ ", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
+		subTabL.addCell(setCellWB(cusNameDisp , getFont8(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("", getFont6(), 2, Element.ALIGN_LEFT, 0));
-		subTabL.addCell(setCellWB("∑’ËÕ¬ŸË ", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
-		subTabL.addCell(setCellWB("9/250-251 À¡ŸË. 8 ·¢«ß Õπÿ‡ “«√’¬Ï ‡¢µ ∫“ß‡¢π ®—ßÀ«—¥ °√ÿß‡∑æÀ¡“π§√ 10220", getFont8(), 1, Element.ALIGN_LEFT, 0));
+		subTabL.addCell(setCellWB("‡∏ó‡∏µ‡πà‡∏≠‡∏¢‡∏π‡πà ", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
+		subTabL.addCell(setCellWB("9/250-251 ‡∏´‡∏°‡∏π‡πà. 8 ‡πÅ‡∏Ç‡∏ß‡∏á ‡∏≠‡∏ô‡∏∏‡πÄ‡∏™‡∏≤‡∏ß‡∏£‡∏µ‡∏¢‡πå ‡πÄ‡∏Ç‡∏ï ‡∏ö‡∏≤‡∏á‡πÄ‡∏Ç‡∏ô ‡∏à‡∏±‡∏á‡∏´‡∏ß‡∏±‡∏î ‡∏Å‡∏£‡∏∏‡∏á‡πÄ‡∏ó‡∏û‡∏´‡∏°‡∏≤‡∏ô‡∏Ñ‡∏£ 10220", getFont8(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("", getFont6(), 2, Element.ALIGN_LEFT, 0));
 		table.addCell(setCell(subTabL, 1));
 		
 		table.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
 		
-		subTabR.addCell(setCell("\n ‡≈¢∑’Ë \n", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-		subTabR.addCell(setCell("\n 57MC/2345 \n", getFont8(), 1, 1, Element.ALIGN_RIGHT));
-		subTabR.addCell(setCell("\n «—π∑’Ë \n", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-		subTabR.addCell(setCell("\n 1 °—π¬“¬π 2557 \n", getFont8(), 1, 1, Element.ALIGN_RIGHT));
+		subTabR.addCell(setCell("\n ‡πÄ‡∏•‡∏Ç‡∏ó‡∏µ‡πà \n", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+		subTabR.addCell(setCell("\n " + invoiceId + " \n", getFont8(), 1, 1, Element.ALIGN_RIGHT));
+		subTabR.addCell(setCell("\n ‡∏ß‡∏±‡∏ô‡∏ó‡∏µ‡πà \n", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+		subTabR.addCell(setCell("\n " + invoiceDate + " \n", getFont8(), 1, 1, Element.ALIGN_RIGHT));
 		table.addCell(setCell(subTabR, 1));
 		
 		table.setWidthPercentage(100);
@@ -130,26 +137,19 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		PdfPTable 	table 			= new PdfPTable(widths);
 		JSONObject 	jsonObjectDetail= null;
 		
-		table.addCell(setCell("¬’ËÀÈÕ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("√ÿËπ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("À¡“¬‡≈¢‡§√◊ËÕß", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("À¡“¬‡≈¢µ—«∂—ß", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("´’´’.", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-		
-//		table.addCell(setCell("HONDA", getFont8(), 1, 1, Element.ALIGN_CENTER));
-//		table.addCell(setCell("ACG110CSFF TH", getFont8(), 1, 1, Element.ALIGN_CENTER));
-//		table.addCell(setCell("JF382E-0113623", getFont8(), 1, 1, Element.ALIGN_CENTER));
-//		table.addCell(setCell("MLHJF3823F5113623", getFont8(), 1, 1, Element.ALIGN_CENTER));
-//		table.addCell(setCell("‡À≈◊Õß-¥”", getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("‡∏¢‡∏µ‡πà‡∏´‡πâ‡∏≠", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("‡∏£‡∏∏‡πà‡∏ô", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("‡∏´‡∏°‡∏≤‡∏¢‡πÄ‡∏•‡∏Ç‡πÄ‡∏Ñ‡∏£‡∏∑‡πà‡∏≠‡∏á", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("‡∏´‡∏°‡∏≤‡∏¢‡πÄ‡∏•‡∏Ç‡∏ï‡∏±‡∏ß‡∏ñ‡∏±‡∏á", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("‡∏ã‡∏µ‡∏ã‡∏µ.", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
 
-		// ¥÷ß¢ÈÕ¡Ÿ≈¢÷Èπ¡“· ¥ß∫πÀπÈ“®Õ
+		// ‡∏î‡∏∂‡∏á‡∏Ç‡πâ‡∏≠‡∏°‡∏π‡∏•‡∏Ç‡∏∂‡πâ‡∏ô‡∏°‡∏≤‡πÅ‡∏™‡∏î‡∏á‡∏ö‡∏ô‡∏´‡∏ô‡πâ‡∏≤‡∏à‡∏≠
 		jsonObjectDetail = this.formDataObj;
-		
 		table.addCell(setCell((String) jsonObjectDetail.get("brandName"),   getFont8(), 1, 1, Element.ALIGN_CENTER));
 		table.addCell(setCell((String) jsonObjectDetail.get("model"), 	    getFont8(), 1, 1, Element.ALIGN_CENTER));
 		table.addCell(setCell((String) jsonObjectDetail.get("chassisDisp"), getFont8(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell((String) jsonObjectDetail.get("EngineNoDisp"),getFont8(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell((String) jsonObjectDetail.get("Size"), 		getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("engineNoDisp"),getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("size"), 		getFont8(), 1, 1, Element.ALIGN_CENTER));
 		
 		table.setWidthPercentage(100);
 	
@@ -166,7 +166,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		float[] 	subWR	 		= {20f, 30f};
 		PdfPTable 	subTabR 		= new PdfPTable(subWR);
 		
-		// ¥÷ß¢ÈÕ¡Ÿ≈¢÷Èπ¡“· ¥ß∫πÀπÈ“®Õ
+		// ‡∏î‡∏∂‡∏á‡∏Ç‡πâ‡∏≠‡∏°‡∏π‡∏•‡∏Ç‡∏∂‡πâ‡∏ô‡∏°‡∏≤‡πÅ‡∏™‡∏î‡∏á‡∏ö‡∏ô‡∏´‡∏ô‡πâ‡∏≤‡∏à‡∏≠
 		JSONObject 	jsonObjectDetail= null;
 		jsonObjectDetail = this.formDataObj;
 
@@ -183,16 +183,16 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
-		subTabL.addCell(setCell("ÀÈ“À¡◊ËπÀπ÷Ëßæ—πÀÈ“√ÈÕ¬∫“∑∂È«π", getFont10(), 1, 1, Element.ALIGN_CENTER));
+		subTabL.addCell(setCell((String) jsonObjectDetail.get("totalAmountThai"), getFont10(), 1, 1, Element.ALIGN_CENTER));
 		table.addCell(setCellWB(subTabL, 1, Element.ALIGN_LEFT, 0, false, false));
 		
 		table.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
 		
-		subTabR.addCell(setCell("\n ¡Ÿ≈§Ë“ ‘π§È“ \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
+		subTabR.addCell(setCell("\n ‡∏°‡∏π‡∏•‡∏Ñ‡πà‡∏≤‡∏™‡∏¥‡∏ô‡∏Ñ‡πâ‡∏≤ \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("priceAmount") + " \n", getFont8(), 1, 1, Element.ALIGN_RIGHT));
-		subTabR.addCell(setCell("\n ¿“…’¡Ÿ≈§Ë“‡æ‘Ë¡ 7% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
+		subTabR.addCell(setCell("\n ‡∏†‡∏≤‡∏©‡∏µ‡∏°‡∏π‡∏•‡∏Ñ‡πà‡∏≤‡πÄ‡∏û‡∏¥‡πà‡∏° 7% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("vatAmount")   + " \n", getFont8(), 1, 1, Element.ALIGN_RIGHT));
-		subTabR.addCell(setCell("\n ®”π«π‡ß‘π√«¡∑—Èß ‘Èπ 7% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
+		subTabR.addCell(setCell("\n ‡∏à‡∏≥‡∏ô‡∏ß‡∏ô‡πÄ‡∏á‡∏¥‡∏ô‡∏£‡∏ß‡∏°‡∏ó‡∏±‡πâ‡∏á‡∏™‡∏¥‡πâ‡∏ô 7% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("totalAmount") + " \n", getFont8(), 1, 1, Element.ALIGN_RIGHT));
 		table.addCell(setCell(subTabR, 1));
 		
@@ -205,7 +205,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		
 		PdfPTable 	table 			= new PdfPTable(1);
 		
-		table.addCell(setCellWB("ºŸÈ√—∫‡ß‘π......................................................................", getFont8(), 1, Element.ALIGN_RIGHT, 0));
+		table.addCell(setCellWB("‡∏ú‡∏π‡πâ‡∏£‡∏±‡∏ö‡πÄ‡∏á‡∏¥‡∏ô......................................................................", getFont8(), 1, Element.ALIGN_RIGHT, 0));
 		
 		table.setWidthPercentage(100);
 	
