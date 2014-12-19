@@ -30,6 +30,7 @@ public class InvoicedetailsDao {
 		JSONArray 			listJSONArray 	= null;
 		String 				where			= "";
 		double				totleAmount     = 0;
+		double				summaryAmount   = 0;
 		
 		try{
 //			sql 		= " Select t1.invoiceId, CONCAT(t2.cusName, ' ', t2.cusName) as cusNameDisp, ";
@@ -94,13 +95,15 @@ public class InvoicedetailsDao {
 		    	}
 		    	jsonObjectDetail.put("priceAmount",     EnjoyUtils.convertFloatToDisplay(rs.getString("priceAmount"),2));
 		    	jsonObjectDetail.put("vatAmount",       EnjoyUtils.convertFloatToDisplay(rs.getString("vatAmount"),2));
-		    	totleAmount = Double.parseDouble(rs.getString("priceAmount")) + Double.parseDouble(rs.getString("vatAmount"));
+		    	totleAmount   = Double.parseDouble(rs.getString("priceAmount")) + Double.parseDouble(rs.getString("vatAmount"));
+		    	summaryAmount = summaryAmount + totleAmount;
 		    	jsonObjectDetail.put("totalAmount",     EnjoyUtils.convertFloatToDisplay(String.valueOf(totleAmount),2));
 		    	listJSONArray.add(jsonObjectDetail);
 		    }
 		    jsonObjectMain.put("invoicelist", listJSONArray);
 		    jsonObjectMain.put("CompanyName", userBean.getCompanyName());
 		    jsonObjectMain.put("CompanyAddress", userBean.getCompanyAddress());		    
+		    jsonObjectMain.put("SummaryAmount",  EnjoyUtils.convertFloatToDisplay(String.valueOf(summaryAmount),2));		    
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{

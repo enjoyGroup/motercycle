@@ -75,9 +75,9 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 		JSONObject 	jsonObjectMain  = null;
 		JSONObject 	jsonObjectDetail= null;
 		JSONArray 	listJSONArray 	= null;
-		
+		String		summaryAmount   = "";
 		try {
-			table.addCell(setCellWB("วันที่ 24 พฤศจิกายน 2557 ถึง วันที่ 26 พฤศจิกายน 2557", getFont8Bold(), 8, Element.ALIGN_CENTER, 0));
+			//table.addCell(setCellWB("วันที่ 24 พฤศจิกายน 2557 ถึง วันที่ 26 พฤศจิกายน 2557", getFont8Bold(), 8, Element.ALIGN_CENTER, 0));
 			
 			table.addCell(setCell("ลำดับ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
 			table.addCell(setCell("เลขใบกำกับภาษี", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
@@ -91,7 +91,7 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 			// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
 			jsonObjectMain = this.formDataObj;
 			listJSONArray  = (JSONArray) jsonObjectMain.get("invoicelist");
-			
+			summaryAmount  = (String)    jsonObjectMain.get("SummaryAmount");
 			for(int i=0;i<listJSONArray.size();i++){
 				jsonObjectDetail = (JSONObject) listJSONArray.get(i);
 
@@ -99,16 +99,16 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 				table.addCell(setCell((String) jsonObjectDetail.get("invoiceId"), 		getFont8(), 1, 1, Element.ALIGN_CENTER));
 				table.addCell(setCell((String) jsonObjectDetail.get("cusNameDisp"), 	getFont8(), 1, 1, Element.ALIGN_LEFT));
 				table.addCell(setCell((String) jsonObjectDetail.get("motorcyclesDisp"), getFont8(), 1, 1, Element.ALIGN_LEFT));
-				table.addCell(setCell((String) jsonObjectDetail.get("priceAmount"), 	getFont8(), 1, 1, Element.ALIGN_LEFT));
+				table.addCell(setCell((String) jsonObjectDetail.get("priceAmount"), 	getFont8(), 1, 1, Element.ALIGN_RIGHT));
 				table.addCell(setCell((String) jsonObjectDetail.get("vatAmount"), 		getFont8(), 1, 1, Element.ALIGN_RIGHT));
 				table.addCell(setCell((String) jsonObjectDetail.get("totalAmount"), 	getFont8(), 1, 1, Element.ALIGN_RIGHT));
-				table.addCell(setCell((String) jsonObjectDetail.get("remark"), 			getFont8(), 1, 1, Element.ALIGN_RIGHT));
+				table.addCell(setCell((String) jsonObjectDetail.get("remark"), 			getFont8(), 1, 1, Element.ALIGN_LEFT));
 			}
 						
 			table.addCell(setCellWB("", getFont8(), 5, Element.ALIGN_CENTER, 0));
 			table.addCell(setCellWB("รวม", getFont8Bold(), 1, Element.ALIGN_RIGHT, 0));
-			table.addCell(setCellWB("117,757.01", getFont8(), 1, Element.ALIGN_RIGHT, 0));
-			table.addCell(setCellWB("", getFont8(), 1, Element.ALIGN_LEFT, 0));
+			table.addCell(setCellWB(summaryAmount, getFont8(), 1, Element.ALIGN_RIGHT, 0));
+			table.addCell(setCellWB("บาท", getFont8(), 1, Element.ALIGN_RIGHT, 0));
 			
 			table.setWidthPercentage(100);
 		} catch (Exception e) {

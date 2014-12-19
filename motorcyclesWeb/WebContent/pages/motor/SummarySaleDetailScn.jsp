@@ -23,7 +23,8 @@
 		    	lo_pageAction.value = "search";
 		    	lo_frm.submit();*/
 		    	
-		    	params 	= $('#frm').serialize() + "&pageAction=search";
+				document.getElementById("pageAction").value 	= "search";
+		    	params 	= $('#frm').serialize();// + "&pageAction=search";
 				$.ajax({
 					async:false,
 		            type: "POST",
@@ -48,7 +49,8 @@
 		    
 		    try{
 		    	
-		    	params 	= $('#frm').serialize() + "&pageAction=new";
+				document.getElementById("pageAction").value 	= "new";
+		    	params 	= $('#frm').serialize();// + "&pageAction=new";
 				$.ajax({
 					async:false,
 		            type: "POST",
@@ -67,18 +69,19 @@
 		});
 		
 		$('#btnPrint').click(function(){
-		    var lo_pageAction			= null;
-		    var lo_frm					= null;
-		    var url 					= '<%=servURL%>/EnjoyGenericSrv';
-		    var lv_pdfForm;
-		    var lv_feature;
-		    var lv_objWindow;
 		    try{
-		    	lv_pdfForm = "SummarySalePdfForm";
-				lv_feature = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes,height=800,width=600";
-				
-				lv_objWindow   = window.open(url + "?service=servlet.SummarySaleDetailServlet&pageAction=pdf" , "detailWindow" , lv_feature );
-				lv_objWindow.focus();
+		    	if ((document.getElementById("invoiceId").value		  == "") &&
+	    			(document.getElementById("invoiceDateFrom").value == "") &&
+	    			(document.getElementById("invoiceDateTo").value   == "") &&
+	    			(document.getElementById("brandName").value 	  == "") &&
+	    			(document.getElementById("model").value 		  == "") &&
+	    			(document.getElementById("cusName").value 		  == ""))	{
+		    		alert("กรุณาระบุเงื่อนไขอย่างน้อย 1 อย่างก่อนทำการพิมพ์รายงาน");
+		    	} else {
+					document.getElementById("pageAction").value 	= "pdf";
+					document.getElementById("frm").target 			= "_blank";
+				    document.getElementById("frm").submit();
+		    	}
 		    }catch(e){
 		    	alert("btnPrint :: " + e);
 		    }
@@ -101,6 +104,7 @@
 <body>
 	<form id="frm" action="<%=servURL%>/EnjoyGenericSrv">
 		<input type="hidden" id="service" name="service" value="servlet.SummarySaleDetailServlet" />
+		<input type="hidden" id="pageAction" name="pageAction" value="" />
 		
 		<section class="vbox">
 			<section>
