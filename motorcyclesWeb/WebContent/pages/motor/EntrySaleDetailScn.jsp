@@ -33,7 +33,6 @@
 		
 		$('#btnPrint').click(function(){
 		    try{
-	alert('a');
 		    	document.getElementById("pageActionPDF").value 	= "pdf";
 				document.getElementById("frm").target 			= "_blank";
 			    document.getElementById("frm").submit();

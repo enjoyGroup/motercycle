@@ -69,7 +69,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		float[] 	subW	 		= {20f, 40f};
 		PdfPTable 	subTab 			= new PdfPTable(subW);
 		JSONObject 	jsonObjectMain  = this.formDataObj;
-		String      companyName		= (String) jsonObjectMain.get("CompanyName");
+		String      companyName		= (String) jsonObjectMain.get("CompanyName") + "(สำนักงานใหญ่)";
 		String      companyAddress	= (String) jsonObjectMain.get("CompanyAddress");
 		
 		table.addCell(setCellWB(companyName, getFont12Bold(), 2, Element.ALIGN_LEFT, 0));
