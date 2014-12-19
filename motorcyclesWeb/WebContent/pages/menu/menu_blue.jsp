@@ -126,7 +126,7 @@ function lp_set_title( av_title , av_screen){
                            <li class='has-sub'><a href='#'><span>ตั้งค่าระบบ</span></a>
                               <ul onclick="lp_ul_click();">
 								<li onclick="lp_li_click(event , '0005');">
-									<a href="javascript:lp_home('brand');">ข้อมูลยี่ห้อรถ</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandSearchServlet" target="frame_main">ข้อมูลยี่ห้อรถ</a>
 								</li>
 								<li onclick="lp_li_click(event , '0006');">
 									<a href="javascript:lp_home('model');">ข้อมูลรุ่น</a>
