@@ -103,10 +103,10 @@ function lp_set_title( av_title , av_screen){
                            <li class='has-sub'><a href='#'><span>รายละเอียดการขาย</span></a>
                               <ul onclick="lp_ul_click();">
 								<li onclick="lp_li_click(event , '0001');">
-									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.EntrySaleDetailServlet" target="frame_main">บันทึกการขายรถ</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.EntrySaleDetailServlet&pageAction=new" target="frame_main">บันทึกการขายรถ</a>
 								</li>
 								<li onclick="lp_li_click(event , '0002');">
-									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.SummarySaleDetailServlet" target="frame_main">สรุปการขายรถ</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.SummarySaleDetailServlet&pageAction=new" target="frame_main">สรุปการขายรถ</a>
 								</li>
 								<!-- 
 								<li onclick="lp_li_click(event , '0003');">

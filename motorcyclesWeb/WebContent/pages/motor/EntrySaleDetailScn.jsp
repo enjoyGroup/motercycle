@@ -349,7 +349,7 @@
 	            			
 	            		}else{
 	            			$("#cusCode").val("");
-	            			$("#custName").val("");
+	            			/*$("#custName").val("");
 	            			$("#custSurname").val("");
 	            			$("#houseNumber").val("");
 	            			$("#mooNumber").val("");
@@ -360,7 +360,7 @@
 	            			$("#provinceName").val("");
 	            			$("#idType").val("");
 	            			$("#idNumber").val("");
-	            			$("#cusStatus").val("");
+	            			$("#cusStatus").val("");*/
 	            		}
 	            	}catch(e){
 	            		alert("in lp_getCustDtl :: " + e);
@@ -424,7 +424,7 @@
 	            			
 	            		}else{
 	            			$("#cusCode").val("");
-	            			$("#custName").val("");
+	            			/*$("#custName").val("");
 	            			$("#custSurname").val("");
 	            			$("#houseNumber").val("");
 	            			$("#mooNumber").val("");
@@ -435,7 +435,7 @@
 	            			$("#provinceName").val("");
 	            			$("#idType").val("");
 	            			$("#idNumber").val("");
-	            			$("#cusStatus").val("");
+	            			$("#cusStatus").val("");*/
 	            		}
 	            	}catch(e){
 	            		alert("in lp_getCustDtl :: " + e);
@@ -458,10 +458,10 @@
 			lv_brandName 	= gp_trim($("#brandName").val());
 			
 			if(lv_model==""){
-				$("#brandName").val("");
+				/*$("#brandName").val("");
 				$("#chassis").val("");
     			$("#engineNo").val("");
-    			$("#size").val("");
+    			$("#size").val("");*/
 				return;
 			}
 			
@@ -486,12 +486,13 @@
 	            			$("#engineNo").val(jsonObj.engineNo);
 	            			$("#size").val(jsonObj.size);
 	            			
-	            		}else{
+	            		}
+	            		/*else{
 	            			$("#brandName").val("");
 	            			$("#chassis").val("");
 	            			$("#engineNo").val("");
 	            			$("#size").val("");
-	            		}
+	            		}*/
 	            	}catch(e){
 	            		alert("in lp_getProdDtl :: " + e);
 	            	}
@@ -500,6 +501,118 @@
 			
 		}catch(e){
 			alert("lp_getProdDtl :: " + e);
+		}
+	}
+	
+	function lp_onBlurPriceAmount(){
+		
+		var lo_priceAmount 		= null;
+		
+		try{
+			lo_priceAmount 			= document.getElementById("priceAmount");
+			
+			if(gp_trim(lo_priceAmount.value)==""){
+				lo_priceAmount.value = "0.00";
+			}
+			
+			if(gp_format(lo_priceAmount, 2)==false){
+				alert("กรุณาระบุตัวเลขเท่านั้น");
+				lo_priceAmount.value = "0.00";
+				return;
+			}
+			
+			lp_calVatAmount();
+			
+		}catch(e){
+			alert("lp_onBlurPriceAmount :: " + e);
+		}
+		
+	}
+	
+	function lp_onBlurCommAmount(){
+		
+		var lo_commAmount 		= null;
+		
+		try{
+			lo_commAmount 			= document.getElementById("commAmount");
+			
+			if(gp_trim(lo_commAmount.value)==""){
+				lo_commAmount.value = "0.00";
+			}
+			
+			if(gp_format(lo_commAmount, 2)==false){
+				alert("กรุณาระบุตัวเลขเท่านั้น");
+				lo_commAmount.value = "0.00";
+				return;
+			}
+			
+		}catch(e){
+			alert("lp_onBlurCommAmount :: " + e);
+		}
+		
+	}
+	
+	function lp_calVatAmount(){
+		
+		var lo_vatFlag 		= null;
+		var lo_vatAmount 	= null;
+		var lo_totalAmount	= null;
+		var lv_priceAmount	= "0.00";
+		var lv_vatAmount 	= "0.00";
+		var lv_totalAmount	= "0.00";
+		
+		try{
+			lo_vatFlag 		= document.getElementById("vatFlag");
+			lo_vatAmount 	= document.getElementById("vatAmount");
+			lo_totalAmount	= document.getElementById("totalAmount");
+			lv_priceAmount	= gp_replaceComma(document.getElementById("priceAmount").value);
+			
+			if(lo_vatFlag.checked==true){
+				lv_vatAmount = ((lv_priceAmount*7)/100).toString();
+			}else{
+				lv_vatAmount = "0.00";
+			}
+			
+			lo_vatAmount.value = lv_vatAmount;
+			gp_format(lo_vatAmount, 2);
+			
+			lv_totalAmount = (parseFloat(lv_priceAmount) + parseFloat(gp_replaceComma(lo_vatAmount.value))).toString();
+			
+			lo_totalAmount.value = lv_totalAmount;
+			gp_format(lo_totalAmount, 2);
+			
+		}catch(e){
+			alert("lp_calVatAmount :: " + e);
+		}
+		
+	}
+	
+	function lp_chkAddSales(){
+		
+		var lo_flagAddSales = null;
+		var lo_commAmount	= null;
+		
+		try{
+			lo_flagAddSales 	= document.getElementById("flagAddSales");
+			lo_commAmount 		= document.getElementById("commAmount");
+			
+			if(lo_flagAddSales.checked==true){
+				lo_commAmount.className 	= "";
+				lo_commAmount.readOnly 		= false;
+				lo_commAmount.onkeypress	= function(){};
+				lo_commAmount.onkeydown		= function(){};
+			}else{
+				lo_commAmount.className 	= "input-disabled";
+				lo_commAmount.readOnly 		= true;
+				lo_commAmount.onkeypress	= function(){return false;};
+				lo_commAmount.onkeydown		= function(){return false;};
+				lo_commAmount.value 		= "0.00";
+				
+			}
+			
+			
+		}catch(e){
+			alert("lp_chkAddSales :: " + e);
 		}
 	}
 
@@ -760,6 +873,8 @@
 																name="chassis"
 																value="<%=productBean.getChassis() %>"
 																size="3"
+																onkeypress="return false;"
+						                                        onkeydown="return false;"
 																class="input-disabled" 
 					                                       		readonly="readonly"															
 														/>
@@ -778,6 +893,8 @@
 																name="engineNo"
 																value="<%=productBean.getEngineNo() %>"
 																size="3"
+																onkeypress="return false;"
+						                                        onkeydown="return false;"
 																class="input-disabled" 
 					                                       		readonly="readonly"															
 														/>
@@ -810,11 +927,20 @@
 																size="20"
 																id="priceAmount" 
 																name="priceAmount"
+																onblur="lp_onBlurPriceAmount();"
 																value="<%=entrySaleDetailForm.getPriceAmount() %>"
 														/>
 													</td>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">ภาษี 7%:</label>
+														<label class="col-sm-2 control-label" style="text-align:right">
+															<input  type="checkbox" 
+																	id="vatFlag" 
+																	name="vatFlag" 
+																	onclick="lp_calVatAmount();"
+																	<%if(entrySaleDetailForm.getVatFlag().equalsIgnoreCase("Y")){%> checked="checked" <%} %> 
+																	value="Y" />
+															ภาษี 7%:
+														</label>
 													</td>
 													<td align="left">
 														<input  type="text" 
@@ -863,6 +989,7 @@
 															<input  type="checkbox" 
 																	id="flagAddSales" 
 																	name="flagAddSales" 
+																	onclick="lp_chkAddSales()"
 																	<%if(entrySaleDetailForm.getFlagAddSales().equalsIgnoreCase("Y")){%> checked="checked" <%} %> 
 																	value="Y" />
 															มีการส่งเสริมการขาย
@@ -875,6 +1002,7 @@
 						                                        onkeydown="return false;"
 						                                        class="input-disabled" 
 						                                        readonly="readonly" 
+						                                        onblur="lp_onBlurCommAmount();"
 																value="<%=entrySaleDetailForm.getCommAmount() %>"
 														/>
 													</td>

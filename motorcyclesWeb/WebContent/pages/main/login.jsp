@@ -59,12 +59,13 @@
 			{
 				var keycode =(window.event) ? event.keyCode : e.keyCode;
 				if(keycode == 13) {
-					lp_submit_login();
+					//lp_submit_login();
+					$('#btnLogin').click();
 				}
 			} 
 			
 			$(document).ready(function(){
-				$('#txtUser').focus();				
+				$('#username').focus();				
 				$('#btnLogin').click(function(){
 					
 					//var url 	= '/motorcyclesWeb/LoginServlet';
@@ -134,7 +135,7 @@
                                     <fieldset>
                                        <br>
                                        <div style="text-align: center;width: 100%">
-                                       		 <input class="form-control" placeholder="Username" id="username"  name="username" type="text"  maxlength="10"  onkeydown="lp_changeEnterToTab();">
+                                       		 <input class="form-control" placeholder="Username" id="username"  name="username" type="text"  maxlength="10"  onkeydown="lp_changeEnterToTab_forPWD();">
 	                                        <br>
 	                                        <input class="form-control" placeholder="Password" id="user_pwd"  name="user_pwd"  type="password"  maxlength="10"  onkeydown="lp_changeEnterToTab_forPWD();">
 	                                        <br></br>

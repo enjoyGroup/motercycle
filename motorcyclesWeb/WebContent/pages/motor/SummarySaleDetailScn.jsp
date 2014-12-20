@@ -8,7 +8,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
+<style>
+	.input-disabled{
+	    background-color:#EBEBE4;
+	    border:1px solid #ABADB3;
+	    color:rgb(84, 84, 84);
+	}
+	
+	.rowSelect:hover{
+	    background-color:FFCCFF;
+	    /*opacity: .2; */
+	    cursor: pointer;
+	}
+	
+</style> 
 <script>
+	
+	var gv_url 			= '<%=servURL%>/EnjoyGenericSrv';
+	
 	$(document).ready(function(){
 		
 		$('#btnSearch').click(function(){
@@ -94,6 +111,11 @@
 		
 	});
 	
+	function lp_sendEditPage(av_val){
+		
+		window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=edit&invoiceId=" + av_val);
+	}
+	
 </script>
 </head>
 <body>
@@ -177,7 +199,7 @@
 																bean = dataList.get(i);
 															
 														%>
-														<tr>
+														<tr class="rowSelect" onclick="lp_sendEditPage(<%=bean.getInvoiceId()%>)">
 															<td width="50px"><%=seq%></td>
 															<td width="100px"><%=bean.getInvoiceId()%></td>
 															<td width="150px"><%=bean.getCusName()%></td>
