@@ -16,6 +16,7 @@ public class EntrySaleDetailForm {
 	private String 								commAmount;
 	private String 								flagAddSales;
 	private String 								printType;
+	private String 								vatFlag;
 	
 	public EntrySaleDetailForm(){
 		this.customerBean 				= new CustomerBean();
@@ -29,6 +30,15 @@ public class EntrySaleDetailForm {
 		this.commAmount					= "0.00";
 		this.flagAddSales				= "N";
 		this.printType					= "1";
+		this.vatFlag					= "N";
+	}
+
+	public String getVatFlag() {
+		return vatFlag;
+	}
+
+	public void setVatFlag(String vatFlag) {
+		this.vatFlag = vatFlag;
 	}
 
 	public String getPrintType() {

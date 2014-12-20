@@ -182,10 +182,6 @@ public class EntrySaleDetailDao {
 		    	form.setRecordAddDate(EnjoyUtils.nullToStr(rs.getString("invoiceDate")));
 		    	
 		    	cusCode 	= EnjoyUtils.nullToStr(rs.getString("cusCode"));
-		    	if(!cusCode.equals("")){
-		    		this.getCustomerDetail(cusCode, customerBean);
-		    		form.setCustomerBean(customerBean);
-		    	}
 		    	
 		    	productBean.setBrandName(EnjoyUtils.nullToStr(rs.getString("brandName")));
 		    	productBean.setModel(EnjoyUtils.nullToStr(rs.getString("model")));
@@ -206,6 +202,11 @@ public class EntrySaleDetailDao {
 		    	form.setFlagAddSales(EnjoyUtils.nullToStr(rs.getString("flagAddSales")));
 		    	
 		    }	 
+		    
+		    if(!cusCode.equals("")){
+	    		this.getCustomerDetail(cusCode, customerBean);
+	    		form.setCustomerBean(customerBean);
+	    	}
 			
 		}catch(Exception e){
 			e.printStackTrace();
