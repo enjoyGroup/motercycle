@@ -8,6 +8,12 @@ import java.util.Locale;
 
 public class EnjoyUtils {
 	
+	public static void main(String[] args) {
+//		currDateThai();
+		System.out.println(replaceComma("7,800,000.00"));
+
+	}
+	
 	public static String nullToStr(String str){
         return (str==null?"":str.trim());
     }
@@ -17,6 +23,24 @@ public class EnjoyUtils {
         try{
             SimpleDateFormat sdf = new SimpleDateFormat(stFormat,Locale.US);
             stDate = sdf.format(dDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+           
+        return stDate;
+    }
+    
+    public static String currDateThai(){
+        String 	stDate 	= "";
+        Date 	date	= new Date();
+        
+        try{
+            java.text.SimpleDateFormat df= new java.text.SimpleDateFormat();
+            
+            df.applyPattern("yyyyMMdd");
+            stDate = df.format(date);
+            System.out.println(stDate);
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -262,5 +286,52 @@ public class EnjoyUtils {
         }
         return dateDisplay;
 	}
+	
+	public static String replaceComma(String av_val) {
+		
+		String lv_ret = null;
+		
+        try {
+        	if (av_val!=null&&!av_val.equals("")){	
+        		lv_ret = av_val.replaceAll(",", "");
+			} else {
+				lv_ret = "";			
+			}
+        } catch (Exception e) {
+        	e.printStackTrace();
+        } 
+        return lv_ret;
+	}
+	
+	public static String chkBoxtoDb(String av_val) {
+		
+		String lv_ret = null;
+		
+        try {
+        	if (av_val!=null&&!av_val.equals("")){	
+        		lv_ret = av_val;
+			} else {
+				lv_ret = "N";			
+			}
+        } catch (Exception e) {
+        	e.printStackTrace();
+        } 
+        return lv_ret;
+	}
+	
+	public static Double pareseDouble(String av_val) {
+		
+		Double lv_ret = 0.00;
+		
+        try {
+        	if (av_val!=null&&!av_val.equals("")){	
+        		lv_ret = Double.parseDouble(av_val);
+			} 
+        } catch (Exception e) {
+        	e.printStackTrace();
+        } 
+        return lv_ret;
+	}
+	
 }
 

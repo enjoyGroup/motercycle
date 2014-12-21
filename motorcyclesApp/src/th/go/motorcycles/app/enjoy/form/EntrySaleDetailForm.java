@@ -17,6 +17,9 @@ public class EntrySaleDetailForm {
 	private String 								flagAddSales;
 	private String 								printType;
 	private String 								vatFlag;
+	private String								cusCode;
+	private String								motorcyclesCode;
+	private String								userUniqueId;
 	
 	public EntrySaleDetailForm(){
 		this.customerBean 				= new CustomerBean();
@@ -31,6 +34,33 @@ public class EntrySaleDetailForm {
 		this.flagAddSales				= "N";
 		this.printType					= "1";
 		this.vatFlag					= "N";
+		this.cusCode					= "";
+		this.motorcyclesCode			= "";
+		this.userUniqueId				= "";
+	}
+
+	public String getCusCode() {
+		return cusCode;
+	}
+
+	public void setCusCode(String cusCode) {
+		this.cusCode = cusCode;
+	}
+
+	public String getMotorcyclesCode() {
+		return motorcyclesCode;
+	}
+
+	public void setMotorcyclesCode(String motorcyclesCode) {
+		this.motorcyclesCode = motorcyclesCode;
+	}
+
+	public String getUserUniqueId() {
+		return userUniqueId;
+	}
+
+	public void setUserUniqueId(String userUniqueId) {
+		this.userUniqueId = userUniqueId;
 	}
 
 	public String getVatFlag() {

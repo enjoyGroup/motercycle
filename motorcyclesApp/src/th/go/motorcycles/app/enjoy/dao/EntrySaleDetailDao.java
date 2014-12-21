@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import th.go.motorcycles.app.enjoy.bean.CustomerBean;
+import th.go.motorcycles.app.enjoy.bean.EntrySaleDetailBean;
 import th.go.motorcycles.app.enjoy.bean.ProductBean;
+import th.go.motorcycles.app.enjoy.exception.EnjoyException;
 import th.go.motorcycles.app.enjoy.form.EntrySaleDetailForm;
 import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
@@ -146,8 +148,9 @@ public class EntrySaleDetailDao {
 		ProductBean			productBean			= null;
 		CustomerBean 		customerBean 		= null;
 		String				cusCode				= null;
-		String				priceAmount			= null;
-		String				vatAmount			= null;
+		Double				priceAmount			= null;
+		Double				vatAmount			= null;
+		Double				totalAmount			= null;
 		String				commAmount			= null;
 		
 		try{
@@ -191,19 +194,26 @@ public class EntrySaleDetailDao {
 		    	
 		    	form.setProductBean(productBean);
 		    	
-		    	priceAmount = EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("priceAmount")), 2);
-		    	vatAmount 	= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("vatAmount")), 2);
+		    	priceAmount = rs.getDouble("priceAmount");
+		    	vatAmount 	= rs.getDouble("vatAmount");
+		    	totalAmount	= priceAmount + vatAmount;
+		    	
+		    	if(vatAmount > 0){
+		    		form.setVatFlag("Y");
+		    	}
+		    	
 		    	commAmount 	= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("commAmount")), 2);
 		    	
-		    	form.setPriceAmount(priceAmount);
-		    	form.setVatAmount(vatAmount);
+		    	form.setPriceAmount(EnjoyUtils.convertFloatToDisplay(priceAmount.toString(), 2));
+		    	form.setVatAmount(EnjoyUtils.convertFloatToDisplay(vatAmount.toString(), 2));
 		    	form.setCommAmount(commAmount);
+		    	form.setTotalAmount(EnjoyUtils.convertFloatToDisplay(totalAmount.toString(), 2));
 		    	form.setRemark(EnjoyUtils.nullToStr(rs.getString("remark")));
 		    	form.setFlagAddSales(EnjoyUtils.nullToStr(rs.getString("flagAddSales")));
 		    	
 		    }	 
 		    
-		    if(!cusCode.equals("")){
+		    if(cusCode!=null&&!cusCode.equals("")){
 	    		this.getCustomerDetail(cusCode, customerBean);
 	    		form.setCustomerBean(customerBean);
 	    	}
@@ -251,7 +261,7 @@ public class EntrySaleDetailDao {
         List<String> 					list 				= new ArrayList<String>();
 		
 		try{
-			sql 		= " select cusName from customer where cusName like ('"+custName+"%') order by cusName asc limit 10 ";
+			sql 		= " select cusName from customer where cusName like ('"+custName+"%') group by cusName order by cusName asc limit 10 ";
 			
 			System.out.println("[EntrySaleDetailDao][custNameList] sql :: " + sql);
 			
@@ -283,9 +293,9 @@ public class EntrySaleDetailDao {
 			sql 		= "select cusCode from customer where cusName = '"+custName+"'";
 			
 		    if(custName.equals("")){
-		    	sql 		= " select cusSurname from customer where cusSurname like ('"+custSurname+"%') order by cusSurname asc limit 10 ";
+		    	sql 		= " select cusSurname from customer where cusSurname like ('"+custSurname+"%') group by cusSurname order by cusSurname asc limit 10 ";
 		    }else{
-		    	sql 		= " select cusSurname from customer where cusName = '"+custName+"' and cusSurname like ('"+custSurname+"%') order by cusSurname asc limit 10 ";
+		    	sql 		= " select cusSurname from customer where cusName = '"+custName+"' and cusSurname like ('"+custSurname+"%') group by cusSurname order by cusSurname asc limit 10 ";
 		    }
 			System.out.println("[EntrySaleDetailDao][custSurnameList] sql :: " + sql);
 			
@@ -433,4 +443,236 @@ public class EntrySaleDetailDao {
 		return productBean;
 	}
 	
+	public EntrySaleDetailBean getMotorcyclesCode(String brandName, String model){
+		System.out.println("[EntrySaleDetailDao][getMotorcyclesCode][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+		String							brandCode			= null;
+		String							motorcyclesCode		= null;
+		EntrySaleDetailBean				bean				= new EntrySaleDetailBean();
+		String							errMsg				= null;
+		
+		try{
+			sql 		= " select brandCode from branddetails where brandName = '" + brandName + "'";
+			
+			System.out.println("[EntrySaleDetailDao][getMotorcyclesCode] sql branddetails :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    while(rs.next())brandCode = EnjoyUtils.nullToStr(rs.getString("brandCode"));
+		    
+		    sql 		= " select m.motorcyclesCode"
+							+ " from motorcyclesdetails m, branddetails b"
+							+ " where m.model = '"+model+"'"
+								+ " and m.brandCode = '"+brandCode+"'"
+								+ " and b.brandCode = m.brandCode";
+		    
+		    System.out.println("[EntrySaleDetailDao][getMotorcyclesCode] sql branddetails :: " + sql);
+			
+			rs 			= this.db.executeQuery(sql);
+			while(rs.next()){
+				motorcyclesCode = EnjoyUtils.nullToStr(rs.getString("motorcyclesCode"));
+				System.out.println("[EntrySaleDetailDao][getMotorcyclesCode] motorcyclesCode 	:: " + motorcyclesCode);
+				
+				bean.setMotorcyclesCode(motorcyclesCode);
+			}
+			
+			if(motorcyclesCode==null || motorcyclesCode.equals("")){
+				throw new EnjoyException("กรอกยี่ห้อ หรือ รุ่น ผิด");
+			}
+		    
+		    
+			
+		}catch(EnjoyException e){
+			errMsg = e.getMessage();
+			bean.setErrMsg(errMsg);
+			e.printStackTrace();
+		}catch(Exception e){
+			errMsg = "เกิดข้อผิดพลาดในการดึง motorcyclesCode";
+			bean.setErrMsg(errMsg);
+			e.printStackTrace();
+		}finally{
+			System.out.println("[EntrySaleDetailDao][productDetail][End]");
+		}
+		
+		return bean;
+	}
+	
+	public EntrySaleDetailBean insertInvoiceDetail(EntrySaleDetailForm form){
+		System.out.println("[EntrySaleDetailDao][insertInvoiceDetail][Begin]");
+		
+		String 				sql			 		= null;
+		ResultSet 			rs 					= null;
+		String 				errMsg 				= null;
+		EntrySaleDetailBean bean				= new EntrySaleDetailBean();;
+		String				invoiceId			= null;
+		String 				priceAmount 		= null;
+		String 				vatAmount 			= null;
+		String 				remark 				= null;
+		String 				commAmount 			= null;
+		String 				flagAddSales 		= null;
+		String				cusCode 			= null;
+		String				motorcyclesCode 	= null;
+		String				userUniqueId 		= null;
+		String				chassisDisp 		= null;
+		String				EngineNoDisp 		= null;
+		String				size		 		= null;
+		ProductBean			productBean			= null;
+		CustomerBean		customerBean		= null;
+		
+		try{
+			productBean 	= form.getProductBean();
+			customerBean	= form.getCustomerBean();
+			sql 			= "select (max(invoiceId)+1) newInvoiceId from invoicedetails";
+			
+			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] sql :: " + sql);
+			
+			rs 			= this.db.executeQuery(sql);
+			while(rs.next()) invoiceId = EnjoyUtils.nullToStr(rs.getString("newInvoiceId"));
+			
+			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] invoiceId :: " + invoiceId);
+			if(invoiceId==null){
+				throw new EnjoyException("เกิดข้อผิดพลาดในการ gen invoice id.");
+			}
+			
+			priceAmount 		= form.getPriceAmount();
+			vatAmount 			= form.getVatAmount();
+			remark	 			= form.getRemark();
+			commAmount 			= form.getCommAmount();
+			flagAddSales 		= form.getFlagAddSales();
+			cusCode 			= customerBean.getCusCode();
+			motorcyclesCode 	= form.getMotorcyclesCode();
+			userUniqueId 		= form.getUserUniqueId();
+			chassisDisp 		= productBean.getChassis();
+			EngineNoDisp 		= productBean.getEngineNo();
+			size 				= productBean.getSize();
+			
+			
+			sql 		= "insert into invoicedetails ( invoiceId"
+													+ " ,invoiceDate"	
+													+ " ,cusCode"
+													+ " ,motorcyclesCode"	
+													+ " ,chassisDisp"
+													+ " ,EngineNoDisp"	
+													+ " ,size"
+													+ " ,priceAmount"	
+													+ " ,vatAmount"
+													+ " ,remark"
+													+ " ,flagAddSales"	
+													+ " ,commAmount"
+													+ " ,userUniqueId)"
+										+ " values("+invoiceId+""
+													+ " ,'"+EnjoyUtils.currDateThai()+"'"
+													+ " ,'"+cusCode+"'"
+													+ " ,'"+motorcyclesCode+"'"
+													+ " ,'"+chassisDisp+"'"
+													+ " ,'"+EngineNoDisp+"'"
+													+ " ,'"+size+"'"
+													+ " ,'"+priceAmount+"'"
+													+ " ,'"+vatAmount+"'"
+													+ " ,'"+remark+"'"
+													+ " ,'"+flagAddSales+"'"
+													+ " ,'"+commAmount+"'"
+													+ " ,'"+userUniqueId+"')";
+			this.db.execute(sql);
+			
+			bean.setInvoiceId(invoiceId);
+			
+		}catch(EnjoyException e){
+			errMsg = e.getMessage();
+			bean.setErrMsg(errMsg);
+			e.printStackTrace();
+		}catch(Exception e){
+			bean.setErrMsg("เกิดข้อผิดพลาดในการบันทึก");
+			e.printStackTrace();
+		}finally{
+			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail][End]");
+		}
+		
+		return bean;
+	}
+	
+	public EntrySaleDetailBean updateInvoiceDetail(EntrySaleDetailForm form){
+		System.out.println("[EntrySaleDetailDao][updateInvoiceDetail][Begin]");
+		
+		String 				sql			 		= null;
+		EntrySaleDetailBean bean				= new EntrySaleDetailBean();
+		String				invoiceId			= null;
+		String 				priceAmount 		= null;
+		String 				vatAmount 			= null;
+		String 				remark 				= null;
+		String 				commAmount 			= null;
+		String 				flagAddSales 		= null;
+		String				cusCode 			= null;
+		String				motorcyclesCode 	= null;
+		String				userUniqueId 		= null;
+		String				chassisDisp 		= null;
+		String				EngineNoDisp 		= null;
+		String				size		 		= null;
+		ProductBean			productBean			= null;
+		CustomerBean		customerBean		= null;
+		
+		try{
+			productBean 		= form.getProductBean();
+			customerBean		= form.getCustomerBean();
+			
+			invoiceId			= form.getInvoiceId();
+			priceAmount 		= form.getPriceAmount();
+			vatAmount 			= form.getVatAmount();
+			remark	 			= form.getRemark();
+			commAmount 			= form.getCommAmount();
+			flagAddSales 		= form.getFlagAddSales();
+			cusCode 			= customerBean.getCusCode();
+			motorcyclesCode 	= form.getMotorcyclesCode();
+			userUniqueId 		= form.getUserUniqueId();
+			chassisDisp 		= productBean.getChassis();
+			EngineNoDisp 		= productBean.getEngineNo();
+			size 				= productBean.getSize();
+			
+			sql 		= "update invoicedetails set invoiceDate 			= '" + EnjoyUtils.currDateThai() + "'"
+													+ ", cusCode 			= '" + cusCode + "'"
+													+ ", motorcyclesCode 	= '" + motorcyclesCode + "'"
+													+ ", chassisDisp 		= '" + chassisDisp + "'"
+													+ ", EngineNoDisp 		= '" + EngineNoDisp + "'"
+													+ ", size 				= '" + size + "'"
+													+ ", priceAmount 		= '" + priceAmount + "'"
+													+ ", vatAmount 			= '" + vatAmount + "'"
+													+ ", remark 			= '" + remark + "'"
+													+ ", flagAddSales 		= '" + flagAddSales + "'"
+													+ ", commAmount 		= '" + commAmount + "'"
+													+ ", userUniqueId 		= '" + userUniqueId + "'"
+										+ " where invoiceId = '" + invoiceId + "'";
+			
+			System.out.println("[EntrySaleDetailDao][updateInvoiceDetail] sql :: " + sql);
+			
+			this.db.execute(sql);
+			
+			bean.setInvoiceId(invoiceId);
+			
+		}catch(Exception e){
+			bean.setErrMsg("เกิดข้อผิดพลาดในการอัพเดทข้อมูล");
+			e.printStackTrace();
+		}finally{
+			System.out.println("[EntrySaleDetailDao][updateInvoiceDetail][End]");
+		}
+		
+		return bean;
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

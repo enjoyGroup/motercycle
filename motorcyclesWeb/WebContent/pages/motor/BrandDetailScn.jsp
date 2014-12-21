@@ -117,7 +117,7 @@
 		}
 	}
 	 
-	function lp_add_row_table(){
+	/*function lp_add_row_table(){
 		var lo_table = document.getElementById("tb_result");
 		var lv_length = lo_table.rows.length-1;
 		var row = lo_table.insertRow(lv_length);
@@ -125,10 +125,41 @@
 		var cell2 = row.insertCell(1);
 		var cell3 = row.insertCell(2);
 		var cell4 = row.insertCell(3);
+		
 		cell1.innerHTML = lv_length;
 		cell2.innerHTML = "<input type='text' class='form-control' id='brandName' name='brandName'>";
 		cell3.innerHTML = "I";
 		cell4.innerHTML = "<button id='btn_add' name='btn_add'  class='btn btn-warning btn-mini fa fa-plus-square' style='width:25px;' onclick='lp_add_row_table();'></button>";
+	}*/
+	
+	function lp_add_row_table(){
+		var lo_table 	= null;
+		var lv_length 	= null;
+		var row 		= null;
+		var cell1 		= null;
+		var cell2 		= null;
+		var cell3 		= null;
+		var cell4 		= null;
+		
+		
+		try{
+			lo_table 	= document.getElementById("tb_result");
+			lv_length 	= lo_table.rows.length - 1;
+			row 		= lo_table.insertRow(lv_length);
+			cell1 		= row.insertCell(0);
+			cell2 		= row.insertCell(1);
+			cell3 		= row.insertCell(2);
+			cell4 		= row.insertCell(3);
+			
+			
+			
+			cell1.innerHTML = lv_length;
+			cell2.innerHTML = "<input type='text' class='form-control' id='brandName' name='brandName'>";
+			cell3.innerHTML = "I";
+			cell4.innerHTML = "<button id='btn_add' name='btn_add'  class='btn btn-warning btn-mini fa fa-plus-square' style='width:25px;' onclick='lp_add_row_table();'></button>";	
+		}catch(e){
+			alert("lp_add_row_table :: " + e);
+		}
 	}
 
 </script>
@@ -154,9 +185,9 @@
 										<div class="panel-body" id="div_result">
 											<table id="tb_result" border="1" class="table span12" style="overflow-y:auto;width:500px;">
 								               <tr bgcolor="#473636"  class="text_white" height="26px;">
-													<th  style="text-align: center;" width="30px;" ><B>ลำดับ</B></th>
-													<th  style="text-align: left;"   width="400px;"><B>ยี่ห้อรถจักรยานยนต์</B></th>
-													<th  style="text-align: center;" width="50px;" ><B>add/delete</B></th>
+													<td  style="text-align: center;" width="30px;" ><B>ลำดับ</B></th>
+													<td  style="text-align: left;"   width="400px;"><B>ยี่ห้อรถจักรยานยนต์</B></th>
+													<td  style="text-align: center;" width="50px;" ><B>add/delete</B></th>
 												</tr> 
 											 
 											     <%
@@ -178,16 +209,17 @@
 															</td>
 														</tr> 
 														<% } } %> 
-												<tr>
-													<td align="center" style="visibility:hidden;">
-													</td>
-													<td align="left" style="visibility:hidden;">
-													</td>
-													<td width="50px" align="center">
-													   <button id="btn_add" name="btn_add"  class="btn btn-warning btn-mini fa fa-plus-square" style="width:25px;" onclick="lp_add_row_table();"></button>
-													</td>
-												</tr> 
-											</table>  
+														<tr>
+															<td align="center" style="visibility:hidden;">
+															</td>
+															<td align="left" style="visibility:hidden;">
+															</td>
+															<td width="50px" align="center">
+																<a id="btn_add" href="#" class="btn btn-warning btn-mini fa fa-plus-square" style="width:25px;" onclick="lp_add_row_table();"></a>
+															    <!--<button id="btn_add" name="btn_add"  class="btn btn-warning btn-mini fa fa-plus-square" style="width:25px;" onclick="lp_add_row_table();"></button> -->
+															</td>
+														</tr> 
+											</table> 
 										</div> 
 								    </section>
 								</div>

@@ -298,7 +298,114 @@
 		      }
 		});
 		
+		$('#btnReset').click(function(){
+		    
+		    try{
+				$.ajax({
+					async:false,
+		            type: "POST",
+		            url: gv_url,
+		            data: gv_service + "&pageAction=reset",
+		            beforeSend: "",
+		            success: function(data){
+		            	window.location.replace('/motorcyclesWeb/pages/motor/EntrySaleDetailScn.jsp');
+		            }
+		        });
+		    	
+		    }catch(e){
+		    	alert("btnReset :: " + e);
+		    }
+		    
+		});
+		
+	$('#btnSave').click(function(){
+		    
+		    try{
+		    	
+		    	if(!lp_validate()){
+		    		return;
+		    	}
+		    	
+				$.ajax({
+					async:false,
+		            type: "POST",
+		            url: gv_url,
+		            data: gv_service + "&pageAction=save&" + $('#frm').serialize(),
+		            beforeSend: "",
+		            success: function(data){
+		            	var jsonObj 			= null;
+		            	var status				= null;
+		            	var invoiceId			= null;
+		            	var errMsg				= null;
+		            	
+		            	try{
+		            		jsonObj = JSON.parse(data);
+		            		status	= jsonObj.status;
+		            		
+		            		if(status=="SUCCESS"){
+		            			invoiceId		= jsonObj.invoiceId;
+		            			
+		            			alert("บันทึกเรียบร้อย");
+		            			window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=edit&invoiceId=" + invoiceId);
+		            		}else{
+		            			errMsg = jsonObj.errMsg;
+		            			
+		            			alert(errMsg);
+		            		}
+		            	}catch(e){
+		            		alert("in btnSave :: " + e);
+		            	}
+		            }
+		        });
+		    	
+		    }catch(e){
+		    	alert("btnSave :: " + e);
+		    }
+		    
+		});
+		
 	});
+	
+	function lp_validate(){
+		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassis", "engineNo", "size", "priceAmount");
+	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "จำนวนเงินที่ขาย");
+	    var lo_flagAddSales			= null;
+	    var lo_commAmount			= null;
+	    
+		try{
+			
+			lo_flagAddSales 	= document.getElementById("flagAddSales");
+			lo_commAmount 		= document.getElementById("commAmount");
+			
+			for(var i=0;i<la_idName.length;i++){
+	            lo_obj          = eval('document.getElementById("' + la_idName[i] + '")');
+	            
+	            if(la_idName[i]=="priceAmount"){
+	            	if(gp_trim(lo_obj.value)=="0.00"){
+		            	alert("กรุณาระบุ " + la_msg[i]);
+		                return false;
+		            }
+	            }else{
+		            if(gp_trim(lo_obj.value)==""){
+		            	alert("กรุณาระบุ " + la_msg[i]);
+		                return false;
+		            }
+	            }
+	        }
+			
+			
+			if(lo_flagAddSales.checked==true && lo_commAmount.value=="0.00"){
+				alert("กรุณาระบุจำนวนส่งเสริมการขาย");
+				return false;
+			}
+			
+		}catch(e){
+			alert("lp_validate :: " + e);
+			return false;
+		}
+		
+		return true;
+	}
 	
 	function lp_getCustDtl(){
 		
@@ -626,7 +733,7 @@
 <body> 
 <form class="form-horizontal" id="frm" action="<%=servURL%>/EnjoyGenericSrv">
 	<input type="hidden" id="service" name="service" value="servlet.EntrySaleDetailServlet" />  
-	<input type="hidden" id="pageActionPDF" name="pageActionPDF" />  
+	<input type="hidden" id="pageActionPDF" name="pageActionPDF" /> 
 	<section class="vbox"> 
 		<section>
 			<section class="hbox stretch"> 

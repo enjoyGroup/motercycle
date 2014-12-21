@@ -12,11 +12,15 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
+import th.go.motorcycles.app.enjoy.bean.AddressBean;
 import th.go.motorcycles.app.enjoy.bean.CustomerBean;
+import th.go.motorcycles.app.enjoy.bean.EntrySaleDetailBean;
 import th.go.motorcycles.app.enjoy.bean.ProductBean;
 import th.go.motorcycles.app.enjoy.bean.UserDetailsBean;
 import th.go.motorcycles.app.enjoy.dao.AddressDao;
+import th.go.motorcycles.app.enjoy.dao.CustomerDao;
 import th.go.motorcycles.app.enjoy.dao.EntrySaleDetailDao;
+import th.go.motorcycles.app.enjoy.exception.EnjoyException;
 import th.go.motorcycles.app.enjoy.form.EntrySaleDetailForm;
 import th.go.motorcycles.app.enjoy.main.Constants;
 import th.go.motorcycles.app.enjoy.pdf.ViewPdfMainForm;
@@ -35,6 +39,8 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
    //Transaction
    private static final String 		NEW 					= "new";
    private static final String 		EDIT 					= "edit";
+   private static final String 		SAVE 					= "save";
+   private static final String 		RESET 					= "reset";
    private static final String 		VIEWPDF 			    = "pdf";
    private static final String 		PROVINCE 				= "p";
    private static final String 		DISTRICT 				= "d";
@@ -55,6 +61,8 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
    private HttpSession                 	session                     = null;
    private EntrySaleDetailDao			dao							= null;
    private AddressDao					addressDao					= null;
+   private CustomerDao					customerDao					= null;
+   private UserDetailsBean				userBean 					= null;
 
    @Override
    public void execute(HttpServletRequest request, HttpServletResponse response)throws Exception {
@@ -76,8 +84,10 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			this.form               = (EntrySaleDetailForm)session.getAttribute(FORM_NAME);
 			this.dao				= new EntrySaleDetailDao();
 			this.addressDao			= new AddressDao();
+			this.customerDao		= new CustomerDao();
+			this.userBean			= (UserDetailsBean) this.session.getAttribute("userBean");
 			
-			if(this.form == null || pageAction.equals(NEW)) this.form = new EntrySaleDetailForm();
+			if(this.form == null || pageAction.equals(NEW) || pageAction.equals(RESET)) this.form = new EntrySaleDetailForm();
 			
 			if(pageAction.equals("") || pageAction.equals(NEW)){
 System.out.println("pageActionPDF ==> " + pageActionPDF);
@@ -85,8 +95,8 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 
 					this.lp_viewpdf();
 				} else {
-					this.form.getCustomerBean().setIdType("1");
-					this.form.setInvoiceId("5700000001");
+//					this.form.getCustomerBean().setIdType("1");
+//					this.form.setInvoiceId("5700000001");
 					request.setAttribute("target", Constants.PAGE_URL + "/EntrySaleDetailScn.jsp");
 				}
 			}else if(pageAction.equals(EDIT)){
@@ -114,6 +124,8 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 				this.lp_getModel();
 			}else if(pageAction.equals(GET_PROD_DTL)){
 				this.lp_getProdDtl();
+			}else if(pageAction.equals(SAVE)){
+				this.lp_saveData();
 			}
 			
 			session.setAttribute(FORM_NAME, this.form);
@@ -124,6 +136,185 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 		}finally{
 			logger.info("[execute][End]");
 		}
+   }
+   
+   private void lp_saveData(){
+	   logger.info("[lp_saveData][Begin]");
+	   
+	   CustomerBean 		customerBean 				= null;
+	   ProductBean			productBean 				= null;
+	   EntrySaleDetailBean 	entrySaleDetailBean 		= null;
+	   String				invoiceId 					= null;
+	   String 				priceAmount 				= null;
+	   String 				vatAmount 					= null;
+	   String 				remark 						= null;
+	   String 				commAmount 					= null;
+	   String 				flagAddSales 				= null;
+	   String				cusCode 					= null;
+	   String				motorcyclesCode 			= null;
+	   String				userUniqueId 				= null;
+	   String				invoiceMode 				= null;
+	   String				provinceId					= null;
+	   String				districtId					= null;
+	   String				subdistrictId				= null;
+	   String				provinceName				= null;
+	   String				districtName				= null;
+	   String				subdistrictName				= null;
+	   String 				brandName					= null;
+	   String 				model						= null;
+	   JSONObject 			obj 						= new JSONObject();
+	   AddressBean			addressBean					= null;
+	   EntrySaleDetailForm	form						= null;
+	   String 				chassis						= null;
+	   String 				engineNo					= null;
+	   String 				size						= null;
+	   
+	   try{
+		   customerBean 	= new CustomerBean();
+		   productBean 		= new ProductBean();
+		   form				= new EntrySaleDetailForm();
+		   invoiceId		= EnjoyUtils.nullToStr(this.request.getParameter("invoiceId"));
+		   priceAmount		= EnjoyUtils.replaceComma(this.request.getParameter("priceAmount"));
+		   vatAmount		= EnjoyUtils.replaceComma(this.request.getParameter("vatAmount"));
+		   remark			= EnjoyUtils.nullToStr(this.request.getParameter("remark"));
+		   commAmount		= EnjoyUtils.replaceComma(this.request.getParameter("commAmount"));
+		   flagAddSales		= EnjoyUtils.chkBoxtoDb(this.request.getParameter("flagAddSales"));
+		   cusCode			= EnjoyUtils.nullToStr(this.request.getParameter("cusCode"));
+		   userUniqueId		= this.userBean.getUserUniqueId();
+		   invoiceMode		= EnjoyUtils.nullToStr(this.request.getParameter("invoiceMode"));
+		   provinceName		= EnjoyUtils.nullToStr(this.request.getParameter("provinceName"));
+		   districtName		= EnjoyUtils.nullToStr(this.request.getParameter("districtName"));
+		   subdistrictName	= EnjoyUtils.nullToStr(this.request.getParameter("subdistrictName"));
+		   brandName		= EnjoyUtils.nullToStr(this.request.getParameter("brandName"));
+		   model			= EnjoyUtils.nullToStr(this.request.getParameter("model"));
+		   chassis			= EnjoyUtils.nullToStr(this.request.getParameter("chassis"));
+		   engineNo			= EnjoyUtils.nullToStr(this.request.getParameter("engineNo"));
+		   size				= EnjoyUtils.nullToStr(this.request.getParameter("size"));
+		   
+		   logger.info("[lp_saveData] invoiceId 			:: " + invoiceId);
+		   logger.info("[lp_saveData] priceAmount 			:: " + priceAmount);
+		   logger.info("[lp_saveData] vatAmount 			:: " + vatAmount);
+		   logger.info("[lp_saveData] remark 				:: " + remark);
+		   logger.info("[lp_saveData] commAmount 			:: " + commAmount);
+		   logger.info("[lp_saveData] flagAddSales 			:: " + flagAddSales);
+		   logger.info("[lp_saveData] cusCode 				:: " + cusCode);
+		   logger.info("[lp_saveData] userUniqueId 			:: " + userUniqueId);
+		   logger.info("[lp_saveData] invoiceMode 			:: " + invoiceMode);
+		   logger.info("[lp_saveData] provinceName 			:: " + provinceName);
+		   logger.info("[lp_saveData] districtName 			:: " + districtName);
+		   logger.info("[lp_saveData] subdistrictName 		:: " + subdistrictName);
+		   logger.info("[lp_saveData] brandName 			:: " + brandName);
+		   logger.info("[lp_saveData] model 				:: " + model);
+		   logger.info("[lp_saveData] chassis 				:: " + chassis);
+		   logger.info("[lp_saveData] engineNo 				:: " + engineNo);
+		   logger.info("[lp_saveData] size 					:: " + size);
+		   logger.info("[lp_saveData] idType 				:: " + this.request.getParameter("idType"));
+		   logger.info("[lp_saveData] idNumber 				:: " + EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
+		   
+		   form.setInvoiceId(invoiceId);
+		   form.setPriceAmount(priceAmount);
+		   form.setVatAmount(vatAmount);
+		   form.setRemark(remark);
+		   form.setCommAmount(commAmount);
+		   form.setFlagAddSales(flagAddSales);
+		   form.setUserUniqueId(userUniqueId);
+		   
+		   addressBean 		= this.addressDao.validateAddress(provinceName, districtName, subdistrictName);
+		   
+		   if(addressBean.getErrMsg().equals("")){
+			   
+			   provinceId 		= addressBean.getProvinceId();
+			   districtId 		= addressBean.getDistrictId();
+			   subdistrictId 	= addressBean.getSubdistrictId();
+			   
+			   logger.info("[lp_saveData] provinceId 			:: " + provinceId);
+			   logger.info("[lp_saveData] districtId 			:: " + districtId);
+			   logger.info("[lp_saveData] subdistrictId 		:: " + subdistrictId);
+			   
+		   }else{
+			   throw new EnjoyException(addressBean.getErrMsg());
+		   }
+		   
+		   if(cusCode.equals("")){
+			   customerBean.setCustName(EnjoyUtils.nullToStr(this.request.getParameter("custName"))); 
+			   customerBean.setCustSurname(EnjoyUtils.nullToStr(this.request.getParameter("custSurname")));
+			   customerBean.setHouseNumber(EnjoyUtils.nullToStr(this.request.getParameter("houseNumber")));
+			   customerBean.setMooNumber(EnjoyUtils.nullToStr(this.request.getParameter("mooNumber")));
+			   customerBean.setSoiName(EnjoyUtils.nullToStr(this.request.getParameter("soiName")));  
+			   customerBean.setStreetName(EnjoyUtils.nullToStr(this.request.getParameter("streetName")));
+			   
+			   customerBean.setProvinceCode(provinceId);
+			   customerBean.setDistrictCode(districtId); 
+			   customerBean.setSubdistrictCode(subdistrictId);
+			   
+			   customerBean.setIdType(EnjoyUtils.nullToStr(this.request.getParameter("idType"))); 
+			   customerBean.setIdNumber(EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
+			   customerBean.setCusStatus("A");
+			   
+			   cusCode = this.customerDao.insertCustomer(customerBean);
+			   customerBean.setCusCode(cusCode);
+		   }else{
+			   customerBean.setCusCode(cusCode);
+			   customerBean.setCustName(EnjoyUtils.nullToStr(this.request.getParameter("custName"))); 
+			   customerBean.setCustSurname(EnjoyUtils.nullToStr(this.request.getParameter("custSurname")));
+			   customerBean.setHouseNumber(EnjoyUtils.nullToStr(this.request.getParameter("houseNumber")));
+			   customerBean.setMooNumber(EnjoyUtils.nullToStr(this.request.getParameter("mooNumber")));
+			   customerBean.setSoiName(EnjoyUtils.nullToStr(this.request.getParameter("soiName")));  
+			   customerBean.setStreetName(EnjoyUtils.nullToStr(this.request.getParameter("streetName")));
+			   
+			   customerBean.setProvinceCode(provinceId);
+			   customerBean.setDistrictCode(districtId); 
+			   customerBean.setSubdistrictCode(subdistrictId);
+			   
+			   customerBean.setIdType(EnjoyUtils.nullToStr(this.request.getParameter("idType"))); 
+			   customerBean.setIdNumber(EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
+			   
+			   this.customerDao.updateCustomer(customerBean);
+		   }
+		   
+		   form.setCustomerBean(customerBean);
+		   
+		   entrySaleDetailBean = this.dao.getMotorcyclesCode(brandName, model);
+		   if(!entrySaleDetailBean.getErrMsg().equals("")){
+			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
+		   }else{
+			   motorcyclesCode = entrySaleDetailBean.getMotorcyclesCode();
+		   }
+		   
+		   form.setMotorcyclesCode(motorcyclesCode);
+		   
+		   productBean.setChassis(chassis);
+		   productBean.setEngineNo(engineNo);
+		   productBean.setSize(size);
+		   form.setProductBean(productBean);
+		   
+		   if(invoiceId.equals("")){
+			   entrySaleDetailBean = this.dao.insertInvoiceDetail(form);
+		   }else{
+			   entrySaleDetailBean = this.dao.updateInvoiceDetail(form);
+		   }
+		   
+		   if(!entrySaleDetailBean.getErrMsg().equals("")){
+			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
+		   }else{
+			   obj.put("status", 			"SUCCESS");
+			   obj.put("invoiceId", 		entrySaleDetailBean.getInvoiceId());
+		   }
+		   
+		   
+	   }
+	   catch(EnjoyException e){
+		   obj.put("status", 			"ERROR");
+		   obj.put("errMsg", 			e.getMessage());
+		}
+	   catch(Exception e){
+			obj.put("status", 			"ERROR");
+			obj.put("errMsg", 			"เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+		   e.printStackTrace();
+	   }finally{
+		   this.motorUtil.writeMSG(obj.toString());
+		   logger.info("[lp_saveData][End]");
+	   }
    }
    
    private void lp_getData(){
