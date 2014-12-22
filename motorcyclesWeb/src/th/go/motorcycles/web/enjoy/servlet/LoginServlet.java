@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import th.go.motorcycles.app.enjoy.bean.UserDetailsBean;
 import th.go.motorcycles.app.enjoy.dao.UserDetailsDao;
+import th.go.motorcycles.app.enjoy.main.ConfigFile;
 import th.go.motorcycles.web.enjoy.common.EnjoyStandardSvc;
 import th.go.motorcycles.web.enjoy.logger.LogWrapper;
 import th.go.motorcycles.web.enjoy.utils.MotorUtil;
@@ -38,6 +39,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
         	
         	logger.info("[EnjoyLoginSvc][execute] userId 	:: " + userId);
         	logger.info("[EnjoyLoginSvc][execute] passWord 	:: " + passWord);
+        	logger.info("[EnjoyLoginSvc][execute] Vat Rate 	:: " + ConfigFile.getVAT_RATE());
         	
         	userBean = userDao.userSelect(userId, passWord);
         	

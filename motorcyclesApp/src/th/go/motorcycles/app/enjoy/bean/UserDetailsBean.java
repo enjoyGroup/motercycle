@@ -11,7 +11,9 @@ public class UserDetailsBean {
 	private String userStatus;
 	private String companyId;
 	private String companyName;
+	private String branchName;
 	private String companyAddress;
+	private String tin;
 	private String currentDate;
 	
 	public UserDetailsBean(){
@@ -25,7 +27,9 @@ public class UserDetailsBean {
 		this.userStatus 	= "";
 		this.companyId 		= "";
 		this.companyName 	= "";
+		this.branchName		= "";
 		this.companyAddress	= "";
+		this.tin			= "";
 		this.currentDate	= "";
 	}
 
@@ -123,6 +127,22 @@ public class UserDetailsBean {
 
 	public void setCurrentDate(String currentDate) {
 		this.currentDate = currentDate;
+	}
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+
+	public String getTin() {
+		return tin;
+	}
+
+	public void setTin(String tin) {
+		this.tin = tin;
 	}
 	
 }

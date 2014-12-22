@@ -30,8 +30,9 @@ public class UserDetailsDao {
 
 		    passWord	= EnjoyEncryptDecrypt.enCryption(userId, pass);
 //			sql 		= " SELECT userUniqueId, userId, userName, userSurname, userPrivilege, userLevel, companyId, companyName, companyAddress ";
-			sql 		= " SELECT userUniqueId, userId, userName, userSurname, userPrivilege, userLevel, companyId ";
-			sql 		= sql + " FROM userdetails where userId = '" + userId + "' and userPassword = '" + passWord + "' and userStatus = 'A'";
+			sql 		= " SELECT t1.userUniqueId, t1.userId, t1.userName, t1.userSurname, t1.userPrivilege, t1.userLevel, t1.companyId, ";
+			sql 		= sql + " t2.companyName, t2.branchName, t2.companyAddress, t2.tin ";
+			sql 		= sql + " FROM userdetails t1, company t2 where t1.companyId = t2.companyId and t1.userId = '" + userId + "' and t1.userPassword = '" + passWord + "' and t1.userStatus = 'A'";
 			
 			System.out.println("[EnjoyMotorUserDao][userSelect] sql :: " + sql);
 			
@@ -47,8 +48,10 @@ public class UserDetailsDao {
 		    	userBean.setUserPrivilege(rs.getString("userSurname"));
 		    	userBean.setUserLevel(rs.getString("userLevel"));
 		    	userBean.setCompanyId(rs.getString("companyId"));
-//		    	userBean.setCompanyName(rs.getString("companyName"));
-//		    	userBean.setCompanyAddress(rs.getString("companyAddress"));
+		    	userBean.setCompanyName(rs.getString("companyName"));
+		    	userBean.setCompanyAddress(rs.getString("branchName"));
+		    	userBean.setCompanyAddress(rs.getString("companyAddress"));
+		    	userBean.setCompanyAddress(rs.getString("tin"));
 			    userBean.setCurrentDate(dateFormat.format(date));
 		    }
 		}catch(Exception e){
