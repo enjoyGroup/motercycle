@@ -659,6 +659,68 @@ public class EntrySaleDetailDao {
 		return bean;
 	}
 	
+	public EntrySaleDetailBean getNextInvoiceId(String invoiceId){
+		System.out.println("[EntrySaleDetailDao][getNextInvoiceId][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+		String							nextInvoiceId		= null;
+		EntrySaleDetailBean				bean				= new EntrySaleDetailBean();
+		String							errMsg				= null;
+		
+		try{
+			sql 		= "select invoiceId from invoicedetails where invoiceId = (select min(invoiceId) from invoicedetails where  invoiceId > "+invoiceId+")";
+			
+			System.out.println("[EntrySaleDetailDao][getNextInvoiceId] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    while(rs.next()){
+		    	nextInvoiceId = EnjoyUtils.nullToStr(rs.getString("invoiceId"));
+		    	bean.setInvoiceId(nextInvoiceId);
+		    }
+		    
+		}catch(Exception e){
+			errMsg = "เกิดข้อผิดพลาดในการดึง invoiceId";
+			bean.setErrMsg(errMsg);
+			e.printStackTrace();
+		}finally{
+			System.out.println("[EntrySaleDetailDao][getNextInvoiceId][End]");
+		}
+		
+		return bean;
+	}
+	
+	public EntrySaleDetailBean getPreviousInvoiceId(String invoiceId){
+		System.out.println("[EntrySaleDetailDao][getPreviousInvoiceId][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+		String							nextInvoiceId		= null;
+		EntrySaleDetailBean				bean				= new EntrySaleDetailBean();
+		String							errMsg				= null;
+		
+		try{
+			sql 		= "select invoiceId from invoicedetails where invoiceId = (select max(invoiceId) from invoicedetails where  invoiceId < "+invoiceId+")";
+			
+			System.out.println("[EntrySaleDetailDao][getPreviousInvoiceId] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    while(rs.next()){
+		    	nextInvoiceId = EnjoyUtils.nullToStr(rs.getString("invoiceId"));
+		    	bean.setInvoiceId(nextInvoiceId);
+		    }
+		    
+		}catch(Exception e){
+			errMsg = "เกิดข้อผิดพลาดในการดึง invoiceId";
+			bean.setErrMsg(errMsg);
+			e.printStackTrace();
+		}finally{
+			System.out.println("[EntrySaleDetailDao][getPreviousInvoiceId][End]");
+		}
+		
+		return bean;
+	}
+	
 }
 
 

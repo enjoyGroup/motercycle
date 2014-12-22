@@ -363,6 +363,112 @@
 		    }
 		    
 		});
+	
+		$('#btnNext').click(function(){
+		    
+			var lv_invoiceId = null;
+			
+		    try{
+		    	lv_invoiceId = gp_trim($("#invoiceId").val());
+		    	
+		    	if(lv_invoiceId==""){
+		    		alert("บันทึกข้อมูลก่อนดูรายการถัดไป");
+		    		return;
+		    	}
+		    	
+				$.ajax({
+					async:false,
+		            type: "POST",
+		            url: gv_url,
+		            data: gv_service + "&pageAction=getNextInvoice&invoiceId=" + lv_invoiceId,
+		            beforeSend: "",
+		            success: function(data){
+		            	var jsonObj 			= null;
+		            	var status				= null;
+		            	var nextInvoiceId		= null;
+		            	var errMsg				= null;
+		            	
+		            	try{
+		            		jsonObj = JSON.parse(data);
+		            		status	= jsonObj.status;
+		            		
+		            		if(status=="SUCCESS"){
+		            			nextInvoiceId		= jsonObj.invoiceId;
+		            			
+		            			if(nextInvoiceId==""){
+		            				window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=new");
+		            			}else{
+		            				window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=edit&invoiceId=" + nextInvoiceId);
+		            			}
+		            		}else{
+		            			errMsg = jsonObj.errMsg;
+		            			
+		            			alert(errMsg);
+		            		}
+		            	}catch(e){
+		            		alert("in btnNext :: " + e);
+		            	}
+		            }
+		        });
+		    	
+		    }catch(e){
+		    	alert("btnNext :: " + e);
+		    }
+		    
+		});
+		
+	$('#btnPrev').click(function(){
+		    
+			var lv_invoiceId = null;
+			
+		    try{
+		    	lv_invoiceId = gp_trim($("#invoiceId").val());
+		    	
+		    	if(lv_invoiceId==""){
+		    		alert("บันทึกข้อมูลก่อนดูรายการก่อนหน้า");
+		    		return;
+		    	}
+		    	
+				$.ajax({
+					async:false,
+		            type: "POST",
+		            url: gv_url,
+		            data: gv_service + "&pageAction=getPreviousInvoice&invoiceId=" + lv_invoiceId,
+		            beforeSend: "",
+		            success: function(data){
+		            	var jsonObj 			= null;
+		            	var status				= null;
+		            	var nextInvoiceId		= null;
+		            	var errMsg				= null;
+		            	
+		            	try{
+		            		jsonObj = JSON.parse(data);
+		            		status	= jsonObj.status;
+		            		//alert(status);
+		            		if(status=="SUCCESS"){
+		            			nextInvoiceId		= jsonObj.invoiceId;
+		            			//alert(nextInvoiceId);
+		            			if(nextInvoiceId==""){
+		            				window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=new");
+		            			}else{
+		            				window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=edit&invoiceId=" + nextInvoiceId);
+		            			}
+		            		}else{
+		            			errMsg = jsonObj.errMsg;
+		            			
+		            			alert(errMsg);
+		            		}
+		            	}catch(e){
+		            		alert("in btnPrev :: " + e);
+		            	}
+		            }
+		        });
+		    	
+		    }catch(e){
+		    	alert("btnPrev :: " + e);
+		    }
+		    
+		});
 		
 	});
 	

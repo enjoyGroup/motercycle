@@ -53,6 +53,8 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
    private static final String 		GET_PROD_DTL 			= "getProdDtl";
    private static final String 		GET_BRAND_NAME 			= "getBrandName";
    private static final String 		GET_MODEL	 			= "getModel";
+   private static final String 		GET_NEXT_INVOICE	 	= "getNextInvoice";
+   private static final String 		GET_PREVIOUS_INVOICE	= "getPreviousInvoice";
    
    private MotorUtil               		motorUtil                   = null;
    private EntrySaleDetailForm	        form                        = null;
@@ -126,6 +128,10 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 				this.lp_getProdDtl();
 			}else if(pageAction.equals(SAVE)){
 				this.lp_saveData();
+			}else if(pageAction.equals(GET_NEXT_INVOICE)){
+				this.lp_getNextInvoice();
+			}else if(pageAction.equals(GET_PREVIOUS_INVOICE)){
+				this.lp_getPreviousInvoice();
 			}
 			
 			session.setAttribute(FORM_NAME, this.form);
@@ -770,6 +776,76 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 		   logger.info("[EntrySaleDetailServlet][lp_viewpdf] " + e.getMessage());
 	   }finally{
 		   logger.info("[EntrySaleDetailServlet][lp_viewpdf][End]");
+	   }
+   }
+   
+   private void lp_getNextInvoice(){
+	   logger.info("[lp_getNextInvoice][Begin]");
+	   
+	   JSONObject 			obj 						= new JSONObject();
+	   String				invoiceId					= null;
+	   EntrySaleDetailBean	entrySaleDetailBean			= null;
+	   
+	   try{
+		   invoiceId = EnjoyUtils.nullToStr(this.request.getParameter("invoiceId"));
+		   
+		   logger.info("[lp_getNextInvoice] invoiceId :: " + invoiceId);
+		   
+		   entrySaleDetailBean = this.dao.getNextInvoiceId(invoiceId);
+		   
+		   if(!entrySaleDetailBean.getErrMsg().equals("")){
+			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
+		   }
+		   
+		   obj.put("status", 			"SUCCESS");
+		   obj.put("invoiceId", 		entrySaleDetailBean.getInvoiceId());
+		   
+	   }catch(EnjoyException e){
+		   obj.put("status", 			"ERROR");
+		   obj.put("errMsg", 			e.getMessage());
+		   e.printStackTrace();
+	   }catch(Exception e){
+		   obj.put("status", 			"ERROR");
+		   obj.put("errMsg", 			"เกิดข้อผิดพลาดในการดึง invoiceId");
+		   e.printStackTrace();
+	   }finally{
+		   this.motorUtil.writeMSG(obj.toString());
+		   logger.info("[lp_getNextInvoice][End]");
+	   }
+   }
+   
+   private void lp_getPreviousInvoice(){
+	   logger.info("[lp_getPreviousInvoice][Begin]");
+	   
+	   JSONObject 			obj 						= new JSONObject();
+	   String				invoiceId					= null;
+	   EntrySaleDetailBean	entrySaleDetailBean			= null;
+	   
+	   try{
+		   invoiceId = EnjoyUtils.nullToStr(this.request.getParameter("invoiceId"));
+		   
+		   logger.info("[lp_getPreviousInvoice] invoiceId :: " + invoiceId);
+		   
+		   entrySaleDetailBean = this.dao.getPreviousInvoiceId(invoiceId);
+		   
+		   if(!entrySaleDetailBean.getErrMsg().equals("")){
+			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
+		   }
+		   
+		   obj.put("status", 			"SUCCESS");
+		   obj.put("invoiceId", 		entrySaleDetailBean.getInvoiceId());
+		   
+	   }catch(EnjoyException e){
+		   obj.put("status", 			"ERROR");
+		   obj.put("errMsg", 			e.getMessage());
+		   e.printStackTrace();
+	   }catch(Exception e){
+		   obj.put("status", 			"ERROR");
+		   obj.put("errMsg", 			"เกิดข้อผิดพลาดในการดึง invoiceId");
+		   e.printStackTrace();
+	   }finally{
+		   this.motorUtil.writeMSG(obj.toString());
+		   logger.info("[lp_getPreviousInvoice][End]");
 	   }
    }
    
