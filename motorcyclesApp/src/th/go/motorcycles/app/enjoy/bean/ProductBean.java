@@ -6,6 +6,8 @@ public class ProductBean {
 	private String model;
 	private String chassis;
 	private String engineNo;
+	private String chassisDisp;
+	private String engineNoDisp;
 	private String size;
 	
 	public ProductBean(){
@@ -14,7 +16,29 @@ public class ProductBean {
 		this.model 			= "";
 		this.chassis 		= "";
 		this.engineNo 		= "";
+		this.chassisDisp 	= "";
+		this.engineNoDisp 	= "";
 		this.size 			= "";
+	}
+
+
+	public String getChassisDisp() {
+		return chassisDisp;
+	}
+
+
+	public void setChassisDisp(String chassisDisp) {
+		this.chassisDisp = chassisDisp;
+	}
+
+
+	public String getEngineNoDisp() {
+		return engineNoDisp;
+	}
+
+
+	public void setEngineNoDisp(String engineNoDisp) {
+		this.engineNoDisp = engineNoDisp;
 	}
 
 

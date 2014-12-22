@@ -29,7 +29,8 @@ public class UserDetailsDao {
 		    date 	   = new Date();
 
 		    passWord	= EnjoyEncryptDecrypt.enCryption(userId, pass);
-			sql 		= " SELECT userUniqueId, userId, userName, userSurname, userPrivilege, userLevel, companyId, companyName, companyAddress ";
+//			sql 		= " SELECT userUniqueId, userId, userName, userSurname, userPrivilege, userLevel, companyId, companyName, companyAddress ";
+			sql 		= " SELECT userUniqueId, userId, userName, userSurname, userPrivilege, userLevel, companyId ";
 			sql 		= sql + " FROM userdetails where userId = '" + userId + "' and userPassword = '" + passWord + "' and userStatus = 'A'";
 			
 			System.out.println("[EnjoyMotorUserDao][userSelect] sql :: " + sql);
@@ -46,8 +47,8 @@ public class UserDetailsDao {
 		    	userBean.setUserPrivilege(rs.getString("userSurname"));
 		    	userBean.setUserLevel(rs.getString("userLevel"));
 		    	userBean.setCompanyId(rs.getString("companyId"));
-		    	userBean.setCompanyName(rs.getString("companyName"));
-		    	userBean.setCompanyAddress(rs.getString("companyAddress"));
+//		    	userBean.setCompanyName(rs.getString("companyName"));
+//		    	userBean.setCompanyAddress(rs.getString("companyAddress"));
 			    userBean.setCurrentDate(dateFormat.format(date));
 		    }
 		}catch(Exception e){

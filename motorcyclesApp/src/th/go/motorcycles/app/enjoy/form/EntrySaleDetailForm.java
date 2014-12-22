@@ -16,10 +16,15 @@ public class EntrySaleDetailForm {
 	private String 								commAmount;
 	private String 								flagAddSales;
 	private String 								printType;
-	private String 								vatFlag;
+//	private String 								vatFlag;
 	private String								cusCode;
 	private String								motorcyclesCode;
 	private String								userUniqueId;
+	private String								color;
+	private String								invoiceIdAddSales;
+	private String								flagCredit;
+	private String								creditAmount;
+	private String								vat;
 	
 	public EntrySaleDetailForm(){
 		this.customerBean 				= new CustomerBean();
@@ -33,10 +38,55 @@ public class EntrySaleDetailForm {
 		this.commAmount					= "0.00";
 		this.flagAddSales				= "N";
 		this.printType					= "1";
-		this.vatFlag					= "N";
+//		this.vatFlag					= "N";
 		this.cusCode					= "";
 		this.motorcyclesCode			= "";
 		this.userUniqueId				= "";
+		this.color						= "";
+		this.invoiceIdAddSales			= "";
+		this.flagCredit					= "N";
+		this.creditAmount				= "0.00";
+		this.vat						= "7";
+	}
+
+	public String getVat() {
+		return vat;
+	}
+
+	public void setVat(String vat) {
+		this.vat = vat;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getInvoiceIdAddSales() {
+		return invoiceIdAddSales;
+	}
+
+	public void setInvoiceIdAddSales(String invoiceIdAddSales) {
+		this.invoiceIdAddSales = invoiceIdAddSales;
+	}
+
+	public String getFlagCredit() {
+		return flagCredit;
+	}
+
+	public void setFlagCredit(String flagCredit) {
+		this.flagCredit = flagCredit;
+	}
+
+	public String getCreditAmount() {
+		return creditAmount;
+	}
+
+	public void setCreditAmount(String creditAmount) {
+		this.creditAmount = creditAmount;
 	}
 
 	public String getCusCode() {
@@ -63,13 +113,13 @@ public class EntrySaleDetailForm {
 		this.userUniqueId = userUniqueId;
 	}
 
-	public String getVatFlag() {
-		return vatFlag;
-	}
-
-	public void setVatFlag(String vatFlag) {
-		this.vatFlag = vatFlag;
-	}
+//	public String getVatFlag() {
+//		return vatFlag;
+//	}
+//
+//	public void setVatFlag(String vatFlag) {
+//		this.vatFlag = vatFlag;
+//	}
 
 	public String getPrintType() {
 		return printType;

@@ -148,10 +148,11 @@ public class EntrySaleDetailDao {
 		ProductBean			productBean			= null;
 		CustomerBean 		customerBean 		= null;
 		String				cusCode				= null;
-		Double				priceAmount			= null;
-		Double				vatAmount			= null;
-		Double				totalAmount			= null;
+		String				priceAmount			= null;
+		String				vatAmount			= null;
+		String				totalAmount			= null;
 		String				commAmount			= null;
+		String				creditAmount		= null;
 		
 		try{
 			customerBean 	= new CustomerBean();
@@ -161,10 +162,17 @@ public class EntrySaleDetailDao {
 								+ " , c.cusCode cusCode"
 								+ " , b.brandName brandName" 
 								+ " , m.model model "
-								+ " , i.chassisDisp chassis"
-								+ " , i.EngineNoDisp engineNo"
+								+ " , m.chassis chassis"
+								+ " , m.engineNo engineNo"
+								+ " , i.chassisDisp chassisDisp"
+								+ " , i.EngineNoDisp EngineNoDisp"
 								+ " , i.size size"
+								+ " , i.color color"
+								+ " , i.invoiceIdAddSales invoiceIdAddSales"
+								+ " , i.flagCredit flagCredit"
+								+ " , i.creditAmount creditAmount"
 								+ " , i.priceAmount priceAmount" 
+								+ " , i.totalAmount totalAmount" 
 								+ " , i.vatAmount vatAmount" 
 								+ " , i.commAmount commAmount" 
 								+ " , i.remark remark"
@@ -190,26 +198,36 @@ public class EntrySaleDetailDao {
 		    	productBean.setModel(EnjoyUtils.nullToStr(rs.getString("model")));
 		    	productBean.setChassis(EnjoyUtils.nullToStr(rs.getString("chassis")));
 		    	productBean.setEngineNo(EnjoyUtils.nullToStr(rs.getString("engineNo")));
+		    	productBean.setChassisDisp(EnjoyUtils.nullToStr(rs.getString("chassisDisp")));
+		    	productBean.setEngineNoDisp(EnjoyUtils.nullToStr(rs.getString("EngineNoDisp")));
 		    	productBean.setSize(EnjoyUtils.nullToStr(rs.getString("size")));
 		    	
 		    	form.setProductBean(productBean);
 		    	
-		    	priceAmount = rs.getDouble("priceAmount");
-		    	vatAmount 	= rs.getDouble("vatAmount");
-		    	totalAmount	= priceAmount + vatAmount;
+//		    	priceAmount = rs.getDouble("priceAmount");
+//		    	vatAmount 	= rs.getDouble("vatAmount");
+//		    	totalAmount	= priceAmount + vatAmount;
 		    	
-		    	if(vatAmount > 0){
-		    		form.setVatFlag("Y");
-		    	}
+//		    	if(vatAmount > 0){
+//		    		form.setVatFlag("Y");
+//		    	}
 		    	
-		    	commAmount 	= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("commAmount")), 2);
+		    	totalAmount 	= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("totalAmount")), 2);
+		    	vatAmount 		= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("vatAmount")), 2);
+		    	priceAmount		= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("priceAmount")), 2);
+		    	commAmount 		= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("commAmount")), 2);
+		    	creditAmount 	= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("creditAmount")), 2);
 		    	
-		    	form.setPriceAmount(EnjoyUtils.convertFloatToDisplay(priceAmount.toString(), 2));
-		    	form.setVatAmount(EnjoyUtils.convertFloatToDisplay(vatAmount.toString(), 2));
+		    	form.setPriceAmount(priceAmount);
+		    	form.setVatAmount(vatAmount);
 		    	form.setCommAmount(commAmount);
-		    	form.setTotalAmount(EnjoyUtils.convertFloatToDisplay(totalAmount.toString(), 2));
+		    	form.setTotalAmount(totalAmount);
+		    	form.setCreditAmount(creditAmount);
 		    	form.setRemark(EnjoyUtils.nullToStr(rs.getString("remark")));
 		    	form.setFlagAddSales(EnjoyUtils.nullToStr(rs.getString("flagAddSales")));
+		    	form.setColor(EnjoyUtils.nullToStr(rs.getString("color")));
+		    	form.setInvoiceIdAddSales(EnjoyUtils.nullToStr(rs.getString("invoiceIdAddSales")));
+		    	form.setFlagCredit(EnjoyUtils.nullToStr(rs.getString("flagCredit")));
 		    	
 		    }	 
 		    
@@ -233,7 +251,7 @@ public class EntrySaleDetailDao {
         List<String> 					list 				= new ArrayList<String>();
 		
 		try{
-			sql 		= " select cusCode from customer where cusCode like ('"+cusCode+"%') order by cusCode asc limit 10 ";
+			sql 		= " select cusCode from customer where cusCode like ('"+cusCode+"%') and cusStatus = 'A' order by cusCode asc limit 10 ";
 			
 			System.out.println("[EntrySaleDetailDao][cusCodeList] sql :: " + sql);
 			
@@ -261,7 +279,7 @@ public class EntrySaleDetailDao {
         List<String> 					list 				= new ArrayList<String>();
 		
 		try{
-			sql 		= " select cusName from customer where cusName like ('"+custName+"%') group by cusName order by cusName asc limit 10 ";
+			sql 		= " select cusName from customer where cusName like ('"+custName+"%') and cusStatus = 'A' group by cusName order by cusName asc limit 10 ";
 			
 			System.out.println("[EntrySaleDetailDao][custNameList] sql :: " + sql);
 			
@@ -293,7 +311,7 @@ public class EntrySaleDetailDao {
 			sql 		= "select cusCode from customer where cusName = '"+custName+"'";
 			
 		    if(custName.equals("")){
-		    	sql 		= " select cusSurname from customer where cusSurname like ('"+custSurname+"%') group by cusSurname order by cusSurname asc limit 10 ";
+		    	sql 		= " select cusSurname from customer where cusSurname like ('"+custSurname+"%') and cusStatus = 'A' group by cusSurname order by cusSurname asc limit 10 ";
 		    }else{
 		    	sql 		= " select cusSurname from customer where cusName = '"+custName+"' and cusSurname like ('"+custSurname+"%') group by cusSurname order by cusSurname asc limit 10 ";
 		    }
@@ -363,9 +381,9 @@ public class EntrySaleDetailDao {
 			}
 			
 			if(brandCode == null){
-				sql 		= " select model from motorcyclesdetails where model like ('"+model+"%') order by model asc limit 10 ";
+				sql 		= " select model from motorcyclesdetails where model like ('"+model+"%') and motorcyclesStatus = 'A' order by model asc limit 10 ";
 			}else{
-				sql 		= " select model from motorcyclesdetails where brandCode = '"+brandCode+"' and model like ('"+model+"%') order by model asc limit 10 ";
+				sql 		= " select model from motorcyclesdetails where brandCode = '"+brandCode+"' and model like ('"+model+"%') and motorcyclesStatus = 'A' order by model asc limit 10 ";
 			}
 			
 			System.out.println("[EntrySaleDetailDao][modelList] sql :: " + sql);
@@ -405,12 +423,14 @@ public class EntrySaleDetailDao {
 		    	sql 		= " select m.model, m.chassis, m.engineNo, m.size, b.brandName"
     					+ " from motorcyclesdetails m, branddetails b"
     					+ " where m.model = '"+model+"'"
+    						+ " and m.motorcyclesStatus = 'A'"
     						+ " and m.brandCode = '"+brandCode+"'"
     						+ " and b.brandCode = m.brandCode";
 		    }else{
 		    	sql 		= " select m.model, m.chassis, m.engineNo, m.size, b.brandName"
 		    					+ " from motorcyclesdetails m, branddetails b"
 		    					+ " where m.model = '"+model+"'"
+		    						+ " and m.motorcyclesStatus = 'A'"
 		    						+ " and b.brandCode = m.brandCode";
 		    }
 		    
@@ -464,6 +484,7 @@ public class EntrySaleDetailDao {
 		    sql 		= " select m.motorcyclesCode"
 							+ " from motorcyclesdetails m, branddetails b"
 							+ " where m.model = '"+model+"'"
+								+ " and m.motorcyclesStatus = 'A'"
 								+ " and m.brandCode = '"+brandCode+"'"
 								+ " and b.brandCode = m.brandCode";
 		    

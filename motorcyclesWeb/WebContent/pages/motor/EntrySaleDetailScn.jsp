@@ -473,8 +473,8 @@
 	});
 	
 	function lp_validate(){
-		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassis", "engineNo", "size", "priceAmount");
-	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "จำนวนเงินที่ขาย");
+		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassisDisp", "engineNoDisp", "size", "color", "priceAmount");
+	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "สี", "จำนวนเงินที่ขาย");
 	    var lo_flagAddSales			= null;
 	    var lo_commAmount			= null;
 	    
@@ -717,27 +717,50 @@
 		}
 	}
 	
-	function lp_onBlurPriceAmount(){
+	function lp_onBlurVatAmount(){
 		
-		var lo_priceAmount 		= null;
+		var lo_vatAmount 		= null;
 		
 		try{
-			lo_priceAmount 			= document.getElementById("priceAmount");
+			lo_vatAmount 			= document.getElementById("vatAmount");
 			
-			if(gp_trim(lo_priceAmount.value)==""){
-				lo_priceAmount.value = "0.00";
+			if(gp_trim(lo_vatAmount.value)==""){
+				lo_vatAmount.value = "0.00";
 			}
 			
-			if(gp_format(lo_priceAmount, 2)==false){
+			if(gp_format(lo_vatAmount, 2)==false){
 				alert("กรุณาระบุตัวเลขเท่านั้น");
-				lo_priceAmount.value = "0.00";
+				lo_vatAmount.value = "0.00";
+				return;
+			}
+			
+		}catch(e){
+			alert("lp_onBlurVatAmount :: " + e);
+		}
+		
+	}
+	
+	function lp_onBlurTotalAmount(){
+		
+		var lo_totalAmount 		= null;
+		
+		try{
+			lo_totalAmount 			= document.getElementById("totalAmount");
+			
+			if(gp_trim(lo_totalAmount.value)==""){
+				lo_totalAmount.value = "0.00";
+			}
+			
+			if(gp_format(lo_totalAmount, 2)==false){
+				alert("กรุณาระบุตัวเลขเท่านั้น");
+				lo_totalAmount.value = "0.00";
 				return;
 			}
 			
 			lp_calVatAmount();
 			
 		}catch(e){
-			alert("lp_onBlurPriceAmount :: " + e);
+			alert("lp_onBlurTotalAmount :: " + e);
 		}
 		
 	}
@@ -765,26 +788,22 @@
 		
 	}
 	
-	function lp_calVatAmount(){
+	/*function lp_calVatAmount(){
 		
-		var lo_vatFlag 		= null;
 		var lo_vatAmount 	= null;
 		var lo_totalAmount	= null;
 		var lv_priceAmount	= "0.00";
 		var lv_vatAmount 	= "0.00";
 		var lv_totalAmount	= "0.00";
+		var lv_vat			= null;
 		
 		try{
-			lo_vatFlag 		= document.getElementById("vatFlag");
+			lv_vat			= 100 + parseInt($("#vat").val());
 			lo_vatAmount 	= document.getElementById("vatAmount");
 			lo_totalAmount	= document.getElementById("totalAmount");
 			lv_priceAmount	= gp_replaceComma(document.getElementById("priceAmount").value);
 			
-			if(lo_vatFlag.checked==true){
-				lv_vatAmount = ((lv_priceAmount*7)/100).toString();
-			}else{
-				lv_vatAmount = "0.00";
-			}
+			lv_vatAmount = ((lv_priceAmount*7)/100).toString();
 			
 			lo_vatAmount.value = lv_vatAmount;
 			gp_format(lo_vatAmount, 2);
@@ -793,6 +812,39 @@
 			
 			lo_totalAmount.value = lv_totalAmount;
 			gp_format(lo_totalAmount, 2);
+			
+		}catch(e){
+			alert("lp_calVatAmount :: " + e);
+		}
+		
+	}*/
+	
+	function lp_calVatAmount(){
+		
+		var lo_vatAmount 	= null;
+		var lo_totalAmount	= null;
+		var lo_priceAmount	= null;
+		var lv_priceAmount	= "0.00";
+		var lv_vatAmount 	= "0.00";
+		var lv_totalAmount	= "0.00";
+		var lv_vat			= null;
+		
+		try{
+			lv_vat			= 100 + parseInt($("#vat").val());
+			lo_priceAmount	= document.getElementById("priceAmount");
+			lo_vatAmount 	= document.getElementById("vatAmount");
+			lo_totalAmount	= document.getElementById("totalAmount");
+			//lv_priceAmount	= gp_replaceComma(document.getElementById("priceAmount").value);
+			
+			lv_totalAmount 	= parseFloat(gp_replaceComma(lo_totalAmount.value));
+			lv_priceAmount	= lv_totalAmount * 100/(lv_vat);
+			lv_vatAmount	= lv_totalAmount - lv_priceAmount;
+			
+			lo_priceAmount.value 	= lv_priceAmount;
+			lo_vatAmount.value 		= lv_vatAmount;
+			
+			gp_format(lo_priceAmount, 2);
+			gp_format(lo_vatAmount, 2);
 			
 		}catch(e){
 			alert("lp_calVatAmount :: " + e);
@@ -840,6 +892,7 @@
 <form class="form-horizontal" id="frm" action="<%=servURL%>/EnjoyGenericSrv">
 	<input type="hidden" id="service" name="service" value="servlet.EntrySaleDetailServlet" />  
 	<input type="hidden" id="pageActionPDF" name="pageActionPDF" /> 
+	<input type="hidden" id="vat" name="vat" value="<%=entrySaleDetailForm.getVat() %>" /> 
 	<section class="vbox"> 
 		<section>
 			<section class="hbox stretch"> 
@@ -1093,8 +1146,9 @@
 														/>
 														<input  type="text" 
 																size="10"
-																id="chassis2" 
-																name="chassis2"
+																id="chassisDisp" 
+																name="chassisDisp"
+																value="<%=productBean.getChassisDisp() %>"
 														/>
 													</td>
 													<td>
@@ -1113,8 +1167,9 @@
 														/>
 														<input  type="text" 
 																size="10"
-																id="engineNo2" 
-																name="engineNo2"
+																id="engineNoDisp" 
+																name="engineNoDisp"
+																value="<%=productBean.getEngineNoDisp() %>"
 														/>
 													</td>
 												</tr>
@@ -1122,12 +1177,23 @@
 													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">ซีซี <font color="red">*</font>:</label>
 													</td>
-													<td colspan="3">
+													<td>
 														<input  type="text" 
 																size="20"
 																id="size" 
 																name="size"
 																value="<%=productBean.getSize() %>"
+														/>
+													</td>
+													<td>
+														<label class="col-sm-2 control-label" style="text-align:right">สี <font color="red">*</font>:</label>
+													</td>
+													<td>
+														<input  type="text" 
+																size="20"
+																id="color" 
+																name="color"
+																value="<%=entrySaleDetailForm.getColor() %>"
 														/>
 													</td>
 												</tr>
@@ -1140,19 +1206,16 @@
 																size="20"
 																id="priceAmount" 
 																name="priceAmount"
-																onblur="lp_onBlurPriceAmount();"
+																onkeypress="return false;"
+								                                onkeydown="return false;"
+								                                class="input-disabled" 
+								                                readonly="readonly" 
 																value="<%=entrySaleDetailForm.getPriceAmount() %>"
 														/>
 													</td>
 													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">
-															<input  type="checkbox" 
-																	id="vatFlag" 
-																	name="vatFlag" 
-																	onclick="lp_calVatAmount();"
-																	<%if(entrySaleDetailForm.getVatFlag().equalsIgnoreCase("Y")){%> checked="checked" <%} %> 
-																	value="Y" />
-															ภาษี 7%:
+															<script>document.write("ภาษี <%=entrySaleDetailForm.getVat()%>%:");</script>
 														</label>
 													</td>
 													<td align="left">
@@ -1160,10 +1223,7 @@
 																size="20"
 																id="vatAmount" 
 																name="vatAmount"
-																onkeypress="return false;"
-						                                        onkeydown="return false;"
-						                                        class="input-disabled" 
-						                                        readonly="readonly" 
+																onblur="lp_onBlurVatAmount();"
 																value="<%=entrySaleDetailForm.getVatAmount() %>"
 														/>
 													</td>
@@ -1177,10 +1237,7 @@
 																size="20"
 																id="totalAmount" 
 																name="totalAmount"
-																onkeypress="return false;"
-						                                        onkeydown="return false;"
-						                                        class="input-disabled" 
-						                                        readonly="readonly" 
+																onblur="lp_onBlurTotalAmount();"
 																value="<%=entrySaleDetailForm.getTotalAmount() %>"
 														/>
 													</td>
