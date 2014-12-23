@@ -131,7 +131,7 @@ function lp_set_title( av_title , av_screen){
 									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandSearchServlet" target="frame_main" >ข้อมูลยี่ห้อรถ</a>
 								</li>
 								<li onclick="lp_li_click(event , '0007');">
-									<a href="javascript:lp_home('motorcycle_detail');">ข้อมูลรถ</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.MotorDetailServlet" target="frame_main" >ข้อมูลรถ</a>
 								</li>
 							  </ul>
                            </li>
