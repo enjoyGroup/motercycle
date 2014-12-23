@@ -27,20 +27,20 @@ public class CustomerDao {
 		StringBuilder       address             = null;           
 		
 		try{ 
-			System.out.println(bean.getCusCode());
+			System.out.println(bean.getIdNumber());
 			System.out.println(bean.getCustFullname());
 
 			sql = "SELECT * FROM customer a  LEFT JOIN  subdistrict s ON a.subdistrictCode=s.subdistrictId LEFT JOIN district d "
 				+ "ON a.districtCode=d.districtId LEFT JOIN province p ON a.provinceCode=p.provinceId where  cusStatus = 'A'";
 			
-			if(bean.getCusCode()=="" && (bean.getCustFullname()=="")){
+			if(bean.getIdNumber()=="" && (bean.getCustFullname()=="")){
 				sql += " order by cusCode";
 			}else{
-				if(bean.getCusCode()!=""){
-					sql += " and cusCode = '"+bean.getCusCode()+"'";
+				if(bean.getIdNumber()!=""){
+					sql += " and idNumber = '"+bean.getIdNumber()+"'";
 				}
 				if(bean.getCustFullname()!=""){
-					sql += " and (SELECT CONCAT(a.cusName, ' ', a.cusSurname) as fullName) = '"+bean.getCustFullname()+"'";
+					sql += " and (SELECT CONCAT(a.cusName, ' ', a.cusSurname) as fullName) like '"+bean.getCustFullname()+"'";
 				}
 				 
 			} 	 

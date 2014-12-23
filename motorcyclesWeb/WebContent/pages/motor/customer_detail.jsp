@@ -24,7 +24,7 @@
 				fullname = fullname.trim(); 
 				
 				lv_params 	= "service=" + $('#service').val()  
-				            + "&cusCode=" + gp_sanitizeURLString($('#custCode').val()) 
+				            + "&idNumber=" + gp_sanitizeURLString($('#idNumber').val()) 
 				            + "&fullName=" + gp_sanitizeURLString($('#fullName').val())  
 							+ "&pageAction=" + pageAction;
 
@@ -160,9 +160,9 @@
 											 <div class="form-group"> 
 												<div class="col-sm-12">
 													<div class="row"> 
-													    <label class="col-sm-1 control-label" style="text-align:right">รหัสลูกค้า :</label>
+													    <label class="col-sm-10 control-label" style="text-align:right">เลขประจำตัวประชาชน :</label>
 														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="custCode" name="custCode"> 
+															<input type="text" class="form-control" id="idNumber" name="idNumber"> 
 														</div>
 														<label class="col-sm-1 control-label" style="text-align:right">ชื่อ-นามสกุล:</label>
 														<div class="col-md-2">  

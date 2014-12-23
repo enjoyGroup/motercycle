@@ -85,15 +85,15 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 		System.out.println("[CustomerInsertServlet][onSearch][Begin]");
 		List<CustomerBean> listCustomer = null;
 		CustomerBean bean               = null; 
-		String       cusCode            = null;
+		String       idNumber           = null;
 		String       name               = null; 
 		boolean	     dataRet			= false;
 		try{
 			bean     = new CustomerBean(); 
-			cusCode  = this.request.getParameter("cusCode"); 
+			idNumber = this.request.getParameter("idNumber"); 
 			name     = this.request.getParameter("fullName"); 
 
-			bean.setCusCode(cusCode); 
+			bean.setIdNumber(idNumber); 
 			bean.setCustFullname(name); 
 			
 			listCustomer = (List <CustomerBean>) this.dao.findCustomer(bean); 
@@ -115,7 +115,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 		}finally{
 			listCustomer       = null;
 			bean               = null; 
-			cusCode            = null;
+			idNumber           = null;
 			name               = null; 
 			dataRet			   = false;
 			System.out.println("[CustomerInsertServlet][onSearch][End]");
