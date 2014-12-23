@@ -473,8 +473,8 @@
 	});
 	
 	function lp_validate(){
-		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassisDisp", "engineNoDisp", "size", "color", "priceAmount");
-	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "สี", "จำนวนเงินที่ขาย");
+		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassisDisp", "engineNoDisp", "size", "color", "totalAmount", "vatAmount");
+	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "สี", "รวมสุทธิ", "ภาษี");
 	    var lo_flagAddSales			= null;
 	    var lo_commAmount			= null;
 	    
@@ -486,7 +486,7 @@
 			for(var i=0;i<la_idName.length;i++){
 	            lo_obj          = eval('document.getElementById("' + la_idName[i] + '")');
 	            
-	            if(la_idName[i]=="priceAmount"){
+	            if(la_idName[i]=="totalAmount" || la_idName[i]=="vatAmount"){
 	            	if(gp_trim(lo_obj.value)=="0.00"){
 		            	alert("กรุณาระบุ " + la_msg[i]);
 		                return false;
@@ -788,6 +788,29 @@
 		
 	}
 	
+	function lp_onBlurCreditAmount(){
+		
+		var lo_creditAmount 		= null;
+		
+		try{
+			lo_creditAmount 			= document.getElementById("creditAmount");
+			
+			if(gp_trim(lo_creditAmount.value)==""){
+				lo_creditAmount.value = "0.00";
+			}
+			
+			if(gp_format(lo_creditAmount, 2)==false){
+				alert("กรุณาระบุตัวเลขเท่านั้น");
+				lo_creditAmount.value = "0.00";
+				return;
+			}
+			
+		}catch(e){
+			alert("lp_onBlurCreditAmount :: " + e);
+		}
+		
+	}
+	
 	/*function lp_calVatAmount(){
 		
 		var lo_vatAmount 	= null;
@@ -880,9 +903,74 @@
 			alert("lp_chkAddSales :: " + e);
 		}
 	}
+	
+	function lp_manageObligation(){
+		
+		var lv_invoiceId 		= null;
+		var la_flagCredit		= null;
+		var lo_creditAmount		= null;
+		
+		try{
+			lv_invoiceId 		= gp_trim($("#invoiceId").val());
+			lo_creditAmount		= document.getElementById("creditAmount");
+			la_flagCredit		= document.getElementsByName("flagCredit");//ใบเพิ่มหนี้ : 1, ใบลดหนี้ : 2, ไม่มีเพิ่มเติม: 3
+			
+			//Case new
+			if(lv_invoiceId==""){
+				for(var i=0;i<la_flagCredit.length;i++){
+					la_flagCredit[i].disabled = true;
+				}
+				lo_creditAmount.className 	= "input-disabled";
+				lo_creditAmount.readOnly 	= true;
+				lo_creditAmount.onkeypress	= function(){return false;};
+				lo_creditAmount.onkeydown	= function(){return false;};
+				lo_creditAmount.value 		= "0.00";
+			}else{
+				for(var i=0;i<la_flagCredit.length;i++){
+					la_flagCredit[i].disabled = false;
+				}
+				lo_creditAmount.className 	= "";
+				lo_creditAmount.readOnly 	= false;
+				lo_creditAmount.onkeypress	= function(){};
+				lo_creditAmount.onkeydown	= function(){};
+			}
+			
+		}catch(e){
+			alert("lp_manageObligation :: " + e);
+		}
+	}
+	
+	function lp_controlCreditAmount(){
+		
+		var la_flagCredit		= null;
+		var lo_creditAmount		= null;
+		
+		try{
+			lo_creditAmount		= document.getElementById("creditAmount");
+			la_flagCredit		= document.getElementsByName("flagCredit");//Flag สำหรับเก็บ A- ใบเพิ่มหนี้ , C- ใบลดหนี้, N- ไม่มีเพิ่มเติม
+			
+			//ใบเพิ่มหนี้ : A, ใบลดหนี้ : C
+			if(la_flagCredit[0].checked==true || la_flagCredit[1].checked==true){
+				lo_creditAmount.className 	= "";
+				lo_creditAmount.readOnly 	= false;
+				lo_creditAmount.onkeypress	= function(){};
+				lo_creditAmount.onkeydown	= function(){};
+			}else{
+				lo_creditAmount.className 	= "input-disabled";
+				lo_creditAmount.readOnly 	= true;
+				lo_creditAmount.onkeypress	= function(){return false;};
+				lo_creditAmount.onkeydown	= function(){return false;};
+				lo_creditAmount.value 		= "0.00";
+			}
+			
+		}catch(e){
+			alert("lp_controlCreditAmount :: " + e);
+		}
+	}
 
     window.onload = function () {
-	    	
+    	lp_manageObligation();
+    	lp_controlCreditAmount();
     }
     
 </script>
@@ -1108,7 +1196,7 @@
 													<td width="13%">
 														<label class="col-sm-2 control-label" style="text-align:right">ยี่ห้อ <font color="red">*</font>:</label>
 													</td>
-													<td width="20%">
+													<td width="29%">
 														<input  type="text" 
 																size="20"
 																id="brandName" 
@@ -1119,7 +1207,7 @@
 													<td width="13%">
 														<label class="col-sm-2 control-label" style="text-align:right">รุ่น<font color="red">*</font>:</label>
 													</td>
-													<td width="54%" align="left">
+													<td width="45%" align="left">
 														<input  type="text" 
 																size="20"
 																id="model" 
@@ -1145,7 +1233,7 @@
 					                                       		readonly="readonly"															
 														/>
 														<input  type="text" 
-																size="10"
+																size="20"
 																id="chassisDisp" 
 																name="chassisDisp"
 																value="<%=productBean.getChassisDisp() %>"
@@ -1166,7 +1254,7 @@
 					                                       		readonly="readonly"															
 														/>
 														<input  type="text" 
-																size="10"
+																size="20"
 																id="engineNoDisp" 
 																name="engineNoDisp"
 																value="<%=productBean.getEngineNoDisp() %>"
@@ -1279,6 +1367,48 @@
 												</tr>
 												<tr>
 													<td colspan="4" align="left">
+														<label class="col-sm-2 control-label" style="text-align:right;width:100px;">
+															<input  type="radio" 
+																	id="flagCredit1" 
+																	name="flagCredit" 
+																	onclick="lp_controlCreditAmount();"
+																	<%if(entrySaleDetailForm.getFlagCredit().equalsIgnoreCase(EntrySaleDetailForm.FLAG_A)){%> checked="checked" <%} %> 
+																	value="<%=EntrySaleDetailForm.FLAG_A %>" />
+															ใบเพิ่มหนี้ 
+														</label>
+														<label class="col-sm-2 control-label" style="text-align:right;width:100px;">
+															<input  type="radio" 
+																	id="flagCredit2" 
+																	name="flagCredit" 
+																	onclick="lp_controlCreditAmount();"
+																	<%if(entrySaleDetailForm.getFlagCredit().equalsIgnoreCase(EntrySaleDetailForm.FLAG_C)){%> checked="checked" <%} %> 
+																	value="<%=EntrySaleDetailForm.FLAG_C %>" />
+															ใบลดหนี้ 
+														</label>
+														<label class="col-sm-2 control-label" style="text-align:right;width:120px;">
+															<input  type="radio" 
+																	id="flagCredit3" 
+																	name="flagCredit" 
+																	onclick="lp_controlCreditAmount();"
+																	<%if(entrySaleDetailForm.getFlagCredit().equalsIgnoreCase(EntrySaleDetailForm.FLAG_N)){%> checked="checked" <%} %> 
+																	value="<%=EntrySaleDetailForm.FLAG_N %>" />
+															ไม่มีเพิ่มเติม
+														</label>
+														<input  type="text" 
+																size="20"
+																id="creditAmount" 
+																name="creditAmount"
+																onkeypress="return false;"
+						                                        onkeydown="return false;"
+						                                        class="input-disabled" 
+						                                        readonly="readonly" 
+						                                        onblur="lp_onBlurCreditAmount();"
+																value="<%=entrySaleDetailForm.getCreditAmount() %>"
+														/>
+													</td>
+												</tr>
+												<tr>
+													<td colspan="4" align="left">
 														<label class="col-sm-2 control-label" style="text-align:right">
 															<b>พิมพ์แบบ</b>
 														</label>
@@ -1287,7 +1417,7 @@
 																	id="printType1" 
 																	name="printType" 
 																	<%if(entrySaleDetailForm.getPrintType().equalsIgnoreCase("1")){%> checked="checked" <%} %> 
-																	value="Y" />
+																	value="1" />
 															มีโครง
 														</label>
 														<label class="col-sm-2 control-label" style="text-align:right">
@@ -1295,7 +1425,7 @@
 																	id="printType2" 
 																	name="printType" 
 																	<%if(entrySaleDetailForm.getPrintType().equalsIgnoreCase("2")){%> checked="checked" <%} %> 
-																	value="Y" />
+																	value="2" />
 															ไม่มีโครง
 														</label>
 													</td>

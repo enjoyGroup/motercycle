@@ -174,6 +174,8 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 	   String 				chassis						= null;
 	   String 				engineNo					= null;
 	   String 				size						= null;
+	   String				flagCredit					= null;
+		String				creditAmount				= null;
 	   
 	   try{
 		   customerBean 	= new CustomerBean();
@@ -196,6 +198,8 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 		   chassis			= EnjoyUtils.nullToStr(this.request.getParameter("chassis"));
 		   engineNo			= EnjoyUtils.nullToStr(this.request.getParameter("engineNo"));
 		   size				= EnjoyUtils.nullToStr(this.request.getParameter("size"));
+		   flagCredit		= EnjoyUtils.nullToStr(this.request.getParameter("flagCredit"));
+		   creditAmount		= EnjoyUtils.replaceComma(this.request.getParameter("creditAmount"));
 		   
 		   logger.info("[lp_saveData] invoiceId 			:: " + invoiceId);
 		   logger.info("[lp_saveData] priceAmount 			:: " + priceAmount);
@@ -214,6 +218,8 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 		   logger.info("[lp_saveData] chassis 				:: " + chassis);
 		   logger.info("[lp_saveData] engineNo 				:: " + engineNo);
 		   logger.info("[lp_saveData] size 					:: " + size);
+		   logger.info("[lp_saveData] flagCredit 			:: " + flagCredit);
+		   logger.info("[lp_saveData] creditAmount	 		:: " + creditAmount);
 		   logger.info("[lp_saveData] idType 				:: " + this.request.getParameter("idType"));
 		   logger.info("[lp_saveData] idNumber 				:: " + EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
 		   
@@ -224,6 +230,13 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 		   form.setCommAmount(commAmount);
 		   form.setFlagAddSales(flagAddSales);
 		   form.setUserUniqueId(userUniqueId);
+		   form.setCreditAmount(creditAmount);
+		   
+		   if(invoiceId.equals("")){
+			   form.setFlagCredit(EntrySaleDetailForm.FLAG_N);
+		   }else{
+			   form.setFlagCredit(flagCredit);
+		   }
 		   
 		   addressBean 		= this.addressDao.validateAddress(provinceName, districtName, subdistrictName);
 		   

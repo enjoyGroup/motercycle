@@ -2,8 +2,14 @@ package th.go.motorcycles.app.enjoy.form;
 
 import th.go.motorcycles.app.enjoy.bean.CustomerBean;
 import th.go.motorcycles.app.enjoy.bean.ProductBean;
+import th.go.motorcycles.app.enjoy.main.ConfigFile;
 
 public class EntrySaleDetailForm {
+	
+	/*Flag สำหรับเก็บ A- ใบเพิ่มหนี้ , C- ใบลดหนี้, N- ไม่มีเพิ่มเติม*/
+	public static final String FLAG_A = "A";
+	public static final String FLAG_C = "C";
+	public static final String FLAG_N = "N";
 	
 	private CustomerBean 						customerBean;
 	private ProductBean							productBean;
@@ -44,9 +50,9 @@ public class EntrySaleDetailForm {
 		this.userUniqueId				= "";
 		this.color						= "";
 		this.invoiceIdAddSales			= "";
-		this.flagCredit					= "N";
+		this.flagCredit					= FLAG_N;
 		this.creditAmount				= "0.00";
-		this.vat						= "7";
+		this.vat						= ConfigFile.getVAT_RATE();
 	}
 
 	public String getVat() {

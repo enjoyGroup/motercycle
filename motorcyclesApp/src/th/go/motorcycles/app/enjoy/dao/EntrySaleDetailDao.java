@@ -540,6 +540,9 @@ public class EntrySaleDetailDao {
 		String				size		 		= null;
 		ProductBean			productBean			= null;
 		CustomerBean		customerBean		= null;
+		String				invoiceIdAddSales	= null;
+		String				flagCredit			= null;
+		String				creditAmount		= null;
 		
 		try{
 			productBean 	= form.getProductBean();
@@ -567,7 +570,12 @@ public class EntrySaleDetailDao {
 			chassisDisp 		= productBean.getChassis();
 			EngineNoDisp 		= productBean.getEngineNo();
 			size 				= productBean.getSize();
+			flagCredit 			= form.getFlagCredit();
+			creditAmount 		= form.getCreditAmount();
 			
+			if(flagAddSales.equals("Y")){
+				invoiceIdAddSales = invoiceId;
+			}
 			
 			sql 		= "insert into invoicedetails ( invoiceId"
 													+ " ,invoiceDate"	
@@ -581,7 +589,10 @@ public class EntrySaleDetailDao {
 													+ " ,remark"
 													+ " ,flagAddSales"	
 													+ " ,commAmount"
-													+ " ,userUniqueId)"
+													+ " ,userUniqueId"
+													+ " ,invoiceIdAddSales"
+													+ " ,flagCredit"
+													+ " ,creditAmount)"
 										+ " values("+invoiceId+""
 													+ " ,'"+EnjoyUtils.currDateThai()+"'"
 													+ " ,'"+cusCode+"'"
@@ -594,7 +605,10 @@ public class EntrySaleDetailDao {
 													+ " ,'"+remark+"'"
 													+ " ,'"+flagAddSales+"'"
 													+ " ,'"+commAmount+"'"
-													+ " ,'"+userUniqueId+"')";
+													+ " ,'"+userUniqueId+"'"
+													+ " ,"+invoiceIdAddSales+""
+													+ " ,"+flagCredit+""
+													+ " ,"+creditAmount+")";
 			this.db.execute(sql);
 			
 			bean.setInvoiceId(invoiceId);
@@ -632,6 +646,9 @@ public class EntrySaleDetailDao {
 		String				size		 		= null;
 		ProductBean			productBean			= null;
 		CustomerBean		customerBean		= null;
+		String				invoiceIdAddSales	= null;
+		String				flagCredit			= null;
+		String				creditAmount		= null;
 		
 		try{
 			productBean 		= form.getProductBean();
@@ -650,6 +667,13 @@ public class EntrySaleDetailDao {
 			EngineNoDisp 		= productBean.getEngineNo();
 			size 				= productBean.getSize();
 			
+			flagCredit 			= form.getFlagCredit();
+			creditAmount 		= form.getCreditAmount();
+			
+			if(flagAddSales.equals("Y")){
+				invoiceIdAddSales = invoiceId;
+			}
+			
 			sql 		= "update invoicedetails set invoiceDate 			= '" + EnjoyUtils.currDateThai() + "'"
 													+ ", cusCode 			= '" + cusCode + "'"
 													+ ", motorcyclesCode 	= '" + motorcyclesCode + "'"
@@ -662,6 +686,9 @@ public class EntrySaleDetailDao {
 													+ ", flagAddSales 		= '" + flagAddSales + "'"
 													+ ", commAmount 		= '" + commAmount + "'"
 													+ ", userUniqueId 		= '" + userUniqueId + "'"
+													+ ", invoiceIdAddSales 	= '" + invoiceIdAddSales + "'"
+													+ ", flagCredit 		= '" + flagCredit + "'"
+													+ ", creditAmount 		= '" + creditAmount + "'"
 										+ " where invoiceId = '" + invoiceId + "'";
 			
 			System.out.println("[EntrySaleDetailDao][updateInvoiceDetail] sql :: " + sql);
