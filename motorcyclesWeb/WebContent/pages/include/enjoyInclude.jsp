@@ -76,3 +76,4 @@ if(session == null || session.getAttribute("userBean") == null){
 <script src="<%=jsURL%>/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="<%=jsURL%>/EnjoyUtil.js" type="text/javascript"></script>
 <script src="<%=jsURL%>/jquery-ui.js" type="text/javascript"></script>
+<script src="<%=jsURL%>/jquery.tablesorter.js" type="text/javascript"></script>

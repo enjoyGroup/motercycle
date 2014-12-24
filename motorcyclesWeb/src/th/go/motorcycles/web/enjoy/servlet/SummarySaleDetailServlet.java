@@ -31,6 +31,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
    //Transaction
    private static final String 		SEARCH 		= "search";
    private static final String 		VIEWPDF 	= "pdf";
+   private static final String 		GET_PAGE 	= "getPage";
    
    private MotorUtil               		motorUtil                   = null;
    private SummarySaleDetailForm        form                        = null;
@@ -68,6 +69,8 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 //				request.setAttribute("target", Constants.PAGE_URL + "/SummarySaleDetailScn.jsp");
 			}else if(pageAction.equals(VIEWPDF)){
 				this.lp_viewpdf();
+			}else if(pageAction.equals(GET_PAGE)){
+				this.lp_getPage();
 			}
 			
 			session.setAttribute(FORM_NAME, this.form);
@@ -81,7 +84,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
    }
    
    private void lp_search(){
-	   logger.info("[SummarySaleDetailServlet][lp_search][Begin]");
+	   logger.info("[lp_search][Begin]");
 	   
 	   String							invoiceId			= null;
        String							invoiceDateFrom		= null;
@@ -99,12 +102,12 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   model						= EnjoyUtils.nullToStr(this.request.getParameter("model"));
 		   cusName						= EnjoyUtils.nullToStr(this.request.getParameter("cusName"));
 		   
-		   logger.info("[SummarySaleDetailServlet][execute] invoiceId 			:: " + invoiceId);
-		   logger.info("[SummarySaleDetailServlet][execute] invoiceDateFrom 	:: " + invoiceDateFrom);
-		   logger.info("[SummarySaleDetailServlet][execute] invoiceDateTo 		:: " + invoiceDateTo);
-		   logger.info("[SummarySaleDetailServlet][execute] brandName 			:: " + brandName);
-		   logger.info("[SummarySaleDetailServlet][execute] model 				:: " + model);
-		   logger.info("[SummarySaleDetailServlet][execute] cusName 			:: " + cusName);
+		   logger.info("[execute] invoiceId 			:: " + invoiceId);
+		   logger.info("[execute] invoiceDateFrom 	:: " + invoiceDateFrom);
+		   logger.info("[execute] invoiceDateTo 		:: " + invoiceDateTo);
+		   logger.info("[execute] brandName 			:: " + brandName);
+		   logger.info("[execute] model 				:: " + model);
+		   logger.info("[execute] cusName 			:: " + cusName);
 		   
 		   this.form.setInvoiceId(invoiceId);
 		   this.form.setInvoiceDateFrom(invoiceDateFrom);
@@ -113,16 +116,40 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   this.form.setModel(model);
 		   this.form.setCusName(cusName);
 		   
-		   list = this.dao.searchSaleDetails(this.form);
+		   this.dao.searchSaleDetails(this.form);
+		   
+		   list = this.form.getHashTable().get(this.form.getPageNum());
 		   
 		   this.form.setDataList(list);
 		   
 	   }catch(Exception e){
 		   e.printStackTrace();
-		   logger.info("[SummarySaleDetailServlet][lp_search] " + e.getMessage());
+		   logger.info("[lp_search] " + e.getMessage());
 	   }finally{
-		   logger.info("[SummarySaleDetailServlet][lp_search][End]");
+		   logger.info("[lp_search][End]");
 	   }
+   }
+   
+   private void lp_getPage(){
+	   logger.info("[lp_getPage][Begin]");
+	   
+	   int								pageNum				= 1;
+	   List<SummarySaleDetailBean> 		list 				= new ArrayList<SummarySaleDetailBean>();
+	   
+	   try{
+		   pageNum					= Integer.parseInt(this.request.getParameter("pageNum"));
+		   
+		   this.form.setPageNum(pageNum);
+		   
+		   list = this.form.getHashTable().get(pageNum);
+		   this.form.setDataList(list);
+		   
+	   }catch(Exception e){
+		   e.printStackTrace();
+	   }finally{
+		   logger.info("[lp_getPage][End]");
+	   }
+	   
    }
    
    private void lp_viewpdf(){

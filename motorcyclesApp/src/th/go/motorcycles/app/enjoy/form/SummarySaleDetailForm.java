@@ -1,19 +1,23 @@
 package th.go.motorcycles.app.enjoy.form;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import th.go.motorcycles.app.enjoy.bean.SummarySaleDetailBean;
 
 public class SummarySaleDetailForm {
 	
-	private String 						invoiceId;
-	private String 						invoiceDateFrom;
-	private String 						invoiceDateTo;
-	private String 						brandName;
-	private String 						model;
-	private String 						cusName;
-	private List<SummarySaleDetailBean> dataList;
+	private String 									invoiceId;
+	private String 									invoiceDateFrom;
+	private String 									invoiceDateTo;
+	private String 									brandName;
+	private String 									model;
+	private String 									cusName;
+	private List<SummarySaleDetailBean> 			dataList;
+	HashMap<Integer, List<SummarySaleDetailBean>>	hashTable;
+	int												pageNum;
+    int												totalPage;
 	
 	public SummarySaleDetailForm(){
 		this.invoiceId 				= "";
@@ -23,6 +27,9 @@ public class SummarySaleDetailForm {
 		this.model 					= "";
 		this.cusName 				= "";
 		this.dataList				= new ArrayList<SummarySaleDetailBean>();
+		this.hashTable				= new HashMap<Integer, List<SummarySaleDetailBean>>();
+		this.pageNum				= 1;
+		this.totalPage				= 0;
 	}
 	
 	
@@ -33,6 +40,36 @@ public class SummarySaleDetailForm {
 
 	public void setDataList(List<SummarySaleDetailBean> dataList) {
 		this.dataList = dataList;
+	}
+
+
+	public HashMap<Integer, List<SummarySaleDetailBean>> getHashTable() {
+		return hashTable;
+	}
+
+
+	public void setHashTable(HashMap<Integer, List<SummarySaleDetailBean>> hashTable) {
+		this.hashTable = hashTable;
+	}
+
+
+	public int getPageNum() {
+		return pageNum;
+	}
+
+
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+
+
+	public int getTotalPage() {
+		return totalPage;
+	}
+
+
+	public void setTotalPage(int totalPage) {
+		this.totalPage = totalPage;
 	}
 
 

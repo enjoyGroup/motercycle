@@ -21,6 +21,11 @@
 	    cursor: pointer;
 	}
 	
+	#tableResult th:hover{
+	    opacity: .2;
+	    cursor: pointer;
+	}
+	
 </style> 
 <script>
 	
@@ -31,7 +36,6 @@
 		$('#btnSearch').click(function(){
 		    var lo_pageAction			= null;
 		    var lo_frm					= null;
-		    var url 					= '<%=servURL%>/EnjoyGenericSrv';
 		    
 		    try{
 		    	/*lo_pageAction 	= document.getElementById("pageAction");
@@ -45,7 +49,7 @@
 				$.ajax({
 					async:false,
 		            type: "POST",
-		            url: url,
+		            url: gv_url,
 		            data: params,
 		            beforeSend: "",
 		            success: function(data){
@@ -109,11 +113,39 @@
 			$('#invoiceDateTo').focus();
 		})
 		
+		$("#tableResult").tablesorter(); 
+		
+		$( "#tableResult th" ).resizable();
+		
 	});
 	
 	function lp_sendEditPage(av_val){
 		
 		window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=edit&invoiceId=" + av_val);
+	}
+	
+	function lp_selPage(){
+		
+		var lv_selPage = null;
+		
+		try{
+			lv_selPage = $("#selPage").val();
+			
+	    	params 	= "service=servlet.SummarySaleDetailServlet&pageAction=getPage&pageNum=" + lv_selPage;
+			$.ajax({
+				async:false,
+	            type: "POST",
+	            url: gv_url,
+	            data: params,
+	            beforeSend: "",
+	            success: function(data){
+	            	window.location.replace('/motorcyclesWeb/pages/motor/SummarySaleDetailScn.jsp');
+	            }
+	        });
+			
+		}catch(e){
+			alert("lp_selPage :: " + e);
+		}
 	}
 	
 </script>
@@ -179,17 +211,20 @@
 											</div>
 											<header class="panel-heading font-bold">ข้อมูลสรุปการขาย</header>
 											<div class="panel-body">
-												<table id="tableResult" border="1" class="table span12" style="width:95%;POSITION: relative;  TOP: expression(offsetParent.scrollTop);" >
-													<tr bgcolor="#473636"  class="text_white">
-														<td width="50px">ลำดับ</td>
-														<td width="100px">เลขกำกับภาษี</td>
-														<td width="150px">ชื่อลูกค้า</td>
-														<td width="200px">รายละเอียดรถ</td>
-														<td width="100px">ราคาขาย</td>
-														<td width="100px">ราคาภาษี</td>
-														<td width="100px">ราคาขายสุทธิ</td>
-														<td width="100px">หมายเหต</td>
-													</tr>
+												<table id="tableResult" border="1" class="table span12" style="width:95%;" >
+													<thead> 
+														<tr bgcolor="#473636"  class="text_white" style="white-space: nowrap;">
+															<th width="50px" style="text-align: center;">ลำดับ</th>
+															<th width="100px" style="text-align: center;">เลขกำกับภาษี</th>
+															<th width="150px" style="text-align: center;">ชื่อลูกค้า</th>
+															<th width="200px" style="text-align: center;">รายละเอียดรถ</th>
+															<th width="100px" style="text-align: center;">ราคาขาย</th>
+															<th width="100px" style="text-align: center;">ราคาภาษี</th>
+															<th width="100px" style="text-align: center;">ราคาขายสุทธิ</th>
+															<th width="100px" style="text-align: center;">หมายเหต</th>
+														</tr>
+													</thead>
+													<tbody>
 													<%
 															List<SummarySaleDetailBean> dataList 	= summarySaleDetailForm.getDataList();
 			    											SummarySaleDetailBean 		bean 		= null;
@@ -210,7 +245,23 @@
 															<td width="100px"><%=bean.getRemark()%></td>
 														</tr>
 														<% seq++;} %>
+													</tbody>
 												</table>
+												<%if(summarySaleDetailForm.getTotalPage() > 1){ %>
+												<br/>
+												<table border="0" cellpadding="0" cellspacing="5" class="table span12" style="width:95%;" >
+													<tr align="center">
+														<td>
+															<span>หน้า</span>&nbsp;
+															<select id="selPage" name="selPage" style="width:50px;" onchange="lp_selPage();">
+																<%for(int i=1;i<=summarySaleDetailForm.getTotalPage();i++){ %>
+																<option value="<%=i%>" <%if(summarySaleDetailForm.getPageNum()==i){%>selected="selected" <%} %>><%=i%></option>
+																<%} %>
+															</select>
+														</td>
+													</tr>
+												</table>
+												<%} %>
 												<br/>
 												<table border="0" cellpadding="0" cellspacing="5" class="table span12" style="width:95%;" >
 													<tr align="center">

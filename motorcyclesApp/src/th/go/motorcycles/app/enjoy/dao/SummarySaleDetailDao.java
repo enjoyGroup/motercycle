@@ -2,6 +2,7 @@ package th.go.motorcycles.app.enjoy.dao;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import th.go.motorcycles.app.enjoy.bean.SummarySaleDetailBean;
@@ -17,20 +18,27 @@ public class SummarySaleDetailDao {
 		db = new EnjoyConectDbs();
 	}
 	
-	public List<SummarySaleDetailBean> searchSaleDetails(SummarySaleDetailForm form){
+	public void searchSaleDetails(SummarySaleDetailForm form){
 		System.out.println("[SummarySaleDetail][searchSaleDetails][Begin]");
 		
-		String 							sql			 		= null;
-		String 							where			 	= "";
-		ResultSet 						rs 					= null;
-		SummarySaleDetailBean			bean				= null;
-        String							invoiceId			= null;
-        String							invoiceDateFrom		= null;
-        String							invoiceDateTo		= null;
-        String							brandName			= null;
-        String							model				= null;
-        String							cusName				= null;
-        List<SummarySaleDetailBean> 	list 				= new ArrayList<SummarySaleDetailBean>();
+		String 											sql			 		= null;
+		String 											where			 	= "";
+		ResultSet 										rs 					= null;
+		SummarySaleDetailBean							bean				= null;
+        String											invoiceId			= null;
+        String											invoiceDateFrom		= null;
+        String											invoiceDateTo		= null;
+        String											brandName			= null;
+        String											model				= null;
+        String											cusName				= null;
+        List<SummarySaleDetailBean> 					list 				= new ArrayList<SummarySaleDetailBean>();
+        HashMap<Integer, List<SummarySaleDetailBean>>	hashTable			= new HashMap<Integer, List<SummarySaleDetailBean>>();
+        int												cou					= 0;
+        int												pageNum				= 1;
+        int												totalPage			= 0;
+        String 											priceAmount 		= null;
+        String 											vatAmount 			= null;
+        String 											commAmount 			= null;
 		
 		try{
 			invoiceId					= EnjoyUtils.nullToStr(form.getInvoiceId());
@@ -81,19 +89,40 @@ public class SummarySaleDetailDao {
 			
 		    rs 			= this.db.executeQuery(sql + where);
 		    
+		    hashTable.put(pageNum, list);
 		    while(rs.next()){
 		    	bean	= new SummarySaleDetailBean();
 		    	
 		    	bean.setInvoiceId			(EnjoyUtils.nullToStr(rs.getString("invoiceId")));
 		    	bean.setCusName				(EnjoyUtils.nullToStr(rs.getString("cusName")));
 		    	bean.setMotorcyclesdetails	(EnjoyUtils.nullToStr(rs.getString("motorcyclesdetails")));
-		    	bean.setPriceAmount			(EnjoyUtils.nullToStr(rs.getString("priceAmount")));
-		    	bean.setVatAmount			(EnjoyUtils.nullToStr(rs.getString("vatAmount")));
-		    	bean.setCommAmount			(EnjoyUtils.nullToStr(rs.getString("commAmount")));
+		    	
+		    	priceAmount 		= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("priceAmount")), 2);
+		        vatAmount 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("vatAmount")), 2);
+		        commAmount 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("commAmount")), 2);
+		    	
+		    	bean.setPriceAmount			(priceAmount);
+		    	bean.setVatAmount			(vatAmount);
+		    	bean.setCommAmount			(commAmount);
 		    	bean.setRemark				(EnjoyUtils.nullToStr(rs.getString("remark")));
 		    	
+		    	if(cou==10){
+		    		cou 	= 0;
+		    		list 	= new ArrayList<SummarySaleDetailBean>();
+		    		pageNum++;
+		    	}
+		    	
 		    	list.add(bean);
+		    	hashTable.put(pageNum, list);
+		    	cou++;
+		    	
 		    }
+		    
+		    totalPage = hashTable.size();
+		    form.setTotalPage(totalPage);
+		    form.setHashTable(hashTable);
+		    
+		    System.out.println("[SummarySaleDetail][searchSaleDetails] totalPage :: " + totalPage);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -101,6 +130,6 @@ public class SummarySaleDetailDao {
 			System.out.println("[SummarySaleDetail][searchSaleDetails][End]");
 		}
 		
-		return list;
+//		return list;
 	}
 }
