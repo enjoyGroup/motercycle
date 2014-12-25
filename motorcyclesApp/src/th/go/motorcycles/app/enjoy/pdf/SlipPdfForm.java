@@ -31,13 +31,19 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 	
 	public Document createForm(Document document) {
 		System.out.println("[SlipPdfForm][createForm][Begin]");
+		JSONObject 	jsonObjectMain  = this.formDataObj;
+		String      flagCredit		= (String) jsonObjectMain.get("flagCredit");
 		
 		try{
+			// ใบกำกับภาษี
 			document.add(this.genHeader());
+			document.add(this.brLine());
 			document.add(this.brLine());
 			document.add(this.genDetail());
 			document.add(this.brLine());
+			document.add(this.brLine());
 			document.add(this.genProduct());
+			document.add(this.brLine());
 			document.add(this.brLine());
 			document.add(this.genTotalCost());
 			document.add(this.brLine());
@@ -45,6 +51,26 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 			document.add(this.brLine());
 			document.add(this.genFooter());
 			
+			// ใบส่งเสริมการขาย
+			
+			// ใบเพิ่มหนี้/ลดหนี้
+			if ((flagCredit.equals("A")) || (flagCredit.equals("C"))) {
+				document.newPage();
+				document.add(this.genHeaderCredit());
+				document.add(this.brLine());
+				document.add(this.brLine());
+				document.add(this.genDetail());
+				document.add(this.brLine());
+				document.add(this.brLine());
+				document.add(this.genProduct());
+				document.add(this.brLine());
+				document.add(this.brLine());
+				document.add(this.genTotalCostCredit());
+				document.add(this.brLine());
+				document.add(this.brLine());
+				document.add(this.brLine());
+				document.add(this.genFooter());
+			}
 			
 		}
 		catch(DocumentException de){
@@ -69,7 +95,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		float[] 	subW	 		= {20f, 40f};
 		PdfPTable 	subTab 			= new PdfPTable(subW);
 		JSONObject 	jsonObjectMain  = this.formDataObj;
-		String      companyName		= (String) jsonObjectMain.get("CompanyName") + "(สำนักงานใหญ่)";
+		String      companyName		= (String) jsonObjectMain.get("CompanyName");
 		String      companyAddress	= (String) jsonObjectMain.get("CompanyAddress");
 		
 		table.addCell(setCellWB(companyName, getFont12Bold(), 2, Element.ALIGN_LEFT, 0));
@@ -84,7 +110,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		table.addCell(setCellWB("เอกสารออกเป็นชุด", getFont8(), 1, Element.ALIGN_CENTER, 0));
 		
 		subTab.addCell(setCellWB("เลขประจำตัวผู้เสียภาษีอากร:", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
-		subTab.addCell(setCellWB("xxxxxxxxxxxx", getFont8(), 1, Element.ALIGN_LEFT, 0));
+		subTab.addCell(setCellWB((String) jsonObjectMain.get("tin"), getFont8(), 1, Element.ALIGN_LEFT, 0));
 		table.addCell(setCellWB(subTab, 1, Element.ALIGN_LEFT, 0, false, false));
 		
 		table.setWidthPercentage(100);
@@ -105,7 +131,8 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		JSONObject 	jsonObjectMain  = this.formDataObj;
 		String      invoiceId		= (String) jsonObjectMain.get("invoiceId");
 		String      invoiceDate		= (String) jsonObjectMain.get("invoiceDate");
-		String      cusNameDisp		= (String) jsonObjectMain.get("cusNameDisp");
+		String      cusNameDisp		= (String) jsonObjectMain.get("cusNameDisp") + 
+										" ( " + (String) jsonObjectMain.get("idNumber") + " ) ";
 		String      cusAddress		= (String) jsonObjectMain.get("cusAddress");
 		
 		table.addCell(setCellWB("", getFont12Bold(), 3, Element.ALIGN_LEFT, 0));
@@ -134,23 +161,23 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 	
 	private PdfPTable genProduct() throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {20f ,20f ,20f ,20f ,20f};
+		float[] 	widths	 		= {22f ,20f ,20f ,20f ,18f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		JSONObject 	jsonObjectDetail= null;
 		
-		table.addCell(setCell("ยี่ห้อ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("รุ่น", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("หมายเลขเครื่อง", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("หมายเลขตัวถัง", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("ซีซี.", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("ยี่ห้อ", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("รุ่น", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("หมายเลขเครื่อง", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("หมายเลขตัวถัง", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("ซีซี.", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
 
 		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
 		jsonObjectDetail = this.formDataObj;
-		table.addCell(setCell((String) jsonObjectDetail.get("brandName"),   getFont8(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell((String) jsonObjectDetail.get("model"), 	    getFont8(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell((String) jsonObjectDetail.get("chassisDisp"), getFont8(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell((String) jsonObjectDetail.get("engineNoDisp"),getFont8(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell((String) jsonObjectDetail.get("size"), 		getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("brandName"),   getFont10(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("model"), 	    getFont10(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("chassisDisp"), getFont10(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("engineNoDisp"),getFont10(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("size"), 		getFont10(), 1, 1, Element.ALIGN_CENTER));
 		
 		table.setWidthPercentage(100);
 	
@@ -159,12 +186,12 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 	
 	private PdfPTable genTotalCost() throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {55f ,5f ,50f};
+		float[] 	widths	 		= {55f ,5f ,40f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		
 		PdfPTable 	subTabL 		= new PdfPTable(1);
 		
-		float[] 	subWR	 		= {20f, 30f};
+		float[] 	subWR	 		= {22f, 18f};
 		PdfPTable 	subTabR 		= new PdfPTable(subWR);
 		
 		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
@@ -173,10 +200,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 
 		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
-		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
-		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
-		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
-		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
+		subTabL.addCell(setCellWB("หมายเหตุ : " + (String) jsonObjectDetail.get("remark"), getFont10(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
@@ -185,6 +209,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
 		subTabL.addCell(setCell((String) jsonObjectDetail.get("totalAmountThai"), getFont10(), 1, 1, Element.ALIGN_CENTER));
+		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
 		table.addCell(setCellWB(subTabL, 1, Element.ALIGN_LEFT, 0, false, false));
 		
 		table.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
@@ -224,4 +249,70 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		return table;
 	}
 	
+	//**********************************************************************************//
+	private PdfPTable genHeaderCredit() throws DocumentException, MalformedURLException, IOException {
+		
+		float[] 	widths	 		= {60f, 40f};
+		PdfPTable 	table 			= new PdfPTable(widths);
+		
+		float[] 	subW	 		= {20f, 40f};
+		PdfPTable 	subTab 			= new PdfPTable(subW);
+		JSONObject 	jsonObjectMain  = this.formDataObj;
+		String      companyName		= (String) jsonObjectMain.get("CompanyName");
+		String      companyAddress	= (String) jsonObjectMain.get("CompanyAddress");
+		String      flagCredit		= (String) jsonObjectMain.get("flagCredit");
+		
+		table.addCell(setCellWB(companyName, getFont12Bold(), 2, Element.ALIGN_LEFT, 0));
+		
+		table.addCell(setCellWB(companyAddress, getFont8(), 1, Element.ALIGN_LEFT, 0));
+		if (flagCredit.equals("A")) {
+			table.addCell(setCellWB("                              ใบเพิ่มหนี้", getFont12Bold(), 1, Element.ALIGN_CENTER, 0));
+		} else if (flagCredit.equals("C")) {
+			table.addCell(setCellWB("                              ใบลดหนี้", getFont12Bold(), 1, Element.ALIGN_CENTER, 0));
+		}	
+		
+		subTab.addCell(setCellWB("โทรศัพท์ :", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
+		subTab.addCell(setCellWB("02-992-8233", getFont8(), 1, Element.ALIGN_LEFT, 0));
+		table.addCell(setCellWB(subTab, 1, Element.ALIGN_LEFT, 0, false, false));
+		
+		table.addCell(setCellWB("", getFont8(), 1, Element.ALIGN_CENTER, 0));
+		
+		subTab.addCell(setCellWB("เลขประจำตัวผู้เสียภาษีอากร:", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
+		subTab.addCell(setCellWB((String) jsonObjectMain.get("tin"), getFont8(), 1, Element.ALIGN_LEFT, 0));
+		table.addCell(setCellWB(subTab, 1, Element.ALIGN_LEFT, 0, false, false));
+		
+		table.setWidthPercentage(100);
+	
+		return table;
+	}
+	
+	private PdfPTable genTotalCostCredit() throws DocumentException, MalformedURLException, IOException {
+		
+		float[] 	widths	 		= {55f ,5f ,40f};
+		PdfPTable 	table 			= new PdfPTable(widths);
+		
+		PdfPTable 	subTabL 		= new PdfPTable(1);
+		
+		float[] 	subWR	 		= {22f, 18f};
+		PdfPTable 	subTabR 		= new PdfPTable(subWR);
+		
+		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
+		JSONObject 	jsonObjectDetail= null;
+		jsonObjectDetail = this.formDataObj;
+
+		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
+		subTabL.addCell(setCell((String) jsonObjectDetail.get("creditAmountThai"), getFont10(), 1, 1, Element.ALIGN_CENTER));
+		subTabL.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
+		table.addCell(setCellWB(subTabL, 1, Element.ALIGN_LEFT, 0, false, false));
+		
+		table.addCell(setCellWB("", getFont12Bold(), 1, Element.ALIGN_LEFT, 0));
+		
+		subTabR.addCell(setCell("\n จำนวนเงินรวมทั้งสิ้น 7% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
+		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("creditAmount") + " \n", getFont8(), 1, 1, Element.ALIGN_RIGHT));
+		table.addCell(setCell(subTabR, 1));
+		
+		table.setWidthPercentage(100);
+	
+		return table;
+	}
 }

@@ -36,24 +36,19 @@ public class InvoicedetailsDao {
 		double				summaryAmount   = 0;
 		
 		try{
-//			sql 		= " Select t1.invoiceId, CONCAT(t2.cusName, ' ', t2.cusName) as cusNameDisp, ";
-//			sql 		= sql + " CONCAT(t4.brandName, 'รุ่น ', t3.model, ' เลขตัวถัง  ', t1.chassisDisp, 'เลขเครื่องยนต์  ', t1.EngineNoDisp) as motorcyclesDisp, ";
-//			sql 		= sql + " t1.priceAmount, t1.vatAmount, t1.priceAmount + t1.vatAmount as totalAmount, t1.remark"; 
-//			sql 		= sql + " FROM invoicedetails t1 , customer t2 , motorcyclesdetails t3 , branddetails t4 ";
-//			sql 		= sql + " WHERE t1.cusCode = t2.cusCode ";
-//			sql 		= sql + " AND t1.motorcyclesCode = t3.motorcyclesCode ";
-//			sql 		= sql + " AND t3.brandCode = t4.brandCode ";		
-
 			sql = " select t.* from (select  i.invoiceId invoiceId"
 					+ " , CONCAT(c.cusName, ' ', c.cusSurname) cusName"
-					+ " , CONCAT(b.brandName, ' รุ่น ' , m.model, ' เลขตัวถัง ' , i.chassisDisp, ' เลขเครื่องยนต์ ' , i.EngineNoDisp ) motorcyclesdetails"
+					+ " , CONCAT(b.brandName, ' รุ่น ' , m.model, ' สี ' , i.color ) motorcyclesdetails"
+					+ " , i.chassisDisp chassisDisp"
+					+ " , i.EngineNoDisp EngineNoDisp"
 					+ " , b.brandName brandName"
 					+ " , m.model model"
 					+ " , i.priceAmount priceAmount"
 					+ " , i.vatAmount vatAmount"
 					+ " , i.commAmount commAmount"
 					+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate"
-					+ " ,i.remark remark"
+					+ " , i.remark remark"
+					+ " , i.invoiceIdAddSales invoiceIdAddSales"
 					+ " from  invoicedetails i, customer c, motorcyclesdetails m, branddetails b"
 					+ " where c.cusCode         = i.cusCode"
 					+ "  and m.motorcyclesCode  = i.motorcyclesCode"
@@ -91,9 +86,14 @@ public class InvoicedetailsDao {
 		    	jsonObjectDetail.put("cusNameDisp",     rs.getString("cusName"));
 		    	if (rs.getString("motorcyclesdetails") != null) {
 		    		jsonObjectDetail.put("motorcyclesDisp", rs.getString("motorcyclesdetails"));
-			    	jsonObjectDetail.put("remark",          rs.getString("remark"));
+		    		jsonObjectDetail.put("chassisDisp", 	rs.getString("chassisDisp"));
+		    		jsonObjectDetail.put("EngineNoDisp", 	rs.getString("EngineNoDisp"));
+			    	jsonObjectDetail.put("remark",          EnjoyUtils.nullToStr(rs.getString("remark")) + " " +
+			    										    EnjoyUtils.nullToStr(rs.getString("invoiceIdAddSales")));
 		    	} else {
 		    		jsonObjectDetail.put("motorcyclesDisp", rs.getString("remark"));
+		    		jsonObjectDetail.put("chassisDisp", 	" ");
+		    		jsonObjectDetail.put("EngineNoDisp", 	" ");
 			    	jsonObjectDetail.put("remark",          " - ");
 		    	}
 		    	jsonObjectDetail.put("priceAmount",     EnjoyUtils.convertFloatToDisplay(rs.getString("priceAmount"),2));
@@ -103,10 +103,10 @@ public class InvoicedetailsDao {
 		    	jsonObjectDetail.put("totalAmount",     EnjoyUtils.convertFloatToDisplay(String.valueOf(totleAmount),2));
 		    	listJSONArray.add(jsonObjectDetail);
 		    }
-		    jsonObjectMain.put("invoicelist", listJSONArray);
-		    jsonObjectMain.put("CompanyName",    userBean.getCompanyName());
-		    jsonObjectMain.put("CompanyAddress", userBean.getCompanyAddress());		    
-		    jsonObjectMain.put("SummaryAmount",  EnjoyUtils.convertFloatToDisplay(String.valueOf(summaryAmount),2));		    
+		    jsonObjectMain.put("invoicelist", 		listJSONArray);
+		    jsonObjectMain.put("CompanyName",    	userBean.getCompanyName());
+		    jsonObjectMain.put("CompanyAddress", 	userBean.getCompanyAddress());		    
+		    jsonObjectMain.put("SummaryAmount",  	EnjoyUtils.convertFloatToDisplay(String.valueOf(summaryAmount),2));		    
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
@@ -139,6 +139,11 @@ public class InvoicedetailsDao {
 					+ " , i.invoiceDate invoiceDate"
 					+ " , i.remark remark"
 					+ " , i.cusCode cusCode"
+					+ " , c.idNumber idNumber"
+					+ " , i.flagAddSales flagAddSales"
+					+ " , i.invoiceIdAddSales invoiceIdAddSales"
+					+ " , i.flagCredit flagCredit"
+					+ " , i.creditAmount creditAmount"
 					+ " from  invoicedetails i, customer c, motorcyclesdetails m, branddetails b"
 					+ " where c.cusCode         = i.cusCode"
 					+ "  and m.motorcyclesCode  = i.motorcyclesCode"
@@ -154,6 +159,7 @@ public class InvoicedetailsDao {
 		    	jsonObjectDetail.put("invoiceDate",     EnjoyUtils.displayDateThai(rs.getString("invoiceDate")));
 		    	cusCode 			= rs.getString("cusCode");
 		    	jsonObjectDetail.put("cusNameDisp",     rs.getString("cusName"));
+		    	jsonObjectDetail.put("idNumber",     	rs.getString("idNumber"));
 	    		jsonObjectDetail.put("brandName", 		rs.getString("brandName"));
 		    	jsonObjectDetail.put("model",           rs.getString("model"));
 		    	jsonObjectDetail.put("chassisDisp",     rs.getString("chassisDisp"));
@@ -164,8 +170,17 @@ public class InvoicedetailsDao {
 		    	totleAmount   = Double.parseDouble(rs.getString("priceAmount")) + Double.parseDouble(rs.getString("vatAmount"));
 		    	jsonObjectDetail.put("totalAmount",     EnjoyUtils.convertFloatToDisplay(String.valueOf(totleAmount),2));
 		    	jsonObjectDetail.put("totalAmountThai", EnjoyUtils.displayAmountThai(String.valueOf(totleAmount)));
+		    	jsonObjectDetail.put("remark",     		EnjoyUtils.nullToStr(rs.getString("remark")));
 		    	jsonObjectDetail.put("CompanyName",     userBean.getCompanyName());
 		    	jsonObjectDetail.put("CompanyAddress",  userBean.getCompanyAddress());	
+		    	jsonObjectDetail.put("branchName",  	userBean.getBranchName());	
+		    	jsonObjectDetail.put("tin",  			userBean.getTin());	
+		    	jsonObjectDetail.put("invoiceIdAddSales", rs.getString("invoiceIdAddSales"));		    
+			    jsonObjectDetail.put("flagAddSales",    rs.getString("flagAddSales"));		    
+			    jsonObjectDetail.put("commAmount",      EnjoyUtils.convertFloatToDisplay(rs.getString("commAmount"),2));		    
+			    jsonObjectDetail.put("flagCredit",  	rs.getString("flagCredit"));		    
+			    jsonObjectDetail.put("creditAmount",  	EnjoyUtils.convertFloatToDisplay(rs.getString("creditAmount"),2));		    
+			    jsonObjectDetail.put("creditAmountThai",EnjoyUtils.displayAmountThai(rs.getString("creditAmount")));		    
 		    }
 		    if (! cusCode.equals("")) { 
 		    	jsonObjectDetail.put("cusAddress",  findCustomerById(cusCode));

@@ -49,9 +49,9 @@ public class UserDetailsDao {
 		    	userBean.setUserLevel(rs.getString("userLevel"));
 		    	userBean.setCompanyId(rs.getString("companyId"));
 		    	userBean.setCompanyName(rs.getString("companyName"));
-		    	userBean.setCompanyAddress(rs.getString("branchName"));
+		    	userBean.setBranchName(rs.getString("branchName"));
 		    	userBean.setCompanyAddress(rs.getString("companyAddress"));
-		    	userBean.setCompanyAddress(rs.getString("tin"));
+		    	userBean.setTin(rs.getString("tin"));
 			    userBean.setCurrentDate(dateFormat.format(date));
 		    }
 		}catch(Exception e){

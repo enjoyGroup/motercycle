@@ -23,8 +23,8 @@ public class PdfTest {
 //			writePDF("SlipPdfTypeTwoForm", "D:/motor/JSON/motor.json", "D:/motor/PDF/SlipPdfTypeTwoForm.pdf");
 //			writePDF("SummarySalePdfForm", "D:/motor/JSON/motor.json", "D:/motor/PDF/SummarySalePdfForm.pdf");
 
-			writeSlipPdfFormPDFFormDB("SlipPdfForm", "5700000001", "D:/SlipPdfForm.pdf");
 //			writeSlipPdfTypeTwoFormPDFFormDB("SlipPdfTypeTwoForm", "D:/SlipPdfTypeTwoForm.pdf");
+			writeSlipPdfFormPDFFormDB("SlipPdfForm", "5700000001", "D:/SlipPdfForm.pdf");
 //			writeSummarySalePDFFormDB("SummarySalePdfForm", "D:/SummarySalePdfForm.pdf");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,8 +108,10 @@ public class PdfTest {
 			// สร้าง json Object มาจาก DB
 			invoicedetailsDao			= new InvoicedetailsDao();
 			userBean					= new UserDetailsBean();
-			userBean.setCompanyName("ห้างหุ้นส่วนจำกัด รุ่งโรจน์สหยานยนต์");
-			userBean.setCompanyAddress("16/108-109 ถนนสรงประภา แขวงสีกัน เขตดอนเมือง กรุงเทพ 10210");
+			userBean.setCompanyName("บริษัท สหมอเตอร์ไซด์ จำกัด (สำนักงานใหญ่)");
+			userBean.setCompanyAddress("10/102-104 ม.4 ถ.นนทบุรี-ปทุมธานี ต.บางขะแยง อ.เมือง จ.ปทุมธานี 12000");
+			userBean.setBranchName("สำนักงานใหญ่");
+			userBean.setTin("0135552000683");
 			jsonObject 					= invoicedetailsDao.InvoiceSalePDF(invoiceId,userBean);
 					
 			pdfForm.setJSONObject(writer, jsonObject);
@@ -156,8 +158,10 @@ public class PdfTest {
 			// สร้าง json Object มาจาก DB
 			invoicedetailsDao			= new InvoicedetailsDao();
 			userBean					= new UserDetailsBean();
-			userBean.setCompanyName("ห้างหุ้นส่วนจำกัด รุ่งโรจน์สหยานยนต์");
-			userBean.setCompanyAddress("16/108-109 ถนนสรงประภา แขวงสีกัน เขตดอนเมือง กรุงเทพ 10210");
+			userBean.setCompanyName("บริษัท สหมอเตอร์ไซด์ จำกัด (สำนักงานใหญ่)");
+			userBean.setCompanyAddress("10/102-104 ม.4 ถ.นนทบุรี-ปทุมธานี ต.บางขะแยง อ.เมือง จ.ปทุมธานี 12000");
+			userBean.setBranchName("สำนักงานใหญ่");
+			userBean.setTin("0135552000683");
 			jsonObject 					= invoicedetailsDao.SummarySalePDF("", "", "" , "","","",userBean);
 					
 			pdfForm.setJSONObject(writer, jsonObject);

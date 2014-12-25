@@ -70,7 +70,7 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 	
 	private PdfPTable genProduct() throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {5f ,10f ,15f ,18f ,10f ,10f ,10f, 15f};
+		float[] 	widths	 		= {5f ,7f ,10f ,15f ,10f ,10f ,7f ,7f ,7f, 10f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		JSONObject 	jsonObjectMain  = null;
 		JSONObject 	jsonObjectDetail= null;
@@ -78,16 +78,18 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 		String		summaryAmount   = "";
 		try {
 			//table.addCell(setCellWB("วันที่ 24 พฤศจิกายน 2557 ถึง วันที่ 26 พฤศจิกายน 2557", getFont8Bold(), 8, Element.ALIGN_CENTER, 0));
-			table.addCell(setCellWB("", getFont8Bold(), 8, Element.ALIGN_CENTER, 0));
+			table.addCell(setCellWB("", getFont8Bold(), 10, Element.ALIGN_CENTER, 0));
 			
-			table.addCell(setCell("ลำดับ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("เลขใบกำกับภาษี", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("ชื่อลูกค้า", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("ลำดับ",		 getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("เลขใบกำกับภาษี",	 getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("ชื่อลูกค้า",		 getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
 			table.addCell(setCell("รายละเอียดรถยนต์", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("ราคาขาย", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("ราคาภาษี", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("ราคาขายสุทธิ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
-			table.addCell(setCell("หมายเหตุ", getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("เลขตัวถัง", 		 getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("เลขเครื่องยนต์", 	 getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("ราคาขาย", 		 getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("ราคาภาษี",		 getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("ราคาขายสุทธิ",	 getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
+			table.addCell(setCell("หมายเหตุ",		 getFont8Bold(), 1, 1, Element.ALIGN_CENTER));
 				
 			// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
 			jsonObjectMain = this.formDataObj;
@@ -100,14 +102,16 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 				table.addCell(setCell((String) jsonObjectDetail.get("invoiceId"), 		getFont8(), 1, 1, Element.ALIGN_CENTER));
 				table.addCell(setCell((String) jsonObjectDetail.get("cusNameDisp"), 	getFont8(), 1, 1, Element.ALIGN_LEFT));
 				table.addCell(setCell((String) jsonObjectDetail.get("motorcyclesDisp"), getFont8(), 1, 1, Element.ALIGN_LEFT));
+				table.addCell(setCell((String) jsonObjectDetail.get("chassisDisp"), 	getFont8(), 1, 1, Element.ALIGN_LEFT));
+				table.addCell(setCell((String) jsonObjectDetail.get("EngineNoDisp"), 	getFont8(), 1, 1, Element.ALIGN_LEFT));
 				table.addCell(setCell((String) jsonObjectDetail.get("priceAmount"), 	getFont8(), 1, 1, Element.ALIGN_RIGHT));
 				table.addCell(setCell((String) jsonObjectDetail.get("vatAmount"), 		getFont8(), 1, 1, Element.ALIGN_RIGHT));
 				table.addCell(setCell((String) jsonObjectDetail.get("totalAmount"), 	getFont8(), 1, 1, Element.ALIGN_RIGHT));
 				table.addCell(setCell((String) jsonObjectDetail.get("remark"), 			getFont8(), 1, 1, Element.ALIGN_LEFT));
 			}
 						
-			table.addCell(setCellWB("", getFont8Bold(), 8, Element.ALIGN_CENTER, 0));
-			table.addCell(setCellWB("", getFont8(), 5, Element.ALIGN_CENTER, 0));
+			table.addCell(setCellWB("", getFont8Bold(), 10, Element.ALIGN_CENTER, 0));
+			table.addCell(setCellWB("", getFont8(), 7, Element.ALIGN_CENTER, 0));
 			table.addCell(setCellWB("รวม", getFont8Bold(), 1, Element.ALIGN_RIGHT, 0));
 			table.addCell(setCellWB(summaryAmount, getFont8(), 1, Element.ALIGN_RIGHT, 0));
 			table.addCell(setCellWB("บาท", getFont8(), 1, Element.ALIGN_LEFT, 0));
