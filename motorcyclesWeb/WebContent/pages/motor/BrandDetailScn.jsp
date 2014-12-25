@@ -116,31 +116,14 @@
 			alert("lp_del_row_table :: " + err);
 		}
 	}
-	 
-	/*function lp_add_row_table(){
-		var lo_table = document.getElementById("tb_result");
-		var lv_length = lo_table.rows.length-1;
-		var row = lo_table.insertRow(lv_length);
-		var cell1 = row.insertCell(0);
-		var cell2 = row.insertCell(1);
-		var cell3 = row.insertCell(2);
-		var cell4 = row.insertCell(3);
-		
-		cell1.innerHTML = lv_length;
-		cell2.innerHTML = "<input type='text' class='form-control' id='brandName' name='brandName'>";
-		cell3.innerHTML = "I";
-		cell4.innerHTML = "<button id='btn_add' name='btn_add'  class='btn btn-warning btn-mini fa fa-plus-square' style='width:25px;' onclick='lp_add_row_table();'></button>";
-	}*/
-	
+
 	function lp_add_row_table(){
 		var lo_table 	= null;
 		var lv_length 	= null;
 		var row 		= null;
 		var cell1 		= null;
 		var cell2 		= null;
-		var cell3 		= null;
-		var cell4 		= null;
-		
+		var cell3 		= null;	
 		
 		try{
 			lo_table 	= document.getElementById("tb_result");
@@ -149,14 +132,12 @@
 			cell1 		= row.insertCell(0);
 			cell2 		= row.insertCell(1);
 			cell3 		= row.insertCell(2);
-			cell4 		= row.insertCell(3);
 			
-			
-			
-			cell1.innerHTML = lv_length;
-			cell2.innerHTML = "<input type='text' class='form-control' id='brandName' name='brandName'>";
-			cell3.innerHTML = "I";
-			cell4.innerHTML = "<button id='btn_add' name='btn_add'  class='btn btn-warning btn-mini fa fa-plus-square' style='width:25px;' onclick='lp_add_row_table();'></button>";	
+			cell1.align	= "center";
+			cell1.innerHTML = "<b>" + lv_length + "<b>";
+			cell2.innerHTML = "<td width='400px;' align='left' ><input type='text' name='size' id='size'style='width: 300px;'/></td>";
+			cell3.innerHTML = "<td width='50px' align='center'><input type='hidden' name='hidBrandStatus' id='hidBrandStatus'  value='I'></td>";	
+		
 		}catch(e){
 			alert("lp_add_row_table :: " + e);
 		}
@@ -187,7 +168,7 @@
 								               <tr bgcolor="#473636"  class="text_white" height="26px;">
 													<td  style="text-align: center;" width="30px;" ><B>ลำดับ</B></th>
 													<td  style="text-align: left;"   width="400px;"><B>ยี่ห้อรถจักรยานยนต์</B></th>
-													<td  style="text-align: center;" width="50px;" ><B>add/delete</B></th>
+													<td  style="text-align: center;" width="20px;" ><B>add</B></th>
 												</tr> 
 											 
 											     <%
@@ -201,30 +182,29 @@
 															rowNumber = i+1; 
 														
 														%>
-														 <tr onclick="lp_onclick_row(this);" >
+														 <tr>
 															<td width="30px;" align="center"><input type="hidden" name="hidBrandCode" id="hidBrandCode"  value="<%=bean.getBrandCode()%>"/><B><%=rowNumber%></B></td>
-															<td width="400px;" align="left" ><%=bean.getBrandtName()%></td>
-															<td width="50px" align="center">
-															   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(<%=bean.getBrandCode()%>);"></button>
-															</td>
+															<td width="400px;" align="left" ><input type="text" name="size" id="size" value="<%=bean.getBrandtName()%>" style="width: 300px;"/></td>
+															<td width="50px" align="center"><input type="hidden" name="hidBrandStatus" id="hidBrandStatus"  value="<%=bean.getBrandStatus()%>"/></td>
 														</tr> 
-														<% } } %> 
-														<tr>
-															<td align="center" style="visibility:hidden;">
-															</td>
-															<td align="left" style="visibility:hidden;">
-															</td>
-															<td width="50px" align="center">
-																<a id="btn_add" href="#" class="btn btn-warning btn-mini fa fa-plus-square" style="width:25px;" onclick="lp_add_row_table();"></a>
-															    <!--<button id="btn_add" name="btn_add"  class="btn btn-warning btn-mini fa fa-plus-square" style="width:25px;" onclick="lp_add_row_table();"></button> -->
-															</td>
-														</tr> 
+														<% } 
+													} %> 
+													<tr>
+														<td align="center" style="visibility:hidden;"></td>
+														<td align="left" style="visibility:hidden;"></td>
+														<td align="center">
+														  <a id="btn_add" href="#" class="btn btn-warning btn-mini fa fa-plus-square" style="width:25px;" onclick="lp_add_row_table();"></a>
+														</td>
+													</tr>
 											</table> 
+										</div>
+										<div class="form-group" align="center">	 
+											<button class="btn btn-primary" id="btnAdd">บันทึก</button>   
+											<button class="btn btn-primary" id="btnCancel" onclick="lp_reset_page();">เริ่มใหม่</button> 
 										</div> 
 								    </section>
 								</div>
-							</div> 
-							
+							</div>
 							</form>
 						</section>
 					</section>

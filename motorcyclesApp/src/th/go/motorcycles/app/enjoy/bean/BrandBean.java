@@ -21,7 +21,7 @@ public class BrandBean implements Serializable {
 		this.brandtName 		= "";
 		this.brandtSurname 		= "";
 		this.brandtFullname     = "";
-		this.brandStatus        = "A"; 
+		this.brandStatus        = ""; 
 	}
 
 	public String getBrandCode() {

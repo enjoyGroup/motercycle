@@ -89,7 +89,7 @@ public class BrandDao {
                 brandBean	= new BrandBean();  
 		    	brandBean.setBrandCode(EnjoyUtils.nullToStr(rs.getString("brandCode")));
 		    	brandBean.setBrandtName(EnjoyUtils.nullToStr(rs.getString("brandName"))); 
-				brandBean.setBrandStatus(EnjoyUtils.nullToStr("A"));
+				brandBean.setBrandStatus(EnjoyUtils.nullToStr("U"));
 
 		    	list.add(brandBean);
 		    	
