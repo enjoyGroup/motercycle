@@ -103,11 +103,11 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   cusName						= EnjoyUtils.nullToStr(this.request.getParameter("cusName"));
 		   
 		   logger.info("[execute] invoiceId 			:: " + invoiceId);
-		   logger.info("[execute] invoiceDateFrom 	:: " + invoiceDateFrom);
+		   logger.info("[execute] invoiceDateFrom 		:: " + invoiceDateFrom);
 		   logger.info("[execute] invoiceDateTo 		:: " + invoiceDateTo);
 		   logger.info("[execute] brandName 			:: " + brandName);
 		   logger.info("[execute] model 				:: " + model);
-		   logger.info("[execute] cusName 			:: " + cusName);
+		   logger.info("[execute] cusName 				:: " + cusName);
 		   
 		   this.form.setInvoiceId(invoiceId);
 		   this.form.setInvoiceDateFrom(invoiceDateFrom);

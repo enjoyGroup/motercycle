@@ -62,7 +62,8 @@ public class EnjoyUtils {
             }else{
                 dt      = new SimpleDateFormat(av_currFormat); 
                 date    = dt.parse(av_date); 
-                dt1     = new SimpleDateFormat(av_toFormat,Locale.US);
+//                dt1     = new SimpleDateFormat(av_toFormat,Locale.US);// ค.ศ.
+                dt1     = new SimpleDateFormat(av_toFormat);//พ.ศ.
                 
                 dateFormat = dt1.format(date);
             }

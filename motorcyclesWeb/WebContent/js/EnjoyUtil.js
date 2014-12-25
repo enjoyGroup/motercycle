@@ -188,6 +188,51 @@ function gp_progressBarOff(){
     if(processBar) processBar.className = 'processBarOff';
 }
 
+function gp_checkDate(ao_obj){
+    var allowBlank 	= true;
+    var minYear 	= 2000;
+    //var maxYear 	= (new Date()).getFullYear();
+    var errorMsg 	= "";
+    var field 		= gp_trim(ao_obj.value);
+
+    // regular expression to match required date format
+    re = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+	
+    try{
+	    if(field != '') {
+			
+	    	if(field.length==8){
+	    		field 			= field.substring(0, 2) + "/" + field.substring(2, 4) + "/" + field.substring(4, 8);
+	    		ao_obj.value 	= field;
+	    	}
+	    	
+	      if(regs = field.match(re)) {
+	        if(regs[1] < 1 || regs[1] > 31) {
+	          errorMsg = "กรอกวันที่ผิด: " + regs[1];
+	        } else if(regs[2] < 1 || regs[2] > 12) {
+	          errorMsg = "กรอกเดือนผิด: " + regs[2];
+	        } else if(regs[3] < minYear) {
+	          errorMsg = "กรอกปีผิด: " + regs[3] + " ต้องเป็น พ.ศ. เท่านั้น";
+	        }
+	      } else {
+	        errorMsg = "กรอกรูปแบบวันที่ผิด";
+	      }
+	    }
+
+	    if(errorMsg != "") {
+	      alert(errorMsg);
+	      ao_obj.value = "";
+	      ao_obj.focus();
+	      return false;
+	    }
+    }catch(e){
+    	alert("checkDate :: " + e);
+    	return false;
+    }
+
+    return true;
+  }
+
 function showCalendar() {
     
     /*

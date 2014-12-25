@@ -82,6 +82,13 @@ public class SummarySaleDetailDao {
 			}
 			
 			if(!invoiceDateFrom.equals("")){
+				
+				invoiceDateFrom				= EnjoyUtils.dateFormat(invoiceDateFrom, "dd/MM/yyyy", "yyyyMMdd");
+				invoiceDateTo				= EnjoyUtils.dateFormat(invoiceDateTo, "dd/MM/yyyy", "yyyyMMdd");
+				
+				System.out.println("[SummarySaleDetail][searchSaleDetails] invoiceDateFrom 	:: " + invoiceDateFrom);
+				System.out.println("[SummarySaleDetail][searchSaleDetails] invoiceDateTo 	:: " + invoiceDateTo);
+				
 				where += " and invoiceDate BETWEEN STR_TO_DATE('" + invoiceDateFrom + "', '%Y%m%d') AND STR_TO_DATE('" + invoiceDateTo + "', '%Y%m%d')";
 			}
 			

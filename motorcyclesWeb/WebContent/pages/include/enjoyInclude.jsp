@@ -68,6 +68,7 @@ if(session == null || session.getAttribute("userBean") == null){
 <link href="<%=cssURL%>/menu-styles2.css" rel="stylesheet">
 <link href="<%=cssURL%>/jquery-ui.css" rel="stylesheet">
 <link href="<%=cssURL%>/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="<%=cssURL%>/jquery-ui-1.8.10.custom.css" rel="stylesheet">
 
 <!-- JS -->
 <script src="<%=jsURL%>/jquery-1.7.1.min.js" type="text/javascript"></script>
@@ -77,3 +78,4 @@ if(session == null || session.getAttribute("userBean") == null){
 <script src="<%=jsURL%>/EnjoyUtil.js" type="text/javascript"></script>
 <script src="<%=jsURL%>/jquery-ui.js" type="text/javascript"></script>
 <script src="<%=jsURL%>/jquery.tablesorter.js" type="text/javascript"></script>
+<script src="<%=jsURL%>/jquery-ui-1.8.10.offset.datepicker.min.js" type="text/javascript"></script>

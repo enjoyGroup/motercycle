@@ -33,19 +33,37 @@
 	
 	$(document).ready(function(){
 		
+		var d 		= new Date();
+	    var toDay 	= d.getDate() + '/' + (d.getMonth() + 1) + '/' + (d.getFullYear() + 543);
+		
 		$('#btnSearch').click(function(){
-		    var lo_pageAction			= null;
-		    var lo_frm					= null;
+		    var lv_invoiceDateFrom			= null;
+		    var lv_invoiceDateTo			= null;
 		    
 		    try{
-		    	/*lo_pageAction 	= document.getElementById("pageAction");
-		    	lo_frm 			= document.getElementById("frm");
-		    	
-		    	lo_pageAction.value = "search";
-		    	lo_frm.submit();*/
+		    	lv_invoiceDateFrom 	= gp_trim($("#invoiceDateFrom").val());
+				lv_invoiceDateTo 	= gp_trim($("#invoiceDateTo").val());
+				
+				if(lv_invoiceDateFrom=="" && lv_invoiceDateTo!=""){
+					alert("กรุณาระบุวันที่ขายให้ครบ");
+					$("#invoiceDateFrom").focus();
+					return;
+				}
+				
+				if(lv_invoiceDateTo=="" && lv_invoiceDateFrom!=""){
+					alert("กรุณาระบุวันที่ขายให้ครบ");
+					$("#invoiceDateTo").focus();
+					return;
+				}
+				
+				if(gp_toDate(lv_invoiceDateFrom) > gp_toDate(lv_invoiceDateTo)){
+					alert("วันที่เริ่มต้นต้องน้อยกว่าวันที่สิ้นสุด");
+					return;
+				}
+				
 		    	
 				document.getElementById("pageAction").value 	= "search";
-		    	params 	= $('#frm').serialize();// + "&pageAction=search";
+		    	params 	= $('#frm').serialize();
 				$.ajax({
 					async:false,
 		            type: "POST",
@@ -104,14 +122,26 @@
 		    
 		});
 		
+		//แบบสามารถเลือกเดือนได้อย่างเดียว
+		/*$(".dateFormat").datepicker({ dateFormat: 'dd/mm/yy', isBuddhist: true, defaultDate: toDay, dayNames: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
+            dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+            monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
+            monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']});*/
+		
+        //แบบสามารถเลือก เดือนกับปีได้
+		$(".dateFormat").datepicker({ changeMonth: true, changeYear: true,dateFormat: 'dd/mm/yy', isBuddhist: true, defaultDate: toDay,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
+            dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+            monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
+            monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']});
+		
 		$('#trigger-DateFrom').on('click',function(){
 			$('#invoiceDateFrom').focus();
-		})
+		});
 		
 		$('#trigger-DateTo').on('click',function(){
 
 			$('#invoiceDateTo').focus();
-		})
+		});
 		
 		$("#tableResult").tablesorter(); 
 		
@@ -145,6 +175,24 @@
 			
 		}catch(e){
 			alert("lp_selPage :: " + e);
+		}
+	}
+	
+	function lp_checkFormatdate(){
+		
+		var lo_invoiceDateFrom 	= null;
+		var lo_invoiceDateTo 	= null;
+		
+		try{
+			lo_invoiceDateFrom 	= document.getElementById("invoiceDateFrom");
+			lo_invoiceDateTo 	= document.getElementById("invoiceDateTo");
+			
+			//สำหรับเช็ค Format วันที่ต้องเป็น dd/mm/yyyy(พ.ศ.) เท่านั้น
+			if(!gp_checkDate(lo_invoiceDateFrom))return;
+			if(!gp_checkDate(lo_invoiceDateTo))return;
+			
+		}catch(e){
+			alert("lp_checkFormatdate :: " + e);
 		}
 	}
 	
@@ -183,10 +231,10 @@
 														</td>
 														<td>วันที่ขาย : </td>
 														<td>
-															<input type="text" style="width:100px;" class="input-sm input-s datepicker-input form-control" data-date-format="dd/mm/yyyy" id="invoiceDateFrom" name="invoiceDateFrom" value="<%=summarySaleDetailForm.getInvoiceDateFrom()%>" />
+															<input type="text" class="dateFormat" style="width:100px;" id="invoiceDateFrom" name="invoiceDateFrom" placeholder="DD/MM/YYYY" value="<%=summarySaleDetailForm.getInvoiceDateFrom()%>" onblur="lp_checkFormatdate();" />
 															<i class="fa fa-fw fa-calendar" id='trigger-DateFrom' style='cursor:pointer'></i>
 															&nbsp;-&nbsp;
-															<input type="text" style="width:100px;" class="input-sm input-s datepicker-input form-control" data-date-format="dd/mm/yyyy" id="invoiceDateTo" name="invoiceDateTo" value="<%=summarySaleDetailForm.getInvoiceDateTo()%>" />
+															<input type="text" class="dateFormat" style="width:100px;" id="invoiceDateTo" name="invoiceDateTo" placeholder="DD/MM/YYYY" value="<%=summarySaleDetailForm.getInvoiceDateTo()%>" onblur="lp_checkFormatdate();" />
 															<i class="fa fa-fw fa-calendar" id='trigger-DateTo' style='cursor:pointer'></i>
 														</td>
 													</tr>
@@ -214,14 +262,14 @@
 												<table id="tableResult" border="1" class="table span12" style="width:95%;" >
 													<thead> 
 														<tr bgcolor="#473636"  class="text_white" style="white-space: nowrap;">
-															<th width="50px" style="text-align: center;">ลำดับ</th>
-															<th width="100px" style="text-align: center;">เลขกำกับภาษี</th>
-															<th width="150px" style="text-align: center;">ชื่อลูกค้า</th>
-															<th width="200px" style="text-align: center;">รายละเอียดรถ</th>
-															<th width="100px" style="text-align: center;">ราคาขาย</th>
-															<th width="100px" style="text-align: center;">ราคาภาษี</th>
-															<th width="100px" style="text-align: center;">ราคาขายสุทธิ</th>
-															<th width="100px" style="text-align: center;">หมายเหต</th>
+															<th style="text-align: center;">ลำดับ</th>
+															<th style="text-align: center;">เลขกำกับภาษี</th>
+															<th style="text-align: center;">ชื่อลูกค้า</th>
+															<th style="text-align: center;">รายละเอียดรถ</th>
+															<th style="text-align: center;">ราคาขาย</th>
+															<th style="text-align: center;">ราคาภาษี</th>
+															<th style="text-align: center;">ราคาขายสุทธิ</th>
+															<th style="text-align: center;">หมายเหต</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -235,14 +283,14 @@
 															
 														%>
 														<tr class="rowSelect" onclick="lp_sendEditPage(<%=bean.getInvoiceId()%>)">
-															<td width="50px"><%=seq%></td>
-															<td width="100px"><%=bean.getInvoiceId()%></td>
-															<td width="150px"><%=bean.getCusName()%></td>
-															<td width="200px"><%=bean.getMotorcyclesdetails()%></td>
-															<td width="100px"><%=bean.getPriceAmount()%></td>
-															<td width="100px"><%=bean.getVatAmount()%></td>
-															<td width="100px"><%=bean.getCommAmount()%></td>
-															<td width="100px"><%=bean.getRemark()%></td>
+															<td><%=seq%></td>
+															<td><%=bean.getInvoiceId()%></td>
+															<td><%=bean.getCusName()%></td>
+															<td><%=bean.getMotorcyclesdetails()%></td>
+															<td><%=bean.getPriceAmount()%></td>
+															<td><%=bean.getVatAmount()%></td>
+															<td><%=bean.getCommAmount()%></td>
+															<td><%=bean.getRemark()%></td>
 														</tr>
 														<% seq++;} %>
 													</tbody>
