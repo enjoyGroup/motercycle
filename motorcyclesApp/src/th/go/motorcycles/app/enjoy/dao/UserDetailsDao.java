@@ -49,6 +49,7 @@ public class UserDetailsDao {
 		    	userBean.setUserLevel(rs.getString("userLevel"));
 		    	userBean.setCompanyId(rs.getString("companyId"));
 		    	userBean.setCompanyName(rs.getString("companyName"));
+		    	userBean.setTel(rs.getString("tel"));
 		    	userBean.setBranchName(rs.getString("branchName"));
 		    	userBean.setCompanyAddress(rs.getString("companyAddress"));
 		    	userBean.setTin(rs.getString("tin"));

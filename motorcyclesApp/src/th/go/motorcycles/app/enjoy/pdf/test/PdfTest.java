@@ -24,7 +24,7 @@ public class PdfTest {
 //			writePDF("SummarySalePdfForm", "D:/motor/JSON/motor.json", "D:/motor/PDF/SummarySalePdfForm.pdf");
 
 //			writeSlipPdfTypeTwoFormPDFFormDB("SlipPdfTypeTwoForm", "D:/SlipPdfTypeTwoForm.pdf");
-			writeSlipPdfFormPDFFormDB("SlipPdfForm", "5700000001", "D:/SlipPdfForm.pdf");
+			writeSlipPdfFormPDFFormDB("SlipPdfForm", "5700000002", "D:/SlipPdfForm.pdf");
 //			writeSummarySalePDFFormDB("SummarySalePdfForm", "D:/SummarySalePdfForm.pdf");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,6 +109,7 @@ public class PdfTest {
 			invoicedetailsDao			= new InvoicedetailsDao();
 			userBean					= new UserDetailsBean();
 			userBean.setCompanyName("บริษัท สหมอเตอร์ไซด์ จำกัด (สำนักงานใหญ่)");
+			userBean.setTel("02-5215365");
 			userBean.setCompanyAddress("10/102-104 ม.4 ถ.นนทบุรี-ปทุมธานี ต.บางขะแยง อ.เมือง จ.ปทุมธานี 12000");
 			userBean.setBranchName("สำนักงานใหญ่");
 			userBean.setTin("0135552000683");

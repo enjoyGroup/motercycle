@@ -11,6 +11,7 @@ public class UserDetailsBean {
 	private String userStatus;
 	private String companyId;
 	private String companyName;
+	private String tel;
 	private String branchName;
 	private String companyAddress;
 	private String tin;
@@ -27,6 +28,7 @@ public class UserDetailsBean {
 		this.userStatus 	= "";
 		this.companyId 		= "";
 		this.companyName 	= "";
+		this.tel		 	= "";
 		this.branchName		= "";
 		this.companyAddress	= "";
 		this.tin			= "";
@@ -143,6 +145,14 @@ public class UserDetailsBean {
 
 	public void setTin(String tin) {
 		this.tin = tin;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
 	}
 	
 }

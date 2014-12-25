@@ -122,8 +122,9 @@ public class InvoicedetailsDao {
 		String 				sql			 	= null;
 		ResultSet 			rs 				= null;
 		JSONObject 			jsonObjectDetail= null;
-		double				totleAmount     = 0;
 		String				cusCode		    = "";
+		String				flagAddSales	= "";
+		String				invoiceIdAddSales = "";
 		try{
 			sql = " select t.* from (select  i.invoiceId invoiceId"
 					+ " , CONCAT(c.cusName, ' ', c.cusSurname) cusName"
@@ -135,6 +136,7 @@ public class InvoicedetailsDao {
 					+ " , i.size size"
 					+ " , i.priceAmount priceAmount"
 					+ " , i.vatAmount vatAmount"
+					+ " , i.totalAmount totalAmount"
 					+ " , i.commAmount commAmount"
 					+ " , i.invoiceDate invoiceDate"
 					+ " , i.remark remark"
@@ -158,6 +160,8 @@ public class InvoicedetailsDao {
 		    	jsonObjectDetail.put("invoiceId",       rs.getString("invoiceId"));
 		    	jsonObjectDetail.put("invoiceDate",     EnjoyUtils.displayDateThai(rs.getString("invoiceDate")));
 		    	cusCode 			= rs.getString("cusCode");
+			    flagAddSales 		= rs.getString("flagAddSales");
+			    invoiceIdAddSales 	= rs.getString("invoiceIdAddSales");
 		    	jsonObjectDetail.put("cusNameDisp",     rs.getString("cusName"));
 		    	jsonObjectDetail.put("idNumber",     	rs.getString("idNumber"));
 	    		jsonObjectDetail.put("brandName", 		rs.getString("brandName"));
@@ -166,12 +170,12 @@ public class InvoicedetailsDao {
 		    	jsonObjectDetail.put("engineNoDisp",    rs.getString("engineNoDisp"));
 		    	jsonObjectDetail.put("size",    		EnjoyUtils.convertFloatToDisplay(rs.getString("size"),0));
 		    	jsonObjectDetail.put("priceAmount",     EnjoyUtils.convertFloatToDisplay(rs.getString("priceAmount"),2));
-		    	jsonObjectDetail.put("vatAmount",       EnjoyUtils.convertFloatToDisplay(rs.getString("vatAmount"),2));
-		    	totleAmount   = Double.parseDouble(rs.getString("priceAmount")) + Double.parseDouble(rs.getString("vatAmount"));
-		    	jsonObjectDetail.put("totalAmount",     EnjoyUtils.convertFloatToDisplay(String.valueOf(totleAmount),2));
-		    	jsonObjectDetail.put("totalAmountThai", EnjoyUtils.displayAmountThai(String.valueOf(totleAmount)));
+		    	jsonObjectDetail.put("vatAmount",       EnjoyUtils.convertFloatToDisplay(rs.getString("vatAmount")  ,2));
+		    	jsonObjectDetail.put("totalAmount",     EnjoyUtils.convertFloatToDisplay(rs.getString("totalAmount"),2));
+		    	jsonObjectDetail.put("totalAmountThai", EnjoyUtils.displayAmountThai(rs.getString("totalAmount")));
 		    	jsonObjectDetail.put("remark",     		EnjoyUtils.nullToStr(rs.getString("remark")));
 		    	jsonObjectDetail.put("CompanyName",     userBean.getCompanyName());
+		    	jsonObjectDetail.put("tel",     		userBean.getTel());
 		    	jsonObjectDetail.put("CompanyAddress",  userBean.getCompanyAddress());	
 		    	jsonObjectDetail.put("branchName",  	userBean.getBranchName());	
 		    	jsonObjectDetail.put("tin",  			userBean.getTin());	
@@ -180,10 +184,13 @@ public class InvoicedetailsDao {
 			    jsonObjectDetail.put("commAmount",      EnjoyUtils.convertFloatToDisplay(rs.getString("commAmount"),2));		    
 			    jsonObjectDetail.put("flagCredit",  	rs.getString("flagCredit"));		    
 			    jsonObjectDetail.put("creditAmount",  	EnjoyUtils.convertFloatToDisplay(rs.getString("creditAmount"),2));		    
-			    jsonObjectDetail.put("creditAmountThai",EnjoyUtils.displayAmountThai(rs.getString("creditAmount")));		    
+			    jsonObjectDetail.put("creditAmountThai",EnjoyUtils.displayAmountThai(rs.getString("creditAmount")));	
 		    }
 		    if (! cusCode.equals("")) { 
 		    	jsonObjectDetail.put("cusAddress",  findCustomerById(cusCode));
+		    }	
+		    if (flagAddSales.equals("Y")) { 
+		    	InvoiceAddSalesPDF(invoiceIdAddSales , jsonObjectDetail);
 		    }	
 		}catch(Exception e){
 			e.printStackTrace();
@@ -225,5 +232,36 @@ public class InvoicedetailsDao {
 			System.out.println("[InvoicedetailsDao][findCustomerById][End]");
 		}		
 		return address.toString();
+	}
+	
+	public void InvoiceAddSalesPDF(String 	  invoiceIdAddSales, 
+								   JSONObject jsonObjectDetail){
+		System.out.println("[InvoicedetailsDao][InvoiceAddSalesPDF][Begin]");
+		String 				sql			 	= null;
+		ResultSet 			rs 				= null;
+		try{
+			sql = " select  i.invoiceId invoiceId"
+					+ " , i.priceAmount priceAmount"
+					+ " , i.vatAmount vatAmount"
+					+ " , i.totalAmount totalAmount"
+					+ " , i.remark remark"
+					+ " from  invoicedetails i "
+					+ " where i.invoiceId 		= '" + invoiceIdAddSales + "'";
+
+			System.out.println("[InvoicedetailsDao][InvoiceAddSalesPDF] sql :: " + sql);
+		    rs 				= this.db.executeQuery(sql);
+		    
+		    while(rs.next()){
+		    	jsonObjectDetail.put("addSalesPriceAmount",     EnjoyUtils.convertFloatToDisplay(rs.getString("priceAmount"),2));
+		    	jsonObjectDetail.put("addSalesVatAmount",       EnjoyUtils.convertFloatToDisplay(rs.getString("vatAmount"),2));
+		    	jsonObjectDetail.put("addSalesTotalAmount",     EnjoyUtils.convertFloatToDisplay(rs.getString("totalAmount"),2));
+		    	jsonObjectDetail.put("addSalesTotalAmountThai", EnjoyUtils.displayAmountThai(rs.getString("totalAmount")));
+		    	jsonObjectDetail.put("addSalesRemark", 			rs.getString("remark"));
+		    }
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[InvoicedetailsDao][InvoiceAddSalesPDF][End]");
+		}
 	}
 }
