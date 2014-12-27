@@ -14,6 +14,7 @@ import th.go.motorcycles.app.enjoy.bean.UserDetailsBean;
 import th.go.motorcycles.app.enjoy.dao.CustomerDao;
 import th.go.motorcycles.app.enjoy.form.CustomerForm; 
 import th.go.motorcycles.app.enjoy.main.Constants;
+import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 import th.go.motorcycles.web.enjoy.common.EnjoyStandardSvc;
 import th.go.motorcycles.web.enjoy.logger.LogWrapper;
 import th.go.motorcycles.web.enjoy.utils.MotorUtil;
@@ -41,13 +42,12 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 	}
 	
 	private void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-         System.out.println("[CustomerInsertServlet][execute][Begin]");
+         System.out.println("[CustomerSearchServlet][execute][Begin]");
 		
          String pageAction = null; 
  		
  		try{
- 			 pageAction 				= MotorUtil.nullToStr(request.getParameter("pageAction"));
- 			 System.out.println("pageAction : "+pageAction);
+ 			 pageAction 				= MotorUtil.nullToStr(request.getParameter("pageAction")); 
  			 this.easUtil 			= new MotorUtil(request, response);
  			 this.request            = request;
              this.response           = response;
@@ -59,7 +59,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
  			if(pageAction.equals("new")) this.form = new CustomerForm();
  			
  			if(pageAction.equals("")){
- 				this.onLoad();
+ 				System.out.println("[CustomerSearchServlet][onLoad][Begin]");   
  				request.setAttribute("target", Constants.PAGE_URL +"/customer_detail.jsp");
  			}else if(pageAction.equals("searchData")){
  				this.onSearch();
@@ -72,17 +72,13 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
  		}catch(Exception e){
  			e.printStackTrace();
  		}finally{
- 			System.out.println("[CustomerInsertServlet][execute][End]");
+ 			System.out.println("[CustomerSearchServlet][execute][End]");
  		}
 	}
- 
-	private void onLoad() throws Exception{ 
-		System.out.println("[CustomerInsertServlet][onLoad][Begin]"); 
-		
-	}
+  
 	 
 	private void onSearch() throws Exception{ 
-		System.out.println("[CustomerInsertServlet][onSearch][Begin]");
+		System.out.println("[CustomerSearchServlet][onSearch][Begin]");
 		List<CustomerBean> listCustomer = null;
 		CustomerBean bean               = null; 
 		String       idNumber           = null;
@@ -90,8 +86,8 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 		boolean	     dataRet			= false;
 		try{
 			bean     = new CustomerBean(); 
-			idNumber = this.request.getParameter("idNumber"); 
-			name     = this.request.getParameter("fullName"); 
+			idNumber = EnjoyUtils.nullToStr(this.request.getParameter("idNumber")); 
+			name     = EnjoyUtils.nullToStr(this.request.getParameter("fullName")); 
 
 			bean.setIdNumber(idNumber); 
 			bean.setCustFullname(name); 
@@ -118,12 +114,12 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			idNumber           = null;
 			name               = null; 
 			dataRet			   = false;
-			System.out.println("[CustomerInsertServlet][onSearch][End]");
+			System.out.println("[CustomerSearchServlet][onSearch][End]");
 		}
 	}
 	 
 	private void delRecord() throws Exception{
-		System.out.println("[MotorDemoSvc][delRecord][Begin]");
+		System.out.println("[CustomerSearchServlet][delRecord][Begin]");
 		
 		CustomerBean 	customerBean 	= null;
 		String			cusCode			= null;
@@ -131,7 +127,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 		
 		try{
 			customerBean 	= new CustomerBean();
-			cusCode	 		= this.request.getParameter("cusCode");
+			cusCode	 		= EnjoyUtils.nullToStr(this.request.getParameter("cusCode"));
 			
 			customerBean.setCusCode(cusCode);
 			customerBean.setCusStatus("I");
@@ -144,7 +140,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 				this.easUtil.writeMSG("OK");
 				this.onSearchAll(); 
 			}else{
-				this.easUtil.writeMSG("Delete failed !!");
+				this.easUtil.writeMSG("CustomerSearchServlet Delete failed !!");
 			}
 			 
 			
@@ -155,13 +151,13 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			customerBean 	= null;
 			cusCode			= null;
 			dataRet			= false;
-			System.out.println("[MotorDemoSvc][delRecord][End]");
+			System.out.println("[CustomerSearchServlet][delRecord][End]");
 		}
 	}
 	
 	
 	private void onSearchAll() throws Exception{ 
-		System.out.println("[CustomerInsertServlet][onSearchAll][Begin]");
+		System.out.println("[CustomerSearchServlet][onSearchAll][Begin]");
 		List<CustomerBean> listCustomer = null; 
 		boolean	     dataRet			= false;
 		try{ 
@@ -185,7 +181,7 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 		}finally{
 			listCustomer    = null; 
 			dataRet			= false;
-			System.out.println("[CustomerInsertServlet][onSearchAll][End]");
+			System.out.println("[CustomerSearchServlet][onSearchAll][End]");
 		}
 	}
 	

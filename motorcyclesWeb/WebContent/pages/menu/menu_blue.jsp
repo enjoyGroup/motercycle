@@ -118,7 +118,7 @@ function lp_set_title( av_title , av_screen){
                            <li class='has-sub'><a href='#'><span>ข้อมูลลูกค้า</span></a>
                              <ul onclick="lp_ul_click();">
 								<li onclick="lp_li_click(event , '0003');">
-									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet" target="frame_main">บันทึกข้อมูลลูกค้า</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet&pageAction=new" target="frame_main">บันทึกข้อมูลลูกค้า</a>
 								</li>
 								<li onclick="lp_li_click(event , '0004');">
 									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerSearchServlet" target="frame_main" >ค้นหาข้อมูลลูกค้า</a>

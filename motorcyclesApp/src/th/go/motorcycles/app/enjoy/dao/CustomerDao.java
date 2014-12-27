@@ -7,6 +7,7 @@ import java.util.List;
 import th.go.motorcycles.app.enjoy.bean.AddressBean;
 import th.go.motorcycles.app.enjoy.bean.CustomerBean;
 import th.go.motorcycles.app.enjoy.exception.EnjoyException;
+import th.go.motorcycles.app.enjoy.form.CustomerForm;
 import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs; 
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
@@ -140,7 +141,7 @@ public class CustomerDao {
 		return list;
 	}	
 	
-	public CustomerBean findCustomerByCusCode(CustomerBean bean){
+	public CustomerBean findCustomerByCusCode(CustomerBean bean,CustomerForm cusForm){
 		System.out.println("[CustomerDao][findCustomerByCusCode][Begin]");
 		
 		String 				sql			 		= null;
@@ -159,6 +160,7 @@ public class CustomerDao {
 		    rs 			= this.db.executeQuery(sql);
 		    
 		    while(rs.next()){ 
+		    	System.out.println("cuscode:"+EnjoyUtils.nullToStr(rs.getString("cusCode")));
 		    	customerBean.setCusCode(EnjoyUtils.nullToStr(rs.getString("cusCode")));
 		    	customerBean.setCustName(EnjoyUtils.nullToStr(rs.getString("cusName"))); 
 		    	customerBean.setCustSurname(EnjoyUtils.nullToStr(rs.getString("cusSurname"))); 
@@ -172,8 +174,12 @@ public class CustomerDao {
 				customerBean.setSubdistrictName(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
 				customerBean.setDistrictName(EnjoyUtils.nullToStr(rs.getString("districtName")));
 				customerBean.setProvinceName(EnjoyUtils.nullToStr(rs.getString("provinceName")));
+				customerBean.setSubdistrictCode(EnjoyUtils.nullToStr(rs.getString("subdistrictId")));
+				customerBean.setDistrictCode(EnjoyUtils.nullToStr(rs.getString("districtId")));
+				customerBean.setProvinceCode(EnjoyUtils.nullToStr(rs.getString("provinceId")));
+				cusForm.setCustomerBean(customerBean);
 		    } 
-		   
+		    
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -185,13 +191,13 @@ public class CustomerDao {
 	}
 	
 	 
-	public String insertCustomer(CustomerBean customerBean){
+	public String insertCustomer(CustomerBean customerBean,CustomerForm form){
 		System.out.println("[CustomerDao][insertCustomer][Begin]");
 		
 		String 		sql			 	= null;
 		ResultSet 	rs 				= null;  
-		String      cusCode         = null; 
-		
+		String      cusCode         = null;  
+		CustomerBean bean           = null;
 		try{ 
 			 sql 		= "SELECT cusCode as lastId FROM customer ORDER BY cusCode DESC LIMIT 1";
 			 rs 		= this.db.executeQuery(sql);
@@ -213,11 +219,16 @@ public class CustomerDao {
 			
 			System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
 			
-            this.db.execute(sql); 
-			
+            this.db.execute(sql);  
 		    System.out.println("[CustomerDao][insertCustomer] cusCode : " + cusCode);
-			
-		}catch(Exception e){
+		    
+		    if(cusCode!=null&&!cusCode.equals("")){
+			    bean = new CustomerBean();
+			    bean.setCusCode(cusCode);
+			    form.setCustomerBean(bean);
+		    }
+		    
+		}catch(Exception e){  
 			e.printStackTrace();
 		}finally{
 			System.out.println("[CustomerDao][insertCustomer][End]");
@@ -226,25 +237,66 @@ public class CustomerDao {
 		return cusCode;
 	}
 	
-	public boolean  updateCustomer(CustomerBean bean){
-		System.out.println("[CustomerDao][updateCustomer][Begin]");
+	public String insertCustomer(CustomerBean customerBean){
+		System.out.println("[CustomerDao][insertCustomer][Begin]");
+		
+		String 		sql			 	= null;
+		ResultSet 	rs 				= null;  
+		String      cusCode         = null;  
+		CustomerBean bean           = null;
+		try{ 
+			 sql 		= "SELECT cusCode as lastId FROM customer ORDER BY cusCode DESC LIMIT 1";
+			 rs 		= this.db.executeQuery(sql);
+			 System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
+			  while (rs.next()) {
+				  cusCode	= EnjoyUtils.nullToStr(rs.getString("lastId"));
+			  } 
+			 
+			 cusCode = EnjoyUtils.getCustNext(cusCode);
+		     System.out.println("[CustomerDao][insertCustomer] cusCode : " + cusCode);
+		    
+			sql = "insert into customer (cusCode,cusName, cusSurname, houseNumber, mooNumber,SoiName, streetName, subdistrictCode, districtCode, provinceCode, idType, idNumber, cusStatus)"
+				 + " values ('"+ cusCode + "', '" + customerBean.getCustName() + "', '" + customerBean.getCustSurname() + "', '" + 
+				 customerBean.getHouseNumber() + "', '" + customerBean.getMooNumber() + "', '" + customerBean.getSoiName() + "', '" + 
+				 customerBean.getStreetName()+ "', '" + customerBean.getSubdistrictCode() + "', '" +
+				 customerBean.getDistrictCode() + "', '" + customerBean.getProvinceCode() + "', '" +
+				 customerBean.getIdType() + "', '" + customerBean.getIdNumber() + "', '" +
+				 customerBean.getCusStatus() +"') ";
+			
+			System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
+			
+            this.db.execute(sql);  
+		    System.out.println("[CustomerDao][insertCustomer] cusCode : " + cusCode);
+		  
+		    
+		}catch(Exception e){  
+			e.printStackTrace();
+		}finally{
+			System.out.println("[CustomerDao][insertCustomer][End]");
+		}
+		
+		return cusCode;
+	}
+	
+	public boolean updateCustomer(CustomerBean bean){
+		System.out.println("[CustomerDao][updateCustomer][Begin]::"+bean.getCusCode());
 		
 		String 				sql			 		= null;
 		boolean				lv_ret				= false; 
-		
+
 		try{ 
 			sql 	= "update  customer set cusStatus = '"+bean.getCusStatus()+"', cusName='"+bean.getCustName()+
 					"', cusSurname='"+bean.getCustSurname()+"', houseNumber='"+bean.getHouseNumber()+
 					"', mooNumber='"+bean.getMooNumber()+"', SoiName='"+bean.getSoiName()+
 					"', streetName='"+bean.getStreetName()+"', subdistrictCode='"+bean.getSubdistrictCode()+
-					"', districtCode='"+bean.getDistrictCode()+"', provinceCode='"+bean.getProvinceCode()+
+					"', districtCode='"+bean.getDistrictCode()+"', provinceCode='"+bean.getProvinceCode()+ 
 					"', idType='"+bean.getIdType()+"', idNumber='"+bean.getIdNumber()+"' where  cusCode = '"+bean.getCusCode()+"'";
 			
 			System.out.println("[CustomerDao][updateCustomer] sql :: " + sql);
 			
 			lv_ret 			= this.db.execute(sql);
 			
-			System.out.println("[CustomerDao][updateCustomer] lv_ret :: " + lv_ret);
+			System.out.println("[CustomerDao][updateCustomer] lv_ret :: " + lv_ret); 
 			
 		}catch(Exception e){
 			e.printStackTrace();

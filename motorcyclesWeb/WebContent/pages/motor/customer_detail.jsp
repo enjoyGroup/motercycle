@@ -12,10 +12,12 @@
 <%@ include file="../menu/inc_theme.jsp"%>
 
 <script>
+    var gv_url 			= '<%=servURL%>/EnjoyGenericSrv';
+
 	$(document).ready(function(){
 		
 		$('#btnSearch').click(function(){ 
-		    var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerSearchServlet'; 
+		    var url					= '<%=servURL%>/EnjoyGenericSrv'; 
 		    var pageAction			= "searchData";
 		    var lv_params			= ""; 
 		    var fullname            = gp_sanitizeURLString($('#fullName').val());  
@@ -75,7 +77,7 @@
 	
 	function lp_del_row_table(ao_obj){  
 		var lv_index			= 0;
-		var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerSearchServlet';  
+		var url					= '<%=servURL%>/EnjoyGenericSrv';  
 	    var pageAction			= "delRecord";
 	    var lv_params			= ""; 
 		var lo_tabResultDtl		= document.getElementById("tb_result");
@@ -87,8 +89,8 @@
 				//cusCode     = lo_tabResultDtl.rows[lv_index].cells[0].firstChild.value;
 				cusCode     = ao_obj; 
 				lv_params 	= "service=" + $('#service').val() 
-				+ "&cusCode=" +cusCode  
-				+ "&pageAction=" + pageAction;
+				              + "&cusCode=" +cusCode  
+				              + "&pageAction=" + pageAction;
 	
 				$.ajax({
 				    type: "POST",
@@ -119,15 +121,8 @@
 	 
 	
 	function lp_onclick_row(av_obj){
-		//alert(av_obj.rowIndex);
-		var table 				= document.getElementById("tb_result");
-		var curRow 				= table.rows[av_obj.rowIndex];
-		var cell 				= curRow.getElementsByTagName("td")[0]; 
-		var cusCode 			= cell.firstChild.value; 
-	    var pageAction			= "updateData"; 
-	    
-		try{   
-			window.open("/motorcyclesWeb/pages/motor/customer_insert.jsp?pageAction="+ pageAction +"&cusCode="+ cusCode , "frame_main" );  
+		try{    
+			window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + av_obj);
 		}catch(err){
 			alert("btnSearch :: " + err);
 		}
@@ -145,7 +140,7 @@
 				<section id="content">
 					<section class="vbox">
 						<section class="scrollable padder">
-						<form class="form-horizontal"  id="from_search" action="<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerSearchServlet">
+						<form class="form-horizontal"  id="from_search" action="<%=servURL%>/EnjoyGenericSrv">
 						<input type="hidden" id="service" name="service" value="servlet.CustomerSearchServlet" />
 						<input type="hidden" id="cusStatus" name="cusStatus" />
 					 
@@ -197,7 +192,7 @@
 															rowNumber = i+1; 
 														
 														%>
-														 <tr onclick="lp_onclick_row(this);" >
+														 <tr onclick="lp_onclick_row(<%=bean.getCusCode()%>);" >
 															<td width="30px;" align="center"><input type="hidden" name="hidCusCode" id="hidCusCode"  value="<%=bean.getCusCode()%>"/><B><%=rowNumber%></B></td>
 															<td width="100px;" align="left" ><%=bean.getCustName()%> <%=bean.getCustSurname()%></td>
 															<td width="300px;" align="left"><%=bean.getAddress()%></td>

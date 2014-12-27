@@ -1,15 +1,21 @@
+<%@page import="th.go.motorcycles.app.enjoy.bean.CustomerBean"%>
 <%@page import="th.go.motorcycles.app.enjoy.form.CustomerForm"%> 
 <%@page import="com.sun.xml.internal.txw2.Document"%>
 <%@ include file="/pages/include/enjoyInclude.jsp"%>
 <%@ page import="java.util.*"%>  
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%> 
-<jsp:useBean id="customerForm" class="th.go.motorcycles.app.enjoy.form.CustomerForm" scope="session"/>  
-
+<jsp:useBean id="customerForm" class="th.go.motorcycles.app.enjoy.form.CustomerForm" scope="session"/>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<% 
+	CustomerBean 	customerBean 	= customerForm.getCustomerBean(); 
+%>
 <html> 
 <head>
 <title> เพิ่มรายละเอียดลูกค้า </title>  
 <script language="JavaScript" type="text/JavaScript">
+
+	var gv_url 	= '<%=servURL%>/EnjoyGenericSrv';
+
 	$(document).ready(function(){
 		
 		$( "#provinceName" ).autocomplete({ 
@@ -117,17 +123,7 @@
 		    var la_msg               	= new Array("จังหวัด", "อำเภอ", "ตำบล");
 	        var lo_obj;
 	        var flagUpdate              = false;
-		    try{
-		    	
-		       /*   for(var i=0;i<la_idName.length;i++){
-		            lo_obj          = eval('document.getElementById("' + la_idName[i] + '")');
-		            
-		            if(gp_trim(lo_obj.value)==""){
-		            	alert("กรุณาระบุ " + la_msg[i]);
-		                return false;
-		            }
-		            
-		        } */
+		    try{ 
 		        
 		    	if($('#custName').val()=="" || $('#custSurname').val()=="" ||
 					 	   $('#houseNumber').val()=="" || $('#subdistrictName').val()=="" ||
@@ -136,11 +132,11 @@
 							return;
 				}
 		    	
-		    	params 	= $('#frm').serialize() + "&pageAction=addRecord"; 
+		    	params 	  =  $('#frm').serialize() + "&pageAction=addRecord"; 
 		    	
-				if($('#custCode').val()!=""){
-					params 	= $('#frm').serialize() + "&pageAction=updateRecord"; 
-					flagUpdate = true;
+				if($('#cusCode').val()!=""){
+					params 	= $('#frm').serialize() + "&pageAction=updateRecord"+ "&cusCode=" +$( "#cusCode" ).val(); 
+				    flagUpdate = true;
 				}
 				
 				
@@ -158,40 +154,44 @@
 		            	var subdistrictCode		= null;
 		            	var errMsg				= null;
 		            	
-		            	if(data.indexOf('OK') > -1){ 
-		            		la_data		= data.split(":");
-		            		newCusCode 	= la_data[1]; 
-		            		if(flagUpdate){
-		            		   alert("แก้ไขรายการเรียบร้อย  "); 
-		            		   lp_reset_page();
-		            		}else{
-		            		   alert("บันทึกรายการเรียบร้อย  cusCode ="+newCusCode); 
-		            		   $('#custCode').val(newCusCode);
-		            		}
-						}else{
-							alert(data);
-						}
-		            	/* 
-		            	try{
+		            	/* try{
 		            		jsonObj = JSON.parse(data);
 		            		status	= jsonObj.status;
-		            		alert(status);
+		            		
 		            		if(status=="SUCCESS"){
-		            			provinceCode		= jsonObj.provinceCode;
-		            			districtCode		= jsonObj.districtCode;
-		            			subdistrictCode	    = jsonObj.subdistrictCode;
-		            		    alert(jsonObj.cusCode);	
-		            			alert("provinceId::" + provinceCode + ", districtId::" + districtCode + ", subdistrictId::" + subdistrictCode);
-		            		}else{ 
+		            			newCusCode		= jsonObj.cusCode; 
+		            			if(flagUpdate){ 
+			            			alert("แก้ไขรายการเรียบร้อย  ");  
+				            		window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
+		            			}else
+		            				alert("บันทึกรายการเรียบร้อย  ");
+			            		   window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
+		            		}else{
 		            			errMsg = jsonObj.errMsg; 
-		            		    alert(errMsg);
-		            		} 
+		            			alert(errMsg);
+		            		}
 		            	}catch(e){
-		            		alert("in btnSubmit :: " + e);
+		            		alert("in btnSave :: " + e);
 		            	} */
+		            	
+		            	 if(data.indexOf('OK') > -1){ 
+		            		la_data		= data.split(":");
+		            		newCusCode 	= la_data[1];
+		            	//alert(newCusCode);
+		            		if(flagUpdate){
+		            		   alert("แก้ไขรายการเรียบร้อย  ");  
+		            		   window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
+		            		}else{
+		            		   alert("บันทึกรายการเรียบร้อย  ");
+		            		   window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
+		            		}
+		            		
+						}else{
+							alert(data);
+						}  
 		            }
 		        });
-		    	
+				 
 		    }catch(e){
 		    	alert("btnSubmit :: " + e);
 		    }
@@ -203,12 +203,13 @@
 	
 	
     function lp_reset_page(){
-    	var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet'; 
+    	var url					= '<%=servURL%>/EnjoyGenericSrv'; 
 	    var pageAction			= "reset"; 
 	    var lv_params			= ""; 
 		try{  
 			
-			lv_params 	= "&pageAction=" + pageAction;
+			lv_params 	= "service=" + $('#service').val()  
+			              +"&pageAction=" + pageAction;
 
 			$.ajax({
 	            type: "POST", 
@@ -222,123 +223,9 @@
 			alert("reset :: " + err);
 		}
 		
-    	 $('#custCode').val(""); 
-		 $('#custName').val("");
-		 $('#custSurname').val("");
-		 $('#houseNumber').val("");
-		 $('#mooNumber').val("");
-		 $('#soiName').val("");
-		 $('#streetName').val("");
-		 $('#subdistrictName').val("");
-		 $('#subdistrictCode').val("");
-		 $('#districtName').val("");
-		 $('#districtCode').val("");
-		 $('#provinceName').val("");
-		 $('#provinceCode').val("");
-		 $('#idType').val("");
-		 $('#idNumber').val("");
-		 $('#cusStatus').val("");
 		 
 	}
-    
-
- 
-    window.onload = function () {
-	    	var stringURL    = window.document.URL.toString();  
-	       // alert(stringURL);   
-	        var action       = "";
-	        var customerCode = "";
-	        var parameterts  = stringURL.substring(1).split('&'); 
-	        
-	        if(parameterts.length==2){
-	        	var page = parameterts[0].split('=');
-	        	var pageAction = page[0].substring(1).split('?');
-	        	
-	        	if(pageAction[1]=="pageAction"){
-	        		action = page[1];
-	        	}
-	        	 
-		        var cusCode = parameterts[1].split('=');  
-		        
-		        if(cusCode[0]=="cusCode"){
-		        	customerCode  = cusCode[1];
-	        	} 
-	        }
-	         
-	        if(action=="updateData"){
-	           // alert(action+" and "+customerCode);
-		        var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet'; 
-			    var pageAction			= "findData"; 
-			    var lv_params			= ""; 
-				try{  
-					
-					lv_params 	= "service=" + $('#service').val() 
-								+ "&cusCode="+customerCode
-								+ "&pageAction=" + pageAction;
-	
-					$.ajax({
-			            type: "POST", 
-			            async: false,
-			            url: url,
-			            data: lv_params,
-			            beforeSend: "",
-			            success: function(data){
-			            	if(data.indexOf('OK') > -1){   
-			            		la_data		= data.split(":"); 
-					          //  alert("get data ="+la_data);  
-			            		 $('#custCode').val(la_data[1]);  
-				           		 $('#cusStatus').val(la_data[2]);
-				           		 $('#custName').val(la_data[3]);
-				           		 $('#custSurname').val(la_data[4]);
-				           		 $('#houseNumber').val(la_data[5]);
-				           		 $('#mooNumber').val(la_data[6]);
-				           		 $('#soiName').val(la_data[7]);
-				           		 $('#streetName').val(la_data[8]); 
-				           		 $('#subdistrictCode').val(la_data[9]); 
-				           		 $('#subdistrictName').val(la_data[10]); 
-				           		 $('#districtCode').val(la_data[11]);
-				           		 $('#districtName').val(la_data[12]);
-				           		 $('#provinceCode').val(la_data[13]); 
-				           		 $('#provinceName').val(la_data[14]); 
-				           		 $('#idNumber').val(la_data[15]);
-				           		 if(la_data[16]=="1"){
-				           		 	$('#idType1').prop('checked', true);
-				           		 }else  if(la_data[16]=="2"){
-				           			$('#idType2').prop('checked', true);
-				           		 } 
-			            	
-							}else{
-								alert(data);
-							} 
-			            }
-			        });
-				}catch(err){
-					alert("updateData :: " + err);
-				} 
-    		}else{
-    			var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet'; 
-			    var pageAction			= "reset"; 
-			    var lv_params			= ""; 
-				try{  
-					
-					lv_params ="&pageAction=" + pageAction;
-	
-					$.ajax({
-			            type: "POST", 
-			            async: false,
-			            url: url,
-			            data: lv_params,
-			            beforeSend: "",
-			            success: function(data){ }
-				   });
-				}catch(err){
-					alert("updateData :: " + err);
-				} 
-    		}  
-        }
-    
-
- 
+      
 </script>
 	 
 </head>
@@ -361,7 +248,7 @@
 										<div class="panel-body">  
 												<div class="form-group">
 												    <label class="col-sm-2 control-label"  style="text-align:right" >รหัสลูกค้า <font color="red">*</font>:</label>
-													<input type="text" id="custCode" name="custCode" value="<%=customerForm.getCustomerBean().getCusCode()%>" disabled> 
+													<input type="text" id="cusCode" name="cusCode" value="<%=customerBean.getCusCode()%>" disabled> 
 													<input type="hidden" id="cusStatus" name="cusStatus" value="A" />
 												</div>  
 										</div>
@@ -375,16 +262,18 @@
 													    <div class="col-md-1"style="width:120px;"></div> 
 													    <div class="col-md-1"> 
 													        <label class="col-sm-2 control-label" style="text-align:right" > 
-															<input type="radio" name="idType" id="idType1" value="1" style="width:50px;" checked>บุคคลธรรมดา</label> 
+															<input type="radio" name="idType" id="idType1" value="1" style="width:50px;" 
+																	<%if(customerBean.getIdType().equals("1")){%> checked="checked" <%} %>>บุคคลธรรมดา</label> 
 														</div>
 														 <div class="col-md-1">
 													        <label class="col-sm-2 control-label" style="text-align:right"> 
-															<input type="radio" name="idType" id="idType2" value="2" style="width:50px;">นิติบุคคล</label> 
+															<input type="radio" name="idType" id="idType2" value="2" style="width:50px;"  
+																	<%if(customerBean.getIdType().equals("2")){%> checked="checked" <%} %>>นิติบุคคล</label> 
 														</div>
 														 <div class="col-md-1"style="width:40px;"></div>  
 														<label class="col-sm-1 control-label" style="text-align:right">เลขบัตรประชาชน</label> 
 														<div class="col-md-2"> 
-														    <input type="text" class="form-control" id="idNumber" name="idNumber" >
+														    <input type="text" class="form-control" id="idNumber" name="idNumber" value="<%=customerBean.getIdNumber()%>" >
 														</div> 
 													</div>
 												</div>  
@@ -392,11 +281,11 @@
 													<div class="row"> 
 													    <label class="col-sm-2 control-label" style="text-align:right">ชื่อ <font color="red">*</font>:</label>
 														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="custName" name="custName"> 
+															<input type="text" class="form-control" id="custName" name="custName" value="<%=customerBean.getCustName()%>"> 
 														</div>
 														<label class="col-sm-2 control-label" style="text-align:right">นามสกุล <font color="red">*</font>:</label>
 														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="custSurname" name="custSurname" >
+															<input type="text" class="form-control" id="custSurname" name="custSurname" value="<%=customerBean.getCustSurname()%>"  >
 														</div>
 													</div>
 												</div>
@@ -404,11 +293,11 @@
 													<div class="row"> 
 													    <label class="col-sm-2 control-label" style="text-align:right">บ้านเลขที่ <font color="red">*</font>:</label>
 														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="houseNumber" name="houseNumber" > 
+															<input type="text" class="form-control" id="houseNumber" name="houseNumber" value="<%=customerBean.getHouseNumber()%>" > 
 														</div>
 														<label class="col-sm-2 control-label" style="text-align:right">หมู่ที่ :</label>
 														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="mooNumber" name="mooNumber" >
+															<input type="text" class="form-control" id="mooNumber" name="mooNumber" value="<%=customerBean.getMooNumber()%>" >
 														</div>
 													</div>
 												</div>
@@ -416,11 +305,11 @@
 													<div class="row"> 
 													    <label class="col-sm-2 control-label" style="text-align:right">ตรอก/ซอย :</label>
 														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="soiName" name="soiName" > 
+															<input type="text" class="form-control" id="soiName" name="soiName"  value="<%=customerBean.getSoiName()%>" > 
 														</div>
 														<label class="col-sm-2 control-label" style="text-align:right">ถนน :</label>
 														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="streetName" name="streetName" >
+															<input type="text" class="form-control" id="streetName" name="streetName"  value="<%=customerBean.getStreetName()%>"  >
 														</div>
 													</div>
 												</div>
@@ -428,17 +317,17 @@
 													<div class="row">  
 														<label class="col-sm-1 control-label" style="text-align:right">จังหวัด <font color="red">*</font>:</label>
 														<div class="col-md-2">  
-															<input class="form-control" id="provinceName" name="provinceName"  placeholder="จังหวัด" title="จังหวัด">
+															<input class="form-control" id="provinceName" name="provinceName"  placeholder="จังหวัด" title="จังหวัด" value="<%=customerBean.getProvinceName()%>" >
 															<input type="hidden" id="provinceCode" name="provinceCode" >
 														</div> 
 														<label class="col-sm-2 control-label" style="text-align:right">อำเภอ/เขต <font color="red">*</font>:</label>
 														<div class="col-md-2"> 
-															<input  class="form-control" id="districtName" name="districtName"  placeholder="อำเภอ" title="อำเภอ" >
+															<input  class="form-control" id="districtName" name="districtName"  placeholder="อำเภอ" title="อำเภอ"  value="<%=customerBean.getDistrictName()%>">
 															<input type="hidden" id="districtCode" name="districtCode" >
 														</div>
 													    <label class="col-sm-2 control-label" style="text-align:right">ตำบล/แขวง <font color="red">*</font>:</label>
 														<div class="col-md-2"> 
-															<input  class="form-control" id="subdistrictName" name="subdistrictName"  placeholder="ตำบล" title="ตำบล"  > 
+															<input  class="form-control" id="subdistrictName" name="subdistrictName"  placeholder="ตำบล" title="ตำบล"  value="<%=customerBean.getSubdistrictName()%>"> 
 															<input type="hidden" id="subdistrictCode" name="subdistrictCode"> 
 														</div>
 													</div>
