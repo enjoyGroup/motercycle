@@ -15,8 +15,9 @@
 <script language="JavaScript" type="text/JavaScript">
 
 	var gv_url 	= '<%=servURL%>/EnjoyGenericSrv';
-
-	$(document).ready(function(){
+ 
+	
+	$(document).ready(function(){ 
 		
 		$( "#provinceName" ).autocomplete({ 
 			 source: function(request, response) {
@@ -114,15 +115,9 @@
 		      }
 		});
 		 
-		//Add new 
-		$('#btnAdd').click(function(){
-			var lo_pageAction			= null;
-		    var lo_frm					= null;
-		    var url 					= '<%=servURL%>/EnjoyGenericSrv';
-		    var la_idName               = new Array("provinceName", "districtName", "subdistrictName");
-		    var la_msg               	= new Array("จังหวัด", "อำเภอ", "ตำบล");
-	        var lo_obj;
-	        var flagUpdate              = false;
+		//Add new    
+	    $('#btnAdd').click(function(){
+	        var flagUpdate   = false;
 		    try{ 
 		        
 		    	if($('#custName').val()=="" || $('#custSurname').val()=="" ||
@@ -138,26 +133,23 @@
 					params 	= $('#frm').serialize() + "&pageAction=updateRecord"+ "&cusCode=" +$( "#cusCode" ).val(); 
 				    flagUpdate = true;
 				}
-				
-				
+				 
 				$.ajax({
 					async:false,
 		            type: "POST",
-		            url: url,
-		            data: params,
+		            url: gv_url,
+		            data:"service=servlet.CustomerServlet&" +params, 
 		            beforeSend: "",
 		            success: function(data){
 		            	var jsonObj 			= null;
 		            	var status				= null;
-		            	var provinceCode		= null;
-		            	var districtCode		= null;
-		            	var subdistrictCode		= null;
+		            	var newCusCode			= null;
 		            	var errMsg				= null;
-		            	
-		            	/* try{
+		               //alert(data);
+		            	 try{
 		            		jsonObj = JSON.parse(data);
 		            		status	= jsonObj.status;
-		            		
+		        		
 		            		if(status=="SUCCESS"){
 		            			newCusCode		= jsonObj.cusCode; 
 		            			if(flagUpdate){ 
@@ -169,26 +161,11 @@
 		            		}else{
 		            			errMsg = jsonObj.errMsg; 
 		            			alert(errMsg);
-		            		}
+		            		} 
 		            	}catch(e){
 		            		alert("in btnSave :: " + e);
-		            	} */
-		            	
-		            	 if(data.indexOf('OK') > -1){ 
-		            		la_data		= data.split(":");
-		            		newCusCode 	= la_data[1];
-		            	//alert(newCusCode);
-		            		if(flagUpdate){
-		            		   alert("แก้ไขรายการเรียบร้อย  ");  
-		            		   window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
-		            		}else{
-		            		   alert("บันทึกรายการเรียบร้อย  ");
-		            		   window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
-		            		}
-		            		
-						}else{
-							alert(data);
-						}  
+		            	} 
+		            	 
 		            }
 		        });
 				 

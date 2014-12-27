@@ -10,7 +10,15 @@
 <%@ page import="java.util.*"%>
 <jsp:useBean id="customerForm" class="th.go.motorcycles.app.enjoy.form.CustomerForm" scope="session"/>
 <%@ include file="../menu/inc_theme.jsp"%>
-
+<style> 
+	
+	.rowSelect:hover{
+	    background-color:FFCCFF;
+	    /*opacity: .2; */
+	    cursor: pointer;
+	} 
+	
+</style> 
 <script>
     var gv_url 			= '<%=servURL%>/EnjoyGenericSrv';
 
@@ -192,7 +200,7 @@
 															rowNumber = i+1; 
 														
 														%>
-														 <tr onclick="lp_onclick_row(<%=bean.getCusCode()%>);" >
+														 <tr class="rowSelect"  onclick="lp_onclick_row(<%=bean.getCusCode()%>);" >
 															<td width="30px;" align="center"><input type="hidden" name="hidCusCode" id="hidCusCode"  value="<%=bean.getCusCode()%>"/><B><%=rowNumber%></B></td>
 															<td width="100px;" align="left" ><%=bean.getCustName()%> <%=bean.getCustSurname()%></td>
 															<td width="300px;" align="left"><%=bean.getAddress()%></td>
