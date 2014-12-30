@@ -75,7 +75,8 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 	   String pageAction 	= null;
 	   String pageActionPDF = null;
 	   Date	  date			= new Date();
-		
+	   String printType		= "";
+	   
 		try{
 			pageAction 				= MotorUtil.nullToStr(request.getParameter("pageAction"));
 			pageActionPDF			= MotorUtil.nullToStr(request.getParameter("pageActionPDF"));
@@ -98,14 +99,14 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			this.form.setUserLevel(this.userBean.getUserLevel());
 			
 			if(pageAction.equals("") || pageAction.equals(NEW)){
-System.out.println("pageActionPDF ==> " + pageActionPDF);
 				if (pageActionPDF.equals(VIEWPDF)) {
-
-					this.lp_viewpdf();
+					printType = MotorUtil.nullToStr(request.getParameter("printType"));
+					logger.info("[execute] printType :: " + printType);
+					this.lp_viewpdf(printType);
 				} else {
 //					this.form.getCustomerBean().setIdType("1");
 //					this.form.setInvoiceId("5700000001");
-					this.form.getCustomerBean().setIdType("1");
+					this.form.getCustomerBean().setIdType("2");
 					this.form.setRecordAddDate(MotorUtil.dateToStringThai(date));
 					request.setAttribute("target", Constants.PAGE_URL + "/EntrySaleDetailScn.jsp");
 				}
@@ -828,7 +829,7 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 	   }
    }
    
-   private void lp_viewpdf(){
+   private void lp_viewpdf(String printType){
 	   logger.info("[EntrySaleDetailServlet][lp_viewpdf][Begin]");
 	   
 	   String							invoiceId			= null;
@@ -845,7 +846,11 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 		   userBean = (UserDetailsBean) request.getSession().getAttribute("userBean");
 		   
 		   viewPdfMainForm	= new ViewPdfMainForm();
-		   buffer = viewPdfMainForm.writeSlipPdfFormPDFFormDB("SlipPdfForm", invoiceId, userBean );
+		   if (printType.equals("1")) {
+			   buffer = viewPdfMainForm.writeSlipPdfFormPDFFormDB("SlipPdfForm", invoiceId, userBean );
+		   } else {
+			   buffer = viewPdfMainForm.writeSlipPdfFormPDFFormDB("SlipPdfTypeTwoForm", invoiceId, userBean );
+		   }
 		   response.setContentType( "application/pdf" );
 		   output 	= new DataOutputStream( this.response.getOutputStream() );
 		   bytes 	= buffer.toByteArray();

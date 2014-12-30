@@ -62,9 +62,14 @@
 		
 		$('#btnPrint').click(function(){
 		    try{
-		    	document.getElementById("pageActionPDF").value 	= "pdf";
-				document.getElementById("frm").target 			= "_blank";
-			    document.getElementById("frm").submit();
+				lv_invoiceId 		= gp_trim($("#invoiceId").val());
+		    	if (lv_invoiceId != "") {
+			    	document.getElementById("pageActionPDF").value 	= "pdf";
+					document.getElementById("frm").target 			= "_blank";
+				    document.getElementById("frm").submit();
+		    	} else {
+					alert("กรุณาบันทึกรายการ ก่อนทำการพิมพ์");		    		
+		    	}
 		    }catch(e){
 		    	alert("btnPrint :: " + e);
 		    }

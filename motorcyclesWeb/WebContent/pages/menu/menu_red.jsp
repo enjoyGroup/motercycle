@@ -103,10 +103,10 @@ function lp_set_title( av_title , av_screen){
                            <li class='has-sub'><a href='#'><span>รายละเอียดการขาย</span></a>
                               <ul onclick="lp_ul_click();">
 								<li onclick="lp_li_click(event , '0001');">
-									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.EntrySaleDetailServlet" target="frame_main">บันทึกการขายรถ</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.EntrySaleDetailServlet&pageAction=new" target="frame_main">บันทึกการขายรถ</a>
 								</li>
 								<li onclick="lp_li_click(event , '0002');">
-									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.SummarySaleDetailServlet" target="frame_main">สรุปการขายรถ</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.SummarySaleDetailServlet&pageAction=new" target="frame_main">สรุปการขายรถ</a>
 								</li>
 								<!-- 
 								<li onclick="lp_li_click(event , '0003');">
@@ -118,20 +118,20 @@ function lp_set_title( av_title , av_screen){
                            <li class='has-sub'><a href='#'><span>ข้อมูลลูกค้า</span></a>
                              <ul onclick="lp_ul_click();">
 								<li onclick="lp_li_click(event , '0003');">
-									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet" target="frame_main">บันทึกข้อมูลลูกค้า</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerServlet&pageAction=new" target="frame_main">บันทึกข้อมูลลูกค้า</a>
 								</li>
 								<li onclick="lp_li_click(event , '0004');">
-									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerSearchServlet" target="frame_main" >ค้นหาข้อมูลลูกค้า</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.CustomerSearchServlet&pageAction=new" target="frame_main" >ค้นหาข้อมูลลูกค้า</a>
 								</li>
 							  </ul>
                            </li>
                            <li class='has-sub'><a href='#'><span>ตั้งค่าระบบ</span></a>
                               <ul onclick="lp_ul_click();">
 								<li onclick="lp_li_click(event , '0005');">
-									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandServlet" target="frame_main" >ข้อมูลยี่ห้อรถ</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandServlet&pageAction=new" target="frame_main" >ข้อมูลยี่ห้อรถ</a>
 								</li>
 								<li onclick="lp_li_click(event , '0007');">
-									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.MotorDetailServlet" target="frame_main" >ข้อมูลรถ</a>
+									<a href="<%=servURL%>/EnjoyGenericSrv?service=servlet.MotorDetailServlet&pageAction=new" target="frame_main" >ข้อมูลรถ</a>
 								</li>
 							  </ul>
                            </li>

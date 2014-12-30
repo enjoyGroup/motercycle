@@ -16,6 +16,7 @@ public class UserDetailsBean {
 	private String companyAddress;
 	private String tin;
 	private String currentDate;
+	private String formatInvoie;
 	
 	public UserDetailsBean(){
 		this.userUniqueId 	= "";
@@ -33,6 +34,7 @@ public class UserDetailsBean {
 		this.companyAddress	= "";
 		this.tin			= "";
 		this.currentDate	= "";
+		this.formatInvoie	= "";
 	}
 
 	public String getUserUniqueId() {
@@ -153,6 +155,14 @@ public class UserDetailsBean {
 
 	public void setTel(String tel) {
 		this.tel = tel;
+	}
+
+	public String getFormatInvoie() {
+		return formatInvoie;
+	}
+
+	public void setFormatInvoie(String formatInvoie) {
+		this.formatInvoie = formatInvoie;
 	}
 	
 }
