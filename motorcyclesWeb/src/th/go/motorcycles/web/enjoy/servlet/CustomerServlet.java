@@ -37,7 +37,6 @@ public class CustomerServlet extends EnjoyStandardSvc {
     private static final String 		DISTRICT 		= "d";
     private static final String 		SUBDISTRICT 	= "s";
     
-    
     private MotorUtil               	motorUtil                   = null;
     private CustomerForm           	    form                        = null;
     private HttpServletRequest          request                     = null;
@@ -89,7 +88,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
 				this.lp_district();
 			}else if(pageAction.equals(SUBDISTRICT)){
 				this.lp_subdistrict(); 
-	 		} 
+	 		}
  			
  			
  			session.setAttribute(FORM_NAME, this.form);
@@ -166,14 +165,21 @@ public class CustomerServlet extends EnjoyStandardSvc {
 					customerBean.setSubdistrictCode(addressBean.getSubdistrictId());
 					customerBean.setDistrictCode(addressBean.getDistrictId());
 					customerBean.setProvinceCode(addressBean.getProvinceId());
+					customerBean.setProvinceName(province);
+					customerBean.setDistrictName(district);
+					customerBean.setSubdistrictName(subdistrict);
 					customerBean.setIdType(idType);
 					customerBean.setIdNumber(idNumber);
 					customerBean.setCusStatus(cusStatus);
-			 
-					cusCode = this.dao.insertCustomer(customerBean,this.form);
+					customerBean.setCusCode(cusCode);
+					
+					cusCode = this.dao.insertCustomer(customerBean);  
+					customerBean.setCusCode(cusCode);
+					this.form.setCustomerBean(customerBean);
+					
 					obj.put("status", 	"SUCCESS");
 					obj.put("cusCode", 	cusCode);
-					customerBean.setCusCode(cusCode);
+					obj.put("mode", 	"READONLY");
 					logger.info("customerBean:"+customerBean.getCusCode());
 				   
 			   }  

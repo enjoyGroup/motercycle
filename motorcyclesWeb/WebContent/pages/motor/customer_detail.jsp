@@ -1,15 +1,14 @@
 <%@page import="th.go.motorcycles.app.enjoy.form.CustomerForm"%>
-<%@ include file="/pages/include/enjoyInclude.jsp"%>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<!DOCTYPE html>
+<%@ page import="th.go.motorcycles.app.enjoy.bean.CustomerBean"%>
+<%@ include file="/pages/include/enjoyInclude.jsp"%> 
+<%@ page import="java.util.*"%>  
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%> 
+<jsp:useBean id="customerForm" class="th.go.motorcycles.app.enjoy.form.CustomerForm" scope="session"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 <head>
-<title> Welcome </title>
-<%@ page import="th.go.motorcycles.app.enjoy.bean.CustomerBean"%>
-<%@ page import="java.util.*"%>
-<jsp:useBean id="customerForm" class="th.go.motorcycles.app.enjoy.form.CustomerForm" scope="session"/>
-<%@ include file="../menu/inc_theme.jsp"%>
+<title> Welcome </title>  
 <style> 
 	
 	.rowSelect:hover{
@@ -21,9 +20,73 @@
 </style> 
 <script>
     var gv_url 			= '<%=servURL%>/EnjoyGenericSrv';
-
+    var gv_service 		= null;
+    
 	$(document).ready(function(){
+		gv_service = "service=" + $('#service').val();
 		
+		 $( "#idNumber" ).autocomplete({
+			 source: function(request, response) {
+	            $.ajax({
+	            	async:false,
+		            type: "POST",
+	                url: gv_url,
+	                dataType: "json",
+	                data: gv_service + "&pageAction=getIdNumber&idNumber=" + gp_trim(request.term),//request,
+	                success: function( data, textStatus, jqXHR) {
+	                    var items = data;
+	                    response(items);
+	                },
+	                error: function(jqXHR, textStatus, errorThrown){
+	                     alert( textStatus);
+	                }
+	            });
+	          },
+		      minLength: 0,//กี่ตัวอักษรถึงทำงาน
+		      open: function() {
+					//Data return กลับมาแล้วทำไรต่อ
+		      },
+		      close: function() {
+
+		      },
+		      focus:function(event,ui) {
+
+		      },
+		      select: function( event, ui ) { 
+		      }
+		});
+		
+		$( "#fullName" ).autocomplete({
+			 source: function(request, response) {
+	            $.ajax({
+	            	async:false,
+		            type: "POST",
+	                url: gv_url,
+	                dataType: "json",
+	                data: gv_service + "&pageAction=getCustFullName&custFullName=" + gp_trim(request.term),//request,
+	                success: function( data, textStatus, jqXHR) {
+	                    var items = data;
+	                    response(items);
+	                },
+	                error: function(jqXHR, textStatus, errorThrown){
+	                     alert( textStatus);
+	                }
+	            });
+	          },
+		      minLength: 0,//กี่ตัวอักษรถึงทำงาน
+		      open: function() {
+					//Data return กลับมาแล้วทำไรต่อ
+		      },
+		      close: function() {
+
+		      },
+		      focus:function(event,ui) {
+
+		      },
+		      select: function( event, ui ) { 
+		      }
+		});
+		 
 		$('#btnSearch').click(function(){ 
 		    var url					= '<%=servURL%>/EnjoyGenericSrv'; 
 		    var pageAction			= "searchData";
@@ -92,9 +155,7 @@
         var cusCode				= "";
  
 		try{
-			if(confirm("Please confirm to delete this record !!")){ 
-				//lv_index	= gp_rowTableIndex(ao_obj);  
-				//cusCode     = lo_tabResultDtl.rows[lv_index].cells[0].firstChild.value;
+			if(confirm("ต้องการจะลบข้อมูล ?")){  
 				cusCode     = ao_obj; 
 				lv_params 	= "service=" + $('#service').val() 
 				              + "&cusCode=" +cusCode  
@@ -163,7 +224,7 @@
 											 <div class="form-group"> 
 												<div class="col-sm-12">
 													<div class="row"> 
-													    <label class="col-sm-10 control-label" style="text-align:right">เลขประจำตัวประชาชน :</label>
+													    <label class="col-sm-10 control-label" style="text-align:right">เลขผู้เสียภาษี :</label>
 														<div class="col-md-2"> 
 															<input type="text" class="form-control" id="idNumber" name="idNumber"> 
 														</div>
@@ -186,7 +247,7 @@
 													<th  style="text-align: center;" width="30px;" ><B>ลำดับ</B></th>
 													<th  style="text-align: left;"   width="20px;"><B>ชื่อ-นามสกุล</B></th>
 													<th  style="text-align: left;"   width="100px;"><B>ที่อยู่</B></th> 
-													<th  style="text-align: center;" width="50px;" ><B>add/delete</B></th>
+													<th  style="text-align: center;" width="50px;" ><B>delete</B></th>
 												</tr> 
 											 
 											     <%

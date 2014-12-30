@@ -12,6 +12,14 @@
 <html> 
 <head>
 <title> เพิ่มรายละเอียดลูกค้า </title>  
+<style>
+	.input-disabled{
+	    background-color:#EBEBE4;
+	    border:1px solid #ABADB3;
+	    color:rgb(84, 84, 84);
+	}
+</style>  
+
 <script language="JavaScript" type="text/JavaScript">
 
 	var gv_url 	= '<%=servURL%>/EnjoyGenericSrv';
@@ -119,12 +127,12 @@
 	    $('#btnAdd').click(function(){
 	        var flagUpdate   = false;
 		    try{ 
-		        
+		    	
 		    	if($('#custName').val()=="" || $('#custSurname').val()=="" ||
 					 	   $('#houseNumber').val()=="" || $('#subdistrictName').val()=="" ||
 					 	   $('#districtName').val()=="" || $('#provinceName').val()==""){
-							alert("please input require field !!");
-							return;
+						   alert("กรุณาระบุข้อมูลให้ครบถ้วนก่อนทำการบันทึก");
+						   return ;
 				}
 		    	
 		    	params 	  =  $('#frm').serialize() + "&pageAction=addRecord"; 
@@ -143,21 +151,26 @@
 		            success: function(data){
 		            	var jsonObj 			= null;
 		            	var status				= null;
+		            	var mode     			= null;
 		            	var newCusCode			= null;
 		            	var errMsg				= null;
 		               //alert(data);
 		            	 try{
 		            		jsonObj = JSON.parse(data);
 		            		status	= jsonObj.status;
-		        		
+		        		    mode    = jsonObj.mode;
+		        		    
 		            		if(status=="SUCCESS"){
 		            			newCusCode		= jsonObj.cusCode; 
 		            			if(flagUpdate){ 
 			            			alert("แก้ไขรายการเรียบร้อย  ");  
 				            		window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
 		            			}else
-		            				alert("บันทึกรายการเรียบร้อย  ");
+		            			   alert("บันทึกรายการเรียบร้อย  ");
 			            		   window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
+			            		   if(mode=="READONLY"){
+			            			   lp_set_mode();  
+			            		   }
 		            		}else{
 		            			errMsg = jsonObj.errMsg; 
 		            			alert(errMsg);
@@ -178,6 +191,12 @@
  
 	});
 	
+	function lp_set_mode(){
+		//$('#custName').attr("readonly", "readonly");
+		document.getElementById("custName").className 	= "input-disabled";
+		document.getElementById("custName").readOnly 	= true;
+
+	}
 	
     function lp_reset_page(){
     	var url					= '<%=servURL%>/EnjoyGenericSrv'; 
@@ -232,14 +251,14 @@
 									</section>
 									<section class="panel panel-default">
 										<header class="panel-heading font-bold">ข้อมูลลูกค้า</header> 
-										<div class="panel-body"> 
+										<div class="panel-body" id="section_body"> 
 											<div class="form-group"> 
 											    <div class="col-sm-12">
 													<div class="row">
 													    <div class="col-md-1"style="width:120px;"></div> 
 													    <div class="col-md-1"> 
 													        <label class="col-sm-2 control-label" style="text-align:right" > 
-															<input type="radio" name="idType" id="idType1" value="1" style="width:50px;" 
+															<input type="radio" name="idType" id="idType1" value="1" style="width:50px;" checked
 																	<%if(customerBean.getIdType().equals("1")){%> checked="checked" <%} %>>บุคคลธรรมดา</label> 
 														</div>
 														 <div class="col-md-1">
@@ -248,7 +267,7 @@
 																	<%if(customerBean.getIdType().equals("2")){%> checked="checked" <%} %>>นิติบุคคล</label> 
 														</div>
 														 <div class="col-md-1"style="width:40px;"></div>  
-														<label class="col-sm-1 control-label" style="text-align:right">เลขบัตรประชาชน</label> 
+														<label class="col-sm-1 control-label" style="text-align:right">เลขผู้เสียภาษี</label> 
 														<div class="col-md-2"> 
 														    <input type="text" class="form-control" id="idNumber" name="idNumber" value="<%=customerBean.getIdNumber()%>" >
 														</div> 
@@ -299,7 +318,7 @@
 														</div> 
 														<label class="col-sm-2 control-label" style="text-align:right">อำเภอ/เขต <font color="red">*</font>:</label>
 														<div class="col-md-2"> 
-															<input  class="form-control" id="districtName" name="districtName"  placeholder="อำเภอ" title="อำเภอ"  value="<%=customerBean.getDistrictName()%>">
+															<input  class="form-control" id="districtName" name="districtName"  placeholder="อำเภอ" title="อำเภอ"  value="<%=customerBean.getDistrictName()%>" >
 															<input type="hidden" id="districtCode" name="districtCode" >
 														</div>
 													    <label class="col-sm-2 control-label" style="text-align:right">ตำบล/แขวง <font color="red">*</font>:</label>
@@ -311,9 +330,9 @@
 												</div>
 											</div> 
 										</div>
-										<div class="form-group" align="center">	 
-											<button class="btn btn-primary" id="btnAdd">บันทึก</button>   
-											<button class="btn btn-primary" id="btnCancel" onclick="lp_reset_page();">เริ่มใหม่</button> 
+										<div class="form-group" align="center">	  
+											<input type="button" class="btn btn-primary" id="btnAdd" name="btnAdd" value="บันทึก" />
+											<input type="button" class="btn btn-primary" id="btnCancel" name="btnCancel"  onclick="lp_reset_page();" value="เริ่มใหม่" /> 
 										</div>  
 									</section>
 								</div>

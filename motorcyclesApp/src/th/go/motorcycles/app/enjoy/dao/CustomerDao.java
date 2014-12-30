@@ -41,7 +41,7 @@ public class CustomerDao {
 					sql += " and idNumber = '"+bean.getIdNumber()+"'";
 				}
 				if(bean.getCustFullname()!=""){
-					sql += " and (SELECT CONCAT(a.cusName, ' ', a.cusSurname) as fullName) like '"+bean.getCustFullname()+"'";
+					sql += " and (SELECT CONCAT(a.cusName, ' ', a.cusSurname) as fullName) like '"+bean.getCustFullname()+"%'";
 				}
 				 
 			} 	 
@@ -191,52 +191,6 @@ public class CustomerDao {
 	}
 	
 	 
-	public String insertCustomer(CustomerBean customerBean,CustomerForm form){
-		System.out.println("[CustomerDao][insertCustomer][Begin]");
-		
-		String 		sql			 	= null;
-		ResultSet 	rs 				= null;  
-		String      cusCode         = null;  
-		CustomerBean bean           = null;
-		try{ 
-			 sql 		= "SELECT cusCode as lastId FROM customer ORDER BY cusCode DESC LIMIT 1";
-			 rs 		= this.db.executeQuery(sql);
-			 System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
-			  while (rs.next()) {
-				  cusCode	= EnjoyUtils.nullToStr(rs.getString("lastId"));
-			  } 
-			 
-			 cusCode = EnjoyUtils.getCustNext(cusCode);
-		     System.out.println("[CustomerDao][insertCustomer] cusCode : " + cusCode);
-		    
-			sql = "insert into customer (cusCode,cusName, cusSurname, houseNumber, mooNumber,SoiName, streetName, subdistrictCode, districtCode, provinceCode, idType, idNumber, cusStatus)"
-				 + " values ('"+ cusCode + "', '" + customerBean.getCustName() + "', '" + customerBean.getCustSurname() + "', '" + 
-				 customerBean.getHouseNumber() + "', '" + customerBean.getMooNumber() + "', '" + customerBean.getSoiName() + "', '" + 
-				 customerBean.getStreetName()+ "', '" + customerBean.getSubdistrictCode() + "', '" +
-				 customerBean.getDistrictCode() + "', '" + customerBean.getProvinceCode() + "', '" +
-				 customerBean.getIdType() + "', '" + customerBean.getIdNumber() + "', '" +
-				 customerBean.getCusStatus() +"') ";
-			
-			System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
-			
-            this.db.execute(sql);  
-		    System.out.println("[CustomerDao][insertCustomer] cusCode : " + cusCode);
-		    
-		    if(cusCode!=null&&!cusCode.equals("")){
-			    bean = new CustomerBean();
-			    bean.setCusCode(cusCode);
-			    form.setCustomerBean(bean);
-		    }
-		    
-		}catch(Exception e){  
-			e.printStackTrace();
-		}finally{
-			System.out.println("[CustomerDao][insertCustomer][End]");
-		}
-		
-		return cusCode;
-	}
-	
 	public String insertCustomer(CustomerBean customerBean){
 		System.out.println("[CustomerDao][insertCustomer][Begin]");
 		
@@ -248,9 +202,14 @@ public class CustomerDao {
 			 sql 		= "SELECT cusCode as lastId FROM customer ORDER BY cusCode DESC LIMIT 1";
 			 rs 		= this.db.executeQuery(sql);
 			 System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
-			  while (rs.next()) {
+			 while (rs.next()) {
 				  cusCode	= EnjoyUtils.nullToStr(rs.getString("lastId"));
-			  } 
+			 } 
+			 System.out.println("[CustomerDao][insertCustomer] cusCode :: " + cusCode); 
+			 
+			 if(cusCode==null){
+				cusCode = "100"; 
+			 }
 			 
 			 cusCode = EnjoyUtils.getCustNext(cusCode);
 		     System.out.println("[CustomerDao][insertCustomer] cusCode : " + cusCode);
@@ -267,7 +226,12 @@ public class CustomerDao {
 			
             this.db.execute(sql);  
 		    System.out.println("[CustomerDao][insertCustomer] cusCode : " + cusCode);
-		  
+		    
+		    /*if(cusCode!=null&&!cusCode.equals("")){
+			    bean = new CustomerBean();
+			    bean.setCusCode(cusCode);
+			    form.setCustomerBean(bean);
+		    }*/
 		    
 		}catch(Exception e){  
 			e.printStackTrace();
@@ -277,6 +241,7 @@ public class CustomerDao {
 		
 		return cusCode;
 	}
+
 	
 	public boolean updateCustomer(CustomerBean bean){
 		System.out.println("[CustomerDao][updateCustomer][Begin]::"+bean.getCusCode());
@@ -395,4 +360,60 @@ public class CustomerDao {
 		}
 		return addressBean;
 	}
+	
+	public List<String> idNumberList(String idNumber){
+		System.out.println("[CustomerDao][idNumberList][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        List<String> 					list 				= new ArrayList<String>();
+		
+		try{
+			sql 		= " select idNumber from customer where idNumber like ('"+idNumber+"%') and cusStatus = 'A' order by idNumber asc limit 10 ";
+			
+			System.out.println("[CustomerDao][idNumberList] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    
+		    while(rs.next()){ 
+		    	list.add(EnjoyUtils.nullToStr(rs.getString("idNumber")));
+		    }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[CustomerDao][idNumberList][End]");
+		}
+		
+		return list;
+	}
+	
+	public List<String> custFullNameList(String custFullName){
+		System.out.println("[CustomerDao][custFullNameList][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        List<String> 					list 				= new ArrayList<String>();
+		
+		try{
+			sql 		= "SELECT CONCAT(cusName, ' ', cusSurname) as fullName from customer where (SELECT CONCAT(cusName, ' ', cusSurname) as fullName) like '"+custFullName+"%' and cusStatus = 'A'  limit 10 ";
+			
+			System.out.println("[CustomerDao][custFullNameList] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    
+		    while(rs.next()){
+		    	
+		    	list.add(EnjoyUtils.nullToStr(rs.getString("fullName")));
+		    }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[CustomerDao][custFullNameList][End]");
+		}
+		
+		return list;
+	}
+	 
 }

@@ -25,7 +25,7 @@ public class CustomerBean implements Serializable {
 	private String idType;
 	private String idNumber;
 	private String cusStatus; 
-	private String address ;
+	private String address ; 
 	
 	public CustomerBean(){
 		this.cusCode 			= "";
@@ -45,7 +45,7 @@ public class CustomerBean implements Serializable {
 		this.idType 		    = "";
 		this.idNumber 		    = "";
 		this.cusStatus          = "A"; 
-		this.address            = "";
+		this.address            = ""; 
 	}
 
  
@@ -207,6 +207,8 @@ public class CustomerBean implements Serializable {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+ 
+ 
  
 	
 }

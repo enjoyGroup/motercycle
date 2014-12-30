@@ -3,19 +3,16 @@ package th.go.motorcycles.app.enjoy.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import th.go.motorcycles.app.enjoy.bean.AddressBean;
 import th.go.motorcycles.app.enjoy.bean.CustomerBean; 
 
 public class CustomerForm {
 	
 	private List<CustomerBean>  listCustomer;
-	private CustomerBean 		customerBean; 
-	private AddressBean 		addressBean; 
+	private CustomerBean 		customerBean;  
 	
 	public CustomerForm(){
 		this.listCustomer 	= new ArrayList<CustomerBean>();
-		this.customerBean 	= new CustomerBean();
-		this.addressBean    = new AddressBean();
+		this.customerBean 	= new CustomerBean(); 
 	}
 
 	public List<CustomerBean> getListCustomer() {
@@ -34,13 +31,7 @@ public class CustomerForm {
 		this.customerBean = customerBean;
 	}
 
-	public AddressBean getAddressBean() {
-		return addressBean;
-	}
-
-	public void setAddressBean(AddressBean addressBean) {
-		this.addressBean = addressBean;
-	}
+ 
 
 	 
 

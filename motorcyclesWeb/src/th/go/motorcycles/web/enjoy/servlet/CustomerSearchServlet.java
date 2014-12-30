@@ -24,9 +24,11 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 	static final long serialVersionUID = 1L;
 	private static final LogWrapper logger = LogWrapper.getLogger(CustomerSearchServlet.class);
 	
-    private static final String FORM_NAME = "customerForm";
+    private static final String         FORM_NAME           = "customerForm"; 
+    private static final String 		GET_ID_NUMBER 	    = "getIdNumber";
+    private static final String 		GET_CUST_FULL_NAME 	= "getCustFullName"; 
     
-    private MotorUtil               	easUtil                     = null;
+    private MotorUtil               	motorUtil                   = null;
     private CustomerForm           	    form                        = null;
     private HttpServletRequest          request                     = null;
     private HttpServletResponse         response                    = null;
@@ -47,25 +49,30 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
          String pageAction = null; 
  		
  		try{
- 			 pageAction 				= MotorUtil.nullToStr(request.getParameter("pageAction")); 
- 			 this.easUtil 			= new MotorUtil(request, response);
+ 			 pageAction 			 = MotorUtil.nullToStr(request.getParameter("pageAction")); 
+ 			 this.motorUtil			 = new MotorUtil(request, response);
  			 this.request            = request;
              this.response           = response;
              this.session            = request.getSession(false);
              this.userBean           = (UserDetailsBean)session.getAttribute("userBean");
              this.form               = (CustomerForm)session.getAttribute(FORM_NAME);
              this.dao				= new CustomerDao();
- 			
- 			if(pageAction.equals("new")) this.form = new CustomerForm();
- 			
- 			if(pageAction.equals("")){
+ 			 
+ 			if(pageAction.equals("new")){
+ 				this.form = new CustomerForm();
+ 				request.setAttribute("target", Constants.PAGE_URL +"/customer_detail.jsp");
+ 			}else if(pageAction.equals("")){
  				System.out.println("[CustomerSearchServlet][onLoad][Begin]");   
  				request.setAttribute("target", Constants.PAGE_URL +"/customer_detail.jsp");
  			}else if(pageAction.equals("searchData")){
  				this.onSearch();
  			}else if(pageAction.equals("delRecord")){
  				this.delRecord();
- 			} 
+ 			}else if(pageAction.equals(GET_ID_NUMBER)){
+				this.lp_getIdNumber();
+			}else if(pageAction.equals(GET_CUST_FULL_NAME)){
+				this.lp_getCustFullName();
+			}  
  			
  			session.setAttribute(FORM_NAME, this.form);
  			
@@ -75,8 +82,68 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
  			System.out.println("[CustomerSearchServlet][execute][End]");
  		}
 	}
-  
-	 
+   
+	private void lp_getIdNumber(){
+		   logger.info("[lp_getIdNumber][Begin]");
+		   
+		   String							idNumber				= null;
+	       List<String> 					list 					= new ArrayList<String>();
+	       String[]							strArray				= null;
+	       CustomerBean 					customerBean			= null;
+	       
+		   try{
+			   idNumber			= EnjoyUtils.nullToStr(this.request.getParameter("idNumber"));
+			   customerBean		= this.form.getCustomerBean();
+			   
+			   logger.info("[lp_getIdNumber] idNumber 			:: " + idNumber);
+			   
+			   customerBean.setIdNumber(idNumber);
+			   
+			   list 		= this.dao.idNumberList(idNumber);
+			   strArray 	= new String[list.size()];
+			   strArray 	= list.toArray(strArray); 
+			   
+			   this.motorUtil.writeJsonMSG((String[]) strArray);
+			   
+		   }catch(Exception e){
+			   e.printStackTrace();
+			   logger.info("[lp_getIdNumber] " + e.getMessage());
+		   }finally{
+			   logger.info("[lp_getIdNumber][End]");
+		   }
+	   }
+	   
+	   private void lp_getCustFullName(){
+		   logger.info("[lp_getCustFullName][Begin]");
+		   
+		   String							custFullName			= null;
+	       List<String> 					list 					= new ArrayList<String>();
+	       String[]							strArray				= null;
+	       CustomerBean 					customerBean			= null;
+	       
+		   try{
+			   custFullName				= EnjoyUtils.nullToStr(this.request.getParameter("custFullName"));
+			   customerBean				= this.form.getCustomerBean();
+			   
+			   logger.info("[lp_getCustFullName] custFullName 			:: " + custFullName);
+			   
+			   customerBean.setCustFullname(custFullName);
+			   
+			   list 		= this.dao.custFullNameList(custFullName);
+			   strArray 	= new String[list.size()];
+			   strArray 	= list.toArray(strArray); 
+			   
+			   this.motorUtil.writeJsonMSG((String[]) strArray);
+			   
+		   }catch(Exception e){
+			   e.printStackTrace();
+			   logger.info("[lp_getCustFullName] " + e.getMessage());
+		   }finally{
+			   logger.info("[lp_getCustFullName][End]");
+		   }
+	   }
+	   
+	  
 	private void onSearch() throws Exception{ 
 		System.out.println("[CustomerSearchServlet][onSearch][Begin]");
 		List<CustomerBean> listCustomer = null;
@@ -100,9 +167,9 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			}
 			
 			if(dataRet==true){
-				this.easUtil.writeMSG("OK"); 
+				this.motorUtil.writeMSG("OK"); 
 			}else{
-				this.easUtil.writeMSG("No record!!");
+				this.motorUtil.writeMSG("No record!!");
 			}
 			
 		}catch(Exception e){
@@ -137,10 +204,10 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			}
 			 
 			if(dataRet==true){
-				this.easUtil.writeMSG("OK");
+				this.motorUtil.writeMSG("OK");
 				this.onSearchAll(); 
 			}else{
-				this.easUtil.writeMSG("CustomerSearchServlet Delete failed !!");
+				this.motorUtil.writeMSG("CustomerSearchServlet Delete failed !!");
 			}
 			 
 			
@@ -170,9 +237,9 @@ public class CustomerSearchServlet extends EnjoyStandardSvc {
 			}
 			
 			if(dataRet==true){
-				this.easUtil.writeMSG("OK"); 
+				this.motorUtil.writeMSG("OK"); 
 			}else{
-				this.easUtil.writeMSG("No record!!");
+				this.motorUtil.writeMSG("No record!!");
 			}
 			
 		}catch(Exception e){
