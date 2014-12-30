@@ -140,6 +140,65 @@ public class EntrySaleDetailDao {
 		return customerBean;
 	}
 	
+	public CustomerBean getCustomerDetailByIdNumber(String idNumber, CustomerBean customerBean){
+		System.out.println("[EntrySaleDetailDao][getCustomerDetailByIdNumber][Begin]");
+		
+		String 				sql			 		= null;
+		ResultSet 			rs 					= null;
+		AddressDao			addressDao			= null;
+		String				provinceCode		= null;
+		String				districtCode		= null;
+		String				subdistrictCode		= null;
+		String				provinceName		= null;
+		String				districtName		= null;
+		String				subdistrictName		= null;
+		
+		try{
+			addressDao 	= new AddressDao();
+			sql 		= "SELECT * FROM " + CUSTOMER +" where  cusStatus = '"+"A"+"' and idNumber = '"+idNumber+"'";
+			
+			System.out.println("[EntrySaleDetailDao][getCustomerDetailByIdNumber] sql :: " + sql); 
+		    rs 			= this.db.executeQuery(sql);
+		    
+		    while(rs.next()){ 
+		    	customerBean.setCusCode(EnjoyUtils.nullToStr(rs.getString("cusCode")));
+		    	customerBean.setCustName(EnjoyUtils.nullToStr(rs.getString("cusName"))); 
+		    	customerBean.setCustSurname(EnjoyUtils.nullToStr(rs.getString("cusSurname"))); 
+				customerBean.setHouseNumber(EnjoyUtils.nullToStr(rs.getString("houseNumber")));
+				customerBean.setMooNumber(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
+				customerBean.setSoiName(EnjoyUtils.nullToStr(rs.getString("SoiName")));
+				customerBean.setStreetName(EnjoyUtils.nullToStr(rs.getString("streetName")));
+				
+				provinceCode 		= EnjoyUtils.nullToStr(rs.getString("provinceCode"));
+				districtCode 		= EnjoyUtils.nullToStr(rs.getString("districtCode"));
+				subdistrictCode 	= EnjoyUtils.nullToStr(rs.getString("subdistrictCode"));
+				
+				provinceName		= addressDao.getProvinceName(provinceCode);
+				districtName		= addressDao.getDistrictName(districtCode);
+				subdistrictName		= addressDao.getSubdistrictName(subdistrictCode);
+				
+				customerBean.setProvinceCode(provinceCode);
+				customerBean.setDistrictCode(districtCode);
+				customerBean.setSubdistrictCode(subdistrictCode);
+				
+				customerBean.setProvinceName(provinceName);
+				customerBean.setDistrictName(districtName);
+				customerBean.setSubdistrictName(subdistrictName);
+				
+				customerBean.setIdType(EnjoyUtils.nullToStr(rs.getString("idType")));
+				customerBean.setIdNumber(EnjoyUtils.nullToStr(rs.getString("idNumber")));
+				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
+		    }	 
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[EntrySaleDetailDao][getCustomerDetailByIdNumber][End]");
+		}
+		
+		return customerBean;
+	}
+	
 	public void setSaleDetail(String invoiceId, EntrySaleDetailForm form){
 		System.out.println("[EntrySaleDetailDao][setSaleDetail][Begin]");
 		
@@ -153,6 +212,7 @@ public class EntrySaleDetailDao {
 		String				totalAmount			= null;
 		String				commAmount			= null;
 		String				creditAmount		= null;
+		String 				size				= null;
 		
 		try{
 			customerBean 	= new CustomerBean();
@@ -190,7 +250,7 @@ public class EntrySaleDetailDao {
 		    while(rs.next()){ 
 		    	
 		    	form.setInvoiceId(invoiceId);
-		    	form.setRecordAddDate(EnjoyUtils.nullToStr(rs.getString("invoiceDate")));
+		    	form.setRecordAddDate(EnjoyUtils.dateFormat(rs.getString("invoiceDate"), "yyyy-MM-dd", "dd/MM/yyyy"));
 		    	
 		    	cusCode 	= EnjoyUtils.nullToStr(rs.getString("cusCode"));
 		    	
@@ -200,7 +260,9 @@ public class EntrySaleDetailDao {
 		    	productBean.setEngineNo(EnjoyUtils.nullToStr(rs.getString("engineNo")));
 		    	productBean.setChassisDisp(EnjoyUtils.nullToStr(rs.getString("chassisDisp")));
 		    	productBean.setEngineNoDisp(EnjoyUtils.nullToStr(rs.getString("EngineNoDisp")));
-		    	productBean.setSize(EnjoyUtils.nullToStr(rs.getString("size")));
+//		    	productBean.setSize(EnjoyUtils.nullToStr(rs.getString("size")));
+		    	size 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("size")), 0);
+		    	productBean.setSize(size);
 		    	
 		    	form.setProductBean(productBean);
 		    	
@@ -410,6 +472,7 @@ public class EntrySaleDetailDao {
 		String 							sql			 		= null;
 		ResultSet 						rs 					= null;
 		String							brandCode			= null;
+		String							size				= null;
 		
 		try{
 			sql 		= " select brandCode from branddetails where brandName = '" + brandName + "'";
@@ -449,7 +512,9 @@ public class EntrySaleDetailDao {
 				productBean.setModel(EnjoyUtils.nullToStr(rs.getString("model")));
 				productBean.setChassis(EnjoyUtils.nullToStr(rs.getString("chassis")));
 				productBean.setEngineNo(EnjoyUtils.nullToStr(rs.getString("engineNo")));
-				productBean.setSize(EnjoyUtils.nullToStr(rs.getString("size")));
+				
+				size 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("size")), 0);
+		    	productBean.setSize(size);
 			}
 		    
 		    
@@ -543,6 +608,9 @@ public class EntrySaleDetailDao {
 		String				invoiceIdAddSales	= null;
 		String				flagCredit			= null;
 		String				creditAmount		= null;
+		String				totalAmount			= null;
+		String				color				= null;
+		String				recordAddDate		= null;
 		
 		try{
 			productBean 	= form.getProductBean();
@@ -572,9 +640,14 @@ public class EntrySaleDetailDao {
 			size 				= productBean.getSize();
 			flagCredit 			= form.getFlagCredit();
 			creditAmount 		= form.getCreditAmount();
+			totalAmount			= form.getTotalAmount();
+			color				= form.getColor();
+			recordAddDate		= EnjoyUtils.dateFormat(form.getRecordAddDate(), "dd/MM/yyyy", "yyyyMMdd");
 			
 			if(flagAddSales.equals("Y")){
-				invoiceIdAddSales = invoiceId;
+				invoiceIdAddSales 	= invoiceId;
+			}else{
+				invoiceIdAddSales	= "";
 			}
 			
 			sql 		= "insert into invoicedetails ( invoiceId"
@@ -584,8 +657,10 @@ public class EntrySaleDetailDao {
 													+ " ,chassisDisp"
 													+ " ,EngineNoDisp"	
 													+ " ,size"
+													+ " ,color"
 													+ " ,priceAmount"	
 													+ " ,vatAmount"
+													+ " ,totalAmount"
 													+ " ,remark"
 													+ " ,flagAddSales"	
 													+ " ,commAmount"
@@ -594,21 +669,26 @@ public class EntrySaleDetailDao {
 													+ " ,flagCredit"
 													+ " ,creditAmount)"
 										+ " values("+invoiceId+""
-													+ " ,'"+EnjoyUtils.currDateThai()+"'"
+													+ " ,'"+recordAddDate+"'"
 													+ " ,'"+cusCode+"'"
 													+ " ,'"+motorcyclesCode+"'"
 													+ " ,'"+chassisDisp+"'"
 													+ " ,'"+EngineNoDisp+"'"
 													+ " ,'"+size+"'"
+													+ " ,'"+color+"'"
 													+ " ,'"+priceAmount+"'"
 													+ " ,'"+vatAmount+"'"
+													+ " ,'"+totalAmount+"'"
 													+ " ,'"+remark+"'"
 													+ " ,'"+flagAddSales+"'"
 													+ " ,'"+commAmount+"'"
 													+ " ,'"+userUniqueId+"'"
-													+ " ,"+invoiceIdAddSales+""
-													+ " ,"+flagCredit+""
-													+ " ,"+creditAmount+")";
+													+ " ,'"+invoiceIdAddSales+"'"
+													+ " ,'"+flagCredit+"'"
+													+ " ,'"+creditAmount+"')";
+			
+			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] sql :: " + sql);
+			
 			this.db.execute(sql);
 			
 			bean.setInvoiceId(invoiceId);

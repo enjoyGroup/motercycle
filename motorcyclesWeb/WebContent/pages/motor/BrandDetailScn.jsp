@@ -15,7 +15,7 @@
 	$(document).ready(function(){
 		
 		$('#btnSearch').click(function(){ 
-		    var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandSearchServlet'; 
+		    var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandServlet'; 
 		    var pageAction			= "searchData";
 		    var lv_params			= ""; 
 		    var fullname            = gp_sanitizeURLString($('#fullName').val());  
@@ -45,8 +45,32 @@
 			
 		});
 		
+		$('#btnSave').click(function(){
+			var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandServlet'; 
+			var pageAction			= "saveUpdData";
+			var lv_params			= ""; 
+	        var lo_obj;
+		    
+		    try{
+		    	lv_params 	= "&pageAction=" + pageAction + "&" + $('#frm').serialize();
+				$.ajax({
+					async:false,
+		            type: "POST",
+		            url: url,
+		            data: lv_params,
+		            beforeSend: "",
+		            success: function(data){
+		            	alert("บันทึกรายการเรียบร้อย  ");
+		            }
+		        });
+		    	
+		    }catch(e){
+		    	alert("btnSubmit :: " + e);
+		    }
+		    
+		});
 		$('#btnCancel').click(function(){ 
-		    var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandSearchServlet'; 
+		    var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandServlet'; 
 		    var pageAction			= "new";
 		    var lv_params			= "";
 			
@@ -69,54 +93,9 @@
 				alert("btnCancel :: " + err);
 			}
 			
-		}); 
-	 	
+		}); 	
 	});
 	
-	function lp_del_row_table(ao_obj){  
-		var lv_index			= 0;
-		var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandSearchServlet';  
-	    var pageAction			= "delRecord";
-	    var lv_params			= ""; 
-		var lo_tabResultDtl		= document.getElementById("tb_result");
-        var brandCode				= "";
- 
-		try{
-			if(confirm("Please confirm to delete this record !!")){ 
-				//lv_index	= gp_rowTableIndex(ao_obj);  
-				//brandCode     = lo_tabResultDtl.rows[lv_index].cells[0].firstChild.value;
-				brandCode     = ao_obj; 
-				lv_params 	= "service=" + $('#service').val() 
-				+ "&brandCode=" +brandCode  
-				+ "&pageAction=" + pageAction;
-	
-				$.ajax({
-				    type: "POST",
-				    async: false,
-				    url: url,
-				    data: lv_params,
-				    beforeSend: "",
-				    success: function(data){
-				    	if(data.indexOf('OK') > -1){
-				    		lo_tabResultDtl.deleteRow(lv_index); 
-				    		var length = lo_tabResultDtl.rows.length-1;
-				    		//alert(lo_tabResultDtl.rows.length);
-				    		for(var i=0;i<length;i++){ 
-								rowNumber = i+1;
-								lo_tabResultDtl.rows[i+1].cells[0].innerHTML=rowNumber;
-				    		}
-				    		
-						}else{
-							alert(data);
-						}
-				    }
-				});
-			}
-		}catch(err){
-			alert("lp_del_row_table :: " + err);
-		}
-	}
-
 	function lp_add_row_table(){
 		var lo_table 	= null;
 		var lv_length 	= null;
@@ -135,9 +114,8 @@
 			
 			cell1.align	= "center";
 			cell1.innerHTML = "<b>" + lv_length + "<b>";
-			cell2.innerHTML = "<td width='400px;' align='left' ><input type='text' name='size' id='size'style='width: 300px;'/></td>";
+			cell2.innerHTML = "<td width='400px;' align='left' ><input type='text' name='brandName' id='brandName'style='width: 300px;' onclick/></td>";
 			cell3.innerHTML = "<td width='50px' align='center'><input type='hidden' name='hidBrandStatus' id='hidBrandStatus'  value='I'></td>";	
-		
 		}catch(e){
 			alert("lp_add_row_table :: " + e);
 		}
@@ -152,8 +130,8 @@
 				<section id="content">
 					<section class="vbox">
 						<section class="scrollable padder">
-						<form class="form-horizontal"  id="from_search" action="<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandSearchServlet">
-						<input type="hidden" id="service" name="service" value="servlet.BrandSearchServlet" />
+						<form class="form-horizontal"  id="frm" action="<%=servURL%>/EnjoyGenericSrv?service=servlet.BrandServlet">
+						<input type="hidden" id="service" name="service" value="servlet.BrandServlet" />
 						<input type="hidden" id="brandStatus" name="brandStatus" />
 					 
 							<div class="alert alert-block alert-error fade in">
@@ -184,7 +162,7 @@
 														%>
 														 <tr>
 															<td width="30px;" align="center"><input type="hidden" name="hidBrandCode" id="hidBrandCode"  value="<%=bean.getBrandCode()%>"/><B><%=rowNumber%></B></td>
-															<td width="400px;" align="left" ><input type="text" name="size" id="size" value="<%=bean.getBrandtName()%>" style="width: 300px;"/></td>
+															<td width="400px;" align="left" ><input type="text" name="brandName" id="brandName" value="<%=bean.getBrandtName()%>" style="width: 300px;"/></td>
 															<td width="50px" align="center"><input type="hidden" name="hidBrandStatus" id="hidBrandStatus"  value="<%=bean.getBrandStatus()%>"/></td>
 														</tr> 
 														<% } 
@@ -199,7 +177,7 @@
 											</table> 
 										</div>
 										<div class="form-group" align="center">	 
-											<button class="btn btn-primary" id="btnAdd">บันทึก</button>   
+											<button class="btn btn-primary" id="btnSave">บันทึก</button>   
 											<button class="btn btn-primary" id="btnCancel" onclick="lp_reset_page();">เริ่มใหม่</button> 
 										</div> 
 								    </section>

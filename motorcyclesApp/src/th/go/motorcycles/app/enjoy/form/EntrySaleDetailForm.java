@@ -31,6 +31,7 @@ public class EntrySaleDetailForm {
 	private String								flagCredit;
 	private String								creditAmount;
 	private String								vat;
+	private String								userLevel;
 	
 	public EntrySaleDetailForm(){
 		this.customerBean 				= new CustomerBean();
@@ -53,6 +54,15 @@ public class EntrySaleDetailForm {
 		this.flagCredit					= FLAG_N;
 		this.creditAmount				= "0.00";
 		this.vat						= ConfigFile.getVAT_RATE();
+		this.userLevel					= "";
+	}
+
+	public String getUserLevel() {
+		return userLevel;
+	}
+
+	public void setUserLevel(String userLevel) {
+		this.userLevel = userLevel;
 	}
 
 	public String getVat() {

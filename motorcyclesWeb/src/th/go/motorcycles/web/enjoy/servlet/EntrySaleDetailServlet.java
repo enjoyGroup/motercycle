@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +51,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
    private static final String 		GET_CUST_SNAME 			= "getCustSurName";
    private static final String 		GET_CUST_DTL 			= "getCustDtl";
    private static final String 		GET_CUST_DTL_BY_NAME 	= "getCustDtlByName";
+   private static final String 		GET_CUST_DTL_BY_ID_NUM 	= "getCustDtlByIdNumber";
    private static final String 		GET_PROD_DTL 			= "getProdDtl";
    private static final String 		GET_BRAND_NAME 			= "getBrandName";
    private static final String 		GET_MODEL	 			= "getModel";
@@ -72,6 +74,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		
 	   String pageAction 	= null;
 	   String pageActionPDF = null;
+	   Date	  date			= new Date();
 		
 		try{
 			pageAction 				= MotorUtil.nullToStr(request.getParameter("pageAction"));
@@ -91,6 +94,9 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			
 			if(this.form == null || pageAction.equals(NEW) || pageAction.equals(RESET)) this.form = new EntrySaleDetailForm();
 			
+			logger.info("[execute] userLevel :: " + this.userBean.getUserLevel());
+			this.form.setUserLevel(this.userBean.getUserLevel());
+			
 			if(pageAction.equals("") || pageAction.equals(NEW)){
 System.out.println("pageActionPDF ==> " + pageActionPDF);
 				if (pageActionPDF.equals(VIEWPDF)) {
@@ -99,6 +105,8 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 				} else {
 //					this.form.getCustomerBean().setIdType("1");
 //					this.form.setInvoiceId("5700000001");
+					this.form.getCustomerBean().setIdType("1");
+					this.form.setRecordAddDate(MotorUtil.dateToStringThai(date));
 					request.setAttribute("target", Constants.PAGE_URL + "/EntrySaleDetailScn.jsp");
 				}
 			}else if(pageAction.equals(EDIT)){
@@ -120,6 +128,8 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 				this.lp_getCustDtl();
 			}else if(pageAction.equals(GET_CUST_DTL_BY_NAME)){
 				this.lp_getCustDtlByName();
+			}else if(pageAction.equals(GET_CUST_DTL_BY_ID_NUM)){
+				this.lp_getCustDtlByIdNumber();
 			}else if(pageAction.equals(GET_BRAND_NAME)){
 				this.lp_getBrandName();
 			}else if(pageAction.equals(GET_MODEL)){
@@ -175,7 +185,10 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 	   String 				engineNo					= null;
 	   String 				size						= null;
 	   String				flagCredit					= null;
-		String				creditAmount				= null;
+	   String				creditAmount				= null;
+	   String				totalAmount					= null;
+	   String				color						= null;
+	   String				recordAddDate				= null;
 	   
 	   try{
 		   customerBean 	= new CustomerBean();
@@ -197,9 +210,12 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 		   model			= EnjoyUtils.nullToStr(this.request.getParameter("model"));
 		   chassis			= EnjoyUtils.nullToStr(this.request.getParameter("chassis"));
 		   engineNo			= EnjoyUtils.nullToStr(this.request.getParameter("engineNo"));
-		   size				= EnjoyUtils.nullToStr(this.request.getParameter("size"));
+		   size				= EnjoyUtils.replaceComma(this.request.getParameter("size"));
 		   flagCredit		= EnjoyUtils.nullToStr(this.request.getParameter("flagCredit"));
 		   creditAmount		= EnjoyUtils.replaceComma(this.request.getParameter("creditAmount"));
+		   totalAmount		= EnjoyUtils.replaceComma(this.request.getParameter("totalAmount"));
+		   color			= EnjoyUtils.nullToStr(this.request.getParameter("color"));
+		   recordAddDate	= EnjoyUtils.nullToStr(this.request.getParameter("recordAddDate"));
 		   
 		   logger.info("[lp_saveData] invoiceId 			:: " + invoiceId);
 		   logger.info("[lp_saveData] priceAmount 			:: " + priceAmount);
@@ -218,8 +234,11 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 		   logger.info("[lp_saveData] chassis 				:: " + chassis);
 		   logger.info("[lp_saveData] engineNo 				:: " + engineNo);
 		   logger.info("[lp_saveData] size 					:: " + size);
+		   logger.info("[lp_saveData] color	 				:: " + color);
 		   logger.info("[lp_saveData] flagCredit 			:: " + flagCredit);
 		   logger.info("[lp_saveData] creditAmount	 		:: " + creditAmount);
+		   logger.info("[lp_saveData] totalAmount	 		:: " + totalAmount);
+		   logger.info("[lp_saveData] recordAddDate	 		:: " + recordAddDate);
 		   logger.info("[lp_saveData] idType 				:: " + this.request.getParameter("idType"));
 		   logger.info("[lp_saveData] idNumber 				:: " + EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
 		   
@@ -231,6 +250,9 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 		   form.setFlagAddSales(flagAddSales);
 		   form.setUserUniqueId(userUniqueId);
 		   form.setCreditAmount(creditAmount);
+		   form.setTotalAmount(totalAmount);
+		   form.setColor(color);
+		   form.setRecordAddDate(recordAddDate);
 		   
 		   if(invoiceId.equals("")){
 			   form.setFlagCredit(EntrySaleDetailForm.FLAG_N);
@@ -452,6 +474,54 @@ System.out.println("pageActionPDF ==> " + pageActionPDF);
 	   }finally{
 		   this.motorUtil.writeMSG(obj.toString());
 		   logger.info("[lp_getCustDtlByName][End]");
+	   }
+   }
+   
+   private void lp_getCustDtlByIdNumber(){
+	   logger.info("[lp_getCustDtlByIdNumber][Begin]");
+	   
+	   String							idNumber				= null;
+       CustomerBean 					customerBeanDb			= null;
+       JSONObject 						obj 					= null;
+       
+	   try{
+		   idNumber					= EnjoyUtils.nullToStr(this.request.getParameter("idNumber"));
+		   customerBeanDb			= new CustomerBean();
+		   obj 						= new JSONObject();
+		   
+		   logger.info("[lp_getCustDtlByIdNumber] idNumber 			:: " + idNumber);
+		   
+		   this.dao.getCustomerDetailByIdNumber(idNumber, customerBeanDb);
+		   
+		   if(!customerBeanDb.getCusCode().equals("")){
+			   obj.put("status", 			"SUCCESS");
+			   obj.put("cusCode", 			customerBeanDb.getCusCode());
+			   obj.put("custName", 			customerBeanDb.getCustName());
+			   obj.put("custSurname", 		customerBeanDb.getCustSurname());
+			   obj.put("houseNumber", 		customerBeanDb.getHouseNumber());
+			   obj.put("mooNumber", 		customerBeanDb.getMooNumber());
+			   obj.put("soiName", 			customerBeanDb.getSoiName());
+			   obj.put("streetName", 		customerBeanDb.getStreetName());
+			   obj.put("subdistrictName", 	customerBeanDb.getSubdistrictName());
+			   obj.put("districtName", 		customerBeanDb.getDistrictName());
+			   obj.put("provinceName", 		customerBeanDb.getProvinceName());
+			   obj.put("idType", 			customerBeanDb.getIdType());
+			   obj.put("idNumber", 			customerBeanDb.getIdNumber());
+			   obj.put("cusStatus", 		customerBeanDb.getCusStatus());
+			   
+		   }else{
+			   obj.put("status", 			"ERROR");
+		   }
+		   
+		   this.form.setCustomerBean(customerBeanDb);
+		   
+	   }catch(Exception e){
+		   obj.put("status", 			"ERROR");
+		   e.printStackTrace();
+		   logger.info("[lp_getCustDtlByIdNumber] " + e.getMessage());
+	   }finally{
+		   this.motorUtil.writeMSG(obj.toString());
+		   logger.info("[lp_getCustDtlByIdNumber][End]");
 	   }
    }
    

@@ -29,12 +29,14 @@
 </style> 
 <script>
 	
+	var gv_service 		= null;
 	var gv_url 			= '<%=servURL%>/EnjoyGenericSrv';
 	
 	$(document).ready(function(){
 		
 		var d 		= new Date();
 	    var toDay 	= d.getDate() + '/' + (d.getMonth() + 1) + '/' + (d.getFullYear() + 543);
+	    gv_service 	= "service=" + $('#service').val();
 		
 		$('#btnSearch').click(function(){
 		    var lv_invoiceDateFrom			= null;
@@ -146,6 +148,38 @@
 		$("#tableResult").tablesorter(); 
 		
 		$( "#tableResult th" ).resizable();
+		
+		$( "#cusName" ).autocomplete({
+			 source: function(request, response) {
+	            $.ajax({
+	            	async:false,
+		            type: "POST",
+	                url: gv_url,
+	                dataType: "json",
+	                data: gv_service + "&pageAction=getnameSname"+"&cusName=" + gp_trim(request.term),
+	                success: function( data, textStatus, jqXHR) {
+	                    var items = data;
+	                    response(items);
+	                },
+	                error: function(jqXHR, textStatus, errorThrown){
+	                     alert( textStatus);
+	                }
+	            });
+	          },
+		      minLength: 0,//กี่ตัวอักษรถึงทำงาน
+		      open: function() {
+					//Data return กลับมาแล้วทำไรต่อ
+		      },
+		      close: function() {
+
+		      },
+		      focus:function(event,ui) {
+
+		      },
+		      select: function( event, ui ) {
+		    	  
+		      }
+		});
 		
 	});
 	

@@ -1,9 +1,8 @@
-<%@page import="th.go.motorcycles.app.enjoy.form.EntrySaleDetailForm"%> 
-<%@page import="com.sun.xml.internal.txw2.Document"%>
 <%@ include file="/pages/include/enjoyInclude.jsp"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%> 
+<%@page import="com.sun.xml.internal.txw2.Document"%>
 <%@ page import="th.go.motorcycles.app.enjoy.form.EntrySaleDetailForm, th.go.motorcycles.app.enjoy.bean.CustomerBean, th.go.motorcycles.app.enjoy.bean.CustomerBean, th.go.motorcycles.app.enjoy.bean.ProductBean"%>
 <%@ page import="java.util.*"%>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%> 
 <jsp:useBean id="entrySaleDetailForm" class="th.go.motorcycles.app.enjoy.form.EntrySaleDetailForm" scope="session"/>  
 
 <% 
@@ -29,7 +28,37 @@
 	
 	$(document).ready(function(){
 		
-		gv_service = "service=" + $('#service').val();
+		gv_service 	= "service=" + $('#service').val();
+		var d 		= new Date();
+	    var toDay 	= d.getDate() + '/' + (d.getMonth() + 1) + '/' + (d.getFullYear() + 543);
+		
+		try{
+			$(".dateFormat").datepicker({ changeMonth: true, changeYear: true,dateFormat: 'dd/mm/yy', isBuddhist: true, defaultDate: toDay,dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
+	            dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+	            monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
+	            monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']});
+		}catch(e){
+			alert(e);
+		}
+		
+		
+		$('#btnAddDate').on('click',function(){
+			var lv_invoiceId = null;
+			var lv_userLevel = null;
+			
+			try{
+				lv_invoiceId 		= gp_trim($("#invoiceId").val());
+	    		lv_userLevel 		= gp_trim($("#userLevel").val());
+	    		
+	    		if(lv_invoiceId!="" && parseInt(lv_userLevel) < 9){
+	    			return;
+	    		}
+				
+				$('#recordAddDate').focus();
+			}catch(e){
+				alert("btnAddDate :: " + e);
+			}
+		});
 		
 		$('#btnPrint').click(function(){
 		    try{
@@ -202,7 +231,7 @@
 		      }
 		});
 		
-		$( "#cusCode" ).autocomplete({
+		/*$( "#cusCode" ).autocomplete({
 			 source: function(request, response) {
 	            $.ajax({
 	            	async:false,
@@ -232,7 +261,7 @@
 		      select: function( event, ui ) {
 		    	  lp_getCustDtl();
 		      }
-		});
+		});*/
 		
 		$( "#custName" ).autocomplete({
 			 source: function(request, response) {
@@ -472,9 +501,24 @@
 		
 	});
 	
+	function lp_checkRecordAddDate(){
+		
+		var lo_recordAddDate 	= null;
+		
+		try{
+			lo_recordAddDate 	= document.getElementById("recordAddDate");
+			
+			//สำหรับเช็ค Format วันที่ต้องเป็น dd/mm/yyyy(พ.ศ.) เท่านั้น
+			if(!gp_checkDate(lo_recordAddDate))return;
+			
+		}catch(e){
+			alert("lp_checkRecordAddDate :: " + e);
+		}
+	}
+	
 	function lp_validate(){
-		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassisDisp", "engineNoDisp", "size", "color", "totalAmount", "vatAmount");
-	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "สี", "รวมสุทธิ", "ภาษี");
+		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassisDisp", "engineNoDisp", "size", "color", "totalAmount", "vatAmount", "recordAddDate");
+	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "สี", "รวมสุทธิ", "ภาษี", "วันที่บันทึก");
 	    var lo_flagAddSales			= null;
 	    var lo_commAmount			= null;
 	    
@@ -488,6 +532,11 @@
 	            
 	            if(la_idName[i]=="totalAmount" || la_idName[i]=="vatAmount"){
 	            	if(gp_trim(lo_obj.value)=="0.00"){
+		            	alert("กรุณาระบุ " + la_msg[i]);
+		                return false;
+		            }
+	            }else if(la_idName[i]=="size"){
+	            	if(gp_trim(lo_obj.value)=="0"){
 		            	alert("กรุณาระบุ " + la_msg[i]);
 		                return false;
 		            }
@@ -637,18 +686,66 @@
 	            			
 	            		}else{
 	            			$("#cusCode").val("");
-	            			/*$("#custName").val("");
-	            			$("#custSurname").val("");
-	            			$("#houseNumber").val("");
-	            			$("#mooNumber").val("");
-	            			$("#soiName").val("");
-	            			$("#streetName").val("");
-	            			$("#subdistrictName").val("");
-	            			$("#districtName").val("");
-	            			$("#provinceName").val("");
-	            			$("#idType").val("");
-	            			$("#idNumber").val("");
-	            			$("#cusStatus").val("");*/
+	            		}
+	            	}catch(e){
+	            		alert("in lp_getCustDtl :: " + e);
+	            	}
+	            }
+	        });
+			
+		}catch(e){
+			alert("lp_getCustDtl :: " + e);
+		}
+	}
+	
+	function lp_getCustDtlByIdNumber(){
+		
+		var lv_idNumber 		= null;
+		
+		try{
+			lv_idNumber 		= gp_trim($("#idNumber").val());
+			if(lv_idNumber==""){
+				return;
+			}
+			
+			params 	= gv_service + "&pageAction=getCustDtlByIdNumber&idNumber=" + lv_idNumber;
+			$.ajax({
+				async:false,
+	            type: "POST",
+	            url: gv_url,
+	            data: params,
+	            beforeSend: "",
+	            success: function(data){
+	            	var jsonObj 			= null;
+	            	var status				= null;
+	            	
+	            	try{
+	            		jsonObj = JSON.parse(data);
+	            		status	= jsonObj.status;
+	            		//alert(status);
+	            		if(status=="SUCCESS"){
+	            			$("#cusCode").val(jsonObj.cusCode);
+	            			$("#custName").val(jsonObj.custName);
+	            			$("#custSurname").val(jsonObj.custSurname);
+	            			$("#houseNumber").val(jsonObj.houseNumber);
+	            			$("#mooNumber").val(jsonObj.mooNumber);
+	            			$("#soiName").val(jsonObj.soiName);
+	            			$("#streetName").val(jsonObj.streetName);
+	            			$("#subdistrictName").val(jsonObj.subdistrictName);
+	            			$("#districtName").val(jsonObj.districtName);
+	            			$("#provinceName").val(jsonObj.provinceName);
+	            			
+	            			if(jsonObj.idType=="1"){
+	            				$("#idType1").prop('checked', true);
+	            			}else{
+	            				$("#idType2").prop('checked', true);
+	            			}
+	            			
+	            			$("#idNumber").val(jsonObj.idNumber);
+	            			$("#cusStatus").val(jsonObj.cusStatus);
+	            			
+	            		}else{
+	            			$("#cusCode").val("");
 	            		}
 	            	}catch(e){
 	            		alert("in lp_getCustDtl :: " + e);
@@ -734,6 +831,12 @@
 				return;
 			}
 			
+			if(gp_replaceComma(lo_vatAmount.value).length > 15){
+				alert("ระบุได้สูงสุด 14 ตัวอักษร");
+				$('#vatAmount').focus().select();
+				return;
+			}
+			
 		}catch(e){
 			alert("lp_onBlurVatAmount :: " + e);
 		}
@@ -754,6 +857,12 @@
 			if(gp_format(lo_totalAmount, 2)==false){
 				alert("กรุณาระบุตัวเลขเท่านั้น");
 				lo_totalAmount.value = "0.00";
+				return;
+			}
+			
+			if(gp_replaceComma(lo_totalAmount.value).length > 15){
+				alert("ระบุได้สูงสุด 14 ตัวอักษร");
+				$('#totalAmount').focus().select();
 				return;
 			}
 			
@@ -782,6 +891,12 @@
 				return;
 			}
 			
+			if(gp_replaceComma(lo_commAmount.value).length > 15){
+				alert("ระบุได้สูงสุด 14 ตัวอักษร");
+				$('#commAmount').focus().select();
+				return;
+			}
+			
 		}catch(e){
 			alert("lp_onBlurCommAmount :: " + e);
 		}
@@ -805,8 +920,43 @@
 				return;
 			}
 			
+			if(gp_replaceComma(lo_creditAmount.value).length > 15){
+				alert("ระบุได้สูงสุด 14 ตัวอักษร");
+				$('#creditAmount').focus().select();
+				return;
+			}
+			
 		}catch(e){
 			alert("lp_onBlurCreditAmount :: " + e);
+		}
+		
+	}
+	
+	function lp_size(){
+		
+		var lo_size 		= null;
+		
+		try{
+			lo_size 			= document.getElementById("size");
+			
+			if(gp_trim(lo_size.value)==""){
+				lo_size.value = "0";
+			}
+			
+			if(gp_format(lo_size, 0)==false){
+				alert("กรุณาระบุตัวเลขเท่านั้น");
+				lo_size.value = "0";
+				return;
+			}
+			
+			if(gp_replaceComma(lo_size.value).length > 4){
+				alert("ระบุได้สูงสุด 4 ตัวอักษร");
+				$('#size').focus().select();
+				return;
+			}
+			
+		}catch(e){
+			alert("lp_size :: " + e);
 		}
 		
 	}
@@ -913,7 +1063,7 @@
 		try{
 			lv_invoiceId 		= gp_trim($("#invoiceId").val());
 			lo_creditAmount		= document.getElementById("creditAmount");
-			la_flagCredit		= document.getElementsByName("flagCredit");//ใบเพิ่มหนี้ : 1, ใบลดหนี้ : 2, ไม่มีเพิ่มเติม: 3
+			la_flagCredit		= document.getElementsByName("flagCredit");//ใบเพิ่มหนี้ : A, ใบลดหนี้ : C, ไม่มีเพิ่มเติม: N
 			
 			//Case new
 			if(lv_invoiceId==""){
@@ -969,8 +1119,23 @@
 	}
 
     window.onload = function () {
-    	lp_manageObligation();
-    	lp_controlCreditAmount();
+    	var lv_invoiceId 		= null;
+    	var lv_userLevel		= null;
+    	
+    	try{
+    		lv_invoiceId 		= gp_trim($("#invoiceId").val());
+    		lv_userLevel 		= gp_trim($("#userLevel").val());
+    		
+    		if(lv_invoiceId!="" && parseInt(lv_userLevel) < 9){
+    			$("#frm :input").attr("disabled", true);
+    		}else{
+    			lp_manageObligation();
+    	    	lp_controlCreditAmount();
+    		}
+    		
+    	}catch(e){
+    		alert("onload :: " + e);
+    	}
     }
     
 </script>
@@ -981,6 +1146,7 @@
 	<input type="hidden" id="service" name="service" value="servlet.EntrySaleDetailServlet" />  
 	<input type="hidden" id="pageActionPDF" name="pageActionPDF" /> 
 	<input type="hidden" id="vat" name="vat" value="<%=entrySaleDetailForm.getVat() %>" /> 
+	<input type="hidden" id="userLevel" name="userLevel" value="<%=entrySaleDetailForm.getUserLevel() %>" /> 
 	<section class="vbox"> 
 		<section>
 			<section class="hbox stretch"> 
@@ -1015,13 +1181,14 @@
 													</td>
 													<td width="30%">
 														<input  type="text" 
-															id="recordAddDate" 
-															name="recordAddDate" 
-															value="<%=entrySaleDetailForm.getRecordAddDate() %>"
-															onkeypress="return false;"
-					                                        onkeydown="return false;"
-					                                        class="input-disabled" 
-					                                        readonly="readonly" /> 
+																id="recordAddDate" 
+																name="recordAddDate" 
+																value="<%=entrySaleDetailForm.getRecordAddDate() %>"
+																placeholder="DD/MM/YYYY"
+																onblur="lp_checkRecordAddDate();"
+																class="dateFormat"
+															 /> 
+														<i class="fa fa-fw fa-calendar" id="btnAddDate" style="cursor:pointer"></i>
 													</td>
 												</tr>
 											</table> 
@@ -1032,6 +1199,7 @@
 										<div class="panel-body"> 
 											<table border="0" width="100%">
 												<tr>
+													<!-- 
 													<td width="13%">
 														<label class="col-sm-2 control-label" style="text-align:right">รหัสลูกค้า <font color="red">*</font>:</label>
 													</td>
@@ -1041,9 +1209,10 @@
 																id="cusCode" 
 																name="cusCode"
 																onblur="lp_getCustDtl();"
-																value="<%=customerBean.getCusCode() %>"
+																value=""
 														/>
 													</td>
+													 -->
 													<td width="13%">
 														<label class="col-sm-2 control-label" style="text-align:right">ชื่อ<font color="red">*</font>:</label>
 													</td>
@@ -1056,10 +1225,10 @@
 																	value="<%=customerBean.getCustName() %>"
 															/>
 													</td>
-													<td width="14%">
+													<td width="13%">
 														<label class="col-sm-2 control-label" style="text-align:right">นามสกุล<font color="red">*</font>:</label>
 													</td>
-													<td width="20%">
+													<td width="20%" colspan="3">
 														<input  type="text" 
 																	size="20"
 																	id="custSurname" 
@@ -1067,16 +1236,32 @@
 																	onblur="lp_getCustDtlByName();"
 																	value="<%=customerBean.getCustSurname() %>"
 															/>
+														<input  type="hidden" 
+																id="cusCode" 
+																name="cusCode"
+																value="<%=customerBean.getCusCode() %>"
+														/>
 													</td>
 												</tr>
 												<tr>
-													<td colspan="6">
+													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">
 														<b>ข้อมูลผู้เสียภาษี</b> <font color="red">*</font>:</label>
 													</td>
+													<td colspan="5">
+														<input  type="text"
+																id="idNumber" 
+																name="idNumber"
+																size="50"
+																maxlength="13"
+																onblur="lp_getCustDtlByIdNumber();"
+																value="<%=customerBean.getIdNumber() %>"
+														/>
+													</td>
 												</tr>
 												<tr>
-													<td colspan="6">
+													<td>&nbsp;</td>
+													<td colspan="5">
 														<label class="col-sm-2 control-label" style="text-align:right">
 															<input  type="radio" 
 																	id="idType1" 
@@ -1095,13 +1280,6 @@
 															/>
 															เลขที่ผู้เสียภาษี
 														</label>
-														<input  type="text"
-																id="idNumber" 
-																name="idNumber"
-																size="50"
-																maxlength="13"
-																value="<%=customerBean.getIdNumber() %>"
-														/>
 													</td>
 												</tr>
 												<tr>
@@ -1237,6 +1415,7 @@
 																id="chassisDisp" 
 																name="chassisDisp"
 																value="<%=productBean.getChassisDisp() %>"
+																maxlength="50"
 														/>
 													</td>
 													<td>
@@ -1251,13 +1430,14 @@
 																onkeypress="return false;"
 						                                        onkeydown="return false;"
 																class="input-disabled" 
-					                                       		readonly="readonly"															
+					                                       		readonly="readonly"		
 														/>
 														<input  type="text" 
 																size="20"
 																id="engineNoDisp" 
 																name="engineNoDisp"
 																value="<%=productBean.getEngineNoDisp() %>"
+																maxlength="50"
 														/>
 													</td>
 												</tr>
@@ -1270,6 +1450,8 @@
 																size="20"
 																id="size" 
 																name="size"
+																tabindex="4"
+																onblur="lp_size();"
 																value="<%=productBean.getSize() %>"
 														/>
 													</td>
@@ -1282,12 +1464,46 @@
 																id="color" 
 																name="color"
 																value="<%=entrySaleDetailForm.getColor() %>"
+																maxlength="50"
 														/>
 													</td>
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">จำนวนเงินที่ขาย <font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label" style="text-align:right">
+															รวมสุทธิ: <font color="red">*</font>
+														</label>
+													</td>
+													<td colspan="3">
+														<input  type="text" 
+																size="20"
+																id="totalAmount" 
+																name="totalAmount"
+																onblur="lp_onBlurTotalAmount();"
+																value="<%=entrySaleDetailForm.getTotalAmount() %>"
+														/>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<label class="col-sm-2 control-label" style="text-align:right">
+															<script>document.write("ภาษี <%=entrySaleDetailForm.getVat()%>%:");</script>
+															 <font color="red">*</font>
+														</label>
+													</td>
+													<td colspan="3" align="left">
+														<input  type="text" 
+																size="20"
+																id="vatAmount" 
+																name="vatAmount"
+																onblur="lp_onBlurVatAmount();"
+																value="<%=entrySaleDetailForm.getVatAmount() %>"
+														/>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<label class="col-sm-2 control-label" style="text-align:right">จำนวนเงินที่ขาย:</label>
 													</td>
 													<td>
 														<input  type="text" 
@@ -1302,34 +1518,6 @@
 														/>
 													</td>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">
-															<script>document.write("ภาษี <%=entrySaleDetailForm.getVat()%>%:");</script>
-														</label>
-													</td>
-													<td align="left">
-														<input  type="text" 
-																size="20"
-																id="vatAmount" 
-																name="vatAmount"
-																onblur="lp_onBlurVatAmount();"
-																value="<%=entrySaleDetailForm.getVatAmount() %>"
-														/>
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">รวมสุทธิ:</label>
-													</td>
-													<td>
-														<input  type="text" 
-																size="20"
-																id="totalAmount" 
-																name="totalAmount"
-																onblur="lp_onBlurTotalAmount();"
-																value="<%=entrySaleDetailForm.getTotalAmount() %>"
-														/>
-													</td>
-													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">หมายเหต:</label>
 													</td>
 													<td align="left">
@@ -1337,6 +1525,7 @@
 																size="20"
 																id="remark" 
 																name="remark"
+																maxlength="100"
 																value="<%=entrySaleDetailForm.getRemark() %>"
 														/>
 													</td>

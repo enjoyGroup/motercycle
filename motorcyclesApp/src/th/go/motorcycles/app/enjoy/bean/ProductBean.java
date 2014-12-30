@@ -18,7 +18,7 @@ public class ProductBean {
 		this.engineNo 		= "";
 		this.chassisDisp 	= "";
 		this.engineNoDisp 	= "";
-		this.size 			= "";
+		this.size 			= "0";
 	}
 
 
