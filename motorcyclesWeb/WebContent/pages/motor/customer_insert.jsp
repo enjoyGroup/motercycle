@@ -163,8 +163,9 @@
 		            		if(status=="SUCCESS"){
 		            			newCusCode		= jsonObj.cusCode; 
 		            			if(flagUpdate){ 
-			            			alert("แก้ไขรายการเรียบร้อย  ");  
-				            		window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
+			            		   alert("แก้ไขรายการเรียบร้อย  ");  
+				            		//window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
+			            		   $('#cusCode').val(newCusCode); 
 		            			}else{
 		            			   alert("บันทึกรายการเรียบร้อย  ");
 		            			   $('#cusCode').val(newCusCode);
