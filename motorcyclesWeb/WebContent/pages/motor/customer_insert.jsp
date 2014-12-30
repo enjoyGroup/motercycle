@@ -171,6 +171,8 @@
 		            			   $('#cusCode').val(newCusCode);
 		            			   $('#frm :input').attr("disabled", true); 
 		            			   $('#frm :input').attr("className","input-disabled");
+		            			   $('#btnAdd').attr("disabled", false);
+		            			   $('#btnCancel').attr("disabled", false);
 			            		}   
 		            		}else{
 		            			errMsg = jsonObj.errMsg; 
