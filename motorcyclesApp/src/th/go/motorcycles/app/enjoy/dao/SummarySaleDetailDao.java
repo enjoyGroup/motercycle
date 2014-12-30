@@ -139,4 +139,32 @@ public class SummarySaleDetailDao {
 		
 //		return list;
 	}
+	
+	public List<String> nameSurnameList(String cusName){
+		System.out.println("[SummarySaleDetail][nameSurnameList][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        List<String> 					list 				= new ArrayList<String>();
+		
+		try{
+			sql 		= "select t.cusName from ( select CONCAT(cusName, ' ', cusSurname) cusName from customer) t where t.cusName like ('"+cusName+"%') order by t.cusName asc limit 10 ";
+			
+			System.out.println("[SummarySaleDetail][nameSurnameList] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    
+		    while(rs.next()){
+		    	
+		    	list.add(EnjoyUtils.nullToStr(rs.getString("cusName")));
+		    }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[SummarySaleDetail][nameSurnameList][End]");
+		}
+		
+		return list;
+	}
 }

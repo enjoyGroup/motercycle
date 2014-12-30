@@ -190,7 +190,7 @@ function gp_progressBarOff(){
 
 function gp_checkDate(ao_obj){
     var allowBlank 	= true;
-    var minYear 	= 2000;
+    var minYear 	= 2500;
     //var maxYear 	= (new Date()).getFullYear();
     var errorMsg 	= "";
     var field 		= gp_trim(ao_obj.value);

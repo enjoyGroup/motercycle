@@ -2,6 +2,7 @@ package th.go.motorcycles.app.enjoy.utils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Locale;
@@ -17,12 +18,36 @@ public class EnjoyUtils {
 	public static String nullToStr(String str){
         return (str==null?"":str.trim());
     }
-    
+	
     public static String dateToString(Date dDate, String stFormat){
         String stDate = "";
         try{
             SimpleDateFormat sdf = new SimpleDateFormat(stFormat,Locale.US);
             stDate = sdf.format(dDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+           
+        return stDate;
+    }
+    
+    public static String dateToStringThai(Date dDate){
+        String 	stDate 	= "";
+        int 	year 	= 0;
+        int 	month 	= 0;
+        int 	day 	= 0;
+        try{
+//            SimpleDateFormat 	sdf = new SimpleDateFormat(stFormat);
+            Calendar 			c 	= Calendar.getInstance();
+            c.setTime(dDate); 
+            
+            
+            year 	= c.get(Calendar.YEAR);
+			month 	= c.get(Calendar.MONTH);
+			day 	= c.get(Calendar.DATE);
+            
+//            stDate = sdf.format(dDate);
+            stDate = String.format("%s/%s/%s", day, month, year+543);
         } catch (Exception e) {
             e.printStackTrace();
         }

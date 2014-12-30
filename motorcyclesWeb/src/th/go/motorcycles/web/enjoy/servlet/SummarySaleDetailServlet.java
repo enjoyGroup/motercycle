@@ -29,9 +29,10 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
    private static final String 		FORM_NAME 	= "summarySaleDetailForm";
    
    //Transaction
-   private static final String 		SEARCH 		= "search";
-   private static final String 		VIEWPDF 	= "pdf";
-   private static final String 		GET_PAGE 	= "getPage";
+   private static final String 		SEARCH 			= "search";
+   private static final String 		VIEWPDF 		= "pdf";
+   private static final String 		GET_PAGE 		= "getPage";
+   private static final String 		GET_NAME_SNAME 	= "getnameSname";
    
    private MotorUtil               		motorUtil                   = null;
    private SummarySaleDetailForm        form                        = null;
@@ -66,11 +67,13 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 				request.setAttribute("target", Constants.PAGE_URL + "/SummarySaleDetailScn.jsp");
 			}else if(pageAction.equals(SEARCH)){
 				this.lp_search();
-//				request.setAttribute("target", Constants.PAGE_URL + "/SummarySaleDetailScn.jsp");
+//				request.setAttribute("target", Constants.PAGE_URL + "/SummarySaleDetailScn.jsp");lp_getnameSurname
 			}else if(pageAction.equals(VIEWPDF)){
 				this.lp_viewpdf();
 			}else if(pageAction.equals(GET_PAGE)){
 				this.lp_getPage();
+			}else if(pageAction.equals(GET_NAME_SNAME)){
+				this.lp_getnameSurname();
 			}
 			
 			session.setAttribute(FORM_NAME, this.form);
@@ -201,7 +204,37 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   logger.info("[SummarySaleDetailServlet][lp_viewpdf][End]");
 	   }
    }
+   
+   private void lp_getnameSurname(){
+	   logger.info("[lp_getnameSurname][Begin]");
+	   
+	   String							cusName					= null;
+       List<String> 					list 					= new ArrayList<String>();
+       String[]							strArray				= null;
+       
+	   try{
+		   cusName					= EnjoyUtils.nullToStr(this.request.getParameter("cusName"));
+		   
+		   logger.info("[lp_getnameSurname] cusName 			:: " + cusName);
+		   
+		   this.form.setCusName(cusName);
+		   
+		   list 		= this.dao.nameSurnameList(cusName);
+		   strArray 	= new String[list.size()];
+		   strArray 	= list.toArray(strArray); 
+		   
+		   this.motorUtil.writeJsonMSG((String[]) strArray);
+		   
+	   }catch(Exception e){
+		   e.printStackTrace();
+		   logger.info("[lp_getnameSurname] " + e.getMessage());
+	   }finally{
+		   logger.info("[lp_getnameSurname][End]");
+	   }
+   }
+   
 }
+ 
  
  
  
