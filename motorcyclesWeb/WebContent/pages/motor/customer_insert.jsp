@@ -251,12 +251,12 @@
 													    <div class="col-md-1"style="width:120px;"></div> 
 													    <div class="col-md-1"> 
 													        <label class="col-sm-2 control-label" style="text-align:right" > 
-															<input type="radio" name="idType" id="idType1" value="1" style="width:50px;" checked
+															<input type="radio" name="idType" id="idType1" value="1" style="width:50px;" 
 																	<%if(customerBean.getIdType().equals("1")){%> checked="checked" <%} %>>บุคคลธรรมดา</label> 
 														</div>
 														 <div class="col-md-1">
 													        <label class="col-sm-2 control-label" style="text-align:right"> 
-															<input type="radio" name="idType" id="idType2" value="2" style="width:50px;"  
+															<input type="radio" name="idType" id="idType2" value="2" style="width:50px;"  checked
 																	<%if(customerBean.getIdType().equals("2")){%> checked="checked" <%} %>>นิติบุคคล</label> 
 														</div>
 														 <div class="col-md-1"style="width:40px;"></div>  
