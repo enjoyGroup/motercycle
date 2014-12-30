@@ -16,7 +16,7 @@
 	.input-disabled{
 	    background-color:#EBEBE4;
 	    border:1px solid #ABADB3;
-	    color:rgb(84, 84, 84);
+	     color:rgb(84, 84, 84);
 	}
 </style>  
 
@@ -165,12 +165,12 @@
 		            			if(flagUpdate){ 
 			            			alert("แก้ไขรายการเรียบร้อย  ");  
 				            		window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
-		            			}else
+		            			}else{
 		            			   alert("บันทึกรายการเรียบร้อย  ");
-			            		   window.location.replace(gv_url + "?service=servlet.CustomerServlet&pageAction=findData&cusCode=" + newCusCode);
-			            		   if(mode=="READONLY"){
-			            			   lp_set_mode();  
-			            		   }
+		            			   $('#cusCode').val(newCusCode);
+		            			   $('#frm :input').attr("disabled", true); 
+		            			   $('#frm :input').attr("className","input-disabled");
+			            		}   
 		            		}else{
 		            			errMsg = jsonObj.errMsg; 
 		            			alert(errMsg);
@@ -185,42 +185,32 @@
 		    }catch(e){
 		    	alert("btnSubmit :: " + e);
 		    }
-		   
+			 
 		});
-	 
+ 
+	     
+		$('#btnCancel').click(function(){ 
+		    try{
+				$.ajax({
+					async:false,
+		            type: "POST",
+		            url: gv_url,
+		            data: "service=servlet.CustomerServlet&pageAction=reset",
+		            beforeSend: "",
+		            success: function(data){
+		            	window.location.replace('/motorcyclesWeb/pages/motor/customer_insert.jsp');
+		            }
+		        });
+		    	
+		    }catch(e){
+		    	alert("btnReset :: " + e);
+		    }
+		    
+		});
  
 	});
 	
-	function lp_set_mode(){
-		//$('#custName').attr("readonly", "readonly");
-		document.getElementById("custName").className 	= "input-disabled";
-		document.getElementById("custName").readOnly 	= true;
-
-	}
 	
-    function lp_reset_page(){
-    	var url					= '<%=servURL%>/EnjoyGenericSrv'; 
-	    var pageAction			= "reset"; 
-	    var lv_params			= ""; 
-		try{  
-			
-			lv_params 	= "service=" + $('#service').val()  
-			              +"&pageAction=" + pageAction;
-
-			$.ajax({
-	            type: "POST", 
-	            async: false,
-	            url: url,
-	            data: lv_params,
-	            beforeSend: "",
-	            success: function(data){} 
-		    });
-		}catch(err){
-			alert("reset :: " + err);
-		}
-		
-		 
-	}
       
 </script>
 	 
@@ -269,7 +259,7 @@
 														 <div class="col-md-1"style="width:40px;"></div>  
 														<label class="col-sm-1 control-label" style="text-align:right">เลขผู้เสียภาษี</label> 
 														<div class="col-md-2"> 
-														    <input type="text" class="form-control" id="idNumber" name="idNumber" value="<%=customerBean.getIdNumber()%>" >
+														    <input type="text" class="form-control" id="idNumber" name="idNumber" value="<%=customerBean.getIdNumber()%>" maxlength="13">
 														</div> 
 													</div>
 												</div>  
@@ -332,7 +322,7 @@
 										</div>
 										<div class="form-group" align="center">	  
 											<input type="button" class="btn btn-primary" id="btnAdd" name="btnAdd" value="บันทึก" />
-											<input type="button" class="btn btn-primary" id="btnCancel" name="btnCancel"  onclick="lp_reset_page();" value="เริ่มใหม่" /> 
+											<input type="button" class="btn btn-primary" id="btnCancel" name="btnCancel" value="เริ่มใหม่" /> 
 										</div>  
 									</section>
 								</div>
