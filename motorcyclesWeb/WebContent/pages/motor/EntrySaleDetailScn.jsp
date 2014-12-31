@@ -41,6 +41,28 @@
 			alert(e);
 		}
 		
+		$('.input-disabled').live( "keypress", function(e) {
+			
+			try{
+				if( e.which != 9 ) {
+			        return false;
+			    }
+			}catch(e){
+				alert("onkeypress :: " + e);
+			}
+		});
+		
+		$('.input-disabled').live( "keydown", function(e) {
+			
+			try{
+				if( e.which != 9 ) {
+			        return false;
+			    }
+			}catch(e){
+				alert("onkeydown :: " + e);
+			}
+		});
+		
 		
 		$('#btnAddDate').on('click',function(){
 			var lv_invoiceId = null;
@@ -1074,13 +1096,13 @@
 			if(lo_flagAddSales.checked==true){
 				lo_commAmount.className 	= "";
 				lo_commAmount.readOnly 		= false;
-				lo_commAmount.onkeypress	= function(){};
-				lo_commAmount.onkeydown		= function(){};
+				//lo_commAmount.onkeypress	= function(){};
+				//lo_commAmount.onkeydown		= function(){};
 			}else{
 				lo_commAmount.className 	= "input-disabled";
 				lo_commAmount.readOnly 		= true;
-				lo_commAmount.onkeypress	= function(){return false;};
-				lo_commAmount.onkeydown		= function(){return false;};
+				//lo_commAmount.onkeypress	= function(){return false;};
+				//lo_commAmount.onkeydown		= function(){return false;};
 				lo_commAmount.value 		= "0.00";
 				
 			}
@@ -1109,8 +1131,8 @@
 				}
 				lo_creditAmount.className 	= "input-disabled";
 				lo_creditAmount.readOnly 	= true;
-				lo_creditAmount.onkeypress	= function(){return false;};
-				lo_creditAmount.onkeydown	= function(){return false;};
+				//lo_creditAmount.onkeypress	= function(){return false;};
+				//lo_creditAmount.onkeydown	= function(){return false;};
 				lo_creditAmount.value 		= "0.00";
 			}else{
 				for(var i=0;i<la_flagCredit.length;i++){
@@ -1118,8 +1140,8 @@
 				}
 				lo_creditAmount.className 	= "";
 				lo_creditAmount.readOnly 	= false;
-				lo_creditAmount.onkeypress	= function(){};
-				lo_creditAmount.onkeydown	= function(){};
+				//lo_creditAmount.onkeypress	= function(){};
+				//lo_creditAmount.onkeydown	= function(){};
 			}
 			
 		}catch(e){
@@ -1140,13 +1162,13 @@
 			if(la_flagCredit[0].checked==true || la_flagCredit[1].checked==true){
 				lo_creditAmount.className 	= "";
 				lo_creditAmount.readOnly 	= false;
-				lo_creditAmount.onkeypress	= function(){};
-				lo_creditAmount.onkeydown	= function(){};
+				//lo_creditAmount.onkeypress	= function(){};
+				//lo_creditAmount.onkeydown	= function(){};
 			}else{
 				lo_creditAmount.className 	= "input-disabled";
 				lo_creditAmount.readOnly 	= true;
-				lo_creditAmount.onkeypress	= function(){return false;};
-				lo_creditAmount.onkeydown	= function(){return false;};
+				//lo_creditAmount.onkeypress	= function(){return false;};
+				//lo_creditAmount.onkeydown	= function(){return false;};
 				lo_creditAmount.value 		= "0.00";
 			}
 			
@@ -1154,7 +1176,7 @@
 			alert("lp_controlCreditAmount :: " + e);
 		}
 	}
-
+	
     window.onload = function () {
     	var lv_invoiceId 		= null;
     	var lv_userLevel		= null;
@@ -1213,8 +1235,6 @@
 															id="invoiceId" 
 															name="invoiceId" 
 															value="<%=entrySaleDetailForm.getInvoiceId() %>"
-															onkeypress="return false;"
-					                                        onkeydown="return false;"
 					                                        class="input-disabled" 
 					                                        readonly="readonly" />
 													</td>
@@ -1448,8 +1468,6 @@
 																name="chassis"
 																value="<%=productBean.getChassis() %>"
 																size="3"
-																onkeypress="return false;"
-						                                        onkeydown="return false;"
 																class="input-disabled" 
 					                                       		readonly="readonly"															
 														/>
@@ -1470,8 +1488,6 @@
 																name="engineNo"
 																value="<%=productBean.getEngineNo() %>"
 																size="3"
-																onkeypress="return false;"
-						                                        onkeydown="return false;"
 																class="input-disabled" 
 					                                       		readonly="readonly"		
 														/>
@@ -1493,7 +1509,6 @@
 																size="20"
 																id="size" 
 																name="size"
-																tabindex="4"
 																onblur="lp_size();"
 																value="<%=productBean.getSize() %>"
 														/>
@@ -1553,8 +1568,6 @@
 																size="20"
 																id="priceAmount" 
 																name="priceAmount"
-																onkeypress="return false;"
-								                                onkeydown="return false;"
 								                                class="input-disabled" 
 								                                readonly="readonly" 
 																value="<%=entrySaleDetailForm.getPriceAmount() %>"
@@ -1588,8 +1601,6 @@
 																size="20"
 																id="commAmount" 
 																name="commAmount"
-																onkeypress="return false;"
-						                                        onkeydown="return false;"
 						                                        class="input-disabled" 
 						                                        readonly="readonly" 
 						                                        onblur="lp_onBlurCommAmount();"

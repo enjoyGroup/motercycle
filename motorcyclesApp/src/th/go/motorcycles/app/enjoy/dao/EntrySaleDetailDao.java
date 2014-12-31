@@ -16,7 +16,8 @@ public class EntrySaleDetailDao {
 	
 	private EnjoyConectDbs db = null;
 	
-	final static String CUSTOMER = "customer";
+	final static String CUSTOMER 	= "customer";
+	final static String FILL_ZERO 	= "%04d";
 	
 	public EntrySaleDetailDao(){
 		db = new EnjoyConectDbs();
@@ -616,11 +617,9 @@ public class EntrySaleDetailDao {
 		System.out.println("[EntrySaleDetailDao][insertInvoiceDetail][Begin]");
 		
 		String 				sql			 		= null;
-		ResultSet 			rs 					= null;
 		String 				errMsg 				= null;
-		EntrySaleDetailBean bean				= new EntrySaleDetailBean();;
+		EntrySaleDetailBean bean				= new EntrySaleDetailBean();
 		String				invoiceId			= null;
-		String				newId				= null;
 		String 				priceAmount 		= null;
 		String 				vatAmount 			= null;
 		String 				remark 				= null;
@@ -634,7 +633,7 @@ public class EntrySaleDetailDao {
 		String				size		 		= null;
 		ProductBean			productBean			= null;
 		CustomerBean		customerBean		= null;
-		String				invoiceIdAddSales	= "";
+//		String				invoiceIdAddSales	= "";
 		String				flagCredit			= null;
 		String				creditAmount		= null;
 		String				totalAmount			= null;
@@ -643,28 +642,10 @@ public class EntrySaleDetailDao {
 		String				formatInvoie		= null;
 		
 		try{
-			productBean 	= form.getProductBean();
-			customerBean	= form.getCustomerBean();
-			formatInvoie	= form.getFormatInvoie();
-			sql 			= "SELECT (SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1) + 1) AS newId FROM invoicedetails where invoiceId like('"+formatInvoie+"%')";
-			
-			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] sql :: " + sql);
-			
-			rs 			= this.db.executeQuery(sql);
-			while(rs.next()){
-				newId = String.format("%04d", rs.getInt("newId"));
-			}
-			
-			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] newId :: " + newId);
-			if(newId==null){
-				newId = String.format("%04d", 1);
-				//throw new EnjoyException("เกิดข้อผิดพลาดในการ gen invoice id.");
-			}
-			
-			invoiceId			= formatInvoie + "/" + newId;
-			
-			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] invoiceId :: " + invoiceId);
-			
+			productBean 		= form.getProductBean();
+			customerBean		= form.getCustomerBean();
+			formatInvoie		= form.getFormatInvoie();
+			invoiceId			= this.genInvoiceId(formatInvoie);
 			priceAmount 		= form.getPriceAmount();
 			vatAmount 			= form.getVatAmount();
 			remark	 			= form.getRemark();
@@ -682,12 +663,6 @@ public class EntrySaleDetailDao {
 			color				= form.getColor();
 			recordAddDate		= EnjoyUtils.dateFormat(form.getRecordAddDate(), "dd/MM/yyyy", "yyyyMMdd");
 			
-			if(flagAddSales.equals("Y")){
-				invoiceIdAddSales 	= invoiceId;
-			}else{
-				invoiceIdAddSales	= "";
-			}
-			
 			sql 		= "insert into invoicedetails ( invoiceId"
 													+ " ,invoiceDate"	
 													+ " ,cusCode"
@@ -703,7 +678,7 @@ public class EntrySaleDetailDao {
 													+ " ,flagAddSales"	
 													+ " ,commAmount"
 													+ " ,userUniqueId"
-													+ " ,invoiceIdAddSales"
+//													+ " ,invoiceIdAddSales"
 													+ " ,flagCredit"
 													+ " ,creditAmount)"
 										+ " values(		'"+invoiceId+"'"
@@ -721,13 +696,17 @@ public class EntrySaleDetailDao {
 													+ " ,'"+flagAddSales+"'"
 													+ " ,'"+commAmount+"'"
 													+ " ,'"+userUniqueId+"'"
-													+ " ,'"+invoiceIdAddSales+"'"
+//													+ " ,'"+invoiceIdAddSales+"'"
 													+ " ,'"+flagCredit+"'"
 													+ " ,'"+creditAmount+"')";
 			
 			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] sql :: " + sql);
 			
 			this.db.execute(sql);
+			
+			if(flagAddSales.equals("Y")){
+				this.saveInvoiceAddSales(form, invoiceId);
+			}
 			
 			bean.setInvoiceId(invoiceId);
 			
@@ -743,6 +722,113 @@ public class EntrySaleDetailDao {
 		}
 		
 		return bean;
+	}
+	
+	public void saveInvoiceAddSales(EntrySaleDetailForm form, String invoiceId) throws Exception{
+		System.out.println("[EntrySaleDetailDao][saveInvoiceAddSales][Begin]");
+		
+		String 				sql			 		= null;
+		String 				priceAmount 		= null;
+		String 				vatAmount 			= null;
+		String 				commAmount 			= null;
+		String 				flagAddSales 		= null;
+		String				userUniqueId 		= null;
+		String				invoiceIdAddSales	= "";
+		String				flagCredit			= null;
+		String				creditAmount		= null;
+		String				totalAmount			= null;
+		String				recordAddDate		= null;
+		String				formatInvoie		= null;
+		String 				invoiceAddSalesId	= null;
+		
+		try{
+			formatInvoie		= form.getFormatInvoie();
+			invoiceAddSalesId	= this.genInvoiceId(formatInvoie);
+			priceAmount 		= form.getPriceAmount();
+			vatAmount 			= form.getVatAmount();
+			commAmount 			= form.getCommAmount();
+			flagAddSales 		= form.getFlagAddSales();
+			userUniqueId 		= form.getUserUniqueId();
+			flagCredit 			= form.getFlagCredit();
+			creditAmount 		= form.getCreditAmount();
+			totalAmount			= form.getTotalAmount();
+			recordAddDate		= EnjoyUtils.dateFormat(form.getRecordAddDate(), "dd/MM/yyyy", "yyyyMMdd");
+			
+			sql 		= "insert into invoicedetails ( invoiceId"
+													+ " ,invoiceDate"
+													+ " ,priceAmount"	
+													+ " ,vatAmount"
+													+ " ,totalAmount"
+													+ " ,flagAddSales"	
+													+ " ,commAmount"
+													+ " ,userUniqueId"
+													+ " ,invoiceIdAddSales"
+													+ " ,flagCredit"
+													+ " ,creditAmount)"
+										+ " values(		'"+invoiceAddSalesId+"'"
+													+ " ,'"+recordAddDate+"'"
+													+ " ,'"+priceAmount+"'"
+													+ " ,'"+vatAmount+"'"
+													+ " ,'"+totalAmount+"'"
+													+ " ,'"+flagAddSales+"'"
+													+ " ,'"+commAmount+"'"
+													+ " ,'"+userUniqueId+"'"
+													+ " ,'"+invoiceIdAddSales+"'"
+													+ " ,'"+flagCredit+"'"
+													+ " ,'"+creditAmount+"')";
+								
+			System.out.println("[EntrySaleDetailDao][saveInvoiceAddSales] AddSales sql :: " + sql);
+			
+			this.db.execute(sql);
+			
+			sql 		= "update invoicedetails set invoiceIdAddSales = '"+invoiceAddSalesId+"' where invoiceId = '"+invoiceId+"'";
+			
+			System.out.println("[EntrySaleDetailDao][saveInvoiceAddSales] update sql :: " + sql);
+			
+			this.db.execute(sql);
+			
+		}catch(Exception e){
+			throw e;
+		}finally{
+			System.out.println("[EntrySaleDetailDao][saveInvoiceAddSales][End]");
+		}
+		
+	}
+	
+	public String genInvoiceId(String formatInvoie) throws Exception{
+		
+		System.out.println("[EntrySaleDetailDao][genInvoiceId][Begin]");
+		
+		String 				sql			 		= null;
+		ResultSet 			rs 					= null;
+		String				invoiceId			= null;
+		String				newId				= null;
+		
+		try{
+			sql 			= "SELECT (MAX(SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1)) + 1) AS newId FROM invoicedetails where invoiceId like('"+formatInvoie+"%')";
+			
+			System.out.println("[EntrySaleDetailDao][genInvoiceId] sql :: " + sql);
+			
+			rs 			= this.db.executeQuery(sql);
+			while(rs.next()){
+				newId = String.format(FILL_ZERO, rs.getInt("newId"));
+			}
+			
+			System.out.println("[EntrySaleDetailDao][genInvoiceId] newId :: " + newId);
+			if(newId==null){
+				newId = String.format(FILL_ZERO, 1);
+			}
+			
+			invoiceId			= formatInvoie + "/" + newId;
+			
+			System.out.println("[EntrySaleDetailDao][genInvoiceId] invoiceId :: " + invoiceId);
+		}catch(Exception e){
+			throw e;
+		}finally{
+			System.out.println("[EntrySaleDetailDao][genInvoiceId][End]");
+		}
+		
+		return invoiceId;
 	}
 	
 	public EntrySaleDetailBean updateInvoiceDetail(EntrySaleDetailForm form){
@@ -838,7 +924,7 @@ public class EntrySaleDetailDao {
 		
 		try{
 			nextIdArray 	= invoiceId.split("/");
-			nextId 			= String.format("%04d", Integer.parseInt(nextIdArray[1]) + 1);
+			nextId 			= String.format(FILL_ZERO, Integer.parseInt(nextIdArray[1]) + 1);
 			nextInvoiceId	= nextIdArray[0] + "/" + nextId;
 			
 			System.out.println("[EntrySaleDetailDao][getNextInvoiceId] nextInvoiceId :: " + nextInvoiceId);
@@ -878,7 +964,7 @@ public class EntrySaleDetailDao {
 		try{
 			
 			prevIdArray 	= invoiceId.split("/");
-			prevId 			= String.format("%04d", Integer.parseInt(prevIdArray[1]) - 1);
+			prevId 			= String.format(FILL_ZERO, Integer.parseInt(prevIdArray[1]) - 1);
 			prevInvoiceId	= prevIdArray[0] + "/" + prevId;
 			
 			System.out.println("[EntrySaleDetailDao][getPreviousInvoiceId] prevInvoiceId :: " + prevInvoiceId);

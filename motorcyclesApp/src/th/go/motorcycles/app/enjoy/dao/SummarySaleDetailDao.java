@@ -63,6 +63,7 @@ public class SummarySaleDetailDao {
 											+ " from  invoicedetails i, customer c, motorcyclesdetails m, branddetails b"
 											+ " where c.cusCode         = i.cusCode"
 											+ "  and m.motorcyclesCode  = i.motorcyclesCode"
+											+ "  and i.chassisDisp is not null"
 											+ "  and b.brandCode	    = m.brandCode) t where 1=1 ";
 			
 			if(!invoiceId.equals("")){
