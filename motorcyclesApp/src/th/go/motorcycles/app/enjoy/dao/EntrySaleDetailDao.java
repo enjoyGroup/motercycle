@@ -15,13 +15,13 @@ import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
 public class EntrySaleDetailDao {	
 	
-	private EnjoyConectDbs db = null;
+//	private EnjoyConectDbs db = null;
 	
 	final static String CUSTOMER 		= "customer";
 	final static String FILL_ZERO 		= ConfigFile.getPADING_INVOICE();
 	
 	public EntrySaleDetailDao(){
-		db = new EnjoyConectDbs();
+//		db = new EnjoyConectDbs();
 	}
 	
 	public CustomerBean getCustomerDetail(String cusCode, CustomerBean customerBean){
@@ -36,13 +36,14 @@ public class EntrySaleDetailDao {
 		String				provinceName		= null;
 		String				districtName		= null;
 		String				subdistrictName		= null;
-		
+		EnjoyConectDbs 		db 					= null;
 		try{
+			db    		= new EnjoyConectDbs();
 			addressDao 	= new AddressDao();
 			sql 		= "SELECT * FROM " + CUSTOMER +" where  cusStatus = '"+"A"+"' and cusCode = '"+cusCode+"'";
 			
 			System.out.println("[EntrySaleDetailDao][getCustomerDetail] sql :: " + sql); 
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    
 		    while(rs.next()){ 
 		    	customerBean.setCusCode(EnjoyUtils.nullToStr(rs.getString("cusCode")));
@@ -77,6 +78,7 @@ public class EntrySaleDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][getCustomerDetail][End]");
 		}
 		
@@ -95,13 +97,15 @@ public class EntrySaleDetailDao {
 		String				provinceName		= null;
 		String				districtName		= null;
 		String				subdistrictName		= null;
+		EnjoyConectDbs 		db 					= null;
 		
 		try{
+			db    		= new EnjoyConectDbs();
 			addressDao 	= new AddressDao();
 			sql 		= "SELECT * FROM " + CUSTOMER +" where  cusStatus = '"+"A"+"' and cusName = '"+cusName+"' and cusSurname = '"+cusSurname+"'";
 			
 			System.out.println("[EntrySaleDetailDao][getCustomerDetail] sql :: " + sql); 
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    
 		    while(rs.next()){ 
 		    	customerBean.setCusCode(EnjoyUtils.nullToStr(rs.getString("cusCode")));
@@ -136,6 +140,7 @@ public class EntrySaleDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][getCustomerDetail][End]");
 		}
 		
@@ -154,13 +159,15 @@ public class EntrySaleDetailDao {
 		String				provinceName		= null;
 		String				districtName		= null;
 		String				subdistrictName		= null;
+		EnjoyConectDbs 		db 					= null;
 		
 		try{
+			db    		= new EnjoyConectDbs();
 			addressDao 	= new AddressDao();
 			sql 		= "SELECT * FROM " + CUSTOMER +" where  cusStatus = '"+"A"+"' and idNumber = '"+idNumber+"'";
 			
 			System.out.println("[EntrySaleDetailDao][getCustomerDetailByIdNumber] sql :: " + sql); 
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    
 		    while(rs.next()){ 
 		    	customerBean.setCusCode(EnjoyUtils.nullToStr(rs.getString("cusCode")));
@@ -195,6 +202,7 @@ public class EntrySaleDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][getCustomerDetailByIdNumber][End]");
 		}
 		
@@ -215,8 +223,10 @@ public class EntrySaleDetailDao {
 		String				commAmount			= null;
 		String				creditAmount		= null;
 		String 				size				= null;
+		EnjoyConectDbs 		db 					= null;
 		
 		try{
+			db    			= new EnjoyConectDbs();
 			customerBean 	= new CustomerBean();
 			productBean		= new ProductBean();
 			
@@ -247,7 +257,7 @@ public class EntrySaleDetailDao {
 							     + " and i.invoiceId        = '"+invoiceId+"'";
 			
 			System.out.println("[EntrySaleDetailDao][setSaleDetail] sql :: " + sql); 
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    
 		    while(rs.next()){ 
 		    	
@@ -303,6 +313,7 @@ public class EntrySaleDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][setSaleDetail][End]");
 		}
 	}
@@ -313,13 +324,15 @@ public class EntrySaleDetailDao {
 		String 							sql			 		= null;
 		ResultSet 						rs 					= null;
         List<String> 					list 				= new ArrayList<String>();
+		EnjoyConectDbs 					db 					= null;
 		
 		try{
+			db    		= new EnjoyConectDbs();
 			sql 		= " select cusCode from customer where cusCode like ('"+cusCode+"%') and cusStatus = 'A' order by cusCode asc limit 10 ";
 			
 			System.out.println("[EntrySaleDetailDao][cusCodeList] sql :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    
 		    while(rs.next()){
 		    	
@@ -329,6 +342,7 @@ public class EntrySaleDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][cusCodeList][End]");
 		}
 		
@@ -341,13 +355,15 @@ public class EntrySaleDetailDao {
 		String 							sql			 		= null;
 		ResultSet 						rs 					= null;
         List<String> 					list 				= new ArrayList<String>();
+		EnjoyConectDbs 					db 					= null;
 		
 		try{
+			db    		= new EnjoyConectDbs();
 			sql 		= " select idNumber from customer where idNumber like ('"+idNumber+"%') and cusStatus = 'A' order by idNumber asc limit 10 ";
 			
 			System.out.println("[EntrySaleDetailDao][idNumberList] sql :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    
 		    while(rs.next()){
 		    	
@@ -357,6 +373,7 @@ public class EntrySaleDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][idNumberList][End]");
 		}
 		
@@ -369,13 +386,15 @@ public class EntrySaleDetailDao {
 		String 							sql			 		= null;
 		ResultSet 						rs 					= null;
         List<String> 					list 				= new ArrayList<String>();
+		EnjoyConectDbs 					db 					= null;
 		
 		try{
+			db    		= new EnjoyConectDbs();
 			sql 		= " select cusName from customer where cusName like ('"+custName+"%') and cusStatus = 'A' group by cusName order by cusName asc limit 10 ";
 			
 			System.out.println("[EntrySaleDetailDao][custNameList] sql :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    
 		    while(rs.next()){
 		    	
@@ -385,6 +404,7 @@ public class EntrySaleDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][custNameList][End]");
 		}
 		
@@ -397,9 +417,10 @@ public class EntrySaleDetailDao {
 		String 							sql			 		= null;
 		ResultSet 						rs 					= null;
         List<String> 					list 				= new ArrayList<String>();
+		EnjoyConectDbs 					db 					= null;
 		
 		try{
-			
+			db    		= new EnjoyConectDbs();
 			sql 		= "select cusCode from customer where cusName = '"+custName+"'";
 			
 		    if(custName.equals("")){
@@ -409,7 +430,7 @@ public class EntrySaleDetailDao {
 		    }
 			System.out.println("[EntrySaleDetailDao][custSurnameList] sql :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    
 		    while(rs.next()){
 		    	
@@ -419,6 +440,7 @@ public class EntrySaleDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][custSurnameList][End]");
 		}
 		
@@ -431,13 +453,15 @@ public class EntrySaleDetailDao {
 		String 							sql			 		= null;
 		ResultSet 						rs 					= null;
         List<String> 					list 				= new ArrayList<String>();
+		EnjoyConectDbs 					db 					= null;
 		
 		try{
+			db    		= new EnjoyConectDbs();
 			sql 		= " select brandName from branddetails where brandName like ('"+brandName+"%') order by brandName asc limit 10 ";
 			
 			System.out.println("[EntrySaleDetailDao][brandNameList] sql :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    
 		    while(rs.next()){
 		    	
@@ -447,6 +471,7 @@ public class EntrySaleDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][brandNameList][End]");
 		}
 		
@@ -460,15 +485,16 @@ public class EntrySaleDetailDao {
 		ResultSet 						rs 					= null;
         List<String> 					list 				= new ArrayList<String>();
         String							brandCode			= null;
+		EnjoyConectDbs 					db 					= null;
 		
 		try{
-			
+			db    			= new EnjoyConectDbs();
 			if(!brandName.equals("")){
 				sql 		= " select brandCode from branddetails where brandName = '" + brandName + "'";
 				
 				System.out.println("[EntrySaleDetailDao][modelList] brandCode sql :: " + sql);
 				
-			    rs 			= this.db.executeQuery(sql);
+			    rs 			= db.executeQuery(sql);
 			    while(rs.next())brandCode = EnjoyUtils.nullToStr(rs.getString("brandCode"));
 			}
 			
@@ -480,16 +506,16 @@ public class EntrySaleDetailDao {
 			
 			System.out.println("[EntrySaleDetailDao][modelList] sql :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    
-		    while(rs.next()){
-		    	
+		    while(rs.next()){		    	
 		    	list.add(EnjoyUtils.nullToStr(rs.getString("model")));
 		    }
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][modelList][End]");
 		}
 		
@@ -503,13 +529,15 @@ public class EntrySaleDetailDao {
 		ResultSet 						rs 					= null;
 		String							brandCode			= null;
 		String							size				= null;
+		EnjoyConectDbs 					db 					= null;
 		
 		try{
+			db    		= new EnjoyConectDbs();
 			sql 		= " select brandCode from branddetails where brandName = '" + brandName + "'";
 			
 			System.out.println("[EntrySaleDetailDao][productDetail] sql branddetails :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    while(rs.next())brandCode = EnjoyUtils.nullToStr(rs.getString("brandCode"));
 		    
 		    if(brandCode!=null && !brandCode.equals("")){
@@ -529,7 +557,7 @@ public class EntrySaleDetailDao {
 		    
 		    System.out.println("[EntrySaleDetailDao][productDetail] sql branddetails :: " + sql);
 			
-			rs 			= this.db.executeQuery(sql);
+			rs 			= db.executeQuery(sql);
 			while(rs.next()){
 				
 				System.out.println("[EntrySaleDetailDao][productDetail] brandName 	:: " + EnjoyUtils.nullToStr(rs.getString("brandName")));
@@ -552,6 +580,7 @@ public class EntrySaleDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][productDetail][End]");
 		}
 		
@@ -567,13 +596,15 @@ public class EntrySaleDetailDao {
 		String							motorcyclesCode		= null;
 		EntrySaleDetailBean				bean				= new EntrySaleDetailBean();
 		String							errMsg				= null;
+		EnjoyConectDbs 					db 					= null;
 		
 		try{
+			db    		= new EnjoyConectDbs();
 			sql 		= " select brandCode from branddetails where brandName = '" + brandName + "'";
 			
 			System.out.println("[EntrySaleDetailDao][getMotorcyclesCode] sql branddetails :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    while(rs.next())brandCode = EnjoyUtils.nullToStr(rs.getString("brandCode"));
 		    
 		    sql 		= " select m.motorcyclesCode"
@@ -585,7 +616,7 @@ public class EntrySaleDetailDao {
 		    
 		    System.out.println("[EntrySaleDetailDao][getMotorcyclesCode] sql branddetails :: " + sql);
 			
-			rs 			= this.db.executeQuery(sql);
+			rs 			= db.executeQuery(sql);
 			while(rs.next()){
 				motorcyclesCode = EnjoyUtils.nullToStr(rs.getString("motorcyclesCode"));
 				System.out.println("[EntrySaleDetailDao][getMotorcyclesCode] motorcyclesCode 	:: " + motorcyclesCode);
@@ -608,6 +639,7 @@ public class EntrySaleDetailDao {
 			bean.setErrMsg(errMsg);
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][productDetail][End]");
 		}
 		
@@ -641,8 +673,10 @@ public class EntrySaleDetailDao {
 		String				color				= null;
 		String				recordAddDate		= null;
 		String				formatInvoie		= null;
+		EnjoyConectDbs 		db 					= null;
 		
 		try{
+			db    				= new EnjoyConectDbs();
 			productBean 		= form.getProductBean();
 			customerBean		= form.getCustomerBean();
 			formatInvoie		= form.getFormatInvoie();
@@ -703,7 +737,7 @@ public class EntrySaleDetailDao {
 			
 			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] sql :: " + sql);
 			
-			this.db.execute(sql);
+			db.execute(sql);
 			
 			if(flagAddSales.equals("Y")){
 				this.saveInvoiceAddSales(form, invoiceId);
@@ -719,6 +753,7 @@ public class EntrySaleDetailDao {
 			bean.setErrMsg("เกิดข้อผิดพลาดในการบันทึก");
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection();
 			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail][End]");
 		}
 		
@@ -742,8 +777,10 @@ public class EntrySaleDetailDao {
 		String				formatInvoie		= null;
 		String 				invoiceAddSalesId	= null;
 		String 				remark				= null;
+		EnjoyConectDbs 		db 					= null;
 		
 		try{
+			db    				= new EnjoyConectDbs();
 			formatInvoie		= form.getFormatInvoie();
 			invoiceAddSalesId	= this.genInvoiceId(formatInvoie);
 //			priceAmount 		= form.getPriceAmount();
@@ -787,17 +824,18 @@ public class EntrySaleDetailDao {
 								
 			System.out.println("[EntrySaleDetailDao][saveInvoiceAddSales] AddSales sql :: " + sql);
 			
-			this.db.execute(sql);
+			db.execute(sql);
 			
 			sql 		= "update invoicedetails set invoiceIdAddSales = '"+invoiceAddSalesId+"' where invoiceId = '"+invoiceId+"'";
 			
 			System.out.println("[EntrySaleDetailDao][saveInvoiceAddSales] update sql :: " + sql);
 			
-			this.db.execute(sql);
+			db.execute(sql);
 			
 		}catch(Exception e){
 			throw e;
 		}finally{
+			db.setDisconnection();
 			System.out.println("[EntrySaleDetailDao][saveInvoiceAddSales][End]");
 		}
 		
@@ -812,12 +850,15 @@ public class EntrySaleDetailDao {
 		String				invoiceId			= null;
 		String				newId				= null;
 		int					firstInvoice		= Integer.parseInt(ConfigFile.getBEGIN_INVOICE(formatInvoie));
+		EnjoyConectDbs 		db 					= null;
+		
 		try{
-			sql 			= "SELECT (MAX(SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1)) + 1) AS newId FROM invoicedetails where invoiceId like('"+formatInvoie+"%')";
+			db    		= new EnjoyConectDbs();
+			sql 		= "SELECT (MAX(SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1)) + 1) AS newId FROM invoicedetails where invoiceId like('"+formatInvoie+"%')";
 			
 			System.out.println("[EntrySaleDetailDao][genInvoiceId] sql :: " + sql);
 			
-			rs 			= this.db.executeQuery(sql);
+			rs 			= db.executeQuery(sql);
 			while(rs.next()){
 				newId = String.format(FILL_ZERO, rs.getInt("newId"));
 			}
@@ -836,6 +877,7 @@ public class EntrySaleDetailDao {
 		}catch(Exception e){
 			throw e;
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][genInvoiceId][End]");
 		}
 		
@@ -864,8 +906,10 @@ public class EntrySaleDetailDao {
 		String				invoiceIdAddSales	= null;
 		String				flagCredit			= null;
 		String				creditAmount		= null;
+		EnjoyConectDbs 		db 					= null;
 		
 		try{
+			db    				= new EnjoyConectDbs();
 			productBean 		= form.getProductBean();
 			customerBean		= form.getCustomerBean();
 			
@@ -908,7 +952,7 @@ public class EntrySaleDetailDao {
 			
 			System.out.println("[EntrySaleDetailDao][updateInvoiceDetail] sql :: " + sql);
 			
-			this.db.execute(sql);
+			db.execute(sql);
 			
 			bean.setInvoiceId(invoiceId);
 			
@@ -916,6 +960,7 @@ public class EntrySaleDetailDao {
 			bean.setErrMsg("เกิดข้อผิดพลาดในการอัพเดทข้อมูล");
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection();
 			System.out.println("[EntrySaleDetailDao][updateInvoiceDetail][End]");
 		}
 		
@@ -933,8 +978,10 @@ public class EntrySaleDetailDao {
 		String[]						idArray				= null;
 		int 							currentId			= 0;
 		String							formatInvoie		= null;
+		EnjoyConectDbs 					db 					= null;
 		
 		try{
+			db    			= new EnjoyConectDbs();
 			idArray 		= invoiceId.split("/");
 			formatInvoie	= idArray[0];
 			currentId 		= Integer.parseInt(idArray[1]);
@@ -945,11 +992,11 @@ public class EntrySaleDetailDao {
 							   + "  and chassisDisp is not null"
 							   + " GROUP BY invoiceId"
 							   + " HAVING MIN(SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1)) > " + currentId
-							   + " order by invoiceId desc limit 1";
+							   + " order by invoiceId asc limit 1";
 			
 			System.out.println("[EntrySaleDetailDao][getNextInvoiceId] sql :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    while(rs.next()){
 		    	nextInvoiceId = EnjoyUtils.nullToStr(rs.getString("invoiceId"));
 		    	bean.setInvoiceId(nextInvoiceId);
@@ -960,6 +1007,7 @@ public class EntrySaleDetailDao {
 			bean.setErrMsg(errMsg);
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][getNextInvoiceId][End]");
 		}
 		
@@ -977,10 +1025,11 @@ public class EntrySaleDetailDao {
 		int 							currentId			= 0;
 		String							formatInvoie		= null;
 		String							prevInvoiceId		= null;
+		EnjoyConectDbs 					db 					= null;
 		
 		try{
-			
-			idArray 	= invoiceId.split("/");
+			db    			= new EnjoyConectDbs();
+			idArray 		= invoiceId.split("/");
 			formatInvoie	= idArray[0];
 			currentId 		= Integer.parseInt(idArray[1]);
 			
@@ -994,7 +1043,7 @@ public class EntrySaleDetailDao {
 			
 			System.out.println("[EntrySaleDetailDao][getPreviousInvoiceId] sql :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    while(rs.next()){
 		    	prevInvoiceId = EnjoyUtils.nullToStr(rs.getString("invoiceId"));
 		    	bean.setInvoiceId(prevInvoiceId);
@@ -1005,6 +1054,7 @@ public class EntrySaleDetailDao {
 			bean.setErrMsg(errMsg);
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[EntrySaleDetailDao][getPreviousInvoiceId][End]");
 		}
 		

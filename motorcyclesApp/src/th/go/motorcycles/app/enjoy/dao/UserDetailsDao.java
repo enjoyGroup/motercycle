@@ -12,7 +12,7 @@ import th.go.motorcycles.app.enjoy.utils.EnjoyEncryptDecrypt;
 public class UserDetailsDao {	
 	private EnjoyConectDbs db = null;	
 	public UserDetailsDao(){
-		db = new EnjoyConectDbs();
+//		db = new EnjoyConectDbs();
 	}
 	
 	public UserDetailsBean userSelect(String userId, String pass){
@@ -25,6 +25,7 @@ public class UserDetailsDao {
         DateFormat 			dateFormat		= null;
         Date 				date			= null;
 		try{
+			this.db    = new EnjoyConectDbs();
 		    dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		    date 	   = new Date();
 
@@ -59,6 +60,12 @@ public class UserDetailsDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			if (userBean == null) {
+				System.out.println("ไม่พบข้อมูล ");
+			} else {
+				System.out.println("พบข้อมูล ");
+			}
+			this.db.setDisconnection(rs);
 			System.out.println("[EnjoyMotorUserDao][userSelect][End]");
 		}
 		

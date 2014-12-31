@@ -15,7 +15,7 @@ public class SummarySaleDetailDao {
 	private EnjoyConectDbs db = null;
 	
 	public SummarySaleDetailDao(){
-		db = new EnjoyConectDbs();
+//		db = new EnjoyConectDbs();
 	}
 	
 	public void searchSaleDetails(SummarySaleDetailForm form){
@@ -41,15 +41,14 @@ public class SummarySaleDetailDao {
         String 											commAmount 			= null;
 		
 		try{
+			this.db    					= new EnjoyConectDbs();
 			invoiceId					= EnjoyUtils.nullToStr(form.getInvoiceId());
 			invoiceDateFrom				= EnjoyUtils.nullToStr(form.getInvoiceDateFrom());
 			invoiceDateTo				= EnjoyUtils.nullToStr(form.getInvoiceDateTo());
 			brandName					= EnjoyUtils.nullToStr(form.getBrandName());
 			model						= EnjoyUtils.nullToStr(form.getModel());
 			cusName						= EnjoyUtils.nullToStr(form.getCusName());
-			
-			
-			
+						
 			sql 		= " select t.* from (select  i.invoiceId invoiceId"
 											+ " , CONCAT(c.cusName, ' ', c.cusSurname) cusName"
 											+ " , CONCAT(b.brandName, ' รุ่น ' , m.model, ' เลขตัวถัง ' , i.chassisDisp, ' เลขเครื่องยนต์ ' , i.EngineNoDisp ) motorcyclesdetails"
@@ -135,6 +134,7 @@ public class SummarySaleDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[SummarySaleDetail][searchSaleDetails][End]");
 		}
 		
@@ -149,20 +149,17 @@ public class SummarySaleDetailDao {
         List<String> 					list 				= new ArrayList<String>();
 		
 		try{
-			sql 		= "select t.cusName from ( select CONCAT(cusName, ' ', cusSurname) cusName from customer) t where t.cusName like ('"+cusName+"%') order by t.cusName asc limit 10 ";
-			
-			System.out.println("[SummarySaleDetail][nameSurnameList] sql :: " + sql);
-			
-		    rs 			= this.db.executeQuery(sql);
-		    
-		    while(rs.next()){
-		    	
+			this.db    	= new EnjoyConectDbs();
+			sql 		= "select t.cusName from ( select CONCAT(cusName, ' ', cusSurname) cusName from customer) t where t.cusName like ('"+cusName+"%') order by t.cusName asc limit 10 ";			
+			//System.out.println("[SummarySaleDetail][nameSurnameList] sql :: " + sql);			
+		    rs 			= this.db.executeQuery(sql);		    
+		    while(rs.next()){		    	
 		    	list.add(EnjoyUtils.nullToStr(rs.getString("cusName")));
-		    }
-			
+		    }			
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[SummarySaleDetail][nameSurnameList][End]");
 		}
 		

@@ -86,4 +86,31 @@ public class EnjoyConectDbs {
 				System.out.println("[EnjoyConectDbs][setConnection][End]");
 			}
 		}
+
+		public void setDisconnection() {
+			System.out.println("[EnjoyConectDbs][setDisconnection][Begin]");
+
+			try {
+				this.stmt.close();
+				this.conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				System.out.println("[EnjoyConectDbs][setDisconnection][End]");
+			}
+		}
+
+		public void setDisconnection(ResultSet 	rs) {
+			System.out.println("[EnjoyConectDbs][setDisconnection][Begin]");
+
+			try {
+				rs.close();
+				this.stmt.close();
+				this.conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				System.out.println("[EnjoyConectDbs][setDisconnection][End]");
+			}
+		}
 }

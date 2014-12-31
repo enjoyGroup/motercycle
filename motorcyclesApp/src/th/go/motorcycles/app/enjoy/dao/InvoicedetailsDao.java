@@ -13,9 +13,9 @@ import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
 public class InvoicedetailsDao {
-	private EnjoyConectDbs db = null;	
+//	private EnjoyConectDbs db = null;	
 	public InvoicedetailsDao(){
-		db = new EnjoyConectDbs();
+//		db = new EnjoyConectDbs();
 	}
 	
 	public JSONObject SummarySalePDF(String	invoiceId, 
@@ -34,8 +34,9 @@ public class InvoicedetailsDao {
 		String 				where			= "";
 		double				totleAmount     = 0;
 		double				summaryAmount   = 0;
-		
+		EnjoyConectDbs 		db 				= null;
 		try{
+			db  = new EnjoyConectDbs();
 			sql = " select t.* from (select  i.invoiceId invoiceId"
 					+ " , CONCAT(c.cusName, ' ', c.cusSurname) cusName"
 					+ " , CONCAT(b.brandName, ' รุ่น ' , m.model, ' สี ' , i.color ) motorcyclesdetails"
@@ -76,7 +77,7 @@ public class InvoicedetailsDao {
 			sql = sql + where;
 			
 			System.out.println("[InvoicedetailsDao][SummarySalePDF] sql :: " + sql);
-		    rs 				= this.db.executeQuery(sql);
+		    rs 				= db.executeQuery(sql);
 		    jsonObjectMain 	= new JSONObject();
 		    listJSONArray 	= new JSONArray();
 		    
@@ -110,6 +111,7 @@ public class InvoicedetailsDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[InvoicedetailsDao][SummarySalePDF][End]");
 		}
 		
@@ -125,7 +127,9 @@ public class InvoicedetailsDao {
 		String				cusCode		    = "";
 		String				flagAddSales	= "";
 		String				invoiceIdAddSales = "";
+		EnjoyConectDbs 		db 				= null;
 		try{
+			db  = new EnjoyConectDbs();
 			sql = " select t.* from (select  i.invoiceId invoiceId"
 					+ " , CONCAT(c.cusName, ' ', c.cusSurname) cusName"
 					+ " , CONCAT(c.houseNumber, ' หมู่ที่ ' , c.mooNumber, ' ถนน ' , c.streetName, ' ตำบล ' , i.EngineNoDisp, ' อำเภอ ' , i.EngineNoDisp, ' จังหวัด ' , i.EngineNoDisp ) cusAddress"
@@ -153,7 +157,7 @@ public class InvoicedetailsDao {
 					+ "  and t.invoiceId 		= '" + invoiceId + "'";
 
 			System.out.println("[InvoicedetailsDao][InvoiceSalePDF] sql :: " + sql);
-		    rs 				= this.db.executeQuery(sql);
+		    rs 				= db.executeQuery(sql);
 		    
 		    while(rs.next()){
 		    	jsonObjectDetail 	= new JSONObject();
@@ -195,6 +199,7 @@ public class InvoicedetailsDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[InvoicedetailsDao][InvoiceSalePDF][End]");
 		}
 		
@@ -207,14 +212,16 @@ public class InvoicedetailsDao {
 		String 				sql			 		= null;
 		ResultSet 			rs 					= null; 
 		StringBuilder       address             = null;           
+		EnjoyConectDbs 		db 					= null;
 		
 		try{ 
+			db  = new EnjoyConectDbs();
 			sql = "SELECT * FROM customer a  LEFT JOIN  subdistrict s ON a.subdistrictCode=s.subdistrictId LEFT JOIN district d "
 				+ "ON a.districtCode=d.districtId LEFT JOIN province p ON a.provinceCode=p.provinceId where  cusStatus = 'A'"			
 				+ " and cusCode = '" + cusCode + "'";		   
 			System.out.println("[CustomerDao][findCustomer] sql :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
+		    rs 			= db.executeQuery(sql);
 		    while(rs.next()){
 				address  =  new StringBuilder();
 				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber"))); 
@@ -229,6 +236,7 @@ public class InvoicedetailsDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[InvoicedetailsDao][findCustomerById][End]");
 		}		
 		return address.toString();
@@ -239,7 +247,9 @@ public class InvoicedetailsDao {
 		System.out.println("[InvoicedetailsDao][InvoiceAddSalesPDF][Begin]");
 		String 				sql			 	= null;
 		ResultSet 			rs 				= null;
+		EnjoyConectDbs 		db 				= null;
 		try{
+			db  = new EnjoyConectDbs();
 			sql = " select  i.invoiceId invoiceId"
 					+ " , i.priceAmount priceAmount"
 					+ " , i.vatAmount vatAmount"
@@ -249,7 +259,7 @@ public class InvoicedetailsDao {
 					+ " where i.invoiceId 		= '" + invoiceIdAddSales + "'";
 
 			System.out.println("[InvoicedetailsDao][InvoiceAddSalesPDF] sql :: " + sql);
-		    rs 				= this.db.executeQuery(sql);
+		    rs 				= db.executeQuery(sql);
 		    
 		    while(rs.next()){
 		    	jsonObjectDetail.put("addSalesPriceAmount",     EnjoyUtils.convertFloatToDisplay(rs.getString("priceAmount"),2));
@@ -261,6 +271,7 @@ public class InvoicedetailsDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			db.setDisconnection(rs);
 			System.out.println("[InvoicedetailsDao][InvoiceAddSalesPDF][End]");
 		}
 	}

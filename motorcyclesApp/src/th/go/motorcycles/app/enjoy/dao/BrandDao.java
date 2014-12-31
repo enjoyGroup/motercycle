@@ -13,7 +13,7 @@ public class BrandDao {
 	private EnjoyConectDbs db = null;	
 	
 	public BrandDao(){
-		db = new EnjoyConectDbs();
+//		db = new EnjoyConectDbs();
 	}
 
 	public List<BrandBean> findAllBrand(){
@@ -25,7 +25,8 @@ public class BrandDao {
 		List<BrandBean>		list				= null;	          
 		
 		try{  
-			sql = "SELECT * FROM branddetails ";
+			this.db     = new EnjoyConectDbs();
+			sql 		= "SELECT * FROM branddetails ";
 			 
 			list		= new ArrayList<BrandBean>();
 			
@@ -41,11 +42,11 @@ public class BrandDao {
 
 		    	list.add(brandBean);
 		    	
-		    } 
-			
+		    } 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[BrandDao][findAllBrand][End]");
 		}
 		
@@ -56,23 +57,23 @@ public class BrandDao {
 		System.out.println("[BrandDao][insertBrand][Begin]");
 		
 		String 		sql			 	= null;
-		ResultSet 	rs 				= null;  
 		boolean		lv_ret			= false; 
 		
 		try{ 
-		    
+			this.db     = new EnjoyConectDbs();
 			sql = "INSERT INTO branddetails(brandName)"
 				 + " values ( '" + brandBean.getBrandName() +"') ";
 			
 			System.out.println("[BrandDao][insertBrand] sql :: " + sql);
 			
-			lv_ret 			= this.db.execute(sql);
+			lv_ret 		= this.db.execute(sql);
 			
             System.out.println("[BrandDao][insertBrand] sql :: Success");
          
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection();
 			System.out.println("[BrandDao][insertBrand][End]");
 		}
 		return lv_ret;
@@ -85,6 +86,7 @@ public class BrandDao {
 		boolean				lv_ret				= false; 
 		
 		try{ 
+			this.db = new EnjoyConectDbs();
 			sql 	= "UPDATE branddetails SET brandName = '"+bean.getBrandName()+
 					"' WHERE  brandCode = '"+bean.getBrandCode()+"'";
 			
@@ -97,6 +99,7 @@ public class BrandDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection();
 			System.out.println("[BrandDao][updateBrand][End]");
 		}
 		return lv_ret;

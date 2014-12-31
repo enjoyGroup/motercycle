@@ -14,7 +14,7 @@ public class AddressDao {
 	private EnjoyConectDbs db = null;
 	
 	public AddressDao(){
-		db = new EnjoyConectDbs();
+//		db = new EnjoyConectDbs();
 	}
 	
 	public List<String> provinceList(String province){
@@ -26,6 +26,7 @@ public class AddressDao {
 		
 		try{
 //			province	= "ก";
+			this.db     = new EnjoyConectDbs();
 			sql 		= " select provinceName from province where provinceId <> 00 and provinceName like ('"+province+"%') order by provinceName asc limit 10 ";
 			
 			System.out.println("[AddressDao][provinceList] sql :: " + sql);
@@ -40,6 +41,7 @@ public class AddressDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[AddressDao][provinceList][End]");
 		}
 		
@@ -56,6 +58,7 @@ public class AddressDao {
 		
 		try{
 			/*Begin check province section*/
+			this.db     = new EnjoyConectDbs();
 			sql 		= "select provinceId from province where provinceId <> 00 and provinceName = '"+province+"'";
 			
 			System.out.println("[AddressDao][districtList] sql :: " + sql);
@@ -83,6 +86,7 @@ public class AddressDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[AddressDao][districtList][End]");
 		}
 		
@@ -99,6 +103,7 @@ public class AddressDao {
         String							districtId			= null;
 		
 		try{
+			this.db     = new EnjoyConectDbs();
 			
 			/*Begin check province section*/
 			sql 		= "select provinceId from province where provinceId <> 00 and provinceName = '"+province+"'";
@@ -150,6 +155,7 @@ public class AddressDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[AddressDao][subdistrictList][End]");
 		}
 		
@@ -168,6 +174,7 @@ public class AddressDao {
         AddressBean						addressBean			= new AddressBean();
 		
 		try{
+			this.db     = new EnjoyConectDbs();
 			/*Begin check province section*/
 			sql 		= "select provinceId from province where provinceId <> 00 and provinceName = '"+province+"'";
 			
@@ -213,6 +220,7 @@ public class AddressDao {
 			addressBean.setErrMsg(errMsg);
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[AddressDao][validateAddress][End]");
 		}
 		return addressBean;
@@ -226,6 +234,7 @@ public class AddressDao {
         String							provinceName		= null;
 		
 		try{
+			this.db     = new EnjoyConectDbs();
 			sql 		= " select provinceName from province where provinceId <> 00 and provinceId = " + provinceId;
 			
 			System.out.println("[AddressDao][getProvinceName] sql :: " + sql);
@@ -240,6 +249,7 @@ public class AddressDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[AddressDao][getProvinceName][End]");
 		}
 		
@@ -254,6 +264,7 @@ public class AddressDao {
         String							subdistrictName		= null;
 		
 		try{
+			this.db     = new EnjoyConectDbs();
 			sql 		= " select subdistrictName from subdistrict where subdistrictId <> 00 and subdistrictId = " + subdistrictId;
 			
 			System.out.println("[AddressDao][getSubdistrictName] sql :: " + sql);
@@ -265,6 +276,7 @@ public class AddressDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[AddressDao][getSubdistrictName][End]");
 		}
 		
@@ -279,6 +291,7 @@ public class AddressDao {
         String							districtName		= null;
 		
 		try{
+			this.db     = new EnjoyConectDbs();
 			sql 		= " select districtName from district where districtId <> 00 and districtId = " + districtId;
 			
 			System.out.println("[AddressDao][getDistrictName] sql :: " + sql);
@@ -290,6 +303,7 @@ public class AddressDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[AddressDao][getDistrictName][End]");
 		}
 		

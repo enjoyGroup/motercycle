@@ -13,7 +13,7 @@ public class MotorDetailDao {
 	private EnjoyConectDbs db = null;	
 	
 	public MotorDetailDao(){
-		db = new EnjoyConectDbs();
+//		db = new EnjoyConectDbs();
 	}
 	
 	public List<MotorDetailBean> findModelDetail(MotorDetailBean bean){
@@ -26,6 +26,7 @@ public class MotorDetailDao {
 			System.out.println(bean.getBrandSearch());
 			System.out.println(bean.getModelSearch());
 
+			this.db    	= new EnjoyConectDbs();
 			sql = "SELECT * FROM motorcyclesdetails m "
 					+ " LEFT JOIN branddetails b ON m.brandCode=b.brandCode"
 					+ " LEFT JOIN company c ON m.companyId=c.companyId"
@@ -67,6 +68,7 @@ public class MotorDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[MotorDetailDao][findModelDetail][End]");
 		}
 		
@@ -81,20 +83,19 @@ public class MotorDetailDao {
         List<String> 					list 				= new ArrayList<String>();
 		
 		try{
+			this.db    	= new EnjoyConectDbs();
 			sql 		= " SELECT brandName FROM branddetails WHERE brandName LIKE ('"+brandName+"%') ORDER BY brandName ASC LIMIT 10 ";
 			
 			System.out.println("[MotorDetailDao][brandNameList] sql :: " + sql);
 			
-		    rs 			= this.db.executeQuery(sql);
-		    
-		    while(rs.next()){
-		    	
+		    rs 			= this.db.executeQuery(sql);		    
+		    while(rs.next()){		    	
 		    	list.add(EnjoyUtils.nullToStr(rs.getString("brandName")));
-		    }
-			
+		    }			
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[MotorDetailDao][brandNameList][End]");
 		}
 		
@@ -110,7 +111,7 @@ public class MotorDetailDao {
         String							brandCode			= null;
 		
 		try{
-			
+			this.db    		= new EnjoyConectDbs();			
 			if(!brandName.equals("")){
 				sql 		= " SELECT brandCode FROM branddetails WHERE brandName = '" + brandName + "'";
 				
@@ -138,6 +139,7 @@ public class MotorDetailDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[MotorDetailDao][modelList][End]");
 		}
 		
@@ -145,27 +147,22 @@ public class MotorDetailDao {
 	}
 	
 	public List<String> branchNameList(String branchName){
-		System.out.println("[MotorDetailDao][branchNameList][Begin]");
-		
+		System.out.println("[MotorDetailDao][branchNameList][Begin]");		
 		String 							sql			 		= null;
 		ResultSet 						rs 					= null;
-        List<String> 					list 				= new ArrayList<String>();
-		
+        List<String> 					list 				= new ArrayList<String>();		
 		try{
-			sql 		= " SELECT branchName FROM company WHERE branchName LIKE ('" + branchName + "%') ORDER BY branchName ASC LIMIT 10 ";
-			
-			System.out.println("[MotorDetailDao][branchNameList] sql :: " + sql);
-			
-		    rs 			= this.db.executeQuery(sql);
-		    
-		    while(rs.next()){
-		    	
+			this.db    	= new EnjoyConectDbs();
+			sql 		= " SELECT branchName FROM company WHERE branchName LIKE ('" + branchName + "%') ORDER BY branchName ASC LIMIT 10 ";			
+			System.out.println("[MotorDetailDao][branchNameList] sql :: " + sql);			
+		    rs 			= this.db.executeQuery(sql);		    
+		    while(rs.next()){		    	
 		    	list.add(EnjoyUtils.nullToStr(rs.getString("branchName")));
-		    }
-			
+		    }		
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[MotorDetailDao][brandNameList][End]");
 		}
 		

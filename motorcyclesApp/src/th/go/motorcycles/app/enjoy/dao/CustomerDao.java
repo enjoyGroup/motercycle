@@ -15,7 +15,7 @@ public class CustomerDao {
 	private EnjoyConectDbs db = null;	
 	
 	public CustomerDao(){
-		db = new EnjoyConectDbs();
+//		db = new EnjoyConectDbs();
 	}
 	
 	public List<CustomerBean> findCustomer(CustomerBean bean){
@@ -30,7 +30,8 @@ public class CustomerDao {
 		try{ 
 			System.out.println(bean.getIdNumber());
 			System.out.println(bean.getCustFullname());
-
+			
+			this.db    = new EnjoyConectDbs();
 			sql = "SELECT * FROM customer a  LEFT JOIN  subdistrict s ON a.subdistrictCode=s.subdistrictId LEFT JOIN district d "
 				+ "ON a.districtCode=d.districtId LEFT JOIN province p ON a.provinceCode=p.provinceId where  cusStatus = 'A'";
 			
@@ -81,6 +82,7 @@ public class CustomerDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[CustomerDao][findCustomer][End]");
 		}
 		
@@ -97,6 +99,7 @@ public class CustomerDao {
 		StringBuilder       address             = null;           
 		
 		try{  
+			this.db    = new EnjoyConectDbs();
 			sql = "SELECT * FROM customer a  LEFT JOIN  subdistrict s ON a.subdistrictCode=s.subdistrictId LEFT JOIN district d "
 				 + "ON a.districtCode=d.districtId LEFT JOIN province p ON a.provinceCode=p.provinceId where  cusStatus = 'A'";
 			 
@@ -135,6 +138,7 @@ public class CustomerDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[CustomerDao][findAllCustomer][End]");
 		}
 		
@@ -149,6 +153,7 @@ public class CustomerDao {
 		CustomerBean		customerBean		= null; 	
 		
 		try{
+			this.db    = new EnjoyConectDbs();
 			if(bean.getCusCode()!=null && bean.getCusCode()!=""){ 
 				sql = "SELECT * FROM customer a  LEFT JOIN  subdistrict s ON a.subdistrictCode=s.subdistrictId LEFT JOIN district d "
 						+ "ON a.districtCode=d.districtId LEFT JOIN province p ON a.provinceCode=p.provinceId where  cusStatus = 'A' and cusCode = '"
@@ -184,6 +189,7 @@ public class CustomerDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[CustomerDao][findCustomerByCusCode][End]");
 		}
 		
@@ -199,6 +205,7 @@ public class CustomerDao {
 		String      cusCode         = null;  
 		CustomerBean bean           = null;
 		try{ 
+			 this.db    = new EnjoyConectDbs();
 			 sql 		= "SELECT cusCode as lastId FROM customer ORDER BY cusCode DESC LIMIT 1";
 			 rs 		= this.db.executeQuery(sql);
 			 System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
@@ -236,6 +243,7 @@ public class CustomerDao {
 		}catch(Exception e){  
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[CustomerDao][insertCustomer][End]");
 		}
 		
@@ -250,6 +258,7 @@ public class CustomerDao {
 		boolean				lv_ret				= false; 
 
 		try{ 
+			this.db = new EnjoyConectDbs();
 			sql 	= "update  customer set cusStatus = '"+bean.getCusStatus()+"', cusName='"+bean.getCustName()+
 					"', cusSurname='"+bean.getCustSurname()+"', houseNumber='"+bean.getHouseNumber()+
 					"', mooNumber='"+bean.getMooNumber()+"', SoiName='"+bean.getSoiName()+
@@ -266,6 +275,7 @@ public class CustomerDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection();
 			System.out.println("[CustomerDao][updateCustomer][End]");
 		}
 		return lv_ret;
@@ -280,10 +290,11 @@ public class CustomerDao {
 		String				cusStatus	        = null;
 		
 		try{
+			this.db    = new EnjoyConectDbs();
 			cusCode    = EnjoyUtils.nullToStr(bean.getCusCode());
-			cusStatus    = EnjoyUtils.nullToStr(bean.getCusStatus());
+			cusStatus  = EnjoyUtils.nullToStr(bean.getCusStatus());
 			
-			sql 		= "update customer set cusStatus = '"+ cusStatus +"'  where cusCode = '" + cusCode +"'";
+			sql 	   = "update customer set cusStatus = '"+ cusStatus +"'  where cusCode = '" + cusCode +"'";
 		 
 			System.out.println("[CustomerDao][deleteCustomer] sql :: " + sql);
 			
@@ -294,6 +305,7 @@ public class CustomerDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection();
 			System.out.println("[CustomerDao][deleteCustomer][End]");
 		}
 		return lv_ret;
@@ -311,6 +323,7 @@ public class CustomerDao {
         AddressBean						addressBean			= new AddressBean();
 		
 		try{
+			this.db     = new EnjoyConectDbs();
 			/*Begin check province section*/
 			sql 		= "select provinceId from province where provinceId <> 00 and provinceName = '"+province+"'";
 			
@@ -356,6 +369,7 @@ public class CustomerDao {
 			addressBean.setErrMsg(errMsg);
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[CustomerDao][validateAddress][End]");
 		}
 		return addressBean;
@@ -369,6 +383,7 @@ public class CustomerDao {
         List<String> 					list 				= new ArrayList<String>();
 		
 		try{
+			this.db     = new EnjoyConectDbs();
 			sql 		= " select idNumber from customer where idNumber like ('"+idNumber+"%') and cusStatus = 'A' order by idNumber asc limit 10 ";
 			
 			System.out.println("[CustomerDao][idNumberList] sql :: " + sql);
@@ -382,6 +397,7 @@ public class CustomerDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[CustomerDao][idNumberList][End]");
 		}
 		
@@ -396,6 +412,7 @@ public class CustomerDao {
         List<String> 					list 				= new ArrayList<String>();
 		
 		try{
+			this.db     = new EnjoyConectDbs();
 			sql 		= "SELECT CONCAT(cusName, ' ', cusSurname) as fullName from customer where (SELECT CONCAT(cusName, ' ', cusSurname) as fullName) like '"+custFullName+"%' and cusStatus = 'A'  limit 10 ";
 			
 			System.out.println("[CustomerDao][custFullNameList] sql :: " + sql);
@@ -410,6 +427,7 @@ public class CustomerDao {
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
+			this.db.setDisconnection(rs);
 			System.out.println("[CustomerDao][custFullNameList][End]");
 		}
 		
