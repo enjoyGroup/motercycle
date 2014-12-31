@@ -15,7 +15,7 @@ public class EnjoyConectDbs {
 
 	   //  Database credentials
 	   static final String 	USER 			= "root";
-	   static final String 	PASS 			= "chaiwat";
+	   static final String 	PASS 			= "p@ssw0rd";
 	   
 	   private Connection 	conn 			= null;
 	   private Statement 	stmt 			= null;

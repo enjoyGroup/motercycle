@@ -39,9 +39,12 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
         	
         	logger.info("[EnjoyLoginSvc][execute] userId 	:: " + userId);
         	logger.info("[EnjoyLoginSvc][execute] passWord 	:: " + passWord);
-        	logger.info("[EnjoyLoginSvc][execute] Vat Rate 	:: " + ConfigFile.getVAT_RATE());
         	
         	userBean = userDao.userSelect(userId, passWord);
+
+        	logger.info("[EnjoyLoginSvc][execute] Vat Rate 	:: " + ConfigFile.getVAT_RATE());
+        	logger.info("[EnjoyLoginSvc][execute] Pading Invoice :: " + ConfigFile.getPADING_INVOICE());
+        	logger.info("[EnjoyLoginSvc][execute] Begin Invoice  :: " + ConfigFile.getBEGIN_INVOICE(userBean.getFormatInvoie()));
         	
         	if(userBean==null){
         		easUtil.writeMSG("รหัสผ่านไม่ถูกต้อง");

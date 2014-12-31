@@ -9,6 +9,7 @@ import th.go.motorcycles.app.enjoy.bean.EntrySaleDetailBean;
 import th.go.motorcycles.app.enjoy.bean.ProductBean;
 import th.go.motorcycles.app.enjoy.exception.EnjoyException;
 import th.go.motorcycles.app.enjoy.form.EntrySaleDetailForm;
+import th.go.motorcycles.app.enjoy.main.ConfigFile;
 import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
@@ -16,8 +17,8 @@ public class EntrySaleDetailDao {
 	
 	private EnjoyConectDbs db = null;
 	
-	final static String CUSTOMER 	= "customer";
-	final static String FILL_ZERO 	= "%04d";
+	final static String CUSTOMER 		= "customer";
+	final static String FILL_ZERO 		= ConfigFile.getPADING_INVOICE();
 	
 	public EntrySaleDetailDao(){
 		db = new EnjoyConectDbs();
@@ -740,18 +741,23 @@ public class EntrySaleDetailDao {
 		String				recordAddDate		= null;
 		String				formatInvoie		= null;
 		String 				invoiceAddSalesId	= null;
+		String 				remark				= null;
 		
 		try{
 			formatInvoie		= form.getFormatInvoie();
 			invoiceAddSalesId	= this.genInvoiceId(formatInvoie);
-			priceAmount 		= form.getPriceAmount();
-			vatAmount 			= form.getVatAmount();
-			commAmount 			= form.getCommAmount();
+//			priceAmount 		= form.getPriceAmount();
+//			vatAmount 			= form.getVatAmount();
+//			totalAmount			= form.getTotalAmount();
+			priceAmount 		= form.getCommAmount();
+			vatAmount 			= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
+			totalAmount			= form.getCommAmount();	
+			commAmount 			= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
 			flagAddSales 		= form.getFlagAddSales();
 			userUniqueId 		= form.getUserUniqueId();
-			flagCredit 			= form.getFlagCredit();
-			creditAmount 		= form.getCreditAmount();
-			totalAmount			= form.getTotalAmount();
+			flagCredit 			= "N";						// เนื่องจากเป็นใบส่งเสริมการขาย
+			creditAmount 		= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
+			remark		 		= "";						// เนื่องจากเป็นใบส่งเสริมการขาย
 			recordAddDate		= EnjoyUtils.dateFormat(form.getRecordAddDate(), "dd/MM/yyyy", "yyyyMMdd");
 			
 			sql 		= "insert into invoicedetails ( invoiceId"
@@ -764,7 +770,8 @@ public class EntrySaleDetailDao {
 													+ " ,userUniqueId"
 													+ " ,invoiceIdAddSales"
 													+ " ,flagCredit"
-													+ " ,creditAmount)"
+													+ " ,creditAmount"
+													+ " ,remark)"
 										+ " values(		'"+invoiceAddSalesId+"'"
 													+ " ,'"+recordAddDate+"'"
 													+ " ,'"+priceAmount+"'"
@@ -775,7 +782,8 @@ public class EntrySaleDetailDao {
 													+ " ,'"+userUniqueId+"'"
 													+ " ,'"+invoiceIdAddSales+"'"
 													+ " ,'"+flagCredit+"'"
-													+ " ,'"+creditAmount+"')";
+													+ " ,'"+creditAmount+"'"
+													+ " ,'"+remark+"')";
 								
 			System.out.println("[EntrySaleDetailDao][saveInvoiceAddSales] AddSales sql :: " + sql);
 			
@@ -803,7 +811,7 @@ public class EntrySaleDetailDao {
 		ResultSet 			rs 					= null;
 		String				invoiceId			= null;
 		String				newId				= null;
-		
+		int					firstInvoice		= Integer.parseInt(ConfigFile.getBEGIN_INVOICE(formatInvoie));
 		try{
 			sql 			= "SELECT (MAX(SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1)) + 1) AS newId FROM invoicedetails where invoiceId like('"+formatInvoie+"%')";
 			
@@ -816,7 +824,10 @@ public class EntrySaleDetailDao {
 			
 			System.out.println("[EntrySaleDetailDao][genInvoiceId] newId :: " + newId);
 			if(newId==null){
-				newId = String.format(FILL_ZERO, 1);
+//				newId = String.format(FILL_ZERO, 1);
+				newId = String.format(FILL_ZERO, firstInvoice);
+			} else if ((Integer.parseInt(newId) == 0)) { // แปลว่าไม่พบรายการ
+				newId = String.format(FILL_ZERO, firstInvoice);
 			}
 			
 			invoiceId			= formatInvoie + "/" + newId;

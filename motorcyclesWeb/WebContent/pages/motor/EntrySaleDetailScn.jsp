@@ -1469,7 +1469,8 @@
 																value="<%=productBean.getChassis() %>"
 																size="3"
 																class="input-disabled" 
-					                                       		readonly="readonly"															
+					                                       		readonly="readonly"		
+					                                       		tabindex="-1"													
 														/>
 														<input  type="text" 
 																size="20"
@@ -1490,6 +1491,7 @@
 																size="3"
 																class="input-disabled" 
 					                                       		readonly="readonly"		
+					                                       		tabindex="-1"
 														/>
 														<input  type="text" 
 																size="20"

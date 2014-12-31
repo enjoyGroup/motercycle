@@ -8,7 +8,9 @@ import java.util.Properties;
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
 public class ConfigFile {
-	private static final String VAT_RATE   = "conf.vatRate";
+	private static final String VAT_RATE   		 = "conf.vatRate";
+	private static final String PADING_INVOICE   = "pading.invoice";
+	private static final String BEGIN_INVOICE    = "begin.invoice.";
 	private static ConfigFile configFile;
 	private static Properties properties ;
 	
@@ -43,5 +45,13 @@ public class ConfigFile {
 	
 	public static String getVAT_RATE() {
 		return getText(VAT_RATE);
+	}
+	
+	public static String getPADING_INVOICE() {
+		return getText(PADING_INVOICE);
+	}
+
+	public static String getBEGIN_INVOICE(String typeInvoice) {
+		return getText(BEGIN_INVOICE + typeInvoice);
 	}
 }
