@@ -930,17 +930,22 @@ public class EntrySaleDetailDao {
 		String							nextInvoiceId		= null;
 		EntrySaleDetailBean				bean				= new EntrySaleDetailBean();
 		String							errMsg				= null;
-		String[]						nextIdArray			= null;
-		String							nextId				= null;
+		String[]						idArray				= null;
+		int 							currentId			= 0;
+		String							formatInvoie		= null;
 		
 		try{
-			nextIdArray 	= invoiceId.split("/");
-			nextId 			= String.format(FILL_ZERO, Integer.parseInt(nextIdArray[1]) + 1);
-			nextInvoiceId	= nextIdArray[0] + "/" + nextId;
+			idArray 		= invoiceId.split("/");
+			formatInvoie	= idArray[0];
+			currentId 		= Integer.parseInt(idArray[1]);
 			
-			System.out.println("[EntrySaleDetailDao][getNextInvoiceId] nextInvoiceId :: " + nextInvoiceId);
-			
-			sql 		= "select invoiceId from invoicedetails where invoiceId = '"+nextInvoiceId+"'";
+			sql 		= "SELECT invoiceId"
+							   + " FROM invoicedetails" 
+							   + " where invoiceId like('"+formatInvoie+"%')"
+							   + "  and chassisDisp is not null"
+							   + " GROUP BY invoiceId"
+							   + " HAVING MIN(SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1)) > " + currentId
+							   + " order by invoiceId desc limit 1";
 			
 			System.out.println("[EntrySaleDetailDao][getNextInvoiceId] sql :: " + sql);
 			
@@ -966,21 +971,26 @@ public class EntrySaleDetailDao {
 		
 		String 							sql			 		= null;
 		ResultSet 						rs 					= null;
-		String							prevInvoiceId		= null;
 		EntrySaleDetailBean				bean				= new EntrySaleDetailBean();
 		String							errMsg				= null;
-		String[]						prevIdArray			= null;
-		String							prevId				= null;
+		String[]						idArray				= null;
+		int 							currentId			= 0;
+		String							formatInvoie		= null;
+		String							prevInvoiceId		= null;
 		
 		try{
 			
-			prevIdArray 	= invoiceId.split("/");
-			prevId 			= String.format(FILL_ZERO, Integer.parseInt(prevIdArray[1]) - 1);
-			prevInvoiceId	= prevIdArray[0] + "/" + prevId;
+			idArray 	= invoiceId.split("/");
+			formatInvoie	= idArray[0];
+			currentId 		= Integer.parseInt(idArray[1]);
 			
-			System.out.println("[EntrySaleDetailDao][getPreviousInvoiceId] prevInvoiceId :: " + prevInvoiceId);
-			
-			sql 		= "select invoiceId from invoicedetails where invoiceId = '"+prevInvoiceId+"'";
+			sql 		= "SELECT invoiceId"
+							   + " FROM invoicedetails" 
+							   + " where invoiceId like('"+formatInvoie+"%')"
+							   + "  and chassisDisp is not null"
+							   + " GROUP BY invoiceId"
+							   + " HAVING MAX(SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1)) < " + currentId
+							   + " order by invoiceId desc limit 1";
 			
 			System.out.println("[EntrySaleDetailDao][getPreviousInvoiceId] sql :: " + sql);
 			
