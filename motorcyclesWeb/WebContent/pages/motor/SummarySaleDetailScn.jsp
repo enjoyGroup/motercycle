@@ -289,7 +289,7 @@
 														<td>ชื่อลูกค้า : </td>
 														<td colspan="4">
 															<input type="text" id="cusName" name="cusName" value="<%=summarySaleDetailForm.getCusName()%>" size="40" />
-															<input type="button" class="btn btn-danger" id="btnSearch" name="btnSearch" value="ค้นหา" />
+															<input type="button" class="btn btn-primary" id="btnSearch" name="btnSearch" value="ค้นหา" />
 														</td>
 													</tr>
 												</table>
@@ -351,8 +351,8 @@
 												<table border="0" cellpadding="0" cellspacing="5" class="table span12" style="width:95%;" >
 													<tr align="center">
 														<td>
-															<input type="button" class="btn btn-danger" id="btnPrint" name="btnPrint" value="พิมพ์" />&nbsp;
-															<input type="reset" class="btn btn-danger" id="btnReset" name="btnReset" value="เริ่มใหม่" />
+															<input type="button" class="btn btn-primary" id="btnPrint" name="btnPrint" value="พิมพ์" />&nbsp;
+															<input type="reset" class="btn btn-primary" id="btnReset" name="btnReset" value="เริ่มใหม่" />
 														</td>
 													</tr>
 												</table>
