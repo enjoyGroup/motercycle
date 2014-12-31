@@ -32,6 +32,7 @@ public class EntrySaleDetailForm {
 	private String								creditAmount;
 	private String								vat;
 	private String								userLevel;
+	private String 								formatInvoie;
 	
 	public EntrySaleDetailForm(){
 		this.customerBean 				= new CustomerBean();
@@ -55,6 +56,15 @@ public class EntrySaleDetailForm {
 		this.creditAmount				= "0.00";
 		this.vat						= ConfigFile.getVAT_RATE();
 		this.userLevel					= "";
+		this.formatInvoie				= "";
+	}
+
+	public String getFormatInvoie() {
+		return formatInvoie;
+	}
+
+	public void setFormatInvoie(String formatInvoie) {
+		this.formatInvoie = formatInvoie;
 	}
 
 	public String getUserLevel() {

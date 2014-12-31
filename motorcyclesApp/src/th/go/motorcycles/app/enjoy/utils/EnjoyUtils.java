@@ -37,13 +37,13 @@ public class EnjoyUtils {
         int 	month 	= 0;
         int 	day 	= 0;
         try{
-//            SimpleDateFormat 	sdf = new SimpleDateFormat(stFormat);
-            Calendar 			c 	= Calendar.getInstance();
+//            SimpleDateFormat 	sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+            Calendar 			c 	= Calendar.getInstance(Locale.US);
             c.setTime(dDate); 
             
             
             year 	= c.get(Calendar.YEAR);
-			month 	= c.get(Calendar.MONTH);
+			month 	= c.get(Calendar.MONTH) + 1;
 			day 	= c.get(Calendar.DATE);
             
 //            stDate = sdf.format(dDate);

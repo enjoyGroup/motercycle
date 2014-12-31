@@ -49,6 +49,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
    private static final String 		GET_CUST_CODE 			= "getCustCode";
    private static final String 		GET_CUST_NAME 			= "getCustName";
    private static final String 		GET_CUST_SNAME 			= "getCustSurName";
+   private static final String 		GET_ID_NUMBER 			= "getIdNumber";
    private static final String 		GET_CUST_DTL 			= "getCustDtl";
    private static final String 		GET_CUST_DTL_BY_NAME 	= "getCustDtlByName";
    private static final String 		GET_CUST_DTL_BY_ID_NUM 	= "getCustDtlByIdNumber";
@@ -98,17 +99,17 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			logger.info("[execute] userLevel :: " + this.userBean.getUserLevel());
 			this.form.setUserLevel(this.userBean.getUserLevel());
 			
-			if(pageAction.equals("") || pageAction.equals(NEW)){
+			if(pageAction.equals("") || pageAction.equals(NEW) || pageAction.equals(RESET)){
 				if (pageActionPDF.equals(VIEWPDF)) {
 					printType = MotorUtil.nullToStr(request.getParameter("printType"));
 					logger.info("[execute] printType :: " + printType);
 					this.lp_viewpdf(printType);
 				} else {
-//					this.form.getCustomerBean().setIdType("1");
-//					this.form.setInvoiceId("5700000001");
 					this.form.getCustomerBean().setIdType("2");
 					this.form.setRecordAddDate(MotorUtil.dateToStringThai(date));
-					request.setAttribute("target", Constants.PAGE_URL + "/EntrySaleDetailScn.jsp");
+					if(!pageAction.equals(RESET)){
+						request.setAttribute("target", Constants.PAGE_URL + "/EntrySaleDetailScn.jsp");
+					}
 				}
 			}else if(pageAction.equals(EDIT)){
 				this.lp_getData();
@@ -125,6 +126,8 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 				this.lp_getCustName();
 			}else if(pageAction.equals(GET_CUST_SNAME)){
 				this.lp_getCustSurName();
+			}else if(pageAction.equals(GET_ID_NUMBER)){
+				this.lp_getIdNumber();
 			}else if(pageAction.equals(GET_CUST_DTL)){
 				this.lp_getCustDtl();
 			}else if(pageAction.equals(GET_CUST_DTL_BY_NAME)){
@@ -182,14 +185,15 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 	   JSONObject 			obj 						= new JSONObject();
 	   AddressBean			addressBean					= null;
 	   EntrySaleDetailForm	form						= null;
-	   String 				chassis						= null;
-	   String 				engineNo					= null;
+	   String 				chassisDisp					= null;
+	   String 				engineNoDisp				= null;
 	   String 				size						= null;
 	   String				flagCredit					= null;
 	   String				creditAmount				= null;
 	   String				totalAmount					= null;
 	   String				color						= null;
 	   String				recordAddDate				= null;
+	   String 				formatInvoie				= null;
 	   
 	   try{
 		   customerBean 	= new CustomerBean();
@@ -209,14 +213,15 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   subdistrictName	= EnjoyUtils.nullToStr(this.request.getParameter("subdistrictName"));
 		   brandName		= EnjoyUtils.nullToStr(this.request.getParameter("brandName"));
 		   model			= EnjoyUtils.nullToStr(this.request.getParameter("model"));
-		   chassis			= EnjoyUtils.nullToStr(this.request.getParameter("chassis"));
-		   engineNo			= EnjoyUtils.nullToStr(this.request.getParameter("engineNo"));
+		   chassisDisp		= EnjoyUtils.nullToStr(this.request.getParameter("chassisDisp"));
+		   engineNoDisp		= EnjoyUtils.nullToStr(this.request.getParameter("engineNoDisp"));
 		   size				= EnjoyUtils.replaceComma(this.request.getParameter("size"));
 		   flagCredit		= EnjoyUtils.nullToStr(this.request.getParameter("flagCredit"));
 		   creditAmount		= EnjoyUtils.replaceComma(this.request.getParameter("creditAmount"));
 		   totalAmount		= EnjoyUtils.replaceComma(this.request.getParameter("totalAmount"));
 		   color			= EnjoyUtils.nullToStr(this.request.getParameter("color"));
 		   recordAddDate	= EnjoyUtils.nullToStr(this.request.getParameter("recordAddDate"));
+		   formatInvoie		= EnjoyUtils.nullToStr(this.userBean.getFormatInvoie());
 		   
 		   logger.info("[lp_saveData] invoiceId 			:: " + invoiceId);
 		   logger.info("[lp_saveData] priceAmount 			:: " + priceAmount);
@@ -232,14 +237,15 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   logger.info("[lp_saveData] subdistrictName 		:: " + subdistrictName);
 		   logger.info("[lp_saveData] brandName 			:: " + brandName);
 		   logger.info("[lp_saveData] model 				:: " + model);
-		   logger.info("[lp_saveData] chassis 				:: " + chassis);
-		   logger.info("[lp_saveData] engineNo 				:: " + engineNo);
+		   logger.info("[lp_saveData] chassisDisp 			:: " + chassisDisp);
+		   logger.info("[lp_saveData] engineNoDisp 			:: " + engineNoDisp);
 		   logger.info("[lp_saveData] size 					:: " + size);
 		   logger.info("[lp_saveData] color	 				:: " + color);
 		   logger.info("[lp_saveData] flagCredit 			:: " + flagCredit);
 		   logger.info("[lp_saveData] creditAmount	 		:: " + creditAmount);
 		   logger.info("[lp_saveData] totalAmount	 		:: " + totalAmount);
 		   logger.info("[lp_saveData] recordAddDate	 		:: " + recordAddDate);
+		   logger.info("[lp_saveData] formatInvoie	 		:: " + formatInvoie);
 		   logger.info("[lp_saveData] idType 				:: " + this.request.getParameter("idType"));
 		   logger.info("[lp_saveData] idNumber 				:: " + EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
 		   
@@ -254,6 +260,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   form.setTotalAmount(totalAmount);
 		   form.setColor(color);
 		   form.setRecordAddDate(recordAddDate);
+		   form.setFormatInvoie(formatInvoie);
 		   
 		   if(invoiceId.equals("")){
 			   form.setFlagCredit(EntrySaleDetailForm.FLAG_N);
@@ -325,8 +332,8 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   
 		   form.setMotorcyclesCode(motorcyclesCode);
 		   
-		   productBean.setChassis(chassis);
-		   productBean.setEngineNo(engineNo);
+		   productBean.setChassisDisp(chassisDisp);
+		   productBean.setEngineNoDisp(engineNoDisp);
 		   productBean.setSize(size);
 		   form.setProductBean(productBean);
 		   
@@ -660,6 +667,36 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   logger.info("[lp_getCustSurName] " + e.getMessage());
 	   }finally{
 		   logger.info("[lp_getCustSurName][End]");
+	   }
+   }
+   
+   private void lp_getIdNumber(){
+	   logger.info("[lp_getIdNumber][Begin]");
+	   
+	   String							idNumber				= null;
+       List<String> 					list 					= new ArrayList<String>();
+       String[]							strArray				= null;
+       CustomerBean 					customerBean			= null;
+       
+	   try{
+		   idNumber					= EnjoyUtils.nullToStr(this.request.getParameter("idNumber"));
+		   customerBean				= this.form.getCustomerBean();
+		   
+		   logger.info("[lp_getIdNumber] idNumber 		:: " + idNumber);
+		   
+		   customerBean.setIdNumber(idNumber);
+		   
+		   list 		= this.dao.idNumberList(idNumber);
+		   strArray 	= new String[list.size()];
+		   strArray 	= list.toArray(strArray); 
+		   
+		   this.motorUtil.writeJsonMSG((String[]) strArray);
+		   
+	   }catch(Exception e){
+		   e.printStackTrace();
+		   logger.info("[lp_getIdNumber] " + e.getMessage());
+	   }finally{
+		   logger.info("[lp_getIdNumber][End]");
 	   }
    }
    

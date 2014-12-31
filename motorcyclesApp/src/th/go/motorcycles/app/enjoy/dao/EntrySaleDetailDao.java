@@ -333,6 +333,34 @@ public class EntrySaleDetailDao {
 		return list;
 	}
 	
+	public List<String> idNumberList(String idNumber){
+		System.out.println("[EntrySaleDetailDao][idNumberList][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        List<String> 					list 				= new ArrayList<String>();
+		
+		try{
+			sql 		= " select idNumber from customer where idNumber like ('"+idNumber+"%') and cusStatus = 'A' order by idNumber asc limit 10 ";
+			
+			System.out.println("[EntrySaleDetailDao][idNumberList] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    
+		    while(rs.next()){
+		    	
+		    	list.add(EnjoyUtils.nullToStr(rs.getString("idNumber")));
+		    }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[EntrySaleDetailDao][idNumberList][End]");
+		}
+		
+		return list;
+	}
+	
 	public List<String> custNameList(String custName){
 		System.out.println("[EntrySaleDetailDao][custNameList][Begin]");
 		
@@ -592,6 +620,7 @@ public class EntrySaleDetailDao {
 		String 				errMsg 				= null;
 		EntrySaleDetailBean bean				= new EntrySaleDetailBean();;
 		String				invoiceId			= null;
+		String				newId				= null;
 		String 				priceAmount 		= null;
 		String 				vatAmount 			= null;
 		String 				remark 				= null;
@@ -605,27 +634,36 @@ public class EntrySaleDetailDao {
 		String				size		 		= null;
 		ProductBean			productBean			= null;
 		CustomerBean		customerBean		= null;
-		String				invoiceIdAddSales	= null;
+		String				invoiceIdAddSales	= "";
 		String				flagCredit			= null;
 		String				creditAmount		= null;
 		String				totalAmount			= null;
 		String				color				= null;
 		String				recordAddDate		= null;
+		String				formatInvoie		= null;
 		
 		try{
 			productBean 	= form.getProductBean();
 			customerBean	= form.getCustomerBean();
-			sql 			= "select (max(invoiceId)+1) newInvoiceId from invoicedetails";
+			formatInvoie	= form.getFormatInvoie();
+			sql 			= "SELECT (SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1) + 1) AS newId FROM invoicedetails where invoiceId like('"+formatInvoie+"%')";
 			
 			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] sql :: " + sql);
 			
 			rs 			= this.db.executeQuery(sql);
-			while(rs.next()) invoiceId = EnjoyUtils.nullToStr(rs.getString("newInvoiceId"));
+			while(rs.next()){
+				newId = String.format("%04d", rs.getInt("newId"));
+			}
+			
+			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] newId :: " + newId);
+			if(newId==null){
+				newId = String.format("%04d", 1);
+				//throw new EnjoyException("เกิดข้อผิดพลาดในการ gen invoice id.");
+			}
+			
+			invoiceId			= formatInvoie + "/" + newId;
 			
 			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] invoiceId :: " + invoiceId);
-			if(invoiceId==null){
-				throw new EnjoyException("เกิดข้อผิดพลาดในการ gen invoice id.");
-			}
 			
 			priceAmount 		= form.getPriceAmount();
 			vatAmount 			= form.getVatAmount();
@@ -635,8 +673,8 @@ public class EntrySaleDetailDao {
 			cusCode 			= customerBean.getCusCode();
 			motorcyclesCode 	= form.getMotorcyclesCode();
 			userUniqueId 		= form.getUserUniqueId();
-			chassisDisp 		= productBean.getChassis();
-			EngineNoDisp 		= productBean.getEngineNo();
+			chassisDisp 		= productBean.getChassisDisp();
+			EngineNoDisp 		= productBean.getEngineNoDisp();
 			size 				= productBean.getSize();
 			flagCredit 			= form.getFlagCredit();
 			creditAmount 		= form.getCreditAmount();
@@ -668,7 +706,7 @@ public class EntrySaleDetailDao {
 													+ " ,invoiceIdAddSales"
 													+ " ,flagCredit"
 													+ " ,creditAmount)"
-										+ " values("+invoiceId+""
+										+ " values(		'"+invoiceId+"'"
 													+ " ,'"+recordAddDate+"'"
 													+ " ,'"+cusCode+"'"
 													+ " ,'"+motorcyclesCode+"'"
@@ -743,8 +781,8 @@ public class EntrySaleDetailDao {
 			cusCode 			= customerBean.getCusCode();
 			motorcyclesCode 	= form.getMotorcyclesCode();
 			userUniqueId 		= form.getUserUniqueId();
-			chassisDisp 		= productBean.getChassis();
-			EngineNoDisp 		= productBean.getEngineNo();
+			chassisDisp 		= productBean.getChassisDisp();
+			EngineNoDisp 		= productBean.getEngineNoDisp();
 			size 				= productBean.getSize();
 			
 			flagCredit 			= form.getFlagCredit();
@@ -795,9 +833,17 @@ public class EntrySaleDetailDao {
 		String							nextInvoiceId		= null;
 		EntrySaleDetailBean				bean				= new EntrySaleDetailBean();
 		String							errMsg				= null;
+		String[]						nextIdArray			= null;
+		String							nextId				= null;
 		
 		try{
-			sql 		= "select invoiceId from invoicedetails where invoiceId = (select min(invoiceId) from invoicedetails where  invoiceId > "+invoiceId+")";
+			nextIdArray 	= invoiceId.split("/");
+			nextId 			= String.format("%04d", Integer.parseInt(nextIdArray[1]) + 1);
+			nextInvoiceId	= nextIdArray[0] + "/" + nextId;
+			
+			System.out.println("[EntrySaleDetailDao][getNextInvoiceId] nextInvoiceId :: " + nextInvoiceId);
+			
+			sql 		= "select invoiceId from invoicedetails where invoiceId = '"+nextInvoiceId+"'";
 			
 			System.out.println("[EntrySaleDetailDao][getNextInvoiceId] sql :: " + sql);
 			
@@ -823,19 +869,28 @@ public class EntrySaleDetailDao {
 		
 		String 							sql			 		= null;
 		ResultSet 						rs 					= null;
-		String							nextInvoiceId		= null;
+		String							prevInvoiceId		= null;
 		EntrySaleDetailBean				bean				= new EntrySaleDetailBean();
 		String							errMsg				= null;
+		String[]						prevIdArray			= null;
+		String							prevId				= null;
 		
 		try{
-			sql 		= "select invoiceId from invoicedetails where invoiceId = (select max(invoiceId) from invoicedetails where  invoiceId < "+invoiceId+")";
+			
+			prevIdArray 	= invoiceId.split("/");
+			prevId 			= String.format("%04d", Integer.parseInt(prevIdArray[1]) - 1);
+			prevInvoiceId	= prevIdArray[0] + "/" + prevId;
+			
+			System.out.println("[EntrySaleDetailDao][getPreviousInvoiceId] prevInvoiceId :: " + prevInvoiceId);
+			
+			sql 		= "select invoiceId from invoicedetails where invoiceId = '"+prevInvoiceId+"'";
 			
 			System.out.println("[EntrySaleDetailDao][getPreviousInvoiceId] sql :: " + sql);
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next()){
-		    	nextInvoiceId = EnjoyUtils.nullToStr(rs.getString("invoiceId"));
-		    	bean.setInvoiceId(nextInvoiceId);
+		    	prevInvoiceId = EnjoyUtils.nullToStr(rs.getString("invoiceId"));
+		    	bean.setInvoiceId(prevInvoiceId);
 		    }
 		    
 		}catch(Exception e){

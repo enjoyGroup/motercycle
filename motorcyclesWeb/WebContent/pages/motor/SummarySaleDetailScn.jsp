@@ -184,8 +184,11 @@
 	});
 	
 	function lp_sendEditPage(av_val){
-		
-		window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=edit&invoiceId=" + av_val);
+		try{
+			window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=edit&invoiceId=" + av_val);
+		}catch(e){
+			alert("lp_sendEditPage :: " + e);
+		}
 	}
 	
 	function lp_selPage(){
@@ -316,7 +319,7 @@
 																bean = dataList.get(i);
 															
 														%>
-														<tr class="rowSelect" onclick="lp_sendEditPage(<%=bean.getInvoiceId()%>)">
+														<tr class="rowSelect" onclick="lp_sendEditPage('<%=bean.getInvoiceId()%>')">
 															<td><%=seq%></td>
 															<td><%=bean.getInvoiceId()%></td>
 															<td><%=bean.getCusName()%></td>
