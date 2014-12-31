@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import th.go.motorcycles.app.enjoy.bean.MotorDetailBean;
+import th.go.motorcycles.app.enjoy.bean.ProductBean;
 import th.go.motorcycles.app.enjoy.bean.UserDetailsBean;
 import th.go.motorcycles.app.enjoy.dao.MotorDetailDao;
 import th.go.motorcycles.app.enjoy.form.MotorDetailForm; 
 import th.go.motorcycles.app.enjoy.main.Constants;
+import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 import th.go.motorcycles.web.enjoy.common.EnjoyStandardSvc;
 import th.go.motorcycles.web.enjoy.logger.LogWrapper;
 import th.go.motorcycles.web.enjoy.utils.MotorUtil;
@@ -25,7 +27,7 @@ public class MotorDetailServlet extends EnjoyStandardSvc {
 	
     private static final String FORM_NAME = "motorDetailForm";
     
-    private MotorUtil               	easUtil                     = null;
+    private MotorUtil               	motorUtil                   = null;
     private MotorDetailForm           	form                        = null;
     private HttpServletRequest          request                     = null;
     private HttpServletResponse         response                    = null;
@@ -48,21 +50,27 @@ public class MotorDetailServlet extends EnjoyStandardSvc {
  		try{
  			 pageAction 				= MotorUtil.nullToStr(request.getParameter("pageAction"));
  			 System.out.println("pageAction : " + pageAction);
- 			 this.easUtil 			= new MotorUtil(request, response);
- 			 this.request            = request;
-             this.response           = response;
-             this.session            = request.getSession(false);
-             this.userBean           = (UserDetailsBean)session.getAttribute("userBean");
-             this.form               = (MotorDetailForm)session.getAttribute(FORM_NAME);
+ 			 this.motorUtil			= new MotorUtil(request, response);
+ 			 this.request           = request;
+             this.response          = response;
+             this.session           = request.getSession(false);
+             this.userBean          = (UserDetailsBean)session.getAttribute("userBean");
+             this.form              = (MotorDetailForm)session.getAttribute(FORM_NAME);
              this.dao				= new MotorDetailDao();
  			
  			if(pageAction.equals("new")) this.form = new MotorDetailForm();
  			
- 			if(pageAction.equals("")){
+ 			if( pageAction.equals("") || pageAction.equals("new") ){
  				this.onLoad();
  				request.setAttribute("target", Constants.PAGE_URL +"/MotorDetailScn.jsp");
  			}else if(pageAction.equals("searchData")){
  				this.onSearch();
+ 			}else if(pageAction.equals("getBrandName")){
+ 				this.getBrandName();
+ 			}else if(pageAction.equals("getModel")){
+ 				this.getModel();
+ 			}else if(pageAction.equals("getCompany")){
+ 				this.getCompany();
  			}else if(pageAction.equals("delRecord")){
  			//	this.delRecord();
  			} 
@@ -85,15 +93,15 @@ public class MotorDetailServlet extends EnjoyStandardSvc {
 		List<MotorDetailBean> listMotorDetail = null;
 		MotorDetailBean bean			= null; 
 		String       	brandSearch		= null;
-		String       	modelSearch		= null; 
+		String       	companySearch	= null; 
 		boolean	     	dataRet			= false;
 		try{
 			bean     = new MotorDetailBean(); 
-			brandSearch  	= this.request.getParameter("brandSearch"); 
-			modelSearch     = this.request.getParameter("modelSearch"); 
+			brandSearch  		= this.request.getParameter("brandSearch"); 
+			companySearch     	= this.request.getParameter("companySearch"); 
 
 			bean.setBrandSearch(brandSearch); 
-			bean.setModelSearch(modelSearch); 
+			bean.setCompanySearch(companySearch);
 			
 			listMotorDetail = (List <MotorDetailBean>) this.dao.findModelDetail(bean); 
 			this.form.setListMotorDetail(listMotorDetail); 
@@ -103,9 +111,9 @@ public class MotorDetailServlet extends EnjoyStandardSvc {
 			}
 			
 			if(dataRet==true){
-				this.easUtil.writeMSG("OK"); 
+				this.motorUtil.writeMSG("OK"); 
 			}else{
-				this.easUtil.writeMSG("No record!!");
+				this.motorUtil.writeMSG("No record!!");
 			}
 			
 		}catch(Exception e){
@@ -115,78 +123,102 @@ public class MotorDetailServlet extends EnjoyStandardSvc {
 			listMotorDetail       	= null;
 			bean               		= null; 
 			brandSearch           	= null;
-			modelSearch            	= null; 
+			companySearch          	= null; 
 			dataRet			   		= false;
 			System.out.println("[MotorDetailServlet][onSearch][End]");
 		}
 	}
+	
+	private void getBrandName(){
+		System.out.println("[MotorDemoSvc][getBrandName][Begin]");
+		String							brandName				= null;
+		List<String> 					list 					= new ArrayList<String>();
+		String[]						strArray				= null;
+		MotorDetailBean 				motorDetailBean			= null;
+	       
+	   try{
+		   brandName					= EnjoyUtils.nullToStr(this.request.getParameter("brandName"));
+		   motorDetailBean				= this.form.getMotorDetailBean();
+		   
+		   logger.info("[lp_getBrandName] brandName 			:: " + brandName);
+		   
+		   motorDetailBean.setBrandName(brandName);
+		   
+		   list 		= this.dao.brandNameList(brandName);
+		   strArray 	= new String[list.size()];
+		   strArray 	= list.toArray(strArray); 
+		   
+		   this.motorUtil.writeJsonMSG((String[]) strArray);
+		   
+	   }catch(Exception e){
+		   e.printStackTrace();
+		   logger.info("[lp_getBrandName] " + e.getMessage());
+	   }finally{
+		   logger.info("[lp_getBrandName][End]");
+	   }
+	   System.out.println("[MotorDemoSvc][getBrandName][End]");
+	}
 	 
-//	private void delRecord() throws Exception{
-//		System.out.println("[MotorDemoSvc][delRecord][Begin]");
-//		
-//		MotorDetailBean 	motorDetailBean 	= null;
-//		String			cusCode			= null;
-//		boolean			dataRet			= false;
-//		
-//		try{
-//			motorDetailBean 	= new MotorDetailBean();
-//			cusCode	 		= this.request.getParameter("cusCode");
-//			
-//			motorDetailBean.setCusCode(cusCode);
-//			motorDetailBean.setCusStatus("I");
-//			
-//			if(motorDetailBean.getCusCode()!="" || motorDetailBean.getCusCode()!=null){
-//				dataRet = this.dao.deleteCustomer(motorDetailBean);
-//			}
-//			 
-//			if(dataRet==true){
-//				this.easUtil.writeMSG("OK");
-//				this.onSearchAll(); 
-//			}else{
-//				this.easUtil.writeMSG("Delete failed !!");
-//			}
-//			 
-//			
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			throw new Exception(e.getMessage());
-//		}finally{
-//			motorDetailBean 	= null;
-//			cusCode			= null;
-//			dataRet			= false;
-//			System.out.println("[MotorDemoSvc][delRecord][End]");
-//		}
-//	}
-	
-	
-//	private void onSearchAll() throws Exception{ 
-//		System.out.println("[MotorDetailServlet][onSearchAll][Begin]");
-//		List<MotorDetailBean> listMotorDetail = null; 
-//		boolean	     dataRet			= false;
-//		try{ 
-//			
-//			listMotorDetail = (List <MotorDetailBean>) this.dao.findAllCustomer(); 
-//			this.form.setListMotorDetail(listMotorDetail); 
-//			
-//			if(listMotorDetail.size()>0){
-//				dataRet	= true;
-//			}
-//			
-//			if(dataRet==true){
-//				this.easUtil.writeMSG("OK"); 
-//			}else{
-//				this.easUtil.writeMSG("No record!!");
-//			}
-//			
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			throw new Exception(e.getMessage());
-//		}finally{
-//			listMotorDetail    = null; 
-//			dataRet			= false;
-//			System.out.println("[MotorDetailServlet][onSearchAll][End]");
-//		}
-//	}
-	
-	
+	private void getModel(){
+		   logger.info("[getModel][Begin]");
+		   
+		   String							brandName				= null;
+		   String							model					= null;
+	       List<String> 					list 					= new ArrayList<String>();
+	       String[]							strArray				= null;
+	       MotorDetailBean 					motorDetailBean			= null;
+	       
+		   try{
+			   brandName					= EnjoyUtils.nullToStr(this.request.getParameter("brandName"));
+			   model						= EnjoyUtils.nullToStr(this.request.getParameter("model"));
+			   motorDetailBean				= this.form.getMotorDetailBean();
+			   
+			   logger.info("[getModel] brandName 		:: " + brandName);
+			   logger.info("[getModel] model 			:: " + model);
+			   
+			   motorDetailBean.setBrandName(brandName);
+			   motorDetailBean.setModel(model);
+			   
+			   list 		= this.dao.modelList(brandName, model);
+			   strArray 	= new String[list.size()];
+			   strArray 	= list.toArray(strArray); 
+			   
+			   this.motorUtil.writeJsonMSG((String[]) strArray);
+			   
+		   }catch(Exception e){
+			   e.printStackTrace();
+			   logger.info("[getModel] " + e.getMessage());
+		   }finally{
+			   logger.info("[getModel][End]");
+		   }
+	   }
+	private void getCompany(){
+		System.out.println("[MotorDemoSvc][getCompany][Begin]");
+		String							branchName				= null;
+		List<String> 					list 					= new ArrayList<String>();
+		String[]						strArray				= null;
+		MotorDetailBean 				motorDetailBean			= null;
+	       
+	   try{
+		   branchName					= EnjoyUtils.nullToStr(this.request.getParameter("branchName"));
+		   motorDetailBean				= this.form.getMotorDetailBean();
+		   
+		   logger.info("[getCompany] branchName 			:: " + branchName);
+		   
+		   motorDetailBean.setBrandName(branchName);
+		   
+		   list 		= this.dao.branchNameList(branchName);
+		   strArray 	= new String[list.size()];
+		   strArray 	= list.toArray(strArray); 
+		   
+		   this.motorUtil.writeJsonMSG((String[]) strArray);
+		   
+	   }catch(Exception e){
+		   e.printStackTrace();
+		   logger.info("[getCompany] " + e.getMessage());
+	   }finally{
+		   logger.info("[getCompany][End]");
+	   }
+	   System.out.println("[MotorDemoSvc][getCompany][End]");
+	}
 }

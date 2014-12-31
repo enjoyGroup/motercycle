@@ -60,12 +60,12 @@ public class BrandServlet extends EnjoyStandardSvc {
              
  			if(this.form == null || pageAction.equals("new")) this.form = new BrandForm();
  			
- 			if(pageAction.equals("")){
+ 			if( pageAction.equals("") || pageAction.equals("new") ){
  				this.onLoad();
  				request.setAttribute("target", Constants.PAGE_URL +"/BrandDetailScn.jsp");
- 			}else if(pageAction.equals("searchAll")){
+ 			}else if( pageAction.equals("searchAll") ){
  				this.onSearchAll();
- 			}else if(pageAction.equals("saveUpdData")){
+ 			}else if( pageAction.equals("saveUpdData") ){
  				this.saveUpdRecord();
  			}
  			

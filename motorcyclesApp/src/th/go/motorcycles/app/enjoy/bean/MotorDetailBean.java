@@ -10,6 +10,7 @@ public class MotorDetailBean implements Serializable {
 	
 	private String brandSearch;
 	private String modelSearch;
+	private String companySearch;
 	private String motorcyclesCode;
 	private String brandCode;
 	private String brandName;
@@ -19,11 +20,13 @@ public class MotorDetailBean implements Serializable {
 	private String size;
 	private String companyId;
 	private String companyName;
+	private String branchName;
 	private String motorcyclesStatus;
 	
 	public MotorDetailBean(){
 		this.brandSearch 			= "";
 		this.modelSearch 			= "";
+		this.companySearch			= "";
 		this.motorcyclesCode 		= "";
 		this.brandCode       		= "";
 		this.brandName 				= "";
@@ -33,8 +36,19 @@ public class MotorDetailBean implements Serializable {
 		this.size 					= "";
 		this.companyId 				= "";
 		this.companyName 			= "";
+		this.branchName				= "";
 		this.motorcyclesStatus 		= "";
 	}
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+
 
 	public String getBrandSearch() {
 		return brandSearch;
@@ -54,6 +68,15 @@ public class MotorDetailBean implements Serializable {
 
 	public String getMotorcyclesCode() {
 		return motorcyclesCode;
+	}
+
+	
+	public String getCompanySearch() {
+		return companySearch;
+	}
+
+	public void setCompanySearch(String companySearch) {
+		this.companySearch = companySearch;
 	}
 
 	public void setMotorcyclesCode(String motorcyclesCode) {

@@ -26,7 +26,9 @@ public class MotorDetailDao {
 			System.out.println(bean.getBrandSearch());
 			System.out.println(bean.getModelSearch());
 
-			sql = "select * from motorcyclesdetails m left join branddetails b on m.brandCode=b.brandCode"
+			sql = "SELECT * FROM motorcyclesdetails m "
+					+ " LEFT JOIN branddetails b ON m.brandCode=b.brandCode"
+					+ " LEFT JOIN company c ON m.companyId=c.companyId"
 					+ " WHERE  motorcyclesStatus = 'A'";
 			
 			if( bean.getBrandSearch() == "" && ( bean.getModelSearch() == "" )){
@@ -57,7 +59,7 @@ public class MotorDetailDao {
 				motorDetailBean.setEngineNo(EnjoyUtils.nullToStr(rs.getString("engineNo")));
 				motorDetailBean.setSize(EnjoyUtils.nullToStr(rs.getString("size")));
 				motorDetailBean.setCompanyId(EnjoyUtils.nullToStr(rs.getString("companyId")));
-			//	motorDetailBean.setCompanyName(EnjoyUtils.nullToStr(rs.getString("companyName")));
+				motorDetailBean.setCompanyName(EnjoyUtils.nullToStr(rs.getString("companyName")));
 				motorDetailBean.setMotorcyclesStatus(EnjoyUtils.nullToStr(rs.getString("motorcyclesStatus")));
 		    	list.add(motorDetailBean);	
 		    } 
@@ -70,201 +72,103 @@ public class MotorDetailDao {
 		
 		return list;
 	}
-//	
-//	public List<CustomerBean> findAllCustomer(){
-//		System.out.println("[CustomerDao][findAllCustomer][Begin]");
-//		
-//		String 				sql			 		= null;
-//		ResultSet 			rs 					= null;  
-//		CustomerBean		customerBean		= null;
-//		List<CustomerBean>	list				= null;	
-//		StringBuilder       address             = null;           
-//		
-//		try{  
-//			sql = "SELECT * FROM customer a  LEFT JOIN  subdistrict s ON a.subdistrictCode=s.subdistrictId LEFT JOIN district d "
-//				 + "ON a.districtCode=d.districtId LEFT JOIN province p ON a.provinceCode=p.provinceId where  cusStatus = 'A'";
-//			 
-//			list		= new ArrayList<CustomerBean>();
-//			
-//			System.out.println("[CustomerDao][findAllCustomer] sql :: " + sql);
-//			
-//		    rs 			= this.db.executeQuery(sql);
-//		    
-//		    while(rs.next()){
-//                customerBean	= new CustomerBean();  
-//		    	customerBean.setCusCode(EnjoyUtils.nullToStr(rs.getString("cusCode")));
-//		    	customerBean.setCustName(EnjoyUtils.nullToStr(rs.getString("cusName"))); 
-//		    	customerBean.setCustSurname(EnjoyUtils.nullToStr(rs.getString("cusSurname")));  
-//				customerBean.setSubdistrictCode(EnjoyUtils.nullToStr(rs.getString("subdistrictCode")));
-//				customerBean.setDistrictCode(EnjoyUtils.nullToStr(rs.getString("districtCode")));
-//				customerBean.setProvinceCode(EnjoyUtils.nullToStr(rs.getString("provinceCode")));
-//				customerBean.setIdType(EnjoyUtils.nullToStr(rs.getString("idType")));
-//				customerBean.setIdNumber(EnjoyUtils.nullToStr(rs.getString("idNumber")));
-//				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
-//
-//				address  =  new StringBuilder();
-//				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber"))); 
-//				address.append(" เธซเธกเธนเน�เธ�เน�เธฒเธ�  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
-//				address.append(" เธ�เธญเธข   ").append(EnjoyUtils.nullToStr(rs.getString("SoiName"))); 
-//				address.append(" เธ–เธ�เธ�   ").append(EnjoyUtils.nullToStr(rs.getString("streetName"))); 
-//				address.append(" เธ•เธณเธ�เธฅ  ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
-//				address.append(" เธญเธณเน€เธ เธญ  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
-//				address.append(" เธ�เธฑเธ�เธซเธงเธฑเธ”  ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
-//				customerBean.setAddress(address.toString());
-//			    System.out.println(customerBean.getAddress());
-//		    	list.add(customerBean);
-//		    	
-//		    } 
-//			
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}finally{
-//			System.out.println("[CustomerDao][findAllCustomer][End]");
-//		}
-//		
-//		return list;
-//	}	
-//	
-//	public CustomerBean findCustomerByCusCode(CustomerBean bean){
-//		System.out.println("[CustomerDao][findCustomerByCusCode][Begin]");
-//		
-//		String 				sql			 		= null;
-//		ResultSet 			rs 					= null;  
-//		CustomerBean		customerBean		= null; 	
-//		
-//		try{
-//			if(bean.getCusCode()!=null && bean.getCusCode()!=""){ 
-//				sql = "SELECT * FROM customer a  LEFT JOIN  subdistrict s ON a.subdistrictCode=s.subdistrictId LEFT JOIN district d "
-//						+ "ON a.districtCode=d.districtId LEFT JOIN province p ON a.provinceCode=p.provinceId where  cusStatus = 'A' and cusCode = '"
-//						+ bean.getCusCode()+"'";
-//			}
-//			
-//			customerBean	= new CustomerBean();   
-//			System.out.println("[CustomerDao][findCustomerByCusCode] sql :: " + sql); 
-//		    rs 			= this.db.executeQuery(sql);
-//		    
-//		    while(rs.next()){ 
-//		    	customerBean.setCusCode(EnjoyUtils.nullToStr(rs.getString("cusCode")));
-//		    	customerBean.setCustName(EnjoyUtils.nullToStr(rs.getString("cusName"))); 
-//		    	customerBean.setCustSurname(EnjoyUtils.nullToStr(rs.getString("cusSurname"))); 
-//				customerBean.setHouseNumber(EnjoyUtils.nullToStr(rs.getString("houseNumber")));
-//				customerBean.setMooNumber(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
-//				customerBean.setSoiName(EnjoyUtils.nullToStr(rs.getString("SoiName")));
-//				customerBean.setStreetName(EnjoyUtils.nullToStr(rs.getString("streetName"))); 
-//				customerBean.setIdType(EnjoyUtils.nullToStr(rs.getString("idType")));
-//				customerBean.setIdNumber(EnjoyUtils.nullToStr(rs.getString("idNumber")));
-//				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
-//				customerBean.setSubdistrictName(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
-//				customerBean.setDistrictName(EnjoyUtils.nullToStr(rs.getString("districtName")));
-//				customerBean.setProvinceName(EnjoyUtils.nullToStr(rs.getString("provinceName")));
-//		    } 
-//		   
-//			
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}finally{
-//			System.out.println("[CustomerDao][findCustomerByCusCode][End]");
-//		}
-//		
-//		return customerBean;
-//	}
 	
-	 
-//	public String insertCustomer(CustomerBean customerBean){
-//		System.out.println("[CustomerDao][insertCustomer][Begin]");
-//		
-//		String 		sql			 	= null;
-//		ResultSet 	rs 				= null;  
-//		String      cusCode         = null; 
-//		
-//		try{ 
-//			 sql 		= "SELECT cusCode as lastId FROM customer ORDER BY cusCode DESC LIMIT 1";
-//			 rs 		= this.db.executeQuery(sql);
-//			 System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
-//			  while (rs.next()) {
-//				  cusCode	= EnjoyUtils.nullToStr(rs.getString("lastId"));
-//			  } 
-//			 
-//			 cusCode = EnjoyUtils.getCustNext(cusCode);
-//		     System.out.println("[CustomerDao][insertCustomer] cusCode : " + cusCode);
-//		    
-//			sql = "insert into customer (cusCode,cusName, cusSurname, houseNumber, mooNumber,SoiName, streetName, subdistrictCode, districtCode, provinceCode, idType, idNumber, cusStatus)"
-//				 + " values ('"+ cusCode + "', '" + customerBean.getCustName() + "', '" + customerBean.getCustSurname() + "', '" + 
-//				 customerBean.getHouseNumber() + "', '" + customerBean.getMooNumber() + "', '" + customerBean.getSoiName() + "', '" + 
-//				 customerBean.getStreetName()+ "', '" + customerBean.getSubdistrictCode() + "', '" +
-//				 customerBean.getDistrictCode() + "', '" + customerBean.getProvinceCode() + "', '" +
-//				 customerBean.getIdType() + "', '" + customerBean.getIdNumber() + "', '" +
-//				 customerBean.getCusStatus() +"') ";
-//			
-//			System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
-//			
-//            this.db.execute(sql); 
-//			
-//		    System.out.println("[CustomerDao][insertCustomer] cusCode : " + cusCode);
-//			
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}finally{
-//			System.out.println("[CustomerDao][insertCustomer][End]");
-//		}
-//		
-//		return cusCode;
-//	}
+	public List<String> brandNameList(String brandName){
+		System.out.println("[MotorDetailDao][brandNameList][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        List<String> 					list 				= new ArrayList<String>();
+		
+		try{
+			sql 		= " SELECT brandName FROM branddetails WHERE brandName LIKE ('"+brandName+"%') ORDER BY brandName ASC LIMIT 10 ";
+			
+			System.out.println("[MotorDetailDao][brandNameList] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    
+		    while(rs.next()){
+		    	
+		    	list.add(EnjoyUtils.nullToStr(rs.getString("brandName")));
+		    }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[MotorDetailDao][brandNameList][End]");
+		}
+		
+		return list;
+	}
 	
-//	public boolean  updateCustomer(CustomerBean bean){
-//		System.out.println("[CustomerDao][updateCustomer][Begin]");
-//		
-//		String 				sql			 		= null;
-//		boolean				lv_ret				= false; 
-//		
-//		try{ 
-//			sql 	= "update  customer set cusStatus = '"+bean.getCusStatus()+"', cusName='"+bean.getCustName()+
-//					"', cusSurname='"+bean.getCustSurname()+"', houseNumber='"+bean.getHouseNumber()+
-//					"', mooNumber='"+bean.getMooNumber()+"', SoiName='"+bean.getSoiName()+
-//					"', streetName='"+bean.getStreetName()+"', subdistrictCode='"+bean.getSubdistrictCode()+
-//					"', districtCode='"+bean.getDistrictCode()+"', provinceCode='"+bean.getProvinceCode()+
-//					"', idType='"+bean.getIdType()+"', idNumber='"+bean.getIdNumber()+"' where  cusCode = '"+bean.getCusCode()+"'";
-//			
-//			System.out.println("[CustomerDao][updateCustomer] sql :: " + sql);
-//			
-//			lv_ret 			= this.db.execute(sql);
-//			
-//			System.out.println("[CustomerDao][updateCustomer] lv_ret :: " + lv_ret);
-//			
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}finally{
-//			System.out.println("[CustomerDao][updateCustomer][End]");
-//		}
-//		return lv_ret;
-//	}
-//	
-//	public boolean deleteCustomer(CustomerBean bean){
-//		System.out.println("[CustomerDao][deleteCustomer][Begin]");
-//		
-//		String 				sql			 		= null;
-//		boolean				lv_ret				= false;
-//		String				cusCode		        = null;
-//		String				cusStatus	        = null;
-//		
-//		try{
-//			cusCode    = EnjoyUtils.nullToStr(bean.getCusCode());
-//			cusStatus    = EnjoyUtils.nullToStr(bean.getCusStatus());
-//			
-//			sql 		= "update customer set cusStatus = '"+ cusStatus +"'  where cusCode = '" + cusCode +"'";
-//		 
-//			System.out.println("[CustomerDao][deleteCustomer] sql :: " + sql);
-//			
-//			lv_ret 			= this.db.execute(sql);
-//			
-//			System.out.println("[CustomerDao][deleteCustomer] lv_ret :: " + lv_ret);
-//			findCustomer(new CustomerBean());
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}finally{
-//			System.out.println("[CustomerDao][deleteCustomer][End]");
-//		}
-//		return lv_ret;
-//	}
+	public List<String> modelList(String brandName, String model){
+		System.out.println("[MotorDetailDao][modelList][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        List<String> 					list 				= new ArrayList<String>();
+        String							brandCode			= null;
+		
+		try{
+			
+			if(!brandName.equals("")){
+				sql 		= " SELECT brandCode FROM branddetails WHERE brandName = '" + brandName + "'";
+				
+				System.out.println("[MotorDetailDao][modelList] brandCode sql :: " + sql);
+				
+			    rs 			= this.db.executeQuery(sql);
+			    while(rs.next())brandCode = EnjoyUtils.nullToStr(rs.getString("brandCode"));
+			}
+			
+			if(brandCode == null){
+				sql 		= " SELECT model FROM motorcyclesdetails WHERE model LIKE ('"+model+"%') AND motorcyclesStatus = 'A' ORDER BY model ASC LIMIT 10 ";
+			}else{
+				sql 		= " SELECT model FROM motorcyclesdetails WHERE brandCode = '" + brandCode + "' AND model LIKE ('"+model+"%') AND motorcyclesStatus = 'A' ORDER BY model ASC LIMIT 10 ";
+			}
+			
+			System.out.println("[MotorDetailDao][modelList] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    
+		    while(rs.next()){
+		    	
+		    	list.add(EnjoyUtils.nullToStr(rs.getString("model")));
+		    }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[MotorDetailDao][modelList][End]");
+		}
+		
+		return list;
+	}
 	
+	public List<String> branchNameList(String branchName){
+		System.out.println("[MotorDetailDao][branchNameList][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        List<String> 					list 				= new ArrayList<String>();
+		
+		try{
+			sql 		= " SELECT branchName FROM company WHERE branchName LIKE ('" + branchName + "%') ORDER BY branchName ASC LIMIT 10 ";
+			
+			System.out.println("[MotorDetailDao][branchNameList] sql :: " + sql);
+			
+		    rs 			= this.db.executeQuery(sql);
+		    
+		    while(rs.next()){
+		    	
+		    	list.add(EnjoyUtils.nullToStr(rs.getString("branchName")));
+		    }
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			System.out.println("[MotorDetailDao][brandNameList][End]");
+		}
+		
+		return list;
+	}
 }
