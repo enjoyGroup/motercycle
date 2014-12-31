@@ -88,3 +88,14 @@ body{
 	}
 	
 .title{font-size:16px; font-weight:bold;margin: 80px 0 0 30px;}
+
+
+table#tb_result tr td{
+	font-size:0.8em;
+	padding:4px;
+}
+
+table#tb_result tr th{
+	font-size:0.8em;
+	text-align:center;
+}
