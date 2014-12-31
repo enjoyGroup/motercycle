@@ -332,6 +332,38 @@
 		      }
 		});
 		
+		$( "#idNumber" ).autocomplete({
+			 source: function(request, response) {
+	            $.ajax({
+	            	async:false,
+		            type: "POST",
+	                url: gv_url,
+	                dataType: "json",
+	                data: gv_service + "&pageAction=getIdNumber&idNumber=" + gp_trim(request.term),
+	                success: function( data, textStatus, jqXHR) {
+	                    var items = data;
+	                    response(items);
+	                },
+	                error: function(jqXHR, textStatus, errorThrown){
+	                     alert( textStatus);
+	                }
+	            });
+	          },
+		      minLength: 0,//กี่ตัวอักษรถึงทำงาน
+		      open: function() {
+					//Data return กลับมาแล้วทำไรต่อ
+		      },
+		      close: function() {
+
+		      },
+		      focus:function(event,ui) {
+
+		      },
+		      select: function( event, ui ) {
+		    	  lp_getCustDtlByIdNumber();
+		      }
+		});
+		
 		$('#btnReset').click(function(){
 		    
 		    try{
@@ -1133,6 +1165,11 @@
     		
     		if(lv_invoiceId!="" && parseInt(lv_userLevel) < 9){
     			$("#frm :input").attr("disabled", true);
+    			
+    			$("#btnPrev").attr("disabled", false);
+    			$("#btnPrint").attr("disabled", false);
+    			$("#btnReset").attr("disabled", false);
+    			$("#btnNext").attr("disabled", false);
     		}else{
     			lp_manageObligation();
     	    	lp_controlCreditAmount();
@@ -1159,7 +1196,7 @@
 					<section class="vbox">
 						<section class="scrollable padder">  
 							<div class="alert alert-block alert-error fade in">
-				            	<h4 class="alert-heading">เพิ่มรายละเอียดลูกค้า</h4>
+				            	<h4 class="alert-heading">บันทึกการขายรถ</h4>
 				          	</div>
 							<div class="row">
 								<div class="col-sm-12">
@@ -1203,6 +1240,42 @@
 										<header class="panel-heading font-bold">ข้อมูลลูกค้า</header> 
 										<div class="panel-body"> 
 											<table border="0" width="100%">
+												<tr>
+													<td colspan="2">
+														<label class="col-sm-2 control-label" style="text-align:right">
+															<input  type="radio" 
+																	id="idType1" 
+																	name="idType" 
+																	value="1" 
+																	<%if(customerBean.getIdType().equals("1")){%> checked="checked" <%} %> 
+															/>
+															บุคคลธรรมดา
+														</label>
+														<label class="col-sm-2 control-label" style="text-align:right">
+															<input  type="radio" 
+																	id="idType2" 
+																	name="idType" 
+																	value="2" 
+																	<%if(customerBean.getIdType().equals("2")){%> checked="checked" <%} %> 
+															/>
+															นิติบุคคล
+														</label>
+													</td>
+													<td>
+														<label class="col-sm-2 control-label" style="text-align:right">
+														เลขผู้เสียภาษี<font color="red">*</font>:</label>
+													</td>
+													<td colspan="3">
+														<input  type="text"
+																id="idNumber" 
+																name="idNumber"
+																size="20"
+																maxlength="13"
+																onblur="lp_getCustDtlByIdNumber();"
+																value="<%=customerBean.getIdNumber() %>"
+														/>
+													</td>
+												</tr>
 												<tr>
 													<!-- 
 													<td width="13%">
@@ -1250,45 +1323,6 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">
-														<b>ข้อมูลผู้เสียภาษี</b> <font color="red">*</font>:</label>
-													</td>
-													<td colspan="5">
-														<input  type="text"
-																id="idNumber" 
-																name="idNumber"
-																size="50"
-																maxlength="13"
-																onblur="lp_getCustDtlByIdNumber();"
-																value="<%=customerBean.getIdNumber() %>"
-														/>
-													</td>
-												</tr>
-												<tr>
-													<td>&nbsp;</td>
-													<td colspan="5">
-														<label class="col-sm-2 control-label" style="text-align:right">
-															<input  type="radio" 
-																	id="idType1" 
-																	name="idType" 
-																	value="1" 
-																	<%if(customerBean.getIdType().equals("1")){%> checked="checked" <%} %> 
-															/>
-															เลขที่บัตรประชาชน
-														</label>
-														<label class="col-sm-2 control-label" style="text-align:right">
-															<input  type="radio" 
-																	id="idType2" 
-																	name="idType" 
-																	value="2" 
-																	<%if(customerBean.getIdType().equals("2")){%> checked="checked" <%} %> 
-															/>
-															เลขที่ผู้เสียภาษี
-														</label>
-													</td>
-												</tr>
-												<tr>
-													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">บ้านเลขที่ <font color="red">*</font>:</label>
 													</td>
 													<td>
@@ -1326,7 +1360,7 @@
 													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">ถนน:</label>
 													</td>
-													<td>
+													<td colspan="3">
 														<input  type="text" 
 																size="20"
 																id="streetName" 
@@ -1334,6 +1368,9 @@
 																value="<%=customerBean.getStreetName() %>"
 														/>
 													</td>
+													
+												</tr>
+												<tr>
 													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">จังหวัด<font color="red">*</font>:</label>
 													</td>
@@ -1342,11 +1379,10 @@
 																size="20"
 																id="provinceName" 
 																name="provinceName"
+																placeholder="จังหวัด"
 																value="<%=customerBean.getProvinceName() %>"
 														/>
 													</td>
-												</tr>
-												<tr>
 													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">อำเภอ/เขต <font color="red">*</font>:</label>
 													</td>
@@ -1355,17 +1391,19 @@
 																id="districtName" 
 																name="districtName"
 																size="20"
+																placeholder="อำเภอ"
 																value="<%=customerBean.getDistrictName() %>"
 														/>
 													</td>
 													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">ตำบล/แขวง <font color="red">*</font>:</label>
 													</td>
-													<td colspan="3" align="left">
+													<td>
 														<input  type="text"
 																	id="subdistrictName" 
 																	name="subdistrictName"
 																	size="20"
+																	placeholder="ตำบล"
 																	value="<%=customerBean.getSubdistrictName() %>"
 															/>
 													</td>
