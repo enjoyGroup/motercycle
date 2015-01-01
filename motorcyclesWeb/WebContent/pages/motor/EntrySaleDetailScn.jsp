@@ -1643,8 +1643,6 @@
 																size="20"
 																id="creditAmount" 
 																name="creditAmount"
-																onkeypress="return false;"
-						                                        onkeydown="return false;"
 						                                        class="input-disabled" 
 						                                        readonly="readonly" 
 						                                        onblur="lp_onBlurCreditAmount();"
