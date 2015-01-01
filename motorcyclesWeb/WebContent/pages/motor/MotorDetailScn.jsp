@@ -27,6 +27,8 @@
 		    var lv_params			= ""; 
 		    var brandSearch       	= gp_sanitizeURLString($('#brandSearch').val());  
 		    var companySearch       = gp_sanitizeURLString($('#companySearch').val());  
+			var brandName           = null;
+			var companyName         = null;
 			
 		    if( brandSearch == "" ){
 		    	alert("กรุณาระบุยี่ห้อก่อนทำการค้นหา");
@@ -47,9 +49,7 @@
 		            url: url,
 		            data: lv_params,
 		            beforeSend: "",
-		            success: function(data){
-		            	if(data.indexOf('OK') > -1){ 
-		            	}else{}
+		            success: function(data){  
 		            }
 		        });
 			}catch(err){
@@ -58,7 +58,7 @@
 			
 		});
 		
-		$('#btnCancel').click(function(){ 
+		$('#btnReset').click(function(){ 
 		    var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.MotorDetailServlet'; 
 		    var pageAction			= "new";
 		    var lv_params			= "";
@@ -179,29 +179,109 @@
 			    	  //lp_getProdDtl();
 			      }
 		});
+		
+/* 
+		$( "#brandName" ).autocomplete({
+			 source: function(request, response) {
+	            $.ajax({
+	            	async:false,
+		            type: "POST",
+	                url: gv_url,
+	                dataType: "json",
+	                data: gv_service + "&pageAction=getModel&brandName="+gp_trim($("#brandName").val())+"&model=" + gp_trim(request.term),//request,
+	                success: function( data, textStatus, jqXHR) {
+	                    var items = data;
+	                    response(items);
+	                },
+	                error: function(jqXHR, textStatus, errorThrown){
+	                     alert( textStatus);
+	                }
+	            });
+	          },
+		      minLength: 0,//กี่ตัวอักษรถึงทำงาน
+		      open: function() {
+					//Data return กลับมาแล้วทำไรต่อ
+		      },
+		      close: function() {
+
+		      },
+		      focus:function(event,ui) {
+
+		      },
+		      select: function( event, ui ) {
+		    	  //lp_getProdDtl();
+		      }
+		});
+		 */
+		
+		$('#btnSave').click(function(){ 
+			var pageAction			= "saveUpdData";
+			var lv_params			= "";  
+
+	    	if(!lp_validate()){
+	    		return;
+	    	}
+	    	
+		    try{
+		    	lv_params 	= "&pageAction=" + pageAction + "&" + $('#frm').serialize();
+				$.ajax({
+					async:false,
+		            type: "POST",
+		            url: gv_url,
+		            data: lv_params,
+		            beforeSend: "",
+		            success: function(data){
+		            	alert("บันทึกรายการเรียบร้อย  ");
+		            }
+		        });
+		    	
+		    }catch(e){
+		    	alert("btnSubmit :: " + e);
+		    }
+		    
+		});
+		
+		$('#btnCancel').click(function(){  
+		    var pageAction			= "new";
+		    var lv_params			= "";
+			
+			try{  
+				lv_params 	= "pageAction=" + pageAction;
+ 
+				$.ajax({
+		            type: "POST",
+		            async: false,
+		            url: gv_url,
+		            data: lv_params,
+		            beforeSend: "",
+		            success: function(data){}
+		        });
+			}catch(err){
+				alert("btnCancel :: " + err);
+			}
+			
+		}); 
+	 	
+		
 	});
 	
 	function lp_del_row_table(ao_obj){  
-		var lv_index			= 0;
-		var url					= '<%=servURL%>/EnjoyGenericSrv?service=servlet.MotorDetailServlet';  
-	    var pageAction			= "delRecord";
-	    var lv_params			= ""; 
+		var lv_index			= 0;   
 		var lo_tabResultDtl		= document.getElementById("tb_result");
-        var cusCode				= "";
+        var motorCode			= "";
  
 		try{
-			if(confirm("Please confirm to delete this record !!")){ 
-				//lv_index	= gp_rowTableIndex(ao_obj);  
-				//cusCode     = lo_tabResultDtl.rows[lv_index].cells[0].firstChild.value;
-				cusCode     = ao_obj; 
-				lv_params 	= "service=" + $('#service').val() 
-				+ "&cusCode=" +cusCode  
+			if(confirm("ต้องการลบรายการนี็?")){ 
+				lv_index	= gp_rowTableIndex(ao_obj);  
+				motorCode     = lo_tabResultDtl.rows[lv_index].cells[7].firstChild.value;
+		alert(motorCode);	 
+				/* lv_params 	= "service=" + $('#service').val()  
 				+ "&pageAction=" + pageAction;
 	
 				$.ajax({
 				    type: "POST",
 				    async: false,
-				    url: url,
+				    url: gv_url,
 				    data: lv_params,
 				    beforeSend: "",
 				    success: function(data){
@@ -218,12 +298,93 @@
 							alert(data);
 						}
 				    }
-				});
+				}); */
 			}
 		}catch(err){
 			alert("lp_del_row_table :: " + err);
 		}
 	}
+	
+	function lp_add_row_table(){
+		var lo_table 	 = null;
+		var lv_length 	 = null;
+		var row 		 = null;
+		var cell1 		 = null;
+		var cell2 		 = null;
+		var cell3 		 = null;	
+		var brandSearch       	= gp_sanitizeURLString($('#brandSearch').val());  
+	    var companySearch       = gp_sanitizeURLString($('#companySearch').val());  
+	    var brandCode       	= gp_sanitizeURLString($('#brandCode').val());  
+	    var companyId           = gp_sanitizeURLString($('#companyId').val());  
+	//alert(brandCode);	
+	//alert(companyId);	
+		try{
+			lo_table 	= document.getElementById("tb_result");
+			lv_length 	= lo_table.rows.length - 1;
+			row 		= lo_table.insertRow(lv_length);
+			cell1 		= row.insertCell(0);
+			cell2 		= row.insertCell(1);
+			cell3 		= row.insertCell(2);
+			cell4 		= row.insertCell(3);
+			cell5 		= row.insertCell(4);
+			cell6 		= row.insertCell(5);
+			cell7 		= row.insertCell(6);
+			cell8 		= row.insertCell(7); 
+		 
+			
+			cell1.align	= "center"; 
+			cell8.align	= "center";
+			cell1.innerHTML = "<td width='15px;' align='center'><input type='hidden' name='hidMotorcyclesCode' id='hidMotorcyclesCode' value='" + lv_length + "'/>"+"<b>" + lv_length + "<b>";
+			cell2.innerHTML = "<td width='100px;' align='left' ><input type='hidden' name='hidBrandCode' id='hidBrandCode'  value='" + brandCode + "'/><input type='text' name='brandName' id='brandName' value='" + brandSearch + "' style='width: 100px;'/></td>";
+			cell3.innerHTML = "<td width='100px;' align='left'><input type='text' name='model' id='model' value='' style='width: 100px;'/></td>";	
+			cell4.innerHTML = "<td width='100px;' align='left'><input type='text' name='chassis' id='chassis' value=''  style='width: 100px;'/></td>";
+			cell5.innerHTML = "<td width='100px;' align='left'><input type='text' name='engineNo' id='engineNo' value=''  style='width: 100px;'/></td>";
+			cell6.innerHTML = "<td width='50px;'  align='left'><input type='text' name='size' id='size' value=''  style='width: 100px;'/></td>";
+			cell7.innerHTML = "<td width='100px;' align='left'><input type='hidden' name='hidCompanyId' id='hidCompanyId' value='" + companyId + "' style='width: 100px;'/>" +
+			                  "<input type='text' name='companyName' id='companyName' value='" + companySearch + "'  style='width: 100px;'/></td>";
+			cell8.innerHTML = "<td width='50px' align='center'><button id='btn_delete'  name='btn_delete'  class='btn btn-warning btn-mini fa fa-times' style='width:25px;' onclick=''></button><input type='hidden' name='hidMotorStartus' id='hidMotorStartus'  value='N'/></td>";
+		  
+			if(brandCode!=""&&brandCode!=null){
+				//alert(brandCode);  
+			    lo_obj          = document.getElementsByName("brandName");
+			    for(var i=0;i<lo_obj.length;i++){
+			       lo_obj[i].disabled = true; 
+			    } 
+			}
+			
+		}catch(e){
+			alert("lp_add_row_table :: " + e);
+		}
+	}
+	
+	function lp_validate(){
+		var la_idName               = new Array("brandName", "model", "chassis", "engineNo", "size", "companyName");
+	    var la_msg               	= new Array("ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "บริษัทที่เก็บ");
+	    var lo_flagAddSales			= null;
+	    var lo_commAmount			= null;
+	    
+		try{
+			 
+			for(var i=0;i<la_idName.length;i++){
+	            lo_obj          = eval('document.getElementById("' + la_idName[i] + '")');
+	             
+	            if(gp_trim(lo_obj.value)==""){
+	            	//alert("กรุณาระบุ " + la_msg[i]);  รอ  QC ว่าจะ validate อย่างไร 
+	            	alert("กรุณาระบุข้อมูลให้ครบถ้วนก่อนทำการบันทึก");
+	                return false;
+	            }
+	             
+	        }
+			 
+			
+		}catch(e){
+			alert("lp_validate :: " + e);
+			return false;
+		}
+		
+		return true;
+	}
+
 
 </script>
 </head>
@@ -234,10 +395,9 @@
 				<section id="content">
 					<section class="vbox">
 						<section class="scrollable padder">
-						<form class="form-horizontal"  id="from_search" action="<%=servURL%>/EnjoyGenericSrv?service=servlet.MotorDetailServlet">
+						<form class="form-horizontal"  id="frm" action="<%=servURL%>/EnjoyGenericSrv">
 						<input type="hidden" id="service" name="service" value="servlet.MotorDetailServlet" />
-						<input type="hidden" id="cusStatus" name="cusStatus" />
-					 
+						 
 							<div class="alert alert-block alert-error fade in">
 				            	<h4 class="alert-heading">ข้อมูลรถ</h4>
 				          	</div>
@@ -251,14 +411,17 @@
 														<div class="row"> 
 														    <label class="col-sm-10 control-label" style="text-align:right">ยี่ห้อ :</label>
 															<div class="col-md-2"> 
-																<input type="text" id="brandSearch" name="brandSearch"  value="<%=motorDetailBean.getBrandSearch() %>"/> 
+																<input type="text" id="brandSearch" name="brandSearch"  value="<%=motorDetailBean.getBrandSearch()%>"/>
+																<input type="hidden" name="brandCode" id="brandCode"  value="<%=motorDetailBean.getBrandCode()%>"/> 
 															</div>
 															<label class="col-sm-1 control-label" style="text-align:right">บริษัทที่เก็บ :</label>
 															<div class="col-md-2">  
-																<input type="text" id="companySearch" name="companySearch" value="<%=motorDetailBean.getCompanySearch() %>">
+																<input type="text" id="companySearch" name="companySearch" value="<%=motorDetailBean.getCompanySearch()%>">
+																<input type="hidden" name="companyId" id="companyId"  value="<%=motorDetailBean.getCompanyId()%>"/>
 															</div> 
-														 	<button class="btn btn-primary" id="btnSearch" >ค้นหา</button> 
-													        <button class="btn btn-primary" id="btnCancel" >เริ่มใหม่</button>  
+														 
+														    <button class="btn btn-primary" id="btnSearch" name="btnSearch">ค้นหา</button>   
+											                <button class="btn btn-primary" id="btnCancel" name="btnCancel">เริ่มใหม่</button>
 													</div> 
 												</div>
 											</div>
@@ -267,24 +430,24 @@
 									<section class="panel panel-default">
 										<header class="panel-heading font-bold">ข้อมูลรุ่นรถจักรยานยนต์</header>
 										<div class="panel-body" id="div_result">
-											<table id="tb_result" border="1" class="table span12" style="overflow-y:auto;width:450px;">
+											<table id="tb_result" border="1" class="table span12" style="overflow-y:auto;width:950px;">
 								               <tr bgcolor="#473636"  class="text_white" height="26px;">
 													<th  style="text-align: center;" width="30px;" ><B>ลำดับ</B></th>
 													<th  style="text-align: left;"   width="100px;"><B>ยี่ห้อ</B></th>
 													<th  style="text-align: left;"   width="100px;"><B>รุ่น</B></th> 
-													<th  style="text-align: left;"   width="50px;"><B>เลขตัวถัง</B></th>
-													<th  style="text-align: left;"   width="50px;"><B>เลขเครื่องยนต์</B></th>  
+													<th  style="text-align: left;"   width="100px;"><B>เลขตัวถัง</B></th>
+													<th  style="text-align: left;"   width="100px;"><B>เลขเครื่องยนต์</B></th>  
 													<th  style="text-align: left;"   width="50px;"><B>ซีซี</B></th>
-													<th  style="text-align: left;"   width="50px;"><B>บริษัทที่เก็บ</B></th>
+													<th  style="text-align: left;"   width="100px;"><B>บริษัทที่เก็บ</B></th> 
 													<th  style="text-align: center;" width="50px;" ><B>add/delete</B></th>
 												</tr> 
 											 
-											     <%
+											       <%
 													List<MotorDetailBean>  	list        =   motorDetailForm.getListMotorDetail();
 											     	MotorDetailBean 		bean 		=   null;
 													int rowNumber                   	=   0;
 													 
-													if(list.size()>0){
+													 if(list.size()>0){
 														for(int i=0;i<list.size();i++){
 															bean = list.get(i);
 															rowNumber = i+1; 
@@ -292,26 +455,58 @@
 														%>
 														 <tr onclick="lp_onclick_row(this);" >
 															<td width="15px;" align="center"><input type="hidden" name="hidMotorcyclesCode" id="hidMotorcyclesCode"  value="<%=bean.getMotorcyclesCode()%>"/><B><%=rowNumber%></B></td>
-															<td width="100px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode"  value="<%=bean.getBrandCode()%>"/><input type="text" name="brandName" id="brandName" value="<%=bean.getBrandName()%>" style="width: 100px;" /></td>
+															<td width="100px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode"  value="<%=bean.getBrandCode()%>"/><input type="text" name="brandName" id="brandName" value="<%=bean.getBrandName()%>" style="width: 100px;" disabled="disabled"/></td>
 															<td width="100px;" align="left"><input type="text" name="model" id="model" value="<%=bean.getModel()%> " style="width: 100px;"/></td>
-															<td width="50px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 100px;"/></td>
-															<td width="50px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 100px;"/></td>
+															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 100px;"/></td>
+															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 100px;"/></td>
 															<td width="50px;" align="left"><input type="text" name="size" id="size" value="<%=bean.getSize()%> " style="width: 100px;"/></td>
-															<td width="50px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId" value="<%=bean.getCompanyId()%> " style="width: 100px;"/><input type="text" name="companyName" id="companyName" value="<%=bean.getCompanyName()%> " style="width: 100px;"/></td>
+															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId" value="<%=bean.getCompanyId()%> " style="width: 100px;"/><input type="text" name="companyName" id="companyName" value="<%=bean.getCompanyName()%> " style="width: 100px;"/></td>
 															<td width="50px" align="center">
 															   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(<%=bean.getMotorcyclesCode()%>);"></button>
-															</td>
+															   <input type="hidden" name="hidMotorStartus" id="hidMotorStartus"  value="U"/>
+															</td> 
 														</tr> 
-														<% } }else{ %>
-														  <tr height="26px;"><td colspan="4"><b>ไม่พบข้อมูลที่ระบุ</b></td></tr>
-														<% } 
-												%>  
+														
+													<% } }else{ %>
+														   <tr onclick="lp_onclick_row(this);" >
+															<td width="15px;" align="center"><input type="hidden" name="hidMotorcyclesCode" id="hidMotorcyclesCode"  /><B>1</B></td>
+															<td width="100px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode" /><input type="text" name="brandName" id="brandName"   style="width: 100px;" /></td>
+															<td width="100px;" align="left"><input type="text" name="model" id="model" style="width: 100px;"/></td>
+															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis"   style="width: 100px;"/></td>
+															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo"   style="width: 100px;"/></td>
+															<td width="50px;" align="left"><input type="text" name="size" id="size"   style="width: 100px;"/></td>
+															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId"   style="width: 100px;"/><input type="text" name="companyName" id="companyName"  style="width: 100px;"/></td>
+															<td width="50px" align="center">
+															   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(this);"></button>
+															   <input type="hidden" name="hidMotorStartus" id="hidMotorStartus"  value="N"/>
+															</td> 
+														</tr> 
+													<% } 
+													 
+												%>
+												
+												  <tr>
+													<td style="visibility:hidden;"></td>
+													<td style="visibility:hidden;"></td>
+													<td style="visibility:hidden;"></td>
+													<td style="visibility:hidden;"></td>
+													<td style="visibility:hidden;"></td>
+													<td style="visibility:hidden;"></td>
+													<td style="visibility:hidden;"></td> 
+													<td align="center">
+													  <a id="btn_add" href="#" class="btn btn-warning btn-mini fa fa-plus-square" style="width:25px;" onclick="lp_add_row_table();"></a>
+													</td>
+												 </tr>  
+													
 											</table> 
 										</div> 
 								    </section>
 								</div>
 							</div> 
-							
+							<div class="form-group" align="center">	  
+								<input type="button" class="btn btn-primary" id="btnSave" name="btnSave" value="บันทึก" /> 
+								<button class="btn btn-primary" id="btnReset" name="btnReset">เริ่มใหม่</button>
+							</div>  
 							</form>
 						</section>
 					</section>

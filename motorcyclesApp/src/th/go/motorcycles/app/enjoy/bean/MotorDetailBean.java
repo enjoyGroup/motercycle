@@ -158,4 +158,18 @@ public class MotorDetailBean implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	@Override
+	public String toString() {
+		return "MotorDetailBean [brandSearch=" + brandSearch + ", modelSearch="
+				+ modelSearch + ", companySearch=" + companySearch
+				+ ", motorcyclesCode=" + motorcyclesCode + ", brandCode="
+				+ brandCode + ", brandName=" + brandName + ", model=" + model
+				+ ", chassis=" + chassis + ", engineNo=" + engineNo + ", size="
+				+ size + ", companyId=" + companyId + ", companyName="
+				+ companyName + ", branchName=" + branchName
+				+ ", motorcyclesStatus=" + motorcyclesStatus + "]";
+	}
+	
+	
 }

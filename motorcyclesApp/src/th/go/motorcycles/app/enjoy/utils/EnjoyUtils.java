@@ -19,6 +19,10 @@ public class EnjoyUtils {
         return (str==null?"":str.trim());
     }
 	
+	public static String nullToStrUpperCase(String str){
+        return (str==null?"":str.trim().toUpperCase());
+    }
+	
     public static String dateToString(Date dDate, String stFormat){
         String stDate = "";
         try{

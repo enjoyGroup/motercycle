@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import th.go.motorcycles.app.enjoy.bean.CustomerBean;
 import th.go.motorcycles.app.enjoy.bean.MotorDetailBean;
 import th.go.motorcycles.app.enjoy.exception.EnjoyException;
 import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs; 
@@ -168,4 +169,96 @@ public class MotorDetailDao {
 		
 		return list;
 	}
+	
+	
+	public boolean updateMotorcycles(MotorDetailBean bean){
+		System.out.println("[MotorDetailDao][updateMotorcycles][Begin]::"+bean.getMotorcyclesCode());
+		
+		String 				sql			 		= null;
+		boolean				lv_ret				= false; 
+
+		try{ 
+			this.db = new EnjoyConectDbs();
+			sql 	= "update  motorcyclesdetails  set brandCode  = '"+bean.getBrandCode()+"', model ='"+bean.getModel()+
+					  "', chassis ='"+bean.getChassis()+"', engineNo ='"+bean.getEngineNo()+
+					  "', size ='"+bean.getSize()+"', companyId ='"+bean.getCompanyId()+ "' where  motorcyclesCode  = '"+bean.getMotorcyclesCode()+"'";
+			
+			System.out.println("[MotorDetailDao][updateMotorcycles] sql :: " + sql);
+			
+			lv_ret 			= this.db.execute(sql);
+			
+			System.out.println("[MotorDetailDao][updateMotorcycles] lv_ret :: " + lv_ret); 
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			this.db.setDisconnection();
+			System.out.println("[MotorDetailDao][updateMotorcycles][End]");
+		}
+		return lv_ret;
+	}
+	 
+	public boolean deleteMotorcycles(MotorDetailBean bean){
+		System.out.println("[MotorDetailDao][deleteMotorcycles][Begin]");
+		
+		String 				sql			 		= null;
+		boolean				lv_ret				= false;
+		String				motorCode		    = null; 
+		
+		try{
+			this.db    = new EnjoyConectDbs();
+			motorCode    = EnjoyUtils.nullToStr(bean.getMotorcyclesCode()); 
+			
+			sql 	   = "update customer set cusStatus = 'I'  where cusCode = '" + motorCode +"'";
+		 
+			System.out.println("[MotorDetailDao][deleteMotorcycles] sql :: " + sql);
+			
+			lv_ret 			= this.db.execute(sql);
+			
+			System.out.println("[MotorDetailDao][deleteMotorcycles] lv_ret :: " + lv_ret);
+			 
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			this.db.setDisconnection();
+			System.out.println("[MotorDetailDao][deleteMotorcycles][End]");
+		}
+		return lv_ret;
+	} 
+	
+	public boolean insertMotorcycles(MotorDetailBean motorDetailBean){
+		System.out.println("[CustomerDao][insertCustomer][Begin]");
+		
+		String 		sql			 	= null;
+		ResultSet 	rs 				= null;    
+		boolean		lv_ret			= false;
+		try{ 
+			this.db    = new EnjoyConectDbs();   
+			System.out.println("[CustomerDao][insertCustomer]  :: " + motorDetailBean);  
+			
+			sql = "insert into motorcyclesdetails  (motorcyclesCode,brandCode,model, chassis, engineNo, size,companyId, motorcyclesStatus)"
+				 + " values ('"+ motorDetailBean.getMotorcyclesCode()+ "', '"
+				 + motorDetailBean.getBrandCode() + "', '" 
+				 + motorDetailBean.getModel() + "', '"  
+				 + motorDetailBean.getChassis() + "', '" 
+				 + motorDetailBean.getEngineNo() + "', '" 
+				 + motorDetailBean.getSize()+ "', '" 
+				 + motorDetailBean.getCompanyId() + "', 'A') ";
+			
+			System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
+			
+			lv_ret 	= this.db.execute(sql);  
+		    System.out.println("[CustomerDao][insertCustomer] cusCode : " + motorDetailBean.getMotorcyclesCode());
+ 
+		    
+		}catch(Exception e){  
+			e.printStackTrace();
+		}finally{
+			this.db.setDisconnection();
+			System.out.println("[CustomerDao][insertCustomer][End]");
+		}
+		
+		return lv_ret;
+	}
+	
 }
