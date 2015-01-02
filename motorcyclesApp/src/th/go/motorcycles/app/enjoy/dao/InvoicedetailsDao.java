@@ -40,8 +40,8 @@ public class InvoicedetailsDao {
 			sql = " select t.* from (select  i.invoiceId invoiceId"
 					+ " , CONCAT(c.cusName, ' ', c.cusSurname) cusName"
 					+ " , CONCAT(b.brandName, ' รุ่น ' , m.model, ' สี ' , i.color ) motorcyclesdetails"
-					+ " , i.chassisDisp chassisDisp"
-					+ " , i.EngineNoDisp EngineNoDisp"
+					+ " , CONCAT(m.chassis, i.chassisDisp ) chassisDisp"
+					+ " , CONCAT(m.engineNo,'-' ,i.EngineNoDisp ) EngineNoDisp"
 					+ " , b.brandName brandName"
 					+ " , m.model model"
 					+ " , i.priceAmount priceAmount"
@@ -89,7 +89,7 @@ public class InvoicedetailsDao {
 		    		jsonObjectDetail.put("motorcyclesDisp", rs.getString("motorcyclesdetails"));
 		    		jsonObjectDetail.put("chassisDisp", 	rs.getString("chassisDisp"));
 		    		jsonObjectDetail.put("EngineNoDisp", 	rs.getString("EngineNoDisp"));
-			    	jsonObjectDetail.put("remark",          EnjoyUtils.nullToStr(rs.getString("remark")) + " " +
+			    	jsonObjectDetail.put("remark",          "มีรายละเอียดส่งเสริมการขายที่" + " " +
 			    										    EnjoyUtils.nullToStr(rs.getString("invoiceIdAddSales")));
 		    	} else {
 		    		jsonObjectDetail.put("motorcyclesDisp", rs.getString("remark"));
@@ -135,8 +135,8 @@ public class InvoicedetailsDao {
 					+ " , CONCAT(c.houseNumber, ' หมู่ที่ ' , c.mooNumber, ' ถนน ' , c.streetName, ' ตำบล ' , i.EngineNoDisp, ' อำเภอ ' , i.EngineNoDisp, ' จังหวัด ' , i.EngineNoDisp ) cusAddress"
 					+ " , b.brandName brandName"
 					+ " , m.model model"
-					+ " , i.chassisDisp chassisDisp"
-					+ " , i.engineNoDisp engineNoDisp"
+					+ " , CONCAT(m.chassis, i.chassisDisp ) chassisDisp"
+					+ " , CONCAT(m.engineNo,'-' ,i.EngineNoDisp ) EngineNoDisp"
 					+ " , i.size size"
 					+ " , i.priceAmount priceAmount"
 					+ " , i.vatAmount vatAmount"

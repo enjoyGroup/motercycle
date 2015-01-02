@@ -764,6 +764,9 @@ public class EntrySaleDetailDao {
 		System.out.println("[EntrySaleDetailDao][saveInvoiceAddSales][Begin]");
 		
 		String 				sql			 		= null;
+		CustomerBean		customerBean		= null;
+		String				cusCode 			= null;
+		String				motorcyclesCode 	= null;
 		String 				priceAmount 		= null;
 		String 				vatAmount 			= null;
 		String 				commAmount 			= null;
@@ -782,7 +785,10 @@ public class EntrySaleDetailDao {
 		try{
 			db    				= new EnjoyConectDbs();
 			formatInvoie		= form.getFormatInvoie();
+			customerBean		= form.getCustomerBean();
 			invoiceAddSalesId	= this.genInvoiceId(formatInvoie);
+			cusCode 			= customerBean.getCusCode();
+			motorcyclesCode 	= form.getMotorcyclesCode();
 //			priceAmount 		= form.getPriceAmount();
 //			vatAmount 			= form.getVatAmount();
 //			totalAmount			= form.getTotalAmount();
@@ -799,6 +805,8 @@ public class EntrySaleDetailDao {
 			
 			sql 		= "insert into invoicedetails ( invoiceId"
 													+ " ,invoiceDate"
+													+ " ,cusCode"
+													+ " ,motorcyclesCode"	
 													+ " ,priceAmount"	
 													+ " ,vatAmount"
 													+ " ,totalAmount"
@@ -811,6 +819,8 @@ public class EntrySaleDetailDao {
 													+ " ,remark)"
 										+ " values(		'"+invoiceAddSalesId+"'"
 													+ " ,'"+recordAddDate+"'"
+													+ " ,'"+cusCode+"'"
+													+ " ,'"+motorcyclesCode+"'"
 													+ " ,'"+priceAmount+"'"
 													+ " ,'"+vatAmount+"'"
 													+ " ,'"+totalAmount+"'"
