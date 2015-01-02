@@ -4,9 +4,13 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
+import th.go.motorcycles.app.enjoy.bean.BrandBean;
 import th.go.motorcycles.app.enjoy.bean.CustomerBean;
 import th.go.motorcycles.app.enjoy.bean.MotorDetailBean;
 import th.go.motorcycles.app.enjoy.exception.EnjoyException;
+import th.go.motorcycles.app.enjoy.form.MotorDetailForm;
 import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs; 
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
@@ -17,7 +21,7 @@ public class MotorDetailDao {
 //		db = new EnjoyConectDbs();
 	}
 	
-	public List<MotorDetailBean> findModelDetail(MotorDetailBean bean){
+	public List<MotorDetailBean> findModelDetail(MotorDetailBean bean,MotorDetailForm motorDetailForm){
 		String 					sql			 		= null;
 		ResultSet 				rs 					= null; 
 		MotorDetailBean			motorDetailBean		= null;
@@ -65,7 +69,9 @@ public class MotorDetailDao {
 				motorDetailBean.setMotorcyclesStatus(EnjoyUtils.nullToStr(rs.getString("motorcyclesStatus")));
 		    	list.add(motorDetailBean);	
 		    } 
-			
+		    
+		    motorDetailForm.setListMotorDetail(list);
+		    
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
@@ -198,18 +204,18 @@ public class MotorDetailDao {
 		return lv_ret;
 	}
 	 
-	public boolean deleteMotorcycles(MotorDetailBean bean){
+	public boolean deleteMotorcycles(String motorCode){
 		System.out.println("[MotorDetailDao][deleteMotorcycles][Begin]");
 		
 		String 				sql			 		= null;
 		boolean				lv_ret				= false;
-		String				motorCode		    = null; 
+		String				motorDelCode		= null; 
 		
 		try{
 			this.db    = new EnjoyConectDbs();
-			motorCode    = EnjoyUtils.nullToStr(bean.getMotorcyclesCode()); 
+			motorDelCode    = EnjoyUtils.nullToStr(motorCode); 
 			
-			sql 	   = "update customer set cusStatus = 'I'  where cusCode = '" + motorCode +"'";
+			sql 	   = "update motorcyclesdetails set motorcyclesStatus = 'I'  where motorcyclesCode = '" + motorDelCode +"'";
 		 
 			System.out.println("[MotorDetailDao][deleteMotorcycles] sql :: " + sql);
 			
@@ -226,39 +232,126 @@ public class MotorDetailDao {
 		return lv_ret;
 	} 
 	
-	public boolean insertMotorcycles(MotorDetailBean motorDetailBean){
-		System.out.println("[CustomerDao][insertCustomer][Begin]");
+	public boolean insertMotorcycles(MotorDetailBean motorDetailBean,MotorDetailForm motorForm){
+		System.out.println("[MotorDetailDao][insertCustomer][Begin]");
 		
 		String 		sql			 	= null;
 		ResultSet 	rs 				= null;    
 		boolean		lv_ret			= false;
 		try{ 
 			this.db    = new EnjoyConectDbs();   
-			System.out.println("[CustomerDao][insertCustomer]  :: " + motorDetailBean);  
+			System.out.println("[MotorDetailDao][insertCustomer]  :: " + motorDetailBean);  
 			
-			sql = "insert into motorcyclesdetails  (motorcyclesCode,brandCode,model, chassis, engineNo, size,companyId, motorcyclesStatus)"
-				 + " values ('"+ motorDetailBean.getMotorcyclesCode()+ "', '"
-				 + motorDetailBean.getBrandCode() + "', '" 
+			sql = "insert into motorcyclesdetails  (brandCode,model, chassis, engineNo, size,companyId, motorcyclesStatus)"
+				 + " values ('" + motorDetailBean.getBrandCode() + "', '" 
 				 + motorDetailBean.getModel() + "', '"  
 				 + motorDetailBean.getChassis() + "', '" 
 				 + motorDetailBean.getEngineNo() + "', '" 
 				 + motorDetailBean.getSize()+ "', '" 
 				 + motorDetailBean.getCompanyId() + "', 'A') ";
 			
-			System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
+			System.out.println("[MotorDetailDao][insertCustomer] sql :: " + sql);
 			
 			lv_ret 	= this.db.execute(sql);  
-		    System.out.println("[CustomerDao][insertCustomer] cusCode : " + motorDetailBean.getMotorcyclesCode());
- 
+		    System.out.println("[MotorDetailDao][insertCustomer] MotorcyclesCode : " + motorDetailBean.getMotorcyclesCode());
+		    
+		    motorForm.setMotorDetailBean(motorDetailBean);
 		    
 		}catch(Exception e){  
 			e.printStackTrace();
 		}finally{
 			this.db.setDisconnection();
-			System.out.println("[CustomerDao][insertCustomer][End]");
+			System.out.println("[MotorDetailDao][insertCustomer][End]");
 		}
 		
 		return lv_ret;
 	}
+	
+	public BrandBean validateBrandName(String brandName){
+		System.out.println("[MotorDetailDao][getBrandName][Begin]");
+		BrandBean 				        bean		        = null;
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;  
+		String                          brandCode           = null;
+		String							errMsg				= null;
+		   try{ 
+			   this.db    = new EnjoyConectDbs();  
+			   bean			= new BrandBean();
+			   
+			   System.out.println("[MotorDetailDao] brandName :: " + brandName);
+			    
+			   
+			   sql 		= "SELECT brandCode FROM branddetails WHERE  brandName like '"+brandName+"%'";
+				
+			   System.out.println("[MotorDetailDao][getBrandName] branddetails sql :: " + sql);
+				
+			    rs 			= this.db.executeQuery(sql);
+			    
+			    while(rs.next()){
+			    	brandCode = rs.getString("brandCode").trim();
+			        if(brandCode==null)throw new EnjoyException("ระบุยี่ห้แผิด");
+			    }
+			    bean.setBrandCode(brandCode);
+			   
+		   }catch(EnjoyException e){
+				errMsg = e.getMessage();
+				bean.setErrMsg(errMsg);
+				e.printStackTrace();
+			}catch(Exception e){
+				errMsg = e.getMessage();
+				bean.setErrMsg(errMsg);
+				e.printStackTrace();
+			}finally{
+				this.db.setDisconnection(rs);
+				  System.out.println("[MotorDetailDao][getBrandName][End]");
+			}
+		   
+		 
+		   return bean;
+		}
+	
+	
+	public MotorDetailBean validateCompanyName(String companyName){
+		System.out.println("[MotorDetailDao][validateCompanyName][Begin]");
+		MotorDetailBean			        bean		        = null;
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;  
+		String                          companyId           = null;
+		String							errMsg				= null;
+		   try{ 
+			   this.db    = new EnjoyConectDbs();  
+			   bean			= new MotorDetailBean();
+			   
+			   System.out.println("[MotorDetailDao] brandName :: " + companyName); 
+			   
+			   //sql 		= "SELECT CAST(company.companyId as varchar(10)) FROM company WHERE  companyName like '"+companyName+"%'";
+				
+			   System.out.println("[MotorDetailDao][validateCompanyName] company sql :: " + sql);
+				
+			    rs 			= this.db.executeQuery(sql);
+			    
+			    while(rs.next()){
+			    	companyId = rs.getString("companyCode").trim();
+			        if(companyId==null)throw new EnjoyException("ระบุบริษัทผิด");
+			    }
+			    
+			    bean.setCompanyId(companyId);
+			   
+		   }catch(EnjoyException e){
+				errMsg = e.getMessage();
+				bean.setErrMsg(errMsg);
+				e.printStackTrace();
+			}catch(Exception e){
+				errMsg = e.getMessage();
+				bean.setErrMsg(errMsg);
+				e.printStackTrace();
+			}finally{
+				this.db.setDisconnection(rs);
+				System.out.println("[MotorDetailDao][validateCompanyName][End]");
+			}
+		   
+		 
+		   return bean;
+		}
 	
 }

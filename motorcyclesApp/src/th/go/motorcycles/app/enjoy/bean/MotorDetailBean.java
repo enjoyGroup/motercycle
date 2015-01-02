@@ -22,6 +22,8 @@ public class MotorDetailBean implements Serializable {
 	private String companyName;
 	private String branchName;
 	private String motorcyclesStatus;
+	private	String errMsg;
+	
 	
 	public MotorDetailBean(){
 		this.brandSearch 			= "";
@@ -38,6 +40,7 @@ public class MotorDetailBean implements Serializable {
 		this.companyName 			= "";
 		this.branchName				= "";
 		this.motorcyclesStatus 		= "";
+		this.errMsg				    = "";
 	}
 
 	public String getBranchName() {
@@ -157,6 +160,16 @@ public class MotorDetailBean implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	
+	
+
+	public String getErrMsg() {
+		return errMsg;
+	}
+
+	public void setErrMsg(String errMsg) {
+		this.errMsg = errMsg;
 	}
 
 	@Override

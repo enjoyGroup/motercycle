@@ -14,6 +14,7 @@ public class BrandBean implements Serializable {
 	private String brandtFullname;
 	private String brandName ;
 	private String brandStatus; 
+	private	String errMsg;
 	
 	public BrandBean(){
 		this.brandCode 			= "";
@@ -22,6 +23,7 @@ public class BrandBean implements Serializable {
 		this.brandtSurname 		= "";
 		this.brandtFullname     = "";
 		this.brandStatus        = ""; 
+		this.errMsg				= "";
 	}
 
 	public String getBrandCode() {
@@ -75,4 +77,14 @@ public class BrandBean implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public String getErrMsg() {
+		return errMsg;
+	}
+
+	public void setErrMsg(String errMsg) {
+		this.errMsg = errMsg;
+	}
+	
+	
 }

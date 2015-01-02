@@ -11,11 +11,11 @@ public class EnjoyConectDbs {
 	   static final String 	JDBC_DRIVER 	= "com.mysql.jdbc.Driver";
 	   static final String 	jdbcutf8 		= "?useUnicode=true&characterEncoding=UTF-8";
 	   static final String 	DB_NAME 		= "motorcycles";
-	   static final String 	DB_URL 			= "jdbc:mysql://localhost:3306/" + DB_NAME + jdbcutf8;
+	   static final String 	DB_URL 			= "jdbc:mysql://127.0.0.1:3306/" + DB_NAME + jdbcutf8;
 
 	   //  Database credentials
 	   static final String 	USER 			= "root";
-	   static final String 	PASS 			= "p@ssw0rd";
+	   static final String 	PASS 			= "";
 	   
 	   private Connection 	conn 			= null;
 	   private Statement 	stmt 			= null;
