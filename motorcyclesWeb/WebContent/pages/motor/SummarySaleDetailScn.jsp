@@ -26,6 +26,8 @@
 	    cursor: pointer;
 	}
 	
+	
+	
 </style> 
 <script>
 	
@@ -256,18 +258,18 @@
 											<div class="panel-body">
 												<table border="0" cellpadding="0" cellspacing="5" class="table span12" >
 													<colgroup>
-														<col align="left" width="20%" />
+														<col align="left" width="15%" />
 														<col align="left" />
-														<col align="left" width="20%" />
+														<col align="left" width="15%" />
 														<col align="left" />
 													</colgroup>
 													<tr>
-														<td>เลขที่ใบกำกับ : </td>
-														<td>
+														<td><label class="control-label" style="text-align:right">เลขที่ใบกำกับ : </label></td>
+														<td class="no-padd-left">
 															<input type="text" id="invoiceId" name="invoiceId" value="<%=summarySaleDetailForm.getInvoiceId()%>" />
 														</td>
-														<td>วันที่ขาย : </td>
-														<td>
+														<td><label class="control-label" style="text-align:right">วันที่ขาย : </label></td>
+														<td class="no-padd-left">
 															<input type="text" class="dateFormat" style="width:100px;" id="invoiceDateFrom" name="invoiceDateFrom" placeholder="DD/MM/YYYY" value="<%=summarySaleDetailForm.getInvoiceDateFrom()%>" onblur="lp_checkFormatdate();" />
 															<i class="fa fa-fw fa-calendar" id='trigger-DateFrom' style='cursor:pointer'></i>
 															&nbsp;-&nbsp;
@@ -276,18 +278,18 @@
 														</td>
 													</tr>
 													<tr>
-														<td>ยี่ห้อ : </td>
-														<td>
+														<td><label class="control-label" style="text-align:right">ยี่ห้อ : </label></td>
+														<td class="no-padd-left">
 															<input type="text" id="brandName" name="brandName" value="<%=summarySaleDetailForm.getBrandName()%>" />
 														</td>
-														<td>รุ่น : </td>
-														<td>
+														<td><label class="control-label" style="text-align:right">รุ่น : </label></td>
+														<td class="no-padd-left">
 															<input type="text" id="model" name="model" value="<%=summarySaleDetailForm.getModel()%>" />
 														</td>
 													</tr>
 													<tr>
-														<td>ชื่อลูกค้า : </td>
-														<td colspan="4">
+														<td><label class="control-label" style="text-align:right">ชื่อลูกค้า : </label></td>
+														<td colspan="4" class="no-padd-left">
 															<input type="text" id="cusName" name="cusName" value="<%=summarySaleDetailForm.getCusName()%>" size="40" />
 															<input type="button" class="btn btn-primary" id="btnSearch" name="btnSearch" value="ค้นหา" />
 														</td>
@@ -320,13 +322,13 @@
 															
 														%>
 														<tr class="rowSelect" onclick="lp_sendEditPage('<%=bean.getInvoiceId()%>')">
-															<td><%=seq%></td>
+															<td style="text-align:center"><%=seq%></td>
 															<td><%=bean.getInvoiceId()%></td>
 															<td><%=bean.getCusName()%></td>
 															<td><%=bean.getMotorcyclesdetails()%></td>
-															<td><%=bean.getPriceAmount()%></td>
-															<td><%=bean.getVatAmount()%></td>
-															<td><%=bean.getCommAmount()%></td>
+															<td class="money-text"><%=bean.getPriceAmount()%></td>
+															<td class="money-text"><%=bean.getVatAmount()%></td>
+															<td class="money-text"><%=bean.getCommAmount()%></td>
 															<td><%=bean.getRemark()%></td>
 														</tr>
 														<% seq++;} %>

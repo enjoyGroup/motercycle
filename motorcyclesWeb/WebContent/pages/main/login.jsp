@@ -19,6 +19,13 @@
 				padding: 1px;
 				border: 1px solid #a7c1e5;
 			}
+			
+			.my-form{
+				margin-top:12px; 
+				-webkit-border-radius: 12px;
+				-moz-border-radius: 12px;
+				border-radius: 12px;
+			}
 		</style>
 		<script language="JavaScript" type="text/JavaScript">
 			<!--
@@ -131,15 +138,15 @@
                                 </div>
                             </div>
                             <div class="panel-body">
-                            	<form  name="formlogin"  accept-charset="UTF-8" role="form" class="form-signin" style="text-align: center;" action=""  >
-                                    <fieldset>
-                                       <br>
-                                       <div style="text-align: center;width: 100%">
-                                       		 <input class="form-control" placeholder="Username" id="username"  name="username" type="text"  maxlength="10"  onkeydown="lp_changeEnterToTab_forPWD();">
+								<form  name="formlogin"  accept-charset="UTF-8" role="form" class="form-signin" style="text-align: center;" action=""  >
+									<fieldset>
+										<br>
+										<div style="text-align: center;width: 100%">
+											<input class="form-control my-form" placeholder="Username" id="username"  name="username" type="text"  maxlength="10"  onkeydown="lp_changeEnterToTab_forPWD();">
 	                                        <br>
-	                                        <input class="form-control" placeholder="Password" id="user_pwd"  name="user_pwd"  type="password"  maxlength="10"  onkeydown="lp_changeEnterToTab_forPWD();">
+	                                        <input class="form-control my-form" placeholder="Password" id="user_pwd"  name="user_pwd"  type="password"  maxlength="10"  onkeydown="lp_changeEnterToTab_forPWD();">
 	                                        <br></br>
-	                                        <input class="btn btn-lg btn-success "  id="btnLogin" value="Login"  style="width: 80px;">
+	                                        <input class="btn btn-lg btn-success "  type="button" id="btnLogin" value="Login"  style="width: 80px;">
 	                                        <br></br>
 	                         			</div>
                                     </fieldset>
