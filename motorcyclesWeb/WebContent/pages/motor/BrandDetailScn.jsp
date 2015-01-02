@@ -51,6 +51,10 @@
 			var lv_params			= ""; 
 	        var lo_obj;
 		    
+	        if(!lp_validate()){
+	    		return;
+	    	}
+	        
 		    try{
 		    	lv_params 	= "&pageAction=" + pageAction + "&" + $('#frm').serialize();
 				$.ajax({
@@ -121,6 +125,21 @@
 		}
 	}
 
+	function lp_validate(){
+		var lo_obj          = eval('document.getElementsByName("brandName")');
+		try{ 
+			for(var i=0;i<lo_obj.length;i++){
+				if( lo_obj[i].value == "" ){
+					alert("กรุณาระบุข้อมูลให้ครบถ้วนก่อนทำการบันทึก");
+		            return false;
+				}
+			} 
+		}catch(e){
+			alert("lp_validate :: " + e);
+			return false;
+		}
+		return true;
+	}
 </script>
 </head>
 <body> 
