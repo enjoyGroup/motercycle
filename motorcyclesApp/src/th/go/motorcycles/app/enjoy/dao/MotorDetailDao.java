@@ -29,7 +29,7 @@ public class MotorDetailDao {
 		
 		try{ 
 			System.out.println(bean.getBrandSearch());
-			System.out.println(bean.getModelSearch());
+			System.out.println(bean.getCompanySearch());
 
 			this.db    	= new EnjoyConectDbs();
 			sql = "SELECT * FROM motorcyclesdetails m "
@@ -43,8 +43,8 @@ public class MotorDetailDao {
 				if(bean.getBrandSearch()!=""){
 					sql += " and b.brandName = '" + bean.getBrandSearch() + "'";
 				}
-				if(bean.getModelSearch()!=""){
-					sql += " and m.model = '" + bean.getModelSearch() + "'";
+				if(bean.getCompanySearch()!=""){
+					sql += " and c.companyName like '" + bean.getCompanySearch() + "%'";
 				}
 				 
 			} 	 
@@ -175,6 +175,30 @@ public class MotorDetailDao {
 		
 		return list;
 	}
+	
+	public List<String> companyNameList(String companyName){
+		System.out.println("[MotorDetailDao][companyNameList][Begin]");		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        List<String> 					list 				= new ArrayList<String>();		
+		try{
+			this.db    	= new EnjoyConectDbs();
+			sql 		= " SELECT companyName FROM company WHERE companyName LIKE ('" + companyName + "%') ORDER BY companyId ASC LIMIT 10 ";			
+			System.out.println("[MotorDetailDao][branchNameList] sql :: " + sql);			
+		    rs 			= this.db.executeQuery(sql);		    
+		    while(rs.next()){		    	
+		    	list.add(EnjoyUtils.nullToStr(rs.getString("companyName")));
+		    }		
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			this.db.setDisconnection(rs);
+			System.out.println("[MotorDetailDao][companyNameList][End]");
+		}
+		
+		return list;
+	}
+	
 	
 	
 	public boolean updateMotorcycles(MotorDetailBean bean){
@@ -316,7 +340,7 @@ public class MotorDetailDao {
 		MotorDetailBean			        bean		        = null;
 		String 							sql			 		= null;
 		ResultSet 						rs 					= null;  
-		String                          companyId           = null;
+		Integer                         companyId           = null;
 		String							errMsg				= null;
 		   try{ 
 			   this.db    = new EnjoyConectDbs();  
@@ -324,18 +348,19 @@ public class MotorDetailDao {
 			   
 			   System.out.println("[MotorDetailDao] brandName :: " + companyName); 
 			   
-			   //sql 		= "SELECT CAST(company.companyId as varchar(10)) FROM company WHERE  companyName like '"+companyName+"%'";
+			   sql 		= "SELECT * FROM company WHERE  companyName like '"+companyName+"%'";
 				
 			   System.out.println("[MotorDetailDao][validateCompanyName] company sql :: " + sql);
 				
 			    rs 			= this.db.executeQuery(sql);
 			    
 			    while(rs.next()){
-			    	companyId = rs.getString("companyCode").trim();
+			    	companyId =(Integer) rs.getObject("companyId");
+			    	System.out.println("companyId ::"+companyId); 
 			        if(companyId==null)throw new EnjoyException("ระบุบริษัทผิด");
 			    }
 			    
-			    bean.setCompanyId(companyId);
+			    bean.setCompanyId(String.valueOf(companyId));
 			   
 		   }catch(EnjoyException e){
 				errMsg = e.getMessage();
