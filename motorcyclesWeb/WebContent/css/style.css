@@ -90,12 +90,20 @@ body{
 .title{font-size:16px; font-weight:bold;margin: 80px 0 0 30px;}
 
 
-table#tb_result tr td{
+table#tb_result tr td,table#tableResult tr td {
 	font-size:0.8em;
 	padding:4px;
 }
 
-table#tb_result tr th{
+table#tb_result tr th,table#tableResult tr th{
 	font-size:0.8em;
 	text-align:center;
 }
+
+
+.no-padd-left{padding-left:0 !important}
+	
+.money-text{text-align:right !important}
+.tx-center{text-algin:center !important}
+.tx-left{text-algin:left !important}
+.tx-right{text-align:right !important}

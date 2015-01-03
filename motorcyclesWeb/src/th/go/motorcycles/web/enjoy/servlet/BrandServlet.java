@@ -153,7 +153,7 @@ public class BrandServlet extends EnjoyStandardSvc {
 
 			   	if( getBrandStatus[i].equals("U")){
 			   		brandCode	= getBrandCode[i];
-			   		brandName 	= getBrandName[i]; 
+			   		brandName 	= getBrandName[i].toUpperCase(); 
 			   		
 			   		brandBean	= new BrandBean(); 
 			   		brandBean.setBrandCode(brandCode); 
@@ -165,7 +165,7 @@ public class BrandServlet extends EnjoyStandardSvc {
 						   System.out.println(" Update Brand : SUCCESS");
 					}
 			   	}else if( getBrandStatus[i].equals("I") ){
-			   		brandName 	= getBrandName[i];
+			   		brandName 	= getBrandName[i].toUpperCase();
 			   		
 			   		brandBean	= new BrandBean(); 
 			   		brandBean.setBrandName(brandName); 
