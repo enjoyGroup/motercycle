@@ -138,70 +138,6 @@
 			            type: "POST",
 		               url: gv_url,
 		               dataType: "json",
-		               data: gv_service + "&pageAction=getCompany&companyName=" + gp_trim(request.term),//request,
-		               success: function( data, textStatus, jqXHR) {
-		                   var items = data;
-		                   response(items);
-		               },
-		               error: function(jqXHR, textStatus, errorThrown){
-		                    alert( textStatus);
-		               }
-		           });
-		         },
-			      minLength: 0,//กี่ตัวอักษรถึงทำงาน
-			      open: function() {
-						//Data return กลับมาแล้วทำไรต่อ
-			      },
-			      close: function() {
-
-			      },
-			      focus:function(event,ui) {
-
-			      },
-			      select: function( event, ui ) {
-			    	  //lp_getProdDtl();
-			      }
-		});
- 
-		 
-		/* $('#brandName').autocomplete({
-			 source: function(request, response) {
-	            $.ajax({
-	            	async:false,
-		            type: "POST",
-	                url: gv_url,
-	                dataType: "json",
-	                data: gv_service + "&pageAction=getBrandName&brandName="+gp_trim($('#brandName').val()),//request,
-	                success: function( data, textStatus, jqXHR) {
-	                    var items = data;
-	                    response(items);
-	                },
-	                error: function(jqXHR, textStatus, errorThrown){
-	                     alert( textStatus);
-	                }
-	            });
-	          },
-		      minLength: 0,//กี่ตัวอักษรถึงทำงาน
-		      open: function() {
-					//Data return กลับมาแล้วทำไรต่อ
-		      },
-		      close: function() {
-
-		      },
-		      focus:function(event,ui) {
-
-		      },
-		      select: function( event, ui ) {}
-		}); */
-		   
-		/*
-		$( "#companyName" ).autocomplete({
-			source: function(request, response) {
-		           $.ajax({
-		           	async:false,
-			            type: "POST",
-		               url: gv_url,
-		               dataType: "json",
 		               data: gv_service + "&pageAction=getCompany&branchName=" + gp_trim(request.term),//request,
 		               success: function( data, textStatus, jqXHR) {
 		                   var items = data;
@@ -226,8 +162,7 @@
 			    	  //lp_getProdDtl();
 			      }
 		});
- 
-		 */
+  
 		 
 		$('#btnSave').click(function(){ 
 			var pageAction			= "saveUpdData";
@@ -318,7 +253,7 @@
 			cell5.innerHTML = "<td width='100px;' align='left'><input type='text' name='engineNo' id='engineNo'  style='width: 100px;'  maxlength='10'/></td>";
 			cell6.innerHTML = "<td width='50px;'  align='left'><input type='text' name='size' id='size'   style='width: 100px;' maxlength='4'/></td>";
 			cell7.innerHTML = "<td width='100px;' align='left'><input type='hidden' name='hidCompanyId' id='hidCompanyId'  style='width: 100px;'/>" +
-			                  "<input type='text' name='companyName' id='companyName' value='" + companySearch + "'  style='width: 150px;' readonly = 'readonly'/></td>";
+			                  "<input type='text' name='branchName' id='branchName' value='" + companySearch + "'  style='width: 150px;' readonly = 'readonly'/></td>";
 			cell8.innerHTML = "<td width='50px' align='center'><button id='btn_delete'  name='btn_delete'  class='btn btn-warning btn-mini fa fa-times' style='width:25px;' onclick='lp_del_row_table(this);' ></button><input type='hidden' name='hidMotorStartus' id='hidMotorStartus'  value='N'/></td>";
 			
 			/* 			
@@ -510,7 +445,7 @@
 															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 100px;"  maxlength="10"/></td>
 															<td width="50px;" align="left"><input type="text" name="size" id="size" value="<%=bean.getSize()%> " style="width: 100px;" maxlength="4"/></td>
 															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId" value="<%=bean.getCompanyId()%> " style="width: 100px;"/>
-															    <input type="text" name="companyName" id="companyName" value="<%=bean.getCompanyName()%> " style="width: 150px;"  readonly="readonly" />
+															    <input type="text" name="branchName" id="branchName" value="<%=bean.getBranchName()%> " style="width: 150px;"  readonly="readonly" />
 															</td>
 															<td width="50px" align="center">
 															   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(this);" ></button>

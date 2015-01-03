@@ -155,7 +155,7 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 	}
 	
 	private void getBrandName(){
-		System.out.println("[MotorDemoSvc][getBrandName][Begin]");
+		System.out.println("[MotorDetailServlet][getBrandName][Begin]");
 		String							brandName				= null;
 		List<String> 					list 					= new ArrayList<String>();
 		String[]						strArray				= null;
@@ -181,11 +181,11 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 	   }finally{
 		   logger.info("[lp_getBrandName][End]");
 	   }
-	   System.out.println("[MotorDemoSvc][getBrandName][End]");
+	   System.out.println("[MotorDetailServlet][getBrandName][End]");
 	}
 	 
 	private void getModel(){
-		   logger.info("[getModel][Begin]");
+		   logger.info("[MotorDetailServlet][getModel][Begin]");
 		   
 		   String							brandName				= null;
 		   String							model					= null;
@@ -214,25 +214,25 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 			   e.printStackTrace();
 			   logger.info("[getModel] " + e.getMessage());
 		   }finally{
-			   logger.info("[getModel][End]");
+			   logger.info("[MotorDetailServlet][getModel][End]");
 		   }
 	   }
 	private void getCompany(){
-		System.out.println("[MotorDemoSvc][getCompany][Begin]");
-		String							companyName				= null;
+		System.out.println("[MotorDetailServlet][getCompany][Begin]");
+		String							branchName				= null;
 		List<String> 					list 					= new ArrayList<String>();
 		String[]						strArray				= null;
 		MotorDetailBean 				motorDetailBean			= null;
 	       
 	   try{
-		   companyName					= EnjoyUtils.nullToStr(this.request.getParameter("companyName"));
+		   branchName					= EnjoyUtils.nullToStr(this.request.getParameter("branchName"));
 		   motorDetailBean				= this.form.getMotorDetailBean();
 		   
-		   logger.info("[getCompany] branchName 			:: " + companyName);
+		   logger.info("[getCompany] branchName 			:: " + branchName);
 		   
-		   motorDetailBean.setCompanyName(companyName);
+		   motorDetailBean.setBranchName(branchName);
 		   
-		   list 		= this.dao.companyNameList(companyName);
+		   list 		= this.dao.branchNameList(branchName);
 		   strArray 	= new String[list.size()];
 		   strArray 	= list.toArray(strArray); 
 		   
@@ -244,14 +244,13 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 	   }finally{
 		   logger.info("[getCompany][End]");
 	   }
-	   System.out.println("[MotorDemoSvc][getCompany][End]");
+	   System.out.println("[MotorDetailServlet][getCompany][End]");
 	}
 	
 	private void saveUpdData() throws Exception{
 		System.out.println("[MotorDetailServlet][saveUpdRecord][Begin]");
 		
-		String				   motorCode	    = null;
-		String				   motorDelete	    = null;
+		String				   motorCode	    = null; 
 		String				   brandCode	    = null; 
 		String				   brandName	    = null; 
 		String				   model 	        = null; 
@@ -259,7 +258,7 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 		String				   engineNo	        = null; 
 		String				   size	            = null; 
 		String				   companyId	    = null; 
-		String				   companyName	    = null; 
+		String				   branchName	    = null; 
 		String[]			   getMotorCode	    = null;
 		String[]			   getBrandCode	    = null;
 		String[]			   getBrandName	    = null;
@@ -268,13 +267,11 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 		String[]			   getEngineNo	    = null; 
 		String[]			   getSize	        = null;
 		String[]			   getCompanyId     = null;
-		String[]			   getCompanyName	= null;
-		String[]			   getMotorStatus	= null;
-		String[]               motorCodes       = null;
+		String[]			   getBranchName	= null;
+		String[]			   getMotorStatus	= null; 
 		MotorDetailBean 	   bean 		    = null;
 		BrandBean 	           brandBean 		= null;
-		MotorDetailBean 	   companyBean 		= null;
-		List<MotorDetailBean>  list			    = null;	
+		MotorDetailBean 	   companyBean 		= null; 	
 		boolean				   insertRet		= false;
 		boolean				   updateRet		= false;
 		JSONObject 			   obj 			    = new JSONObject();
@@ -289,7 +286,7 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 			getEngineNo		    = this.request.getParameterValues("engineNo"); 
 			getSize		        = this.request.getParameterValues("size"); 
 			getCompanyId		= this.request.getParameterValues("hidCompanyId"); 
-			getCompanyName		= this.request.getParameterValues("companyName");  
+			getBranchName		= this.request.getParameterValues("branchName");  
 			getMotorStatus		= this.request.getParameterValues("hidMotorStartus");
 
 			System.out.println("[MotorDetailServlet][MoterCode . length : ]" + getMotorCode.length);
@@ -304,7 +301,7 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 				engineNo	    = EnjoyUtils.nullToStrUpperCase(getEngineNo[i]); 
 				size	        = EnjoyUtils.nullToStr(getSize[i]); 
 				companyId	    = EnjoyUtils.nullToStr(getCompanyId[i]); 
-				companyName     = EnjoyUtils.nullToStr(getCompanyName[i]);
+				branchName     = EnjoyUtils.nullToStr(getBranchName[i]);
 			   	bean	= new MotorDetailBean();   	
 			   	bean.setMotorcyclesCode(motorCode); 
 		   		bean.setBrandCode(brandCode);
@@ -314,13 +311,13 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 		   		bean.setEngineNo(engineNo);
 		   		bean.setSize(size);
 		   		bean.setCompanyId(companyId);
-		   		bean.setCompanyName(companyName.toUpperCase());  
+		   		bean.setBranchName(branchName.toUpperCase());  
 			 
 			   logger.info("[lp_save] brandName  :: " + brandName);
-			   logger.info("[lp_save] companyName 	:: " + companyName); 
+			   logger.info("[lp_save] branchName 	:: " + branchName); 
 			   
 			   brandBean 		= this.dao.validateBrandName(brandName);  
-			   companyBean 		= this.dao.validateCompanyName(companyName);
+			   companyBean 		= this.dao.validateBranchName(branchName);
 			   
 			   
 			   if(brandBean.getErrMsg().equals("")&& companyBean.getErrMsg().equals("")){ 
@@ -372,9 +369,28 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 			obj.put("errMsg", 			"เกิดข้อผิดพลาดในการบันทึกข้อมูล");
 			e.printStackTrace();
 		}finally{ 
-			brandName		= null;
-			getMotorCode	= null; 
-			getMotorStatus	= null;
+			 motorCode	    = null; 
+			 brandCode	    = null; 
+			 brandName	    = null; 
+			 model 	        = null; 
+			 chassis	    = null; 
+			 engineNo	    = null; 
+			 size	        = null; 
+			 companyId	    = null; 
+			 branchName	    = null; 
+			 getMotorCode	= null;
+			 getBrandCode	= null;
+			 getBrandName	= null;
+			 getModel 	    = null;
+			 getChassis	    = null; 
+			 getEngineNo	= null; 
+			 getSize	    = null;
+			 getCompanyId   = null;
+			 getBranchName	= null;
+			 getMotorStatus	= null; 
+			 bean 		    = null;
+			 brandBean 		= null;
+			 companyBean 	= null; 	 
 			updateRet	    = false;
 			insertRet	    = false;
 			System.out.println("[MotorDetailServlet][saveUpdRecord][End]");
