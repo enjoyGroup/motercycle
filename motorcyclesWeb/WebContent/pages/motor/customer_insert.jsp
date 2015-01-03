@@ -260,7 +260,7 @@
 																	<%if(customerBean.getIdType().equals("2")){%> checked="checked" <%} %>>นิติบุคคล</label> 
 														</div>
 														 <div class="col-md-1"style="width:40px;"></div>  
-														<label class="col-sm-1 control-label" style="text-align:right">เลขผู้เสียภาษี</label> 
+														<label class="col-sm-1 control-label" style="text-align:right">เลขผู้เสียภาษี<font color="red">*</font>:</label> 
 														<div class="col-md-2"> 
 														    <input type="text" class="form-control" id="idNumber" name="idNumber" value="<%=customerBean.getIdNumber()%>" maxlength="13">
 														</div> 

@@ -1261,6 +1261,20 @@
 										<div class="panel-body"> 
 											<table border="0" width="100%">
 												<tr>
+													<td>
+														<label class="col-sm-2 control-label" style="text-align:right">
+														เลขผู้เสียภาษี<font color="red">*</font>:</label>
+													</td>
+													<td colspan="1">
+														<input  type="text"
+																id="idNumber" 
+																name="idNumber"
+																size="20"
+																maxlength="13"
+																onblur="lp_getCustDtlByIdNumber();"
+																value="<%=customerBean.getIdNumber() %>"
+														/>
+													</td>
 													<td colspan="2">
 														<label class="col-sm-2 control-label" style="text-align:right">
 															<input  type="radio" 
@@ -1280,20 +1294,6 @@
 															/>
 															นิติบุคคล
 														</label>
-													</td>
-													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">
-														เลขผู้เสียภาษี<font color="red">*</font>:</label>
-													</td>
-													<td colspan="3">
-														<input  type="text"
-																id="idNumber" 
-																name="idNumber"
-																size="20"
-																maxlength="13"
-																onblur="lp_getCustDtlByIdNumber();"
-																value="<%=customerBean.getIdNumber() %>"
-														/>
 													</td>
 												</tr>
 												<tr>

@@ -215,8 +215,7 @@
 	 	
 		
 	});
-	
-	 
+ 
 	function lp_add_row_table(){
 		var lo_table 	 = null;
 		var lv_length 	 = null;
@@ -390,12 +389,12 @@
 												 <div class="form-group"> 
 													<div class="col-sm-12">
 														<div class="row"> 
-														    <label class="col-sm-10 control-label" style="text-align:right">ยี่ห้อ :</label>
+														    <label class="col-sm-10 control-label" style="text-align:right">ยี่ห้อ<font color="red">*</font>:</label>
 															<div class="col-md-2"> 
 																<input type="text" id="brandSearch" name="brandSearch"  value="<%=motorDetailBean.getBrandSearch()%>" <%if(!motorDetailBean.getBrandSearch().equalsIgnoreCase("")){%> disabled="disabled" <%} %> />
 																<input type="hidden" name="brandCode" id="brandCode"  value="<%=motorDetailBean.getBrandCode()%>"/> 
 															</div>
-															<label class="col-sm-1 control-label" style="text-align:right">บริษัทที่เก็บ :</label>
+															<label class="col-sm-1 control-label" style="text-align:right">บริษัทที่เก็บ<font color="red">*</font>:</label>
 															<div class="col-md-2">  
 																<input type="text" id="companySearch" name="companySearch" value="<%=motorDetailBean.getCompanySearch()%>" <%if((!motorDetailBean.getBrandSearch().equalsIgnoreCase(""))||(!motorDetailBean.getCompanySearch().equalsIgnoreCase(""))){%> disabled="disabled" <%} %> >
 																<input type="hidden" name="companyId" id="companyId"  value="<%=motorDetailBean.getCompanyId()%>"/>
@@ -443,7 +442,7 @@
 															<td width="100px;" align="left"><input type="text" name="model" id="model" value="<%=bean.getModel()%> " style="width: 100px;" maxlength="10"/></td>
 															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 100px;"  maxlength="10"/></td>
 															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 100px;"  maxlength="10"/></td>
-															<td width="50px;" align="left"><input type="text" name="size" id="size" value="<%=bean.getSize()%> " style="width: 100px;" maxlength="4"/></td>
+															<td width="50px;" align="left"><input type="text" name="size" id="size" value="<%=bean.getSize()%> " style="width: 100px;" maxlength="5"/></td>
 															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId" value="<%=bean.getCompanyId()%> " style="width: 100px;"/>
 															    <input type="text" name="branchName" id="branchName" value="<%=bean.getBranchName()%> " style="width: 150px;"  readonly="readonly" />
 															</td>

@@ -63,7 +63,7 @@ public class MotorDetailDao {
 				motorDetailBean.setModel(EnjoyUtils.nullToStr(rs.getString("model")));
 				motorDetailBean.setChassis(EnjoyUtils.nullToStr(rs.getString("chassis")));
 				motorDetailBean.setEngineNo(EnjoyUtils.nullToStr(rs.getString("engineNo")));
-				motorDetailBean.setSize(EnjoyUtils.nullToStr(rs.getString("size")));
+				motorDetailBean.setSize(EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("size")), 0));
 				motorDetailBean.setCompanyId(EnjoyUtils.nullToStr(rs.getString("companyId")));
 				motorDetailBean.setCompanyName(EnjoyUtils.nullToStr(rs.getString("companyName")));
 				motorDetailBean.setBranchName(EnjoyUtils.nullToStr(rs.getString("branchName")));
