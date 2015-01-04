@@ -302,6 +302,8 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 				size	        = EnjoyUtils.nullToStr(getSize[i]); 
 				companyId	    = EnjoyUtils.nullToStr(getCompanyId[i]); 
 				branchName     = EnjoyUtils.nullToStr(getBranchName[i]);
+				 
+			  	
 			   	bean	= new MotorDetailBean();   	
 			   	bean.setMotorcyclesCode(motorCode); 
 		   		bean.setBrandCode(brandCode);
@@ -309,7 +311,7 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 		   		bean.setModel(model);
 		   		bean.setChassis(chassis);
 		   		bean.setEngineNo(engineNo);
-		   		bean.setSize(size);
+		   		bean.setSize(EnjoyUtils.replaceComma(size));
 		   		bean.setCompanyId(companyId);
 		   		bean.setBranchName(branchName.toUpperCase());  
 			 

@@ -171,7 +171,7 @@
 	    	if(!lp_validate()){
 	    		return;
 	    	}
-	    	
+	    	 
 		    try{
 		    	lv_params 	= "&pageAction=" + pageAction + "&" + $('#frm').serialize();
 		    	
@@ -250,7 +250,7 @@
 			cell3.innerHTML = "<td width='100px;' align='left'><input type='text' name='model' id='model'  style='width: 100px;' maxlength='10'/></td>";	
 			cell4.innerHTML = "<td width='100px;' align='left'><input type='text' name='chassis' id='chassis'   style='width: 100px;' maxlength='10'/></td>";
 			cell5.innerHTML = "<td width='100px;' align='left'><input type='text' name='engineNo' id='engineNo'  style='width: 100px;'  maxlength='10'/></td>";
-			cell6.innerHTML = "<td width='50px;'  align='left'><input type='text' name='size' id='size'   style='width: 100px;' maxlength='4'/></td>";
+			cell6.innerHTML = "<td width='50px;'  align='left'><input type='text' name='size' id='size'   style='width: 100px;' maxlength='4' onblur='lp_onBlurFormatNumber(this);'/></td>";
 			cell7.innerHTML = "<td width='100px;' align='left'><input type='hidden' name='hidCompanyId' id='hidCompanyId'  style='width: 100px;'/>" +
 			                  "<input type='text' name='branchName' id='branchName' value='" + companySearch + "'  style='width: 150px;' readonly = 'readonly'/></td>";
 			cell8.innerHTML = "<td width='50px' align='center'><button id='btn_delete'  name='btn_delete'  class='btn btn-warning btn-mini fa fa-times' style='width:25px;' onclick='lp_del_row_table(this);' ></button><input type='hidden' name='hidMotorStartus' id='hidMotorStartus'  value='N'/></td>";
@@ -283,9 +283,36 @@
 		}
 	}
 	
+	function lp_onBlurFormatNumber(ao_obj){
+        var lo_size 		    = null;
+        var lv_size               = null;
+        var lv_index			= 0;    
+ 		
+		try{ 
+			lv_index	= gp_rowTableIndex(ao_obj);
+			lv_index    = lv_index-1; 
+			lo_size     = document.getElementsByName("size");
+			lv_size     = lo_size[lv_index].value;
+			
+			if(gp_trim(lv_size)==""){
+				lv_size = "0.00";
+			}
+			
+			if(gp_format(lo_size[lv_index], 0)==false){
+				alert("กรุณาระบุตัวเลขเท่านั้น");
+				lv_size = "0.00";
+				return;
+			}
+			 
+			
+		}catch(e){
+			alert("lp_onBlurFormatNumber :: " + e);
+		}
+	}
+	
 	function lp_validate(){
-		var la_idName               = new Array("brandName", "model", "chassis", "engineNo", "size");
-	    var la_msg               	= new Array("ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี");
+		var la_idName               = new Array("brandName", "model", "chassis", "engineNo", "size","branchName");
+	    var la_msg               	= new Array("ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี","บริษัทที่เก็บ");
 	    var lo_flagAddSales			= null;
 	    var lo_commAmount			= null;
 	    var lo_obj                  = null;
@@ -442,7 +469,7 @@
 															<td width="100px;" align="left"><input type="text" name="model" id="model" value="<%=bean.getModel()%> " style="width: 100px;" maxlength="10"/></td>
 															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 100px;"  maxlength="10"/></td>
 															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 100px;"  maxlength="10"/></td>
-															<td width="50px;" align="left"><input type="text" name="size" id="size" value="<%=bean.getSize()%> " style="width: 100px;" maxlength="5"/></td>
+															<td width="50px;" align="left"><input type="text" name="size" id="size" value="<%=bean.getSize()%> " style="width: 100px;" maxlength="4"  onblur="lp_onBlurFormatNumber(this);"/></td>
 															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId" value="<%=bean.getCompanyId()%> " style="width: 100px;"/>
 															    <input type="text" name="branchName" id="branchName" value="<%=bean.getBranchName()%> " style="width: 150px;"  readonly="readonly" />
 															</td>
