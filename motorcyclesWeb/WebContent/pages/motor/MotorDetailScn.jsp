@@ -42,11 +42,11 @@
 		    	return false;
 		    }
 		    
-		    if(companySearch == ""){
+		   /*  if(companySearch == ""){
 		    	alert("กรุณาระบุบริษัทที่เก็บก่อนทำการค้นหา");
 		    	return false;
 		    }
-		    
+		     */
 			try{
 				brandSearch = brandSearch.trim(); 
 				companySearch = companySearch.trim(); 
@@ -62,7 +62,7 @@
 		            url: gv_url,
 		            data: lv_params,
 		            beforeSend: "",
-		            success: function(data){  
+		            success: function(data){   
 		            }
 		        });
 			}catch(err){
@@ -162,7 +162,76 @@
 			    	  //lp_getProdDtl();
 			      }
 		});
+		
+		//****************************** AUTO Complete for Table ******************************//
+		$(".brandNameClass").live("focus",function(){
+			$(this).autocomplete({
+				 
+				 source: function(request, response) {
+		           $.ajax({
+		           	async:false,
+			            type: "POST",
+		               url: gv_url,
+		               dataType: "json",
+		               data: gv_service + "&pageAction=getBrandName&brandName=" + gp_trim(request.term),//request,
+		               success: function( data, textStatus, jqXHR) {
+		                   var items = data;
+		                   response(items);
+		               },
+		               error: function(jqXHR, textStatus, errorThrown){
+		                    alert( textStatus);
+		               }
+		           });
+		         },
+			      minLength: 0,//กี่ตัวอักษรถึงทำงาน
+			      open: function() {
+						//Data return กลับมาแล้วทำไรต่อ
+			      },
+			      close: function() { 
+			      },
+			      focus:function(event,ui) { 
+			      },
+			      select: function( event, ui ) { 
+			      }
+			  });
+			
+		});
+		
+	
+		$(".branchNameClass").live("focus",function(){
+			$(this).autocomplete({
+		
+				source: function(request, response) {
+			           $.ajax({
+			           	async:false,
+				            type: "POST",
+			               url: gv_url,
+			               dataType: "json",
+			               data: gv_service + "&pageAction=getCompany&branchName=" + gp_trim(request.term),//request,
+			               success: function( data, textStatus, jqXHR) {
+			                   var items = data;
+			                   response(items);
+			               },
+			               error: function(jqXHR, textStatus, errorThrown){
+			                    alert( textStatus);
+			               }
+			           });
+			         },
+				      minLength: 0,//กี่ตัวอักษรถึงทำงาน
+				      open: function() {
+							//Data return กลับมาแล้วทำไรต่อ
+				      },
+				      close: function() { 
+				      },
+				      focus:function(event,ui) { 
+				      },
+				      select: function( event, ui ) { 
+				      }
+			     });
+			
+		   });
   
+		//****************************** AUTO Complete for Table ******************************//
 		 
 		$('#btnSave').click(function(){ 
 			var pageAction			= "saveUpdData";
@@ -183,6 +252,11 @@
 		            beforeSend: "",
 		            success: function(data){
 		            	alert("บันทึกรายการเรียบร้อย  ");
+		            	// $('#frm :input').attr("readonly", true); 
+		            	//$('#btnSave').attr("readonly", false);  
+		            	$('.brandNameClass').attr("readonly", true); 
+		            	$('.branchNameClass').attr("readonly", true); 
+		            	 
 		            }
 		        });
 		    	
@@ -213,9 +287,11 @@
 			
 		}); 
 	 	
+	    
 		
 	});
- 
+	
+	
 	function lp_add_row_table(){
 		var lo_table 	 = null;
 		var lv_length 	 = null;
@@ -244,44 +320,22 @@
 		 
 			
 			cell1.align	= "center"; 
-			cell8.align	= "center";
+			cell8.align	= "center"; 
 			cell1.innerHTML = "<td width='15px;' align='center'><input type='hidden' name='hidMotorcyclesCode' id='hidMotorcyclesCode' value='" + lv_length + "'/>"+"<b>" + lv_length + "<b>";
-			cell2.innerHTML = "<td width='100px;' align='left' ><input type='hidden' name='hidBrandCode' id='hidBrandCode'  /><input type='text' name='brandName' id='brandName' value='" + brandSearch + "' style='width: 100px;' readonly = 'readonly'/></td>";
+			cell2.innerHTML = "<td width='100px;' align='left' ><input type='hidden' name='hidBrandCode' id='hidBrandCode'  /><input type='text' name='brandName' id='brandName' class='brandNameClass' value='" + brandSearch + "' style='width: 100px;' /></td>";
 			cell3.innerHTML = "<td width='100px;' align='left'><input type='text' name='model' id='model'  style='width: 100px;' maxlength='10'/></td>";	
 			cell4.innerHTML = "<td width='100px;' align='left'><input type='text' name='chassis' id='chassis'   style='width: 100px;' maxlength='10'/></td>";
 			cell5.innerHTML = "<td width='100px;' align='left'><input type='text' name='engineNo' id='engineNo'  style='width: 100px;'  maxlength='10'/></td>";
 			cell6.innerHTML = "<td width='50px;'  align='left'><input type='text' name='size' id='size'   style='width: 100px;' maxlength='4' onblur='lp_onBlurFormatNumber(this);'/></td>";
 			cell7.innerHTML = "<td width='100px;' align='left'><input type='hidden' name='hidCompanyId' id='hidCompanyId'  style='width: 100px;'/>" +
-			                  "<input type='text' name='branchName' id='branchName' value='" + companySearch + "'  style='width: 150px;' readonly = 'readonly'/></td>";
+			                  "<input type='text' name='branchName' id='branchName' class='branchNameClass' value='" +companySearch+ "'  style='width: 150px;' /></td>";
 			cell8.innerHTML = "<td width='50px' align='center'><button id='btn_delete'  name='btn_delete'  class='btn btn-warning btn-mini fa fa-times' style='width:25px;' onclick='lp_del_row_table(this);' ></button><input type='hidden' name='hidMotorStartus' id='hidMotorStartus'  value='N'/></td>";
-			
-			/* 			
-  			var lo_brandName    = null;
-			var lo_companyName  = null;
-			
-			if(brandCode!=""&&brandCode!=null){
-			alert(brandCode);  
-			    lo_brandName    = document.getElementsByName("brandName"); 
-			    for(var i=0;i<lo_brandName.length;i++){
-			    	lo_brandName[i].readonly = "readonly";  
-			    } 
-			    
-			} 
-			
-			if(companyId!=""&&companyId!=null){
-			alert(companyId);   
-			    lo_companyName  = document.getElementsByName("companyName");
-			    for(var i=0;i<lo_companyName.length;i++){
-			    	lo_companyName[i].readonly = "readonly";  
-			    } 
-			    
-			}  
-			*/
+			   
 			
 		}catch(e){
 			alert("lp_add_row_table :: " + e);
 		}
-	}
+	}  
 	
 	function lp_onBlurFormatNumber(ao_obj){
         var lo_size 		    = null;
@@ -464,14 +518,14 @@
 														 <tr>
 															<td width="15px;" align="center"><input type="hidden" name="hidMotorcyclesCode" id="hidMotorcyclesCode"  value="<%=bean.getMotorcyclesCode()%>"/><B><%=rowNumber%></B></td>
 															<td width="100px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode"  value="<%=bean.getBrandCode()%>"/>
-															    <input type="text" name="brandName" id="brandName" value="<%=bean.getBrandName()%>" style="width: 100px;" readonly="readonly"/>
+															    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=bean.getBrandName()%>" style="width: 100px;" readonly="readonly"/>
 															</td>
 															<td width="100px;" align="left"><input type="text" name="model" id="model" value="<%=bean.getModel()%> " style="width: 100px;" maxlength="10"/></td>
 															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 100px;"  maxlength="10"/></td>
 															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 100px;"  maxlength="10"/></td>
 															<td width="50px;" align="left"><input type="text" name="size" id="size" value="<%=bean.getSize()%> " style="width: 100px;" maxlength="4"  onblur="lp_onBlurFormatNumber(this);"/></td>
 															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId" value="<%=bean.getCompanyId()%> " style="width: 100px;"/>
-															    <input type="text" name="branchName" id="branchName" value="<%=bean.getBranchName()%> " style="width: 150px;"  readonly="readonly" />
+															    <input type="text" name="branchName" id="branchName" class="branchNameClass" value="<%=bean.getBranchName()%> "  style="width: 150px;" readonly="readonly"  />
 															</td>
 															<td width="50px" align="center">
 															   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(this);" ></button>
@@ -480,13 +534,27 @@
 														</tr> 
 														
 													<% } }else{ %>
-														 <tr>
-															<tr height="26px;"><td colspan="8"><b>ไม่พบข้อมูลที่ระบุ</b></td></tr>
-														 </tr> 
+														   <tr>
+															<td width="15px;" align="center"><input type="hidden" name="hidMotorcyclesCode" id="hidMotorcyclesCode"  /><B>1</B></td>
+															<td width="100px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode" value="<%=motorDetailBean.getBrandCode()%>"/>
+															    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=motorDetailBean.getBrandName()%>" style="width: 100px;" />
+															</td>
+															<td width="100px;" align="left"><input type="text" name="model" id="model" style="width: 100px;"  maxlength="10"/></td>
+															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis"   style="width: 100px;"  maxlength="10"/></td>
+															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo"   style="width: 100px;" maxlength="10"/></td>
+															<td width="50px;" align="left"><input type="text" name="size" id="size"   style="width: 100px;" maxlength="4" onblur="lp_onBlurFormatNumber(this);"/></td>
+															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId"  value="<%=motorDetailBean.getCompanyId()%>"  style="width: 100px;"/>
+															   <input type="text" name="branchName" id="branchName" class="branchNameClass"   value="<%=motorDetailBean.getBranchName()%>" style="width: 150px;"/>
+															</td>
+															<td width="50px" align="center">
+															   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(this);" ></button>
+															   <input type="hidden" name="hidMotorStartus" id="hidMotorStartus"  value="N"/> 
+															</td> 
+														</tr>  
 													<% } 
 													 
-												%>
-												<%if(motorDetailBeans.size()>0){%> 
+												%> 
+												
 												  <tr>
 													<td style="visibility:hidden;"></td>
 													<td style="visibility:hidden;"></td>
@@ -499,7 +567,7 @@
 													  <a id="btn_add" href="#" class="btn btn-warning btn-mini fa fa-plus-square" style="width:25px;" onclick="lp_add_row_table();"></a>
 													</td>
 												 </tr>  
-												<%} %>	
+										 
 											</table> 
 										</div> 
 								    </section>
