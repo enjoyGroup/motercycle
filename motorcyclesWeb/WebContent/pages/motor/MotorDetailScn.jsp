@@ -255,8 +255,7 @@
 		            	// $('#frm :input').attr("readonly", true); 
 		            	//$('#btnSave').attr("readonly", false);  
 		            	$('.brandNameClass').attr("readonly", true); 
-		            	$('.branchNameClass').attr("readonly", true); 
-		            	 
+		            	$('.branchNameClass').attr("readonly", true);             	 		            	 
 		            }
 		        });
 		    	
@@ -322,7 +321,7 @@
 			cell1.align	= "center"; 
 			cell8.align	= "center"; 
 			cell1.innerHTML = "<td width='15px;' align='center'><input type='hidden' name='hidMotorcyclesCode' id='hidMotorcyclesCode' value='" + lv_length + "'/>"+"<b>" + lv_length + "<b>";
-			cell2.innerHTML = "<td width='100px;' align='left' ><input type='hidden' name='hidBrandCode' id='hidBrandCode'  /><input type='text' name='brandName' id='brandName' class='brandNameClass' value='" + brandSearch + "' style='width: 100px;' /></td>";
+			cell2.innerHTML = "<td width='100px;' align='left' ><input type='hidden' name='hidBrandCode' id='hidBrandCode'  /><input type='text' name='brandName' id='brandName' class='brandNameClass' value='" + brandSearch + "' style='width: 100px;' readonly='readonly' /></td>";
 			cell3.innerHTML = "<td width='100px;' align='left'><input type='text' name='model' id='model'  style='width: 100px;' maxlength='10'/></td>";	
 			cell4.innerHTML = "<td width='100px;' align='left'><input type='text' name='chassis' id='chassis'   style='width: 100px;' maxlength='10'/></td>";
 			cell5.innerHTML = "<td width='100px;' align='left'><input type='text' name='engineNo' id='engineNo'  style='width: 100px;'  maxlength='10'/></td>";
@@ -475,13 +474,14 @@
 																<input type="text" id="brandSearch" name="brandSearch"  value="<%=motorDetailBean.getBrandSearch()%>" <%if(!motorDetailBean.getBrandSearch().equalsIgnoreCase("")){%> disabled="disabled" <%} %> />
 																<input type="hidden" name="brandCode" id="brandCode"  value="<%=motorDetailBean.getBrandCode()%>"/> 
 															</div>
-															<label class="col-sm-1 control-label" style="text-align:right">บริษัทที่เก็บ<font color="red">*</font>:</label>
+															<label class="col-sm-1 control-label" style="text-align:right">บริษัทที่เก็บ:</label>
 															<div class="col-md-2">  
 																<input type="text" id="companySearch" name="companySearch" value="<%=motorDetailBean.getCompanySearch()%>" <%if((!motorDetailBean.getBrandSearch().equalsIgnoreCase(""))||(!motorDetailBean.getCompanySearch().equalsIgnoreCase(""))){%> disabled="disabled" <%} %> >
 																<input type="hidden" name="companyId" id="companyId"  value="<%=motorDetailBean.getCompanyId()%>"/>
 															</div> 
 														 
 														  <!--   <input type="button" class="btn btn-primary" id="btnSearch" name="btnSearch" value="ค้นหา"/>  -->  
+														  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 														    <button class="btn btn-primary" id="btnSearch" name="btnSearch">ค้นหา</button>
 											                <button class="btn btn-primary" id="btnCancel" name="btnCancel">เริ่มใหม่</button>
 													</div> 

@@ -196,7 +196,7 @@
 											</table> 
 										</div>
 										<div class="form-group" align="center">	 
-											<button class="btn btn-primary" id="btnSave">บันทึก</button>   
+											<input type="button" class="btn btn-primary" id="btnSave" name="btnSave" value="บันทึก" /> 
 											<button class="btn btn-primary" id="btnCancel" onclick="lp_reset_page();">เริ่มใหม่</button> 
 										</div> 
 								    </section>
