@@ -39,6 +39,7 @@ public class SummarySaleDetailDao {
         String 											priceAmount 		= null;
         String 											vatAmount 			= null;
         String 											commAmount 			= null;
+		String											totalAmount			= null;
 		
 		try{
 			this.db    					= new EnjoyConectDbs();
@@ -56,6 +57,7 @@ public class SummarySaleDetailDao {
 											+ " , m.model model"
 											+ " , i.priceAmount priceAmount"
 											+ " , i.vatAmount vatAmount"
+											+ " , i.totalAmount totalAmount"
 											+ " , i.commAmount commAmount"
 											+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate"
 											+ " ,i.remark remark"
@@ -106,10 +108,12 @@ public class SummarySaleDetailDao {
 		    	
 		    	priceAmount 		= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("priceAmount")), 2);
 		        vatAmount 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("vatAmount")), 2);
+		        totalAmount			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("totalAmount")), 2);
 		        commAmount 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("commAmount")), 2);
 		    	
 		    	bean.setPriceAmount			(priceAmount);
 		    	bean.setVatAmount			(vatAmount);
+		    	bean.setTotalAmount			(totalAmount);
 		    	bean.setCommAmount			(commAmount);
 		    	bean.setRemark				(EnjoyUtils.nullToStr(rs.getString("remark")));
 		    	

@@ -328,7 +328,7 @@
 															<td><%=bean.getMotorcyclesdetails()%></td>
 															<td class="money-text"><%=bean.getPriceAmount()%></td>
 															<td class="money-text"><%=bean.getVatAmount()%></td>
-															<td class="money-text"><%=bean.getCommAmount()%></td>
+															<td class="money-text"><%=bean.getTotalAmount()%></td>
 															<td><%=bean.getRemark()%></td>
 														</tr>
 														<% seq++;} %>

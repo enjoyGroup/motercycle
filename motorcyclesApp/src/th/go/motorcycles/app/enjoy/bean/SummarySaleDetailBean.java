@@ -7,6 +7,7 @@ public class SummarySaleDetailBean {
 	private String						motorcyclesdetails;
 	private String						priceAmount;
 	private String						vatAmount;
+	private String						totalAmount;
 	private String						commAmount;
 	private String						remark;
 	
@@ -16,6 +17,7 @@ public class SummarySaleDetailBean {
 		this.motorcyclesdetails 	= "";
 		this.priceAmount 			= "";
 		this.vatAmount	 			= "";
+		this.totalAmount			= "";
 		this.commAmount 			= "";
 		this.remark					= "";
 	}
@@ -74,6 +76,14 @@ public class SummarySaleDetailBean {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(String totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 }
