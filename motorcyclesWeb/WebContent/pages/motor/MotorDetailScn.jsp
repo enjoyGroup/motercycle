@@ -240,7 +240,7 @@
 	    	if(!lp_validate()){
 	    		return;
 	    	}
-	    	 
+
 		    try{
 		    	lv_params 	= "&pageAction=" + pageAction + "&" + $('#frm').serialize();
 		    	
@@ -253,7 +253,8 @@
 		            success: function(data){
 		            	alert("บันทึกรายการเรียบร้อย  ");
 		            	// $('#frm :input').attr("readonly", true); 
-		            	//$('#btnSave').attr("readonly", false);  
+		            	//$('#btnSave').attr("readonly", false); 
+		            	$('.hidMotorStartus').val("U");
 		            	$('.brandNameClass').attr("readonly", true); 
 		            	$('.branchNameClass').attr("readonly", true);             	 		            	 
 		            }
@@ -321,14 +322,14 @@
 			cell1.align	= "center"; 
 			cell8.align	= "center"; 
 			cell1.innerHTML = "<td width='15px;' align='center'><input type='hidden' name='hidMotorcyclesCode' id='hidMotorcyclesCode' value='" + lv_length + "'/>"+"<b>" + lv_length + "<b>";
-			cell2.innerHTML = "<td width='100px;' align='left' ><input type='hidden' name='hidBrandCode' id='hidBrandCode'  /><input type='text' name='brandName' id='brandName' class='brandNameClass' value='" + brandSearch + "' style='width: 100px;' readonly='readonly' /></td>";
+			cell2.innerHTML = "<td width='100px;' align='left' ><input type='hidden' name='hidBrandCode' id='hidBrandCode'  /><input type='text' name='brandName' id='brandName' class='brandNameClass' value='" + brandSearch + "' style='width: 100px;' /></td>";
 			cell3.innerHTML = "<td width='100px;' align='left'><input type='text' name='model' id='model'  style='width: 100px;' maxlength='10'/></td>";	
 			cell4.innerHTML = "<td width='100px;' align='left'><input type='text' name='chassis' id='chassis'   style='width: 100px;' maxlength='10'/></td>";
 			cell5.innerHTML = "<td width='100px;' align='left'><input type='text' name='engineNo' id='engineNo'  style='width: 100px;'  maxlength='10'/></td>";
 			cell6.innerHTML = "<td width='50px;'  align='left'><input type='text' name='size' id='size'   style='width: 100px;' maxlength='4' onblur='lp_onBlurFormatNumber(this);'/></td>";
 			cell7.innerHTML = "<td width='100px;' align='left'><input type='hidden' name='hidCompanyId' id='hidCompanyId'  style='width: 100px;'/>" +
 			                  "<input type='text' name='branchName' id='branchName' class='branchNameClass' value='" +companySearch+ "'  style='width: 150px;' /></td>";
-			cell8.innerHTML = "<td width='50px' align='center'><button id='btn_delete'  name='btn_delete'  class='btn btn-warning btn-mini fa fa-times' style='width:25px;' onclick='lp_del_row_table(this);' ></button><input type='hidden' name='hidMotorStartus' id='hidMotorStartus'  value='N'/></td>";
+			cell8.innerHTML = "<td width='50px' align='center'><button id='btn_delete'  name='btn_delete'  class='btn btn-warning btn-mini fa fa-times' style='width:25px;' onclick='lp_del_row_table(this);' ></button><input type='hidden' name='hidMotorStartus' id='hidMotorStartus' class='hidMotorStartus' value='N'/></td>";
 			   
 			
 		}catch(e){
@@ -369,20 +370,22 @@
 	    var lo_flagAddSales			= null;
 	    var lo_commAmount			= null;
 	    var lo_obj                  = null;
+	    var lv_max_length			= 0;
 		try{
 			 
 			for(var i=0;i<la_idName.length;i++){
-	            lo_obj          = eval('document.getElementById("' + la_idName[i] + '")');
-	             
-	            if(gp_trim(lo_obj.value)==""){
-	            	//alert("กรุณาระบุ " + la_msg[i]);   
-	            	alert("กรุณาระบุข้อมูลให้ครบถ้วนก่อนทำการบันทึก");
-	                return false;
-	            }
-	             
+	            //lo_obj          = eval('document.getElementById("' + la_idName[i] + '")');
+	            lo_obj          	= document.getElementsByName(la_idName[i]);
+	    		lv_max_length 		= lo_obj.length;
+	    		for (j=0;j<lv_max_length;j++)
+	    		{
+		            if(gp_trim(lo_obj[j].value)==""){
+		            	//alert("กรุณาระบุ " + la_msg[i]);   
+		            	alert("กรุณาระบุข้อมูลให้ครบถ้วนก่อนทำการบันทึก");
+		                return false;
+		            }
+	    		}
 	        }
-			 
-			
 		}catch(e){
 			alert("lp_validate :: " + e);
 			return false;
@@ -548,7 +551,7 @@
 															</td>
 															<td width="50px" align="center">
 															   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(this);" ></button>
-															   <input type="hidden" name="hidMotorStartus" id="hidMotorStartus"  value="N"/> 
+															   <input type="hidden" name="hidMotorStartus" id="hidMotorStartus"  class='hidMotorStartus'  value="N"/> 
 															</td> 
 														</tr>  
 													<% } 
