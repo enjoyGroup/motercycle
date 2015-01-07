@@ -1,17 +1,14 @@
 package th.go.motorcycles.app.enjoy.dao;
 
-import java.sql.ResultSet; 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-
 import th.go.motorcycles.app.enjoy.bean.BrandBean;
-import th.go.motorcycles.app.enjoy.bean.CustomerBean;
 import th.go.motorcycles.app.enjoy.bean.MotorDetailBean;
 import th.go.motorcycles.app.enjoy.exception.EnjoyException;
 import th.go.motorcycles.app.enjoy.form.MotorDetailForm;
-import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs; 
+import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
 public class MotorDetailDao {	 
@@ -268,7 +265,7 @@ public class MotorDetailDao {
 	}
 	
 	public BrandBean validateBrandName(String brandName){
-		System.out.println("[MotorDetailDao][getBrandName][Begin]");
+		System.out.println("[MotorDetailDao][validateBrandName][Begin]");
 		BrandBean 				        bean		        = null;
 		String 							sql			 		= null;
 		ResultSet 						rs 					= null;  
@@ -278,10 +275,10 @@ public class MotorDetailDao {
 			   this.db    = new EnjoyConectDbs();  
 			   bean			= new BrandBean();
 			   
-			   System.out.println("[MotorDetailDao] brandName :: " + brandName);
+			   System.out.println("[MotorDetailDao][validateBrandName] brandName :: " + brandName);
 			    
 			   
-			   sql 		= "SELECT brandCode FROM branddetails WHERE  brandName like '"+brandName+"%'";
+			   sql 		= "SELECT brandCode FROM branddetails WHERE  brandName = '"+brandName+"'";
 				
 			   System.out.println("[MotorDetailDao][getBrandName] branddetails sql :: " + sql);
 				
@@ -289,9 +286,12 @@ public class MotorDetailDao {
 			    
 			    while(rs.next()){
 			    	brandCode = rs.getString("brandCode").trim();
-			        if(brandCode==null)throw new EnjoyException("ระบุยี่ห้แผิด");
 			    }
-			    bean.setBrandCode(brandCode);
+			    if(brandCode==null){
+			    	throw new EnjoyException("ระบุยี่ห้แผิด");
+			    }else{
+			    	bean.setBrandCode(brandCode);
+			    }
 			   
 		   }catch(EnjoyException e){
 				errMsg = e.getMessage();
@@ -303,7 +303,7 @@ public class MotorDetailDao {
 				e.printStackTrace();
 			}finally{
 				this.db.setDisconnection(rs);
-				  System.out.println("[MotorDetailDao][getBrandName][End]");
+				  System.out.println("[MotorDetailDao][validateBrandName][End]");
 			}
 		   
 		 
@@ -324,7 +324,7 @@ public class MotorDetailDao {
 			   
 			   System.out.println("[MotorDetailDao] branchName :: " + branchName); 
 			   
-			   sql 		= "SELECT * FROM company WHERE  branchName like '"+branchName+"%'";
+			   sql 		= "SELECT * FROM company WHERE  branchName = '"+branchName+"'";
 				
 			   System.out.println("[MotorDetailDao][validateBranchName] company sql :: " + sql);
 				
@@ -333,10 +333,14 @@ public class MotorDetailDao {
 			    while(rs.next()){
 			    	companyId =(Integer) rs.getObject("companyId");
 			    	System.out.println("companyId ::"+companyId); 
-			        if(companyId==null)throw new EnjoyException("ระบุบริษัทผิด");
+//			        if(companyId==null)throw new EnjoyException("ระบุบริษัทผิด");
+			    }
+			    if(companyId==null){
+			    	throw new EnjoyException("ระบุบริษัทผิด");
+			    }else{
+			    	bean.setCompanyId(String.valueOf(companyId));
 			    }
 			    
-			    bean.setCompanyId(String.valueOf(companyId));
 			   
 		   }catch(EnjoyException e){
 				errMsg = e.getMessage();

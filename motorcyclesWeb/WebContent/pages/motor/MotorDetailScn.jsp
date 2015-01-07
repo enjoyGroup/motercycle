@@ -251,12 +251,29 @@
 		            data: lv_params,
 		            beforeSend: "",
 		            success: function(data){
-		            	alert("บันทึกรายการเรียบร้อย  ");
-		            	// $('#frm :input').attr("readonly", true); 
-		            	//$('#btnSave').attr("readonly", false); 
-		            	$('.hidMotorStartus').val("U");
-		            	$('.brandNameClass').attr("readonly", true); 
-		            	$('.branchNameClass').attr("readonly", true);             	 		            	 
+		            	var jsonObj 			= null;
+		            	var status				= null;
+		            	var errMsg				= null;
+		            	
+		            	try{
+		            		jsonObj = JSON.parse(data);
+		            		status	= jsonObj.status;
+		            		
+			            	if(status=="SUCCESS"){
+			            		alert("บันทึกรายการเรียบร้อย  ");
+				            	// $('#frm :input').attr("readonly", true); 
+				            	//$('#btnSave').attr("readonly", false); 
+				            	$('.hidMotorStartus').val("U");
+				            	$('.brandNameClass').attr("readonly", true); 
+				            	$('.branchNameClass').attr("readonly", true); 
+		            		}else{
+		            			errMsg = jsonObj.errMsg;
+		            			
+		            			alert(errMsg);
+		            		}   
+		            	}catch(e){
+		            		alert("in btnSubmit :: " + e);
+		            	}
 		            }
 		        });
 		    	

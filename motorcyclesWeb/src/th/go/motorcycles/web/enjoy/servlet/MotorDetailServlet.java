@@ -1,9 +1,7 @@
 package th.go.motorcycles.web.enjoy.servlet;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -13,17 +11,13 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
-import th.go.motorcycles.app.enjoy.bean.AddressBean;
 import th.go.motorcycles.app.enjoy.bean.BrandBean;
-import th.go.motorcycles.app.enjoy.bean.CustomerBean;
 import th.go.motorcycles.app.enjoy.bean.MotorDetailBean;
-import th.go.motorcycles.app.enjoy.bean.ProductBean;
 import th.go.motorcycles.app.enjoy.bean.UserDetailsBean;
 import th.go.motorcycles.app.enjoy.dao.MotorDetailDao;
 import th.go.motorcycles.app.enjoy.exception.EnjoyException;
-import th.go.motorcycles.app.enjoy.form.MotorDetailForm; 
+import th.go.motorcycles.app.enjoy.form.MotorDetailForm;
 import th.go.motorcycles.app.enjoy.main.Constants;
-import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 import th.go.motorcycles.web.enjoy.common.EnjoyStandardSvc;
 import th.go.motorcycles.web.enjoy.logger.LogWrapper;
@@ -321,6 +315,8 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 			   brandBean 		= this.dao.validateBrandName(brandName);  
 			   companyBean 		= this.dao.validateBranchName(branchName);
 			   
+			   logger.info("[lp_save] brandBean.getErrMsg() 	:: " + brandBean.getErrMsg()); 
+			   logger.info("[lp_save] companyBean.getErrMsg() 	:: " + companyBean.getErrMsg()); 
 			   
 			   if(brandBean.getErrMsg().equals("")&& companyBean.getErrMsg().equals("")){ 
 				   logger.info("[lp_save] BrandCode :: " + brandBean.getBrandCode()); 
@@ -356,6 +352,9 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 				   
 			} 
 			
+			logger.info("[lp_save] insertRet 	:: " + insertRet); 
+			logger.info("[lp_save] updateRet 	:: " + updateRet); 
+			
 			if(insertRet==true && updateRet==true){
 			   obj.put("status", 	"SUCCESS");
 			}else{
@@ -366,11 +365,14 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 		}catch(EnjoyException e){
 			obj.put("status", 			"ERROR");
 			obj.put("errMsg", 			e.getMessage());
+			e.printStackTrace();
 		}catch(Exception e){
 			obj.put("status", 			"ERROR");
 			obj.put("errMsg", 			"เกิดข้อผิดพลาดในการบันทึกข้อมูล");
 			e.printStackTrace();
 		}finally{ 
+			this.motorUtil.writeMSG(obj.toString());
+			
 			 motorCode	    = null; 
 			 brandCode	    = null; 
 			 brandName	    = null; 
