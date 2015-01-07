@@ -288,7 +288,7 @@ public class MotorDetailDao {
 			    	brandCode = rs.getString("brandCode").trim();
 			    }
 			    if(brandCode==null){
-			    	throw new EnjoyException("ระบุยี่ห้แผิด");
+			    	throw new EnjoyException("ระบุยี่ห้อผิด");
 			    }else{
 			    	bean.setBrandCode(brandCode);
 			    }
@@ -336,7 +336,7 @@ public class MotorDetailDao {
 //			        if(companyId==null)throw new EnjoyException("ระบุบริษัทผิด");
 			    }
 			    if(companyId==null){
-			    	throw new EnjoyException("ระบุบริษัทผิด");
+			    	throw new EnjoyException("ระบุบริษัทที่เก็บผิด");
 			    }else{
 			    	bean.setCompanyId(String.valueOf(companyId));
 			    }

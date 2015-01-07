@@ -347,7 +347,13 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 						}
 				   	}
 			     }else{
-					   throw new EnjoyException(brandBean.getErrMsg()+" หรือ "+companyBean.getErrMsg());
+			    	 if (( ! brandBean.getErrMsg().equals("")) && ( ! companyBean.getErrMsg().equals(""))) {	
+					     throw new EnjoyException(brandBean.getErrMsg()+" หรือ "+companyBean.getErrMsg());
+			    	 } else if ( ! brandBean.getErrMsg().equals("")) {
+			    		 throw new EnjoyException(brandBean.getErrMsg());	 
+			    	 } else if ( ! companyBean.getErrMsg().equals("")) {
+			    		 throw new EnjoyException(companyBean.getErrMsg());	 
+			    	 }
 				 }
 				   
 			} 

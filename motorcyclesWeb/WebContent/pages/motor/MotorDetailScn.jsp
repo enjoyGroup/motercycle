@@ -356,22 +356,26 @@
 	
 	function lp_onBlurFormatNumber(ao_obj){
         var lo_size 		    = null;
-        var lv_size               = null;
+        var lv_size             = null;
         var lv_index			= 0;    
  		
 		try{ 
+			/*
 			lv_index	= gp_rowTableIndex(ao_obj);
 			lv_index    = lv_index-1; 
 			lo_size     = document.getElementsByName("size");
 			lv_size     = lo_size[lv_index].value;
+			*/
+			lo_size 	= ao_obj;
+			lv_size     = lo_size.value;
 			
 			if(gp_trim(lv_size)==""){
-				lv_size = "0.00";
+				lo_size.value = "0";
 			}
 			
-			if(gp_format(lo_size[lv_index], 0)==false){
+			if(gp_format(lo_size, 0)==false){
 				alert("กรุณาระบุตัวเลขเท่านั้น");
-				lv_size = "0.00";
+				lo_size.value = "0";
 				return;
 			}
 			 

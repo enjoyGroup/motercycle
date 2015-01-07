@@ -800,7 +800,7 @@ public class EntrySaleDetailDao {
 			userUniqueId 		= form.getUserUniqueId();
 			flagCredit 			= "N";						// เนื่องจากเป็นใบส่งเสริมการขาย
 			creditAmount 		= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
-			remark		 		= "";						// เนื่องจากเป็นใบส่งเสริมการขาย
+			remark		 		= "เป็นใบส่งเสริมการขาย";						// เนื่องจากเป็นใบส่งเสริมการขาย
 			recordAddDate		= EnjoyUtils.dateFormat(form.getRecordAddDate(), "dd/MM/yyyy", "yyyyMMdd");
 			
 			sql 		= "insert into invoicedetails ( invoiceId"
@@ -917,6 +917,7 @@ public class EntrySaleDetailDao {
 		String				flagCredit			= null;
 		String				creditAmount		= null;
 		EnjoyConectDbs 		db 					= null;
+		String				recordAddDate		= null;
 		
 		try{
 			db    				= new EnjoyConectDbs();
@@ -938,12 +939,13 @@ public class EntrySaleDetailDao {
 			
 			flagCredit 			= form.getFlagCredit();
 			creditAmount 		= form.getCreditAmount();
+			recordAddDate		= EnjoyUtils.dateFormat(form.getRecordAddDate(), "dd/MM/yyyy", "yyyyMMdd");
 			
-			if(flagAddSales.equals("Y")){
-				invoiceIdAddSales = invoiceId;
-			}
+//			if(flagAddSales.equals("Y")){
+//				invoiceIdAddSales = invoiceId;
+//			}
 			
-			sql 		= "update invoicedetails set invoiceDate 			= '" + EnjoyUtils.currDateThai() + "'"
+			sql 		= "update invoicedetails set invoiceDate 			= '" + recordAddDate + "'"
 													+ ", cusCode 			= '" + cusCode + "'"
 													+ ", motorcyclesCode 	= '" + motorcyclesCode + "'"
 													+ ", chassisDisp 		= '" + chassisDisp + "'"
@@ -955,7 +957,7 @@ public class EntrySaleDetailDao {
 													+ ", flagAddSales 		= '" + flagAddSales + "'"
 													+ ", commAmount 		= '" + commAmount + "'"
 													+ ", userUniqueId 		= '" + userUniqueId + "'"
-													+ ", invoiceIdAddSales 	= '" + invoiceIdAddSales + "'"
+//													+ ", invoiceIdAddSales 	= '" + invoiceIdAddSales + "'"
 													+ ", flagCredit 		= '" + flagCredit + "'"
 													+ ", creditAmount 		= '" + creditAmount + "'"
 										+ " where invoiceId = '" + invoiceId + "'";
