@@ -126,7 +126,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		subTab.addCell(setCellWB((String) jsonObjectMain.get("tel"), getFont8(), 1, Element.ALIGN_LEFT, 0));
 		table.addCell(setCellWB(subTab, 1, Element.ALIGN_LEFT, 0, false, false));
 		
-		table.addCell(setCellWB("เอกสารออกเป็นชุด", getFont8(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB("			", getFont8(), 1, Element.ALIGN_CENTER, 0)); // เอกสารออกเป็นชุด
 		
 		subTab.addCell(setCellWB("เลขประจำตัวผู้เสียภาษีอากร:", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
 		subTab.addCell(setCellWB((String) jsonObjectMain.get("tin"), getFont8(), 1, Element.ALIGN_LEFT, 0));
@@ -186,9 +186,9 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		
 		table.addCell(setCell("ยี่ห้อ", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
 		table.addCell(setCell("รุ่น", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("หมายเลขเครื่อง", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
 		table.addCell(setCell("หมายเลขตัวถัง", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("ซีซี.", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("หมายเลขเครื่อง", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("สี", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
 
 		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
 		jsonObjectDetail = this.formDataObj;
@@ -196,7 +196,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		table.addCell(setCell((String) jsonObjectDetail.get("model"), 	    getFont10(), 1, 1, Element.ALIGN_CENTER));
 		table.addCell(setCell((String) jsonObjectDetail.get("chassisDisp"), getFont10(), 1, 1, Element.ALIGN_CENTER));
 		table.addCell(setCell((String) jsonObjectDetail.get("engineNoDisp"),getFont10(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell((String) jsonObjectDetail.get("size"), 		getFont10(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("color"), 		getFont10(), 1, 1, Element.ALIGN_CENTER));
 		
 		table.setWidthPercentage(100);
 	
@@ -281,9 +281,9 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 //		table.addCell(setCell("รายละเอียดใบกำกับ", getFont10Bold(), 5, 1, Element.ALIGN_CENTER));
 		table.addCell(setCell("ยี่ห้อ", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
 		table.addCell(setCell("รุ่น", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("หมายเลขเครื่อง", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
 		table.addCell(setCell("หมายเลขตัวถัง", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("ซีซี.", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("หมายเลขเครื่อง", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("สี", getFont10Bold(), 1, 1, Element.ALIGN_CENTER));
 
 		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
 		jsonObjectDetail = this.formDataObj;

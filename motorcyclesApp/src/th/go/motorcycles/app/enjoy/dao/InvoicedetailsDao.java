@@ -137,6 +137,7 @@ public class InvoicedetailsDao {
 					+ " , m.model model"
 					+ " , CONCAT(m.chassis, i.chassisDisp ) chassisDisp"
 					+ " , CONCAT(m.engineNo,'-' ,i.EngineNoDisp ) EngineNoDisp"
+					+ " , i.color color"
 					+ " , i.size size"
 					+ " , i.priceAmount priceAmount"
 					+ " , i.vatAmount vatAmount"
@@ -172,6 +173,7 @@ public class InvoicedetailsDao {
 		    	jsonObjectDetail.put("model",           rs.getString("model"));
 		    	jsonObjectDetail.put("chassisDisp",     rs.getString("chassisDisp"));
 		    	jsonObjectDetail.put("engineNoDisp",    rs.getString("engineNoDisp"));
+		    	jsonObjectDetail.put("color",    		rs.getString("color"));
 		    	jsonObjectDetail.put("size",    		EnjoyUtils.convertFloatToDisplay(rs.getString("size"),0));
 		    	jsonObjectDetail.put("priceAmount",     EnjoyUtils.convertFloatToDisplay(rs.getString("priceAmount"),2));
 		    	jsonObjectDetail.put("vatAmount",       EnjoyUtils.convertFloatToDisplay(rs.getString("vatAmount")  ,2));
@@ -225,10 +227,15 @@ public class InvoicedetailsDao {
 		    while(rs.next()){
 				address  =  new StringBuilder();
 				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber"))); 
-				address.append(" หมู่ที่  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
-				address.append(" ถนน   ").append(EnjoyUtils.nullToStr(rs.getString("streetName"))); 
-				address.append(" ตำบล  ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
-				address.append(" อำเภอ  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
+				if (! EnjoyUtils.nullToStr(rs.getString("mooNumber")).equals("")) {
+					address.append(" หมู่ที่  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
+				}	
+				if (! EnjoyUtils.nullToStr(rs.getString("streetName")).equals("")) {
+					address.append(" ถนน  ").append(EnjoyUtils.nullToStr(rs.getString("streetName")));
+				}	
+//				address.append(" ถนน   ").append(EnjoyUtils.nullToStr(rs.getString("streetName"))); 
+				address.append(" ตำบล/แขวง  ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
+				address.append(" อำเภอ/เขต  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
 				address.append(" จังหวัด  ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
 		    	
 		    } 

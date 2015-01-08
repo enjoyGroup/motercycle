@@ -197,7 +197,7 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 		table.addCell(setCellWB((String) jsonObjectDetail.get("model"), 	  getFont10(), 1, Element.ALIGN_CENTER, 0));
 		table.addCell(setCellWB((String) jsonObjectDetail.get("chassisDisp"), getFont10(), 1, Element.ALIGN_CENTER, 0));
 		table.addCell(setCellWB((String) jsonObjectDetail.get("engineNoDisp"),getFont10(), 1, Element.ALIGN_CENTER, 0));
-		table.addCell(setCellWB((String) jsonObjectDetail.get("size"), 		  getFont10(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB((String) jsonObjectDetail.get("color"), 		  getFont10(), 1, Element.ALIGN_CENTER, 0));
 		
 		table.setWidthPercentage(100);
 	

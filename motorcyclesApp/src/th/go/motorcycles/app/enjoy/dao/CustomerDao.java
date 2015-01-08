@@ -67,11 +67,20 @@ public class CustomerDao {
 
 				address  =  new StringBuilder();
 				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber"))); 
-				address.append(" หมู่บ้าน  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
-				address.append(" ซอย   ").append(EnjoyUtils.nullToStr(rs.getString("SoiName"))); 
-				address.append(" ถนน   ").append(EnjoyUtils.nullToStr(rs.getString("streetName"))); 
-				address.append(" ตำบล  ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
-				address.append(" อำเภอ  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
+//				address.append(" หมู่บ้าน  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
+//				address.append(" ซอย   ").append(EnjoyUtils.nullToStr(rs.getString("SoiName"))); 
+//				address.append(" ถนนที่  ").append(EnjoyUtils.nullToStr(rs.getString("streetName"))); 
+				if (! EnjoyUtils.nullToStr(rs.getString("mooNumber")).equals("")) {
+					address.append(" หมู่ที่  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
+				}	
+				if (! EnjoyUtils.nullToStr(rs.getString("SoiName")).equals("")) {
+					address.append(" ซอยที่  ").append(EnjoyUtils.nullToStr(rs.getString("SoiName")));
+				}	
+				if (! EnjoyUtils.nullToStr(rs.getString("streetName")).equals("")) {
+					address.append(" ถนน ").append(EnjoyUtils.nullToStr(rs.getString("streetName")));
+				}	
+				address.append(" ตำบล/แขวง  ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
+				address.append(" อำเภอ/เขต  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
 				address.append(" จังหวัด  ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
 				customerBean.setAddress(address.toString());
 			    System.out.println(customerBean.getAddress());

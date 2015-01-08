@@ -340,13 +340,14 @@
 			cell8.align	= "center"; 
 			cell1.innerHTML = "<td width='15px;' align='center'><input type='hidden' name='hidMotorcyclesCode' id='hidMotorcyclesCode' value='" + lv_length + "'/>"+"<b>" + lv_length + "<b>";
 			cell2.innerHTML = "<td width='100px;' align='left' ><input type='hidden' name='hidBrandCode' id='hidBrandCode'  /><input type='text' name='brandName' id='brandName' class='brandNameClass' value='" + brandSearch + "' style='width: 100px;' /></td>";
-			cell3.innerHTML = "<td width='100px;' align='left'><input type='text' name='model' id='model'  style='width: 100px;' maxlength='10'/></td>";	
-			cell4.innerHTML = "<td width='100px;' align='left'><input type='text' name='chassis' id='chassis'   style='width: 100px;' maxlength='10'/></td>";
-			cell5.innerHTML = "<td width='100px;' align='left'><input type='text' name='engineNo' id='engineNo'  style='width: 100px;'  maxlength='10'/></td>";
+			cell3.innerHTML = "<td width='100px;' align='left'><input type='text' name='model' id='model'  style='width: 100px;' maxlength='50'/></td>";	
+			cell4.innerHTML = "<td width='100px;' align='left'><input type='text' name='chassis' id='chassis'   style='width: 100px;' maxlength='15'/></td>";
+			cell5.innerHTML = "<td width='100px;' align='left'><input type='text' name='engineNo' id='engineNo'  style='width: 100px;'  maxlength='15'/></td>";
 			cell6.innerHTML = "<td width='50px;'  align='left'><input type='text' name='size' id='size'   style='width: 100px;' maxlength='4' onblur='lp_onBlurFormatNumber(this);'/></td>";
 			cell7.innerHTML = "<td width='100px;' align='left'><input type='hidden' name='hidCompanyId' id='hidCompanyId'  style='width: 100px;'/>" +
 			                  "<input type='text' name='branchName' id='branchName' class='branchNameClass' value='" +companySearch+ "'  style='width: 150px;' /></td>";
-			cell8.innerHTML = "<td width='50px' align='center'><button id='btn_delete'  name='btn_delete'  class='btn btn-warning btn-mini fa fa-times' style='width:25px;' onclick='lp_del_row_table(this);' ></button><input type='hidden' name='hidMotorStartus' id='hidMotorStartus' class='hidMotorStartus' value='N'/></td>";
+//			cell8.innerHTML = "<td width='50px' align='center'><button id='btn_delete'  name='btn_delete'  class='btn btn-warning btn-mini fa fa-times' style='width:25px;' onclick='lp_del_row_table(this);' ></button><input type='hidden' name='hidMotorStartus' id='hidMotorStartus' class='hidMotorStartus' value='N'/></td>";
+			cell8.innerHTML = "<td width='50px' align='center'><input type='hidden' name='hidMotorStartus' id='hidMotorStartus' class='hidMotorStartus' value='N'/></td>";
 			   
 			
 		}catch(e){
@@ -544,9 +545,9 @@
 															<td width="100px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode"  value="<%=bean.getBrandCode()%>"/>
 															    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=bean.getBrandName()%>" style="width: 100px;" readonly="readonly"/>
 															</td>
-															<td width="100px;" align="left"><input type="text" name="model" id="model" value="<%=bean.getModel()%> " style="width: 100px;" maxlength="10"/></td>
-															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 100px;"  maxlength="10"/></td>
-															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 100px;"  maxlength="10"/></td>
+															<td width="100px;" align="left"><input type="text" name="model" id="model" value="<%=bean.getModel()%> " style="width: 100px;" maxlength="50"/></td>
+															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 100px;"  maxlength="15"/></td>
+															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 100px;"  maxlength="15"/></td>
 															<td width="50px;" align="left"><input type="text" name="size" id="size" value="<%=bean.getSize()%> " style="width: 100px;" maxlength="4"  onblur="lp_onBlurFormatNumber(this);"/></td>
 															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId" value="<%=bean.getCompanyId()%> " style="width: 100px;"/>
 															    <input type="text" name="branchName" id="branchName" class="branchNameClass" value="<%=bean.getBranchName()%> "  style="width: 150px;" readonly="readonly"  />
@@ -563,15 +564,15 @@
 															<td width="100px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode" value="<%=motorDetailBean.getBrandCode()%>"/>
 															    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=motorDetailBean.getBrandName()%>" style="width: 100px;" />
 															</td>
-															<td width="100px;" align="left"><input type="text" name="model" id="model" style="width: 100px;"  maxlength="10"/></td>
-															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis"   style="width: 100px;"  maxlength="10"/></td>
-															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo"   style="width: 100px;" maxlength="10"/></td>
+															<td width="100px;" align="left"><input type="text" name="model" id="model" style="width: 100px;"  maxlength="50"/></td>
+															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis"   style="width: 100px;"  maxlength="15"/></td>
+															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo"   style="width: 100px;" maxlength="15"/></td>
 															<td width="50px;" align="left"><input type="text" name="size" id="size"   style="width: 100px;" maxlength="4" onblur="lp_onBlurFormatNumber(this);"/></td>
 															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId"  value="<%=motorDetailBean.getCompanyId()%>"  style="width: 100px;"/>
 															   <input type="text" name="branchName" id="branchName" class="branchNameClass"   value="<%=motorDetailBean.getBranchName()%>" style="width: 150px;"/>
 															</td>
 															<td width="50px" align="center">
-															   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(this);" ></button>
+															   <!-- <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(this);" ></button>  -->
 															   <input type="hidden" name="hidMotorStartus" id="hidMotorStartus"  class='hidMotorStartus'  value="N"/> 
 															</td> 
 														</tr>  
