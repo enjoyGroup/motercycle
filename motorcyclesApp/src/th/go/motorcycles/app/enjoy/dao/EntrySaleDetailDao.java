@@ -280,9 +280,13 @@ public class EntrySaleDetailDao {
 		    	productBean.setChassisDisp(EnjoyUtils.nullToStr(rs.getString("chassisDisp")));
 		    	productBean.setEngineNoDisp(EnjoyUtils.nullToStr(rs.getString("EngineNoDisp")));
 //		    	productBean.setSize(EnjoyUtils.nullToStr(rs.getString("size")));
-		    	size 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("size")), 0);
-		    	productBean.setSize(size);
-		    	
+//		    	size 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("size")), 0);
+//		    	productBean.setSize(size);
+		    	if(EnjoyUtils.nullToStr(rs.getString("size")).equals("-")){
+		    		productBean.setSize(EnjoyUtils.nullToStr(rs.getString("size")));
+				}else{
+					productBean.setSize(EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("size")), 0));
+				}
 		    	form.setProductBean(productBean);
 		    	
 //		    	priceAmount = rs.getDouble("priceAmount");
@@ -578,8 +582,15 @@ public class EntrySaleDetailDao {
 				productBean.setChassis(EnjoyUtils.nullToStr(rs.getString("chassis")));
 				productBean.setEngineNo(EnjoyUtils.nullToStr(rs.getString("engineNo")));
 				
-				size 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("size")), 0);
-		    	productBean.setSize(size);
+//				size 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("size")), 0);
+//		    	productBean.setSize(size);
+		    	
+		    	if(EnjoyUtils.nullToStr(rs.getString("size")).equals("-")){
+		    		productBean.setSize(EnjoyUtils.nullToStr(rs.getString("size")));
+				}else{
+					productBean.setSize(EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("size")), 0));
+				}
+				
 			}
 		    
 		    

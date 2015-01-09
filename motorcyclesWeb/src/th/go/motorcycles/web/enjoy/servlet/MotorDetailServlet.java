@@ -361,11 +361,20 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 			logger.info("[lp_save] insertRet 	:: " + insertRet); 
 			logger.info("[lp_save] updateRet 	:: " + updateRet); 
 			
-			if(insertRet==true && updateRet==true){
-			   obj.put("status", 	"SUCCESS");
+			if(getMotorCode.length==1){
+				if(insertRet==true){
+				   obj.put("status", 	"SUCCESS");
+				}else{
+					bean.setErrMsg("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+					throw new EnjoyException(bean.getErrMsg());
+				}
 			}else{
-				bean.setErrMsg("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
-				throw new EnjoyException(bean.getErrMsg());
+				if(insertRet==true && updateRet==true){
+					   obj.put("status", 	"SUCCESS");
+				}else{
+					bean.setErrMsg("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+					throw new EnjoyException(bean.getErrMsg());
+				}
 			}
 			
 		}catch(EnjoyException e){

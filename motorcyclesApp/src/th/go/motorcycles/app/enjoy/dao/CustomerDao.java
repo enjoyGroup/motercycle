@@ -79,7 +79,9 @@ public class CustomerDao {
 				}	
 				address.append(" ตำบล/แขวง ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
 				address.append(" อำเภอ/เขต  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
-				address.append(" จังหวัด  ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
+				address.append(" จังหวัด   ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
+				address.append(EnjoyUtils.nullToStr(rs.getString("postCode")));
+				
 				customerBean.setAddress(address.toString());
 			    System.out.println(customerBean.getAddress());
 		    	list.add(customerBean);
@@ -142,6 +144,8 @@ public class CustomerDao {
 				address.append(" ตำบล/แขวง ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
 				address.append(" อำเภอ/เขต  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
 				address.append(" จังหวัด  ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
+				address.append(EnjoyUtils.nullToStr(rs.getString("postCode")));
+				
 				customerBean.setAddress(address.toString());
 			    System.out.println(customerBean.getAddress());
 		    	list.add(customerBean);
@@ -376,7 +380,7 @@ public class CustomerDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())provinceId = rs.getString("provinceId").trim();
-		    if(provinceId==null)throw new EnjoyException("เธฃเธฐเธ�เธธเธ�เธฑเธ�เธซเธงเธฑเธ”เธ�เธดเธ”");
+		    if(provinceId==null)throw new EnjoyException("ระบุจังหวัดผิด");
 		    /*End check province section*/
 		    
 		    /*Begin check district section*/
@@ -386,7 +390,7 @@ public class CustomerDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())districtId = rs.getString("districtId").trim();
-		    if(districtId==null)throw new EnjoyException("เธฃเธฐเธ�เธธเธญเธณเน€เธ เธญเธ�เธดเธ”");
+		    if(districtId==null)throw new EnjoyException("ระบุอำเภอ/เขตผิด”");
 		    /*End check district section*/
 		    
 		    /*Begin check subDistrict section*/
@@ -396,7 +400,7 @@ public class CustomerDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())subdistrictId = rs.getString("subdistrictId").trim();
-		    if(subdistrictId==null)throw new EnjoyException("เธฃเธฐเธ�เธธเธ•เธณเธ�เธฅเธ�เธดเธ”");
+		    if(subdistrictId==null)throw new EnjoyException("ระบุตำบล/แขวงผิด");
 		    /*End check subDistrict section*/
 		    
 		    System.out.println("[CustomerDao][validateAddress] " + provinceId + ", " + districtId + ", " + subdistrictId);

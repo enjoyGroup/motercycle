@@ -258,7 +258,7 @@
 		            	try{
 		            		jsonObj = JSON.parse(data);
 		            		status	= jsonObj.status;
-		            		
+		            //alert(status);		
 			            	if(status=="SUCCESS"){
 			            		alert("บันทึกรายการเรียบร้อย  ");
 				            	// $('#frm :input').attr("readonly", true); 
@@ -267,8 +267,7 @@
 				            	$('.brandNameClass').attr("readonly", true); 
 				            	$('.branchNameClass').attr("readonly", true); 
 		            		}else{
-		            			errMsg = jsonObj.errMsg;
-		            			
+		            			errMsg = jsonObj.errMsg; 
 		            			alert(errMsg);
 		            		}   
 		            	}catch(e){
@@ -374,8 +373,8 @@
 				lo_size.value = "0";
 			}
 			
-			if(gp_format(lo_size, 0)==false){
-				alert("กรุณาระบุตัวเลขเท่านั้น");
+			if((gp_format(lo_size, 0)==false) && (lv_size!="-")){
+				alert("กรุณาระบุตัวเลขหรือ  '-' เท่านั้น");
 				lo_size.value = "0";
 				return;
 			}
