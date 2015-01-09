@@ -21,6 +21,7 @@ public class MotorItext {
 	private Font font8Bold;
 	private Font font9Bold;
 	private Font font10Bold;
+	private Font font11Bold;
 	private Font font12Bold;
 	private Font fontLBold;
 	private Font fontXLBold;
@@ -40,10 +41,11 @@ public class MotorItext {
 			font6 			= 	new Font(bfComic, 6);
 			font8 			= 	new Font(bfComic, 8);
 			font8Bold 		= 	new Font(bfComic, 8, Font.BOLD);
-			font9 			= 	new Font(bfComic,9);
+			font9 			= 	new Font(bfComic, 9);
 			font9Bold 		= 	new Font(bfComic, 9, Font.BOLD);
 			font10 			= 	new Font(bfComic, 10);
 			font10Bold 		= 	new Font(bfComic, 10, Font.BOLD);
+			font11Bold 		= 	new Font(bfComic, 11, Font.BOLD);
 			font10UnderLine = 	FontFactory.getFont(fontName, 10,Font.UNDERLINE);
 			font8UnderLine = 	FontFactory.getFont(fontName, 8,Font.UNDERLINE);
 			font12Bold 		= 	new Font(bfComic, 12, Font.BOLD);
@@ -269,6 +271,12 @@ public class MotorItext {
 	}
 	public void setFont10Bold(Font font10Bold) {
 		this.font10Bold = font10Bold;
+	}
+	public Font getFont11Bold() {
+		return font11Bold;
+	}
+	public void setFont11Bold(Font font11Bold) {
+		this.font11Bold = font11Bold;
 	}
 	public Font getFont12Bold() {
 		return font12Bold;

@@ -655,9 +655,9 @@ public class EntrySaleDetailDao {
 			while(rs.next()){
 				v_cou = rs.getInt("cou");
 			}
-			if(v_cou > 0){
-				throw new EnjoyException("เลขตัวถังซ้ำกรุณาตรวจสอบ");
-			}
+//			if(v_cou > 0){
+//				throw new EnjoyException("เลขตัวถังซ้ำกรุณาตรวจสอบ");
+//			}
 			/*End count chassisDisp*/
 			
 			/*Begin count engineNoDisp*/
@@ -669,9 +669,9 @@ public class EntrySaleDetailDao {
 			while(rs.next()){
 				v_cou = rs.getInt("cou");
 			}
-			if(v_cou > 0){
-				throw new EnjoyException("เลขเครื่องยนต์ซ้ำกรุณาตรวจสอบ");
-			}
+//			if(v_cou > 0){
+//				throw new EnjoyException("เลขเครื่องยนต์ซ้ำกรุณาตรวจสอบ");
+//			}
 			/*End count engineNoDisp*/
 			
 		}catch(EnjoyException e){

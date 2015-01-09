@@ -79,7 +79,7 @@ public class ViewPdfMainForm {
 			System.out.println("formName :: " + formName);
 			
 			formClass					= "th.go.motorcycles.app.enjoy.pdf."+formName;
-			document 					= new Document(PageSize.A4);
+			document 					= new Document(PageSize.A5, 20, 20, 20, 20);
 
 			buffer 						=	new ByteArrayOutputStream();
 			writer 						=	PdfWriter.getInstance( document, buffer );

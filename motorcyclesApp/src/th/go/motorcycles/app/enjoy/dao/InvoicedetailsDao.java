@@ -136,7 +136,7 @@ public class InvoicedetailsDao {
 					+ " , b.brandName brandName"
 					+ " , m.model model"
 					+ " , CONCAT(m.chassis, i.chassisDisp ) chassisDisp"
-					+ " , CONCAT(m.engineNo,'-' ,i.EngineNoDisp ) EngineNoDisp"
+					+ " , CONCAT(m.engineNo,i.EngineNoDisp ) EngineNoDisp"
 					+ " , i.color color"
 					+ " , i.size size"
 					+ " , i.priceAmount priceAmount"
