@@ -299,6 +299,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   customerBean.setIdType(EnjoyUtils.nullToStr(this.request.getParameter("idType"))); 
 			   customerBean.setIdNumber(EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
 			   customerBean.setCusStatus("A");
+			   customerBean.setPostcode(EnjoyUtils.nullToStr(this.request.getParameter("postcode")));
 			   
 			   cusCode = this.customerDao.insertCustomer(customerBean);
 			   customerBean.setCusCode(cusCode);
@@ -317,13 +318,14 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   
 			   customerBean.setIdType(EnjoyUtils.nullToStr(this.request.getParameter("idType"))); 
 			   customerBean.setIdNumber(EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
+			   customerBean.setPostcode(EnjoyUtils.nullToStr(this.request.getParameter("postcode")));
 			   
 			   this.customerDao.updateCustomer(customerBean);
 		   }
 		   
 		   form.setCustomerBean(customerBean);
 		   
-		   entrySaleDetailBean = this.dao.getMotorcyclesCode(brandName, model);
+		   entrySaleDetailBean = this.dao.getMotorcyclesCode(brandName, model, chassisDisp, engineNoDisp);
 		   if(!entrySaleDetailBean.getErrMsg().equals("")){
 			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
 		   }else{
@@ -417,6 +419,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   obj.put("idType", 			customerBeanDb.getIdType());
 			   obj.put("idNumber", 			customerBeanDb.getIdNumber());
 			   obj.put("cusStatus", 		customerBeanDb.getCusStatus());
+			   obj.put("postcode", 			customerBeanDb.getPostcode());
 			   
 		   }else{
 			   obj.put("status", 			"ERROR");
@@ -468,6 +471,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   obj.put("idType", 			customerBeanDb.getIdType());
 			   obj.put("idNumber", 			customerBeanDb.getIdNumber());
 			   obj.put("cusStatus", 		customerBeanDb.getCusStatus());
+			   obj.put("postcode", 			customerBeanDb.getPostcode());
 			   
 		   }else{
 			   obj.put("status", 			"ERROR");
@@ -516,6 +520,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   obj.put("idType", 			customerBeanDb.getIdType());
 			   obj.put("idNumber", 			customerBeanDb.getIdNumber());
 			   obj.put("cusStatus", 		customerBeanDb.getCusStatus());
+			   obj.put("postcode", 			customerBeanDb.getPostcode());
 			   
 		   }else{
 			   obj.put("status", 			"ERROR");

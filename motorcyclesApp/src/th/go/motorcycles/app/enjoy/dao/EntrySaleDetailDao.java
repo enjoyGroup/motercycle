@@ -2,6 +2,7 @@ package th.go.motorcycles.app.enjoy.dao;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import th.go.motorcycles.app.enjoy.bean.CustomerBean;
@@ -73,6 +74,8 @@ public class EntrySaleDetailDao {
 				customerBean.setIdType(EnjoyUtils.nullToStr(rs.getString("idType")));
 				customerBean.setIdNumber(EnjoyUtils.nullToStr(rs.getString("idNumber")));
 				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
+				
+				customerBean.setPostcode(EnjoyUtils.nullToStr(rs.getString("postcode")));
 		    }	 
 			
 		}catch(Exception e){
@@ -135,6 +138,8 @@ public class EntrySaleDetailDao {
 				customerBean.setIdType(EnjoyUtils.nullToStr(rs.getString("idType")));
 				customerBean.setIdNumber(EnjoyUtils.nullToStr(rs.getString("idNumber")));
 				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
+				
+				customerBean.setPostcode(EnjoyUtils.nullToStr(rs.getString("postcode")));
 		    }	 
 			
 		}catch(Exception e){
@@ -197,6 +202,8 @@ public class EntrySaleDetailDao {
 				customerBean.setIdType(EnjoyUtils.nullToStr(rs.getString("idType")));
 				customerBean.setIdNumber(EnjoyUtils.nullToStr(rs.getString("idNumber")));
 				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
+				
+				customerBean.setPostcode(EnjoyUtils.nullToStr(rs.getString("postcode")));
 		    }	 
 			
 		}catch(Exception e){
@@ -587,7 +594,7 @@ public class EntrySaleDetailDao {
 		return productBean;
 	}
 	
-	public EntrySaleDetailBean getMotorcyclesCode(String brandName, String model){
+	public EntrySaleDetailBean getMotorcyclesCode(String brandName, String model, String chassisDisp, String engineNoDisp){
 		System.out.println("[EntrySaleDetailDao][getMotorcyclesCode][Begin]");
 		
 		String 							sql			 		= null;
@@ -597,6 +604,7 @@ public class EntrySaleDetailDao {
 		EntrySaleDetailBean				bean				= new EntrySaleDetailBean();
 		String							errMsg				= null;
 		EnjoyConectDbs 					db 					= null;
+		int								v_cou				= 0;
 		
 		try{
 			db    		= new EnjoyConectDbs();
@@ -628,7 +636,32 @@ public class EntrySaleDetailDao {
 				throw new EnjoyException("กรอกยี่ห้อ หรือ รุ่น ผิด");
 			}
 		    
-		    
+			/*Begin count chassisDisp*/
+			sql 		= " select count(*) cou from invoicedetails where motorcyclesCode = '" + motorcyclesCode + "' and chassisDisp = '" + chassisDisp + "'";
+			
+			System.out.println("[EntrySaleDetailDao][getMotorcyclesCode] sql count chassisDisp :: " + sql);
+			rs 			= db.executeQuery(sql);
+			while(rs.next()){
+				v_cou = rs.getInt("cou");
+			}
+			if(v_cou > 0){
+				throw new EnjoyException("เลขตัวถังซ้ำกรุณาตรวจสอบ");
+			}
+			/*End count chassisDisp*/
+			
+			/*Begin count engineNoDisp*/
+			v_cou		= 0;
+			sql 		= " select count(*) cou from invoicedetails where motorcyclesCode = '" + motorcyclesCode + "' and engineNoDisp = '" + engineNoDisp + "'";
+			
+			System.out.println("[EntrySaleDetailDao][getMotorcyclesCode] sql count engineNoDisp :: " + sql);
+			rs 			= db.executeQuery(sql);
+			while(rs.next()){
+				v_cou = rs.getInt("cou");
+			}
+			if(v_cou > 0){
+				throw new EnjoyException("เลขเครื่องยนต์ซ้ำกรุณาตรวจสอบ");
+			}
+			/*End count engineNoDisp*/
 			
 		}catch(EnjoyException e){
 			errMsg = e.getMessage();
@@ -859,12 +892,16 @@ public class EntrySaleDetailDao {
 		ResultSet 			rs 					= null;
 		String				invoiceId			= null;
 		String				newId				= null;
-		int					firstInvoice		= Integer.parseInt(ConfigFile.getBEGIN_INVOICE(formatInvoie));
+//		int					firstInvoice		= Integer.parseInt(ConfigFile.getBEGIN_INVOICE(formatInvoie));
 		EnjoyConectDbs 		db 					= null;
+		Date	  			date				= new Date();
+		String				year				= null;
 		
 		try{
-			db    		= new EnjoyConectDbs();
-			sql 		= "SELECT (MAX(SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1)) + 1) AS newId FROM invoicedetails where invoiceId like('"+formatInvoie+"%')";
+			year			= EnjoyUtils.dateToStringThai(date).substring(8,10);
+			formatInvoie	= formatInvoie + year;
+			db    			= new EnjoyConectDbs();
+			sql 			= "SELECT (MAX(SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1)) + 1) AS newId FROM invoicedetails where invoiceId like('"+formatInvoie+"%')";
 			
 			System.out.println("[EntrySaleDetailDao][genInvoiceId] sql :: " + sql);
 			
@@ -874,12 +911,13 @@ public class EntrySaleDetailDao {
 			}
 			
 			System.out.println("[EntrySaleDetailDao][genInvoiceId] newId :: " + newId);
-			if(newId==null){
-//				newId = String.format(FILL_ZERO, 1);
-				newId = String.format(FILL_ZERO, firstInvoice);
-			} else if ((Integer.parseInt(newId) == 0)) { // แปลว่าไม่พบรายการ
-				newId = String.format(FILL_ZERO, firstInvoice);
-			}
+			if(newId==null || (Integer.parseInt(newId) == 0)){
+				newId = String.format(FILL_ZERO, 1);
+//				newId = String.format(FILL_ZERO, firstInvoice);
+			} 
+//			else if ((Integer.parseInt(newId) == 0)) { // แปลว่าไม่พบรายการ
+//				newId = String.format(FILL_ZERO, firstInvoice);
+//			}
 			
 			invoiceId			= formatInvoie + "/" + newId;
 			
@@ -913,11 +951,13 @@ public class EntrySaleDetailDao {
 		String				size		 		= null;
 		ProductBean			productBean			= null;
 		CustomerBean		customerBean		= null;
-		String				invoiceIdAddSales	= null;
+//		String				invoiceIdAddSales	= null;
 		String				flagCredit			= null;
 		String				creditAmount		= null;
 		EnjoyConectDbs 		db 					= null;
 		String				recordAddDate		= null;
+		String				totalAmount			= null;
+		String				color				= null;
 		
 		try{
 			db    				= new EnjoyConectDbs();
@@ -936,6 +976,8 @@ public class EntrySaleDetailDao {
 			chassisDisp 		= productBean.getChassisDisp();
 			EngineNoDisp 		= productBean.getEngineNoDisp();
 			size 				= productBean.getSize();
+			totalAmount			= form.getTotalAmount();
+			color				= form.getColor();
 			
 			flagCredit 			= form.getFlagCredit();
 			creditAmount 		= form.getCreditAmount();
@@ -951,8 +993,10 @@ public class EntrySaleDetailDao {
 													+ ", chassisDisp 		= '" + chassisDisp + "'"
 													+ ", EngineNoDisp 		= '" + EngineNoDisp + "'"
 													+ ", size 				= '" + size + "'"
+													+ ", color 				= '" + color + "'"
 													+ ", priceAmount 		= '" + priceAmount + "'"
 													+ ", vatAmount 			= '" + vatAmount + "'"
+													+ ", totalAmount 		= '" + totalAmount + "'"
 													+ ", remark 			= '" + remark + "'"
 													+ ", flagAddSales 		= '" + flagAddSales + "'"
 													+ ", commAmount 		= '" + commAmount + "'"

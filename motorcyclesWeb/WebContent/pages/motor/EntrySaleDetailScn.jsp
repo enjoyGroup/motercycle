@@ -576,8 +576,8 @@
 	}
 	
 	function lp_validate(){
-		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassisDisp", "engineNoDisp", "size", "color", "totalAmount", "vatAmount", "recordAddDate");
-	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "สี", "รวมสุทธิ", "ภาษี", "วันที่บันทึก");
+		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassisDisp", "engineNoDisp", "size", "color", "totalAmount", "vatAmount", "recordAddDate", "postcode");
+	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "สี", "รวมสุทธิ", "ภาษี", "วันที่บันทึก", "รหัสไปรษณ๊ย์");
 	    var lo_flagAddSales			= null;
 	    var lo_commAmount			= null;
 	    
@@ -667,6 +667,7 @@
 	            			
 	            			$("#idNumber").val(jsonObj.idNumber);
 	            			$("#cusStatus").val(jsonObj.cusStatus);
+	            			$("#postcode").val(jsonObj.postcode);
 	            			
 	            		}else{
 	            			$("#cusCode").val("");
@@ -742,6 +743,7 @@
 	            			
 	            			$("#idNumber").val(jsonObj.idNumber);
 	            			$("#cusStatus").val(jsonObj.cusStatus);
+	            			$("#postcode").val(jsonObj.postcode);
 	            			
 	            		}else{
 	            			$("#cusCode").val("");
@@ -802,6 +804,7 @@
 	            			
 	            			$("#idNumber").val(jsonObj.idNumber);
 	            			$("#cusStatus").val(jsonObj.cusStatus);
+	            			$("#postcode").val(jsonObj.postcode);
 	            			
 	            		}else{
 	            			$("#cusCode").val("");
@@ -1177,6 +1180,31 @@
 		}
 	}
 	
+	function lp_onBlurPostcode(){
+		
+		var lo_postcode 		= null;//replaceComma
+		
+		try{
+			lo_postcode 			= document.getElementById("postcode");
+			
+			if(gp_number(lo_postcode)==false){
+				alert("กรุณาระบุตัวเลขเท่านั้น");
+				lo_postcode.value = "";
+				return;
+			}
+			
+			if(gp_trim(lo_postcode.value)!="" && gp_trim(lo_postcode.value).length < 5){
+				alert("ระบุได้รหัสไปรษณ๊ย์ผิด");
+				$('#postcode').focus().select();
+				return;
+			}
+			
+		}catch(e){
+			alert("lp_onBlurPostcode :: " + e);
+		}
+		
+	}
+	
     window.onload = function () {
     	var lv_invoiceId 		= null;
     	var lv_userLevel		= null;
@@ -1428,6 +1456,22 @@
 															/>
 													</td>
 												</tr>
+												<tr>
+													<td>
+														<label class="col-sm-2 control-label" style="text-align:right">รหัสไปรษณ๊ย์<font color="red">*</font>:</label>
+													</td>
+													<td colspan="5">
+														<input  type="text" 
+																size="20"
+																id="postcode" 
+																name="postcode"
+																maxlength="5"
+																placeholder="รหัสไปรษณ๊ย์"
+																onblur="lp_onBlurPostcode();"
+																value="<%=customerBean.getPostcode() %>"
+														/>
+													</td>
+												</tr>
 											</table>
 										</div>
 										<header class="panel-heading font-bold">ข้อมูลสินค้า</header> 
@@ -1467,13 +1511,13 @@
 																id="chassis" 
 																name="chassis"
 																value="<%=productBean.getChassis() %>"
-																size="3"
+																size="12"
 																class="input-disabled" 
 					                                       		readonly="readonly"		
 					                                       		tabindex="-1"													
 														/>
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="chassisDisp" 
 																name="chassisDisp"
 																value="<%=productBean.getChassisDisp() %>"
@@ -1488,13 +1532,13 @@
 																id="engineNo" 
 																name="engineNo"
 																value="<%=productBean.getEngineNo() %>"
-																size="3"
+																size="12"
 																class="input-disabled" 
 					                                       		readonly="readonly"		
 					                                       		tabindex="-1"
 														/>
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="engineNoDisp" 
 																name="engineNoDisp"
 																value="<%=productBean.getEngineNoDisp() %>"

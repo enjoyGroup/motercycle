@@ -10,8 +10,9 @@ import java.util.Locale;
 public class EnjoyUtils {
 	
 	public static void main(String[] args) {
-//		currDateThai();
-		System.out.println(replaceComma("7,800,000.00"));
+		Date	  			date				= new Date();
+		currDateThai();
+		System.out.println(dateToStringThai(date));
 
 	}
 	
@@ -51,7 +52,7 @@ public class EnjoyUtils {
 			day 	= c.get(Calendar.DATE);
             
 //            stDate = sdf.format(dDate);
-            stDate = String.format("%s/%s/%s", day, month, year+543);
+            stDate = String.format("%02d/%02d/%04d", day, month, year+543);
         } catch (Exception e) {
             e.printStackTrace();
         }

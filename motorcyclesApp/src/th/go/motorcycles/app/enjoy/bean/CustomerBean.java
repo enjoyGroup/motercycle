@@ -26,6 +26,7 @@ public class CustomerBean implements Serializable {
 	private String idNumber;
 	private String cusStatus; 
 	private String address ; 
+	private String postcode;
 	
 	public CustomerBean(){
 		this.cusCode 			= "";
@@ -46,10 +47,25 @@ public class CustomerBean implements Serializable {
 		this.idNumber 		    = "";
 		this.cusStatus          = "A"; 
 		this.address            = ""; 
+		this.postcode			= "";
 	}
 
  
  
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+
+
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
+
+
 
 	public String getCusCode() {
 		return cusCode;

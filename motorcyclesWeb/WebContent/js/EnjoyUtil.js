@@ -22,6 +22,10 @@ function gp_format(av_obj, decimals){
 	return gp_number_format(av_obj, decimals, '.', ',');
 }
 
+function gp_number(av_obj){
+	return gp_number_format(av_obj, 0, '.', '');
+}
+
 //Example gp_number_format(av_obj, 2, ".", ",");
 function gp_number_format (av_obj, decimals, dec_point, thousands_sep) {
     

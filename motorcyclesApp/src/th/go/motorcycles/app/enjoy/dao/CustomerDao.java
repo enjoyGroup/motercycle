@@ -230,13 +230,35 @@ public class CustomerDao {
 			 cusCode = EnjoyUtils.getCustNext(cusCode);
 		     System.out.println("[CustomerDao][insertCustomer] cusCode : " + cusCode);
 		    
-			sql = "insert into customer (cusCode,cusName, cusSurname, houseNumber, mooNumber,SoiName, streetName, subdistrictCode, districtCode, provinceCode, idType, idNumber, cusStatus)"
-				 + " values ('"+ cusCode + "', '" + customerBean.getCustName() + "', '" + customerBean.getCustSurname() + "', '" + 
-				 customerBean.getHouseNumber() + "', '" + customerBean.getMooNumber() + "', '" + customerBean.getSoiName() + "', '" + 
-				 customerBean.getStreetName()+ "', '" + customerBean.getSubdistrictCode() + "', '" +
-				 customerBean.getDistrictCode() + "', '" + customerBean.getProvinceCode() + "', '" +
-				 customerBean.getIdType() + "', '" + customerBean.getIdNumber() + "', '" +
-				 customerBean.getCusStatus() +"') ";
+			sql = "insert into customer ( cusCode"
+										+ ", cusName"
+										+ ", cusSurname"
+										+ ", houseNumber"
+										+ ", mooNumber"
+										+ ", SoiName"
+										+ ", streetName"
+										+ ", subdistrictCode"
+										+ ", districtCode"
+										+ ", provinceCode"
+										+ ", idType"
+										+ ", idNumber"
+										+ ", cusStatus"
+										+ ", postcode)"
+							+ " values (	'"+ cusCode + "'"
+										+ ", '" + customerBean.getCustName() 		+ "'"
+										+ ", '" + customerBean.getCustSurname() 	+ "'"
+										+ ", '" + customerBean.getHouseNumber() 	+ "'"
+										+ ", '" + customerBean.getMooNumber() 		+ "'"
+										+ ", '" + customerBean.getSoiName() 		+ "'"
+										+ ", '" + customerBean.getStreetName()		+ "'"
+										+ ", '" + customerBean.getSubdistrictCode() + "'"
+										+ ", '" + customerBean.getDistrictCode() 	+ "'"
+										+ ", '" + customerBean.getProvinceCode() 	+ "'"
+										+ ", '" + customerBean.getIdType() 			+ "'"
+										+ ", '" + customerBean.getIdNumber() 		+ "'"
+										+ ", '" + customerBean.getCusStatus() 		+ "'"
+										+ ", '"	+ customerBean.getPostcode()		+ "'"
+									+ ") ";
 			
 			System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
 			
@@ -268,12 +290,21 @@ public class CustomerDao {
 
 		try{ 
 			this.db = new EnjoyConectDbs();
-			sql 	= "update  customer set cusStatus = '"+bean.getCusStatus()+"', cusName='"+bean.getCustName()+
-					"', cusSurname='"+bean.getCustSurname()+"', houseNumber='"+bean.getHouseNumber()+
-					"', mooNumber='"+bean.getMooNumber()+"', SoiName='"+bean.getSoiName()+
-					"', streetName='"+bean.getStreetName()+"', subdistrictCode='"+bean.getSubdistrictCode()+
-					"', districtCode='"+bean.getDistrictCode()+"', provinceCode='"+bean.getProvinceCode()+ 
-					"', idType='"+bean.getIdType()+"', idNumber='"+bean.getIdNumber()+"' where  cusCode = '"+bean.getCusCode()+"'";
+			sql 	= "update  customer set "
+									+ " cusStatus 			= '"+bean.getCusStatus()		+ "'"
+									+ ", cusName			= '"+bean.getCustName() 		+ "'"
+									+ ", cusSurname			= '"+bean.getCustSurname()		+ "'"
+									+ ", houseNumber		= '"+bean.getHouseNumber()		+ "'"
+									+ ", mooNumber			= '"+bean.getMooNumber()		+ "'"
+									+ ", SoiName			= '"+bean.getSoiName()			+ "'"
+									+ ", streetName			= '"+bean.getStreetName()		+ "'"
+									+ ", subdistrictCode	= '"+bean.getSubdistrictCode()	+ "'"
+									+ ", districtCode		= '"+bean.getDistrictCode()		+ "'"
+									+ ", provinceCode		= '"+bean.getProvinceCode()		+ "'"
+									+ ", idType				= '"+bean.getIdType()			+ "'"
+									+ ", idNumber			= '"+bean.getIdNumber()			+ "'"
+									+ ", postcode			= '"+bean.getPostcode()			+ "'"
+							+ " where  cusCode = '"+bean.getCusCode()+"'";
 			
 			System.out.println("[CustomerDao][updateCustomer] sql :: " + sql);
 			
