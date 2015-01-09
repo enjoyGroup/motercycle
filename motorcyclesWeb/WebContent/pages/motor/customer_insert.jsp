@@ -311,10 +311,10 @@
 											<!-- start : form group -->
 											<div class="col-sm-12 form-group">
 											    <label class="col-sm-2" style="text-align:right">บ้านเลขที่ <font color="red">*</font>:</label>
-												<div class="col-sm-4"> 
+												<div class="col-sm-2"> 
 													<input type="text" class="form-control" id="houseNumber" name="houseNumber" value="<%=customerBean.getHouseNumber()%>" > 
 												</div>
-												<label class="col-sm-2" style="text-align:right">หมู่ที่ :</label>
+												<label class="col-sm-4" style="text-align:right">หมู่ที่ :</label>
 												<div class="col-sm-2"> 
 													<input type="text" class="form-control " id="mooNumber" name="mooNumber" value="<%=customerBean.getMooNumber()%>" >
 												</div>

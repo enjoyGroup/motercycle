@@ -201,90 +201,89 @@
 	 
 	
 </script>
+<style>.trace,.trace *{outline:1px solid red;}</style>
 </head>
-<body> 
+<body> 			
+<form class="form-horizontal"  id="from_search" action="<%=servURL%>/EnjoyGenericSrv">
+<input type="hidden" id="service" name="service" value="servlet.CustomerSearchServlet" />
+<input type="hidden" id="cusStatus" name="cusStatus" />
 	<section class="vbox"> 
-		<section>
+		
 			<section class="hbox stretch"> 
 				<section id="content">
 					<section class="vbox">
-						<section class="scrollable padder">
-						<form class="form-horizontal"  id="from_search" action="<%=servURL%>/EnjoyGenericSrv">
-						<input type="hidden" id="service" name="service" value="servlet.CustomerSearchServlet" />
-						<input type="hidden" id="cusStatus" name="cusStatus" />
-					 
+						<section class="scrollable padder">  
 							<div class="alert alert-block alert-error fade in">
-				            	<h4 class="alert-heading">ค้นหารายละเอียดลูกค้า</h4>
-				          	</div>
+				         		<h4 class="alert-heading">ค้นหารายละเอียดลูกค้า</h4>
+				       		</div>
 							<div class="row"> 
-								    <div class="col-sm-12">
-									<section class="panel panel-default">
-										<header class="panel-heading font-bold">เงื่อนไขการค้นหา</header>
-										<div class="panel-body">
-											 <div class="form-group"> 
-												<div class="col-sm-12">
-													<div class="row"> 
-													    <label class="col-sm-10 control-label" style="text-align:right">เลขผู้เสียภาษี :</label>
-														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="idNumber" name="idNumber"> 
-														</div>
-														<label class="col-sm-1 control-label" style="text-align:right">ชื่อ-นามสกุล:</label>
-														<div class="col-md-2">  
-															<input type="text" class="form-control" id="fullName" name="fullName">
-														</div> 
-													 	<button class="btn btn-primary" id="btnSearch" >ค้นหา</button> 
-												        <button class="btn btn-primary" id="btnCancel" >เริ่มใหม่</button>  
-												</div> 
+							    <div class="col-sm-12 ">
+							    <section class="panel panel-default">
+									<header class="panel-heading font-bold">เงื่อนไขการค้นหา</header>
+									<div class="panel-body">  
+										<div class="col-sm-12 form-group ">
+										    <label class="col-sm-2" style="text-align:right">เลขผู้เสียภาษี :</label>
+											<div class="col-sm-2"> 
+												<input type="text" class="form-control" id="idNumber" name="idNumber"> 
 											</div>
-											</div>
-										</div>
-									</section>
-									<section class="panel panel-default">
-										<header class="panel-heading font-bold">ข้อมูลลูกค้า</header>
-										<div class="panel-body" id="div_result">
-											<table id="tb_result" border="1" class="table span12" style="overflow-y:auto;width:900px;">
-								               <tr bgcolor="#473636"  class="text_white" height="26px;">
-													<th  style="text-align: center;" width="30px;" ><B>ลำดับ</B></th>
-													<th  style="text-align: left;"   width="20px;"><B>ชื่อ-นามสกุล</B></th>
-													<th  style="text-align: left;"   width="100px;"><B>ที่อยู่</B></th> 
-													<th  style="text-align: center;" width="50px;" ><B>delete</B></th>
-												</tr> 
-											 
-											     <%
-													List<CustomerBean>  list        =   customerForm.getListCustomer();
-													CustomerBean 		bean 		=   null;
-													int rowNumber                   =   0;
-													 
-													if(list.size()>0){
-														for(int i=0;i<list.size();i++){
-															bean = list.get(i);
-															rowNumber = i+1; 
-														
-														%>
-														 <tr class="rowSelect"  onclick="lp_onclick_row(<%=bean.getCusCode()%>);" >
-															<td width="30px;" align="center"><input type="hidden" name="hidCusCode" id="hidCusCode"  value="<%=bean.getCusCode()%>"/><B><%=rowNumber%></B></td>
-															<td width="100px;" align="left" ><%=bean.getCustName()%> <%=bean.getCustSurname()%></td>
-															<td width="300px;" align="left"><%=bean.getAddress()%></td>
-															<td width="50px" align="center">
-															   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(<%=bean.getCusCode()%>);"></button>
-															</td>
-														</tr> 
-														<% } }else{ %>
-														  <tr height="26px;"><td colspan="4"><b>ไม่พบข้อมูลที่ระบุ</b></td></tr>
-														<% } 
-												%>  
-											</table> 
-										</div> 
-								    </section>
-								</div>
-							</div> 
-							
-							</form>
-						</section>
+											<label class="col-sm-2 " style="text-align:right">ชื่อ-นามสกุล:</label>
+											<div class="col-sm-3">  
+												<input type="text" class="form-control" id="fullName" name="fullName">
+											</div> 
+											<div class="col-sm-3">  
+										 	<button class="btn btn-primary" id="btnSearch" >ค้นหา</button> 
+									        <button class="btn btn-primary" id="btnCancel" >เริ่มใหม่</button>
+									       	</div>
+										</div>  
+										<div class="clear" style="clear:both"></div>
+										<!-- end : form group -->
+									</div>
+								</section>
+								
+								<section class="panel panel-default">
+									<header class="panel-heading font-bold">ข้อมูลลูกค้า</header>
+									<div class="panel-body" id="div_result">
+										<table id="tb_result" border="1" class="table span12" style="overflow-y:auto;width:700px;">
+							               <tr bgcolor="#473636"  class="text_white" height="26px;">
+												<th  style="text-align: center;" width="30px;" ><B>ลำดับ</B></th>
+												<th  style="text-align: left;"   width="20px;"><B>ชื่อ-นามสกุล</B></th>
+												<th  style="text-align: left;"   width="100px;"><B>ที่อยู่</B></th> 
+												<th  style="text-align: center;" width="50px;" ><B>delete</B></th>
+											</tr> 
+										 
+										     <%
+												List<CustomerBean>  list        =   customerForm.getListCustomer();
+												CustomerBean 		bean 		=   null;
+												int rowNumber                   =   0;
+												 
+												if(list.size()>0){
+													for(int i=0;i<list.size();i++){
+														bean = list.get(i);
+														rowNumber = i+1; 
+													
+													%>
+													 <tr class="rowSelect"  onclick="lp_onclick_row(<%=bean.getCusCode()%>);" >
+														<td width="30px;" align="center"><input type="hidden" name="hidCusCode" id="hidCusCode"  value="<%=bean.getCusCode()%>"/><B><%=rowNumber%></B></td>
+														<td width="100px;" align="left" ><%=bean.getCustName()%> <%=bean.getCustSurname()%></td>
+														<td width="300px;" align="left"><%=bean.getAddress()%></td>
+														<td width="50px" align="center">
+														   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(<%=bean.getCusCode()%>);"></button>
+														</td>
+													</tr> 
+													<% } }else{ %>
+													  <tr height="26px;"><td colspan="4"><b>ไม่พบข้อมูลที่ระบุ</b></td></tr>
+													<% } 
+											%>  
+										</table> 
+									</div> 
+							    </section>
+							</div>
+						</div> 
 					</section>
-				</section> 
-			</section> 
+				</section>
+			</section>
 		</section>
 	</section>
+</form>		
 </body>
 </html>

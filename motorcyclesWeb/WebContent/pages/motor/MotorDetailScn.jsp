@@ -471,142 +471,138 @@
 
 
 </script>
+<style>.trace,.trace *{outline:1px solid red;}</style>
 </head>
 <body> 
-	<section class="vbox"> 
-		<section>
-			<section class="hbox stretch"> 
-				<section id="content">
-					<section class="vbox">
-						<section class="scrollable padder">
-						<form class="form-horizontal"  id="frm" action="<%=servURL%>/EnjoyGenericSrv">
-						<input type="hidden" id="service" name="service" value="servlet.MotorDetailServlet" />
-						 
-							<div class="alert alert-block alert-error fade in">
-				            	<h4 class="alert-heading">ข้อมูลรถ</h4>
-				          	</div>
-							<div class="row"> 
-								    <div class="col-sm-12">
-										<section class="panel panel-default trace">
-											<header class="panel-heading font-bold">เงื่อนไขการค้นหา</header>
-											<div class="panel-body">
-												 <div class="form-group"> 
-													<div class="col-sm-12">
-														<div class="row"> 
-														    <label class="col-sm-10 control-label" style="text-align:right">ยี่ห้อ<font color="red">*</font>:</label>
-															<div class="col-md-2"> 
-																<input type="text" id="brandSearch" name="brandSearch"  value="<%=motorDetailBean.getBrandSearch()%>" <%if(!motorDetailBean.getBrandSearch().equalsIgnoreCase("")){%> readonly="readonly"<%} %> />
-																<input type="hidden" name="brandCode" id="brandCode"  value="<%=motorDetailBean.getBrandCode()%>"/> 
-															</div>
-															<label class="col-sm-1 control-label" style="text-align:right">บริษัทที่เก็บ:</label>
-															<div class="col-md-2">  
-																<input type="text" id="companySearch" name="companySearch" value="<%=motorDetailBean.getCompanySearch()%>" <%if((!motorDetailBean.getBrandSearch().equalsIgnoreCase(""))||(!motorDetailBean.getCompanySearch().equalsIgnoreCase(""))){%> readonly="readonly" <%} %> >
-																<input type="hidden" name="companyId" id="companyId"  value="<%=motorDetailBean.getCompanyId()%>"/>
-															</div> 
-														 
-														  <!--   <input type="button" class="btn btn-primary" id="btnSearch" name="btnSearch" value="ค้นหา"/>  -->  
-														  	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-														    <button class="btn btn-primary" id="btnSearch" name="btnSearch">ค้นหา</button>
-											                <button class="btn btn-primary" id="btnCancel" name="btnCancel">เริ่มใหม่</button>
-													</div> 
+<form class="form-horizontal"  id="frm" action="<%=servURL%>/EnjoyGenericSrv">
+<input type="hidden" id="service" name="service" value="servlet.MotorDetailServlet" />
+ 	<section class="vbox"> 
+		<section class="hbox stretch"> 
+			<section id="content">
+				<section class="vbox">
+					<section class="scrollable padder">  
+						<div class="alert alert-block alert-error fade in">
+			            	<h4 class="alert-heading">ข้อมูลรถ</h4>
+			          	</div>
+						<div class="row"> 
+						    <div class="col-sm-12">
+								<section class="panel panel-default">
+									<header class="panel-heading font-bold">เงื่อนไขการค้นหา</header>
+									<div class="panel-body">
+										 <div class="form-group"> 
+											<!-- start : form group -->
+											<div class="col-sm-12 form-group ">
+												<label class="col-sm-2" style="text-align:right">ยี่ห้อ<font color="red">*</font>:</label>
+												<div class="col-sm-2"> 
+													<input type="text" id="brandSearch" name="brandSearch"  style="width:100px;" value="<%=motorDetailBean.getBrandSearch()%>" <%if(!motorDetailBean.getBrandSearch().equalsIgnoreCase("")){%> readonly="readonly"<%} %> />
+													<input type="hidden" name="brandCode" id="brandCode"  value="<%=motorDetailBean.getBrandCode()%>"/> 
+												</div>	
+												<label class="col-sm-2 " style="text-align:right">บริษัทที่เก็บ:</label>
+												<div class="col-sm-3">  
+													<input type="text" id="companySearch" name="companySearch" style="width:150px;"  value="<%=motorDetailBean.getCompanySearch()%>" <%if((!motorDetailBean.getBrandSearch().equalsIgnoreCase(""))||(!motorDetailBean.getCompanySearch().equalsIgnoreCase(""))){%> readonly="readonly" <%} %> >
+													<input type="hidden" name="companyId" id="companyId"  value="<%=motorDetailBean.getCompanyId()%>"/>
 												</div>
+											    <button class="btn btn-primary" id="btnSearch" name="btnSearch">ค้นหา</button>
+								                <button class="btn btn-primary" id="btnCancel" name="btnCancel">เริ่มใหม่</button>
 											</div>
+											<div class="clear" style="clear:both"></div>
+											<!-- end : form group -->
 										</div>
-									</section>
-									<section class="panel panel-default">
-										<header class="panel-heading font-bold">ข้อมูลรุ่นรถจักรยานยนต์</header>
-										<div class="panel-body" id="div_result">
-											<table id="tb_result" border="1" class="table span12" style="overflow-y:auto;width:950px;">
-								               <tr bgcolor="#473636"  class="text_white" height="26px;">
-													<th  style="text-align: center;" width="30px;" ><B>ลำดับ</B></th>
-													<th  style="text-align: left;"   width="100px;"><B>ยี่ห้อ</B></th>
-													<th  style="text-align: left;"   width="100px;"><B>รุ่น</B></th> 
-													<th  style="text-align: left;"   width="100px;"><B>เลขตัวถัง</B></th>
-													<th  style="text-align: left;"   width="100px;"><B>เลขเครื่องยนต์</B></th>  
-													<th  style="text-align: left;"   width="50px;"><B>ซีซี</B></th>
-													<th  style="text-align: left;"   width="100px;"><B>บริษัทที่เก็บ</B></th> 
-													<th  style="text-align: center;" width="50px;" ><B>add/delete</B></th>
-												</tr> 
-											 
-											       <%
-													List<MotorDetailBean>  	list        =   motorDetailForm.getListMotorDetail();
-											     	MotorDetailBean 		bean 		=   null;
-													int rowNumber                   	=   0;
-													 
-													 if(list.size()>0){
-														for(int i=0;i<list.size();i++){
-															bean = list.get(i);
-															rowNumber = i+1; 
-														
-														%>
-														 <tr>
-															<td width="15px;" align="center"><input type="hidden" name="hidMotorcyclesCode" id="hidMotorcyclesCode"  value="<%=bean.getMotorcyclesCode()%>"/><B><%=rowNumber%></B></td>
-															<td width="100px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode"  value="<%=bean.getBrandCode()%>"/>
-															    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=bean.getBrandName()%>" style="width: 100px;" readonly="readonly"/>
-															</td>
-															<td width="100px;" align="left"><input type="text" name="model" id="model" value="<%=bean.getModel()%> " style="width: 100px;" maxlength="50"/></td>
-															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 100px;"  maxlength="20"/></td>
-															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 100px;"  maxlength="20"/></td>
-															<td width="50px;" align="left"><input type="text" name="size" id="size" value="<%=bean.getSize()%> " style="width: 100px;" maxlength="4"  onblur="lp_onBlurFormatNumber(this);"/></td>
-															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId" value="<%=bean.getCompanyId()%> " style="width: 100px;"/>
-															    <input type="text" name="branchName" id="branchName" class="branchNameClass" value="<%=bean.getBranchName()%> "  style="width: 150px;" readonly="readonly"  />
-															</td>
-															<td width="50px" align="center">
-															   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(this);" ></button>
-															   <input type="hidden" name="hidMotorStartus" id="hidMotorStartus"  value="U"/> 
-															</td> 
-														</tr> 
-														
-													<% } }else{ %>
-														   <tr>
-															<td width="15px;" align="center"><input type="hidden" name="hidMotorcyclesCode" id="hidMotorcyclesCode"  /><B>1</B></td>
-															<td width="100px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode" value="<%=motorDetailBean.getBrandCode()%>"/>
-															    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=motorDetailBean.getBrandName()%>" style="width: 100px;" />
-															</td>
-															<td width="100px;" align="left"><input type="text" name="model" id="model" style="width: 100px;"  maxlength="50"/></td>
-															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis"   style="width: 100px;"  maxlength="20"/></td>
-															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo"   style="width: 100px;" maxlength="20"/></td>
-															<td width="50px;" align="left"><input type="text" name="size" id="size"   style="width: 100px;" maxlength="4" onblur="lp_onBlurFormatNumber(this);"/></td>
-															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId"  value="<%=motorDetailBean.getCompanyId()%>"  style="width: 100px;"/>
-															   <input type="text" name="branchName" id="branchName" class="branchNameClass"   value="<%=motorDetailBean.getBranchName()%>" style="width: 150px;"/>
-															</td>
-															<td width="50px" align="center">
-															   <!-- <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(this);" ></button>  -->
-															   <input type="hidden" name="hidMotorStartus" id="hidMotorStartus"  class='hidMotorStartus'  value="N"/> 
-															</td> 
-														</tr>  
-													<% } 
-													 
-												%> 
-												
-												  <tr>
-													<td style="visibility:hidden;"></td>
-													<td style="visibility:hidden;"></td>
-													<td style="visibility:hidden;"></td>
-													<td style="visibility:hidden;"></td>
-													<td style="visibility:hidden;"></td>
-													<td style="visibility:hidden;"></td>
-													<td style="visibility:hidden;"></td> 
-													<td align="center">
-													  <a id="btn_add" href="#" class="btn btn-warning btn-mini fa fa-plus-square" style="width:25px;" onclick="lp_add_row_table();"></a>
-													</td>
-												 </tr>  
+									</div>
+								</section>
+								<section class="panel panel-default">
+									<header class="panel-heading font-bold">ข้อมูลรุ่นรถจักรยานยนต์</header>
+									<div class="panel-body" id="div_result">
+										<table id="tb_result" border="1" class="table span12" style="overflow-y:auto;width:600px;">
+							               <tr bgcolor="#473636"  class="text_white" height="26px;">
+												<th  style="text-align: center;" width="10px;" ><B>ลำดับ</B></th>
+												<th  style="text-align: left;"   width="60px;"><B>ยี่ห้อ</B></th>
+												<th  style="text-align: left;"   width="80px;"><B>รุ่น</B></th> 
+												<th  style="text-align: left;"   width="120px;"><B>เลขตัวถัง</B></th>
+												<th  style="text-align: left;"   width="120px;"><B>เลขเครื่องยนต์</B></th>  
+												<th  style="text-align: left;"   width="50px;"><B>ซีซี</B></th>
+												<th  style="text-align: left;"   width="100px;"><B>บริษัทที่เก็บ</B></th> 
+												<th  style="text-align: center;" width="40px;" ><B>add/delete</B></th>
+											</tr> 
 										 
-											</table> 
-										</div> 
-								    </section>
-								</div>
-							</div> 
-							<div class="form-group" align="center">	  
-								<input type="button" class="btn btn-primary" ondblclick="return false;" id="btnSave" name="btnSave" value="บันทึก" /> 
-								<button class="btn btn-primary" id="btnReset" name="btnReset">เริ่มใหม่</button>
-							</div>  
-							</form>
-						</section>
+										       <%
+												List<MotorDetailBean>  	list        =   motorDetailForm.getListMotorDetail();
+										     	MotorDetailBean 		bean 		=   null;
+												int rowNumber                   	=   0;
+												 
+												 if(list.size()>0){
+													for(int i=0;i<list.size();i++){
+														bean = list.get(i);
+														rowNumber = i+1; 
+													
+													%>
+													 <tr>
+														<td width="10px;" align="center"><input type="hidden" name="hidMotorcyclesCode" id="hidMotorcyclesCode"  value="<%=bean.getMotorcyclesCode()%>"/><B><%=rowNumber%></B></td>
+														<td width="60px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode"  value="<%=bean.getBrandCode()%>"/>
+														    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=bean.getBrandName()%>" style="width: 60px;" readonly="readonly"/>
+														</td>
+														<td width="80px;" align="left"><input type="text" name="model" id="model" value="<%=bean.getModel()%> " style="width: 80px;" maxlength="50"/></td>
+														<td width="120px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 120px;"  maxlength="20"/></td>
+														<td width="130px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 130px;"  maxlength="17"/></td>
+														<td width="50px;" align="left"><input type="text" name="size" id="size" value="<%=bean.getSize()%> " style="width: 50px;" maxlength="4"  onblur="lp_onBlurFormatNumber(this);"/></td>
+														<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId" value="<%=bean.getCompanyId()%> " style="width: 100px;"/>
+														    <input type="text" name="branchName" id="branchName" class="branchNameClass" value="<%=bean.getBranchName()%> "  style="width: 100px;" readonly="readonly"  />
+														</td>
+														<td width="40px" align="center">
+														   <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(this);" ></button>
+														   <input type="hidden" name="hidMotorStartus" id="hidMotorStartus"  value="U"/> 
+														</td> 
+													</tr> 
+													
+												<% } }else{ %>
+													   <tr>
+														<td width="10px;" align="center"><input type="hidden" name="hidMotorcyclesCode" id="hidMotorcyclesCode"  /><B>1</B></td>
+														<td width="60px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode" value="<%=motorDetailBean.getBrandCode()%>"/>
+														    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=motorDetailBean.getBrandName()%>" style="width: 60px;" />
+														</td>
+														<td width="80px;" align="left"><input type="text" name="model" id="model" style="width: 80px;"  maxlength="50"/></td>
+														<td width="120px;" align="left"><input type="text" name="chassis" id="chassis"   style="width: 120px;"  maxlength="20"/></td>
+														<td width="130px;" align="left"><input type="text" name="engineNo" id="engineNo"   style="width: 130px;" maxlength="17"/></td>
+														<td width="50px;" align="left"><input type="text" name="size" id="size"   style="width: 50px;" maxlength="4" onblur="lp_onBlurFormatNumber(this);"/></td>
+														<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId"  value="<%=motorDetailBean.getCompanyId()%>"  style="width: 100px;"/>
+														   <input type="text" name="branchName" id="branchName" class="branchNameClass"   value="<%=motorDetailBean.getBranchName()%>" style="width: 100px;"/>
+														</td>
+														<td width="40px" align="center">
+														   <!-- <button id="btn_delete" name="btn_delete"  class="btn btn-warning btn-mini fa fa-times" style="width:25px;" onclick="lp_del_row_table(this);" ></button>  -->
+														   <input type="hidden" name="hidMotorStartus" id="hidMotorStartus"  class='hidMotorStartus'  value="N"/> 
+														</td> 
+													</tr>  
+												<% } 
+												 
+											%> 
+											
+											  <tr>
+												<td style="visibility:hidden;"></td>
+												<td style="visibility:hidden;"></td>
+												<td style="visibility:hidden;"></td>
+												<td style="visibility:hidden;"></td>
+												<td style="visibility:hidden;"></td>
+												<td style="visibility:hidden;"></td>
+												<td style="visibility:hidden;"></td> 
+												<td align="center">
+												  <a id="btn_add" href="#" class="btn btn-warning btn-mini fa fa-plus-square" style="width:25px;" onclick="lp_add_row_table();"></a>
+												</td>
+											 </tr>  
+									 
+										</table> 
+									</div> 
+							    </section>
+							</div>
+						</div> 
+						<div class="form-group" align="center">	  
+							<input type="button" class="btn btn-primary" ondblclick="return false;" id="btnSave" name="btnSave" value="บันทึก" /> 
+							<button class="btn btn-primary" id="btnReset" name="btnReset">เริ่มใหม่</button>
+						</div>  
 					</section>
-				</section> 
+				</section>
 			</section> 
-		</section>
+		</section> 
 	</section>
+</form>
 </body>
 </html>
