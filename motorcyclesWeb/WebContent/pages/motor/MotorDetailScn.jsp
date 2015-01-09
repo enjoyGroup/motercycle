@@ -599,7 +599,7 @@
 								</div>
 							</div> 
 							<div class="form-group" align="center">	  
-								<input type="button" class="btn btn-primary" id="btnSave" name="btnSave" value="บันทึก" /> 
+								<input type="button" class="btn btn-primary" ondblclick="return false;" id="btnSave" name="btnSave" value="บันทึก" /> 
 								<button class="btn btn-primary" id="btnReset" name="btnReset">เริ่มใหม่</button>
 							</div>  
 							</form>

@@ -213,6 +213,30 @@
  
 	});
 	
+    function lp_onBlurPostcode(){
+		
+		var lo_postcode 		= null;//replaceComma
+		
+		try{
+			lo_postcode 			= document.getElementById("postcode");
+			
+			if(gp_number(lo_postcode)==false){
+				alert("กรุณาระบุตัวเลขเท่านั้น");
+				lo_postcode.value = "";
+				return;
+			}
+			
+			if(gp_trim(lo_postcode.value)!="" && gp_trim(lo_postcode.value).length < 5){
+				alert("ระบุได้รหัสไปรษณ๊ย์ผิด");
+				$('#postcode').focus().select();
+				return;
+			}
+			
+		}catch(e){
+			alert("lp_onBlurPostcode :: " + e);
+		}
+		
+	}
 	
       
 </script>
@@ -318,6 +342,14 @@
 														<div class="col-md-2"> 
 															<input  class="form-control" id="subdistrictName" name="subdistrictName"  placeholder="ตำบล" title="ตำบล"  value="<%=customerBean.getSubdistrictName()%>"> 
 															<input type="hidden" id="subdistrictCode" name="subdistrictCode"> 
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12">
+													<div class="row"> 
+													    <label class="col-sm-2 control-label" style="text-align:right">รหัสไปรษณ๊ย์<font color="red">*</font>:</label>
+														<div class="col-md-2"> 
+															<input  class="form-control" type="text" id="postcode" name="postcode" maxlength="5" placeholder="รหัสไปรษณ๊ย์" onblur="lp_onBlurPostcode();" value="<%=customerBean.getPostcode()%>"> 
 														</div>
 													</div>
 												</div>

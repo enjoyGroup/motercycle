@@ -66,20 +66,18 @@ public class CustomerDao {
 				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
 
 				address  =  new StringBuilder();
-				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber"))); 
-//				address.append(" หมู่บ้าน  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
-//				address.append(" ซอย   ").append(EnjoyUtils.nullToStr(rs.getString("SoiName"))); 
-//				address.append(" ถนนที่  ").append(EnjoyUtils.nullToStr(rs.getString("streetName"))); 
+				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber")));  
+				
 				if (! EnjoyUtils.nullToStr(rs.getString("mooNumber")).equals("")) {
-					address.append(" หมู่ที่  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
+					address.append(" หมู่ที่ ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
 				}	
 				if (! EnjoyUtils.nullToStr(rs.getString("SoiName")).equals("")) {
-					address.append(" ซอยที่  ").append(EnjoyUtils.nullToStr(rs.getString("SoiName")));
+					address.append(" ซอย ").append(EnjoyUtils.nullToStr(rs.getString("SoiName")));
 				}	
 				if (! EnjoyUtils.nullToStr(rs.getString("streetName")).equals("")) {
 					address.append(" ถนน ").append(EnjoyUtils.nullToStr(rs.getString("streetName")));
 				}	
-				address.append(" ตำบล/แขวง  ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
+				address.append(" ตำบล/แขวง ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
 				address.append(" อำเภอ/เขต  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
 				address.append(" จังหวัด  ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
 				customerBean.setAddress(address.toString());
@@ -132,11 +130,17 @@ public class CustomerDao {
 
 				address  =  new StringBuilder();
 				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber"))); 
-				address.append(" หมู่บ้าน  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
-				address.append(" ซอย   ").append(EnjoyUtils.nullToStr(rs.getString("SoiName"))); 
-				address.append(" ถนน   ").append(EnjoyUtils.nullToStr(rs.getString("streetName"))); 
-				address.append(" ตำบล  ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
-				address.append(" อำเภอ  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
+				if (! EnjoyUtils.nullToStr(rs.getString("mooNumber")).equals("")) {
+					address.append(" หมู่ที่ ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
+				}	
+				if (! EnjoyUtils.nullToStr(rs.getString("SoiName")).equals("")) {
+					address.append(" ซอย ").append(EnjoyUtils.nullToStr(rs.getString("SoiName")));
+				}	
+				if (! EnjoyUtils.nullToStr(rs.getString("streetName")).equals("")) {
+					address.append(" ถนน ").append(EnjoyUtils.nullToStr(rs.getString("streetName")));
+				}	
+				address.append(" ตำบล/แขวง ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
+				address.append(" อำเภอ/เขต  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
 				address.append(" จังหวัด  ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
 				customerBean.setAddress(address.toString());
 			    System.out.println(customerBean.getAddress());
@@ -191,6 +195,7 @@ public class CustomerDao {
 				customerBean.setSubdistrictCode(EnjoyUtils.nullToStr(rs.getString("subdistrictId")));
 				customerBean.setDistrictCode(EnjoyUtils.nullToStr(rs.getString("districtId")));
 				customerBean.setProvinceCode(EnjoyUtils.nullToStr(rs.getString("provinceId")));
+				customerBean.setPostcode(EnjoyUtils.nullToStr(rs.getString("postcode")));
 				cusForm.setCustomerBean(customerBean);
 		    } 
 		    
@@ -371,7 +376,7 @@ public class CustomerDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())provinceId = rs.getString("provinceId").trim();
-		    if(provinceId==null)throw new EnjoyException("ระบุจังหวัดผิด");
+		    if(provinceId==null)throw new EnjoyException("เธฃเธฐเธ�เธธเธ�เธฑเธ�เธซเธงเธฑเธ”เธ�เธดเธ”");
 		    /*End check province section*/
 		    
 		    /*Begin check district section*/
@@ -381,7 +386,7 @@ public class CustomerDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())districtId = rs.getString("districtId").trim();
-		    if(districtId==null)throw new EnjoyException("ระบุอำเภอผิด");
+		    if(districtId==null)throw new EnjoyException("เธฃเธฐเธ�เธธเธญเธณเน€เธ เธญเธ�เธดเธ”");
 		    /*End check district section*/
 		    
 		    /*Begin check subDistrict section*/
@@ -391,7 +396,7 @@ public class CustomerDao {
 			
 		    rs 			= this.db.executeQuery(sql);
 		    while(rs.next())subdistrictId = rs.getString("subdistrictId").trim();
-		    if(subdistrictId==null)throw new EnjoyException("ระบุตำบลผิด");
+		    if(subdistrictId==null)throw new EnjoyException("เธฃเธฐเธ�เธธเธ•เธณเธ�เธฅเธ�เธดเธ”");
 		    /*End check subDistrict section*/
 		    
 		    System.out.println("[CustomerDao][validateAddress] " + provinceId + ", " + districtId + ", " + subdistrictId);
