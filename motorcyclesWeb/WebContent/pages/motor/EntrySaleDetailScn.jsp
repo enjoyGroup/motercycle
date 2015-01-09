@@ -1287,7 +1287,7 @@
 									<section class="panel panel-default">
 										<header class="panel-heading font-bold">ข้อมูลลูกค้า</header> 
 										<div class="panel-body"> 
-											<table border="0" width="100%">
+											<table border="0" width="75%">
 												<tr>
 													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">
@@ -1297,13 +1297,13 @@
 														<input  type="text"
 																id="idNumber" 
 																name="idNumber"
-																size="20"
+																size="12"
 																maxlength="13"
 																onblur="lp_getCustDtlByIdNumber();"
 																value="<%=customerBean.getIdNumber() %>"
 														/>
 													</td>
-													<td colspan="2">
+													<td colspan="4">
 														<label class="col-sm-2 control-label" style="text-align:right">
 															<input  type="radio" 
 																	id="idType1" 
@@ -1344,7 +1344,7 @@
 													</td>
 													<td width="20%">
 														<input  type="text" 
-																	size="20"
+																	size="15"
 																	id="custName" 
 																	name="custName"
 																	onblur="lp_getCustDtlByName();"
@@ -1356,7 +1356,7 @@
 													</td>
 													<td width="20%" colspan="3">
 														<input  type="text" 
-																	size="20"
+																	size="15"
 																	id="custSurname" 
 																	name="custSurname"
 																	onblur="lp_getCustDtlByName();"
@@ -1377,7 +1377,7 @@
 														<input  type="text"
 																id="houseNumber" 
 																name="houseNumber"
-																size="20"
+																size="5"
 																value="<%=customerBean.getHouseNumber() %>"
 														/>
 													</td>
@@ -1388,7 +1388,7 @@
 														<input  type="text"
 																	id="mooNumber" 
 																	name="mooNumber"
-																	size="20"
+																	size="5"
 																	value="<%=customerBean.getMooNumber() %>"
 															/>
 													</td>
@@ -1399,7 +1399,7 @@
 													</td>
 													<td>
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="soiName" 
 																name="soiName"
 																value="<%=customerBean.getSoiName() %>"
@@ -1410,7 +1410,7 @@
 													</td>
 													<td colspan="3">
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="streetName" 
 																name="streetName"
 																value="<%=customerBean.getStreetName() %>"
@@ -1424,7 +1424,7 @@
 													</td>
 													<td>
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="provinceName" 
 																name="provinceName"
 																placeholder="จังหวัด"
@@ -1438,11 +1438,13 @@
 														<input  type="text"
 																id="districtName" 
 																name="districtName"
-																size="20"
+																size="15"
 																placeholder="อำเภอ"
 																value="<%=customerBean.getDistrictName() %>"
 														/>
 													</td>
+												</tr>
+												<tr>
 													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">ตำบล/แขวง <font color="red">*</font>:</label>
 													</td>
@@ -1450,19 +1452,17 @@
 														<input  type="text"
 																	id="subdistrictName" 
 																	name="subdistrictName"
-																	size="20"
+																	size="15"
 																	placeholder="ตำบล"
 																	value="<%=customerBean.getSubdistrictName() %>"
 															/>
 													</td>
-												</tr>
-												<tr>
 													<td>
 														<label class="col-sm-2 control-label" style="text-align:right">รหัสไปรษณ๊ย์<font color="red">*</font>:</label>
 													</td>
 													<td colspan="5">
 														<input  type="text" 
-																size="20"
+																size="7"
 																id="postcode" 
 																name="postcode"
 																maxlength="5"
@@ -1483,7 +1483,7 @@
 													</td>
 													<td width="29%">
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="brandName" 
 																name="brandName"
 																value="<%=productBean.getBrandName() %>"
@@ -1494,7 +1494,7 @@
 													</td>
 													<td width="45%" align="left">
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="model" 
 																name="model"
 																onblur="lp_getProdDtl();"
@@ -1511,13 +1511,13 @@
 																id="chassis" 
 																name="chassis"
 																value="<%=productBean.getChassis() %>"
-																size="12"
+																size="7"
 																class="input-disabled" 
 					                                       		readonly="readonly"		
 					                                       		tabindex="-1"													
 														/>
 														<input  type="text" 
-																size="15"
+																size="5"
 																id="chassisDisp" 
 																name="chassisDisp"
 																value="<%=productBean.getChassisDisp() %>"
@@ -1532,13 +1532,13 @@
 																id="engineNo" 
 																name="engineNo"
 																value="<%=productBean.getEngineNo() %>"
-																size="12"
+																size="10"
 																class="input-disabled" 
 					                                       		readonly="readonly"		
 					                                       		tabindex="-1"
 														/>
 														<input  type="text" 
-																size="15"
+																size="10"
 																id="engineNoDisp" 
 																name="engineNoDisp"
 																value="<%=productBean.getEngineNoDisp() %>"
@@ -1552,7 +1552,7 @@
 													</td>
 													<td>
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="size" 
 																name="size"
 																onblur="lp_size();"
@@ -1564,7 +1564,7 @@
 													</td>
 													<td>
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="color" 
 																name="color"
 																value="<%=entrySaleDetailForm.getColor() %>"
@@ -1580,7 +1580,7 @@
 													</td>
 													<td colspan="3">
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="totalAmount" 
 																name="totalAmount"
 																onblur="lp_onBlurTotalAmount();"
@@ -1597,7 +1597,7 @@
 													</td>
 													<td colspan="3" align="left">
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="vatAmount" 
 																name="vatAmount"
 																onblur="lp_onBlurVatAmount();"
@@ -1611,7 +1611,7 @@
 													</td>
 													<td>
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="priceAmount" 
 																name="priceAmount"
 								                                class="input-disabled" 
@@ -1624,7 +1624,7 @@
 													</td>
 													<td align="left">
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="remark" 
 																name="remark"
 																maxlength="100"
@@ -1644,7 +1644,7 @@
 															มีการส่งเสริมการขาย
 														</label>
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="commAmount" 
 																name="commAmount"
 						                                        class="input-disabled" 
@@ -1684,7 +1684,7 @@
 															ไม่มีเพิ่มเติม
 														</label>
 														<input  type="text" 
-																size="20"
+																size="15"
 																id="creditAmount" 
 																name="creditAmount"
 						                                        class="input-disabled" 
