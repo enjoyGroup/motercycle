@@ -241,12 +241,13 @@
       
 </script>
 	 
+	 
 </head>
 <body> 
 <form class="form-horizontal" id="frm" action="<%=servURL%>/EnjoyGenericSrv">
 	<input type="hidden" id="service" name="service" value="servlet.CustomerServlet" />   
 	<section class="vbox"> 
-		<section>
+		
 			<section class="hbox stretch"> 
 				<section id="content">
 					<section class="vbox">
@@ -269,91 +270,103 @@
 									<section class="panel panel-default">
 										<header class="panel-heading font-bold">ข้อมูลลูกค้า</header> 
 										<div class="panel-body" id="section_body"> 
-											<div class="form-group"> 
-											    <div class="col-sm-12">
-													<div class="row">
-													    <div class="col-md-1"style="width:120px;"></div> 
-													    <div class="col-md-1"> 
-													        <label class="col-sm-2 control-label" style="text-align:right" > 
-															<input type="radio" name="idType" id="idType1" value="1" style="width:50px;" 
-																	<%if(customerBean.getIdType().equals("1")){%> checked="checked" <%} %>>บุคคลธรรมดา</label> 
-														</div>
-														 <div class="col-md-1">
-													        <label class="col-sm-2 control-label" style="text-align:right"> 
-															<input type="radio" name="idType" id="idType2" value="2" style="width:50px;"  checked
-																	<%if(customerBean.getIdType().equals("2")){%> checked="checked" <%} %>>นิติบุคคล</label> 
-														</div>
-														 <div class="col-md-1"style="width:40px;"></div>  
-														<label class="col-sm-1 control-label" style="text-align:right">เลขผู้เสียภาษี<font color="red">*</font>:</label> 
-														<div class="col-md-2"> 
-														    <input type="text" class="form-control" id="idNumber" name="idNumber" value="<%=customerBean.getIdNumber()%>" maxlength="13">
-														</div> 
-													</div>
-												</div>  
-												<div class="col-sm-12">
-													<div class="row"> 
-													    <label class="col-sm-2 control-label" style="text-align:right">ชื่อ <font color="red">*</font>:</label>
-														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="custName" name="custName" value="<%=customerBean.getCustName()%>"> 
-														</div>
-														<label class="col-sm-2 control-label" style="text-align:right">นามสกุล <font color="red">*</font>:</label>
-														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="custSurname" name="custSurname" value="<%=customerBean.getCustSurname()%>"  >
-														</div>
+											<!-- start : form group -->
+										    <div class="col-sm-12 form-group ">
+											    <div class="col-sm-2 col-sm-offset-1"> 
+											        <label class="col-sm-2 control-label" style="text-align:right" > 
+													<input type="radio" name="idType" id="idType1" value="1" style="width:50px;" 
+															<%if(customerBean.getIdType().equals("1")){%> checked="checked" <%} %>>บุคคลธรรมดา</label> 
+												</div>
+												
+												<div class="col-sm-2">
+											        <label class="col-sm-2 control-label" style="text-align:right"> 
+													<input type="radio" name="idType" id="idType2" value="2" style="width:50px;"  checked
+															<%if(customerBean.getIdType().equals("2")){%> checked="checked" <%} %>>นิติบุคคล</label> 
+												</div>
+												<div class="col-sm-7  form-group">
+												    <label class="col-sm-6" style="text-align:right">เลขผู้เสียภาษี <font color="red">*</font>:</label>
+													<div class="col-sm-6"> 
+														<input type="text" class="form-control" id="idNumber" name="idNumber" value="<%=customerBean.getIdNumber()%>" maxlength="13">
 													</div>
 												</div>
-												<div class="col-sm-12">
-													<div class="row"> 
-													    <label class="col-sm-2 control-label" style="text-align:right">บ้านเลขที่ <font color="red">*</font>:</label>
-														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="houseNumber" name="houseNumber" value="<%=customerBean.getHouseNumber()%>" > 
-														</div>
-														<label class="col-sm-2 control-label" style="text-align:right">หมู่ที่ :</label>
-														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="mooNumber" name="mooNumber" value="<%=customerBean.getMooNumber()%>" >
-														</div>
-													</div>
+											</div>  
+											<div class="clear" style="clear:both"></div>
+											<!-- end : form group -->
+
+											<!-- start : form group -->
+											<div class="col-sm-12  form-group">
+											    <label class="col-sm-2" style="text-align:right">ชื่อ <font color="red">*</font>:</label>
+												<div class="col-sm-4"> 
+													<input type="text" class="form-control" id="custName" name="custName" value="<%=customerBean.getCustName()%>"> 
 												</div>
-												<div class="col-sm-12">
-													<div class="row"> 
-													    <label class="col-sm-2 control-label" style="text-align:right">ตรอก/ซอย :</label>
-														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="soiName" name="soiName"  value="<%=customerBean.getSoiName()%>" > 
-														</div>
-														<label class="col-sm-2 control-label" style="text-align:right">ถนน :</label>
-														<div class="col-md-2"> 
-															<input type="text" class="form-control" id="streetName" name="streetName"  value="<%=customerBean.getStreetName()%>"  >
-														</div>
-													</div>
+												
+												<label class="col-sm-2" style="text-align:right">นามสกุล <font color="red">*</font>:</label>
+												<div class="col-sm-4"> 
+													<input type="text" class="form-control" id="custSurname" name="custSurname" value="<%=customerBean.getCustSurname()%>"  >
 												</div>
-												<div class="col-sm-12">
-													<div class="row">  
-														<label class="col-sm-1 control-label" style="text-align:right">จังหวัด <font color="red">*</font>:</label>
-														<div class="col-md-2">  
-															<input class="form-control" id="provinceName" name="provinceName"  placeholder="จังหวัด" title="จังหวัด" value="<%=customerBean.getProvinceName()%>" >
-															<input type="hidden" id="provinceCode" name="provinceCode" >
-														</div> 
-														<label class="col-sm-2 control-label" style="text-align:right">อำเภอ/เขต <font color="red">*</font>:</label>
-														<div class="col-md-2"> 
-															<input  class="form-control" id="districtName" name="districtName"  placeholder="อำเภอ" title="อำเภอ"  value="<%=customerBean.getDistrictName()%>" >
-															<input type="hidden" id="districtCode" name="districtCode" >
-														</div>
-													    <label class="col-sm-2 control-label" style="text-align:right">ตำบล/แขวง <font color="red">*</font>:</label>
-														<div class="col-md-2"> 
-															<input  class="form-control" id="subdistrictName" name="subdistrictName"  placeholder="ตำบล" title="ตำบล"  value="<%=customerBean.getSubdistrictName()%>"> 
-															<input type="hidden" id="subdistrictCode" name="subdistrictCode"> 
-														</div>
-													</div>
+											</div>
+											<div class="clear" style="clear:both"></div>
+											<!-- end : form group -->
+
+											<!-- start : form group -->
+											<div class="col-sm-12 form-group">
+											    <label class="col-sm-2" style="text-align:right">บ้านเลขที่ <font color="red">*</font>:</label>
+												<div class="col-sm-4"> 
+													<input type="text" class="form-control" id="houseNumber" name="houseNumber" value="<%=customerBean.getHouseNumber()%>" > 
 												</div>
-												<div class="col-sm-12">
-													<div class="row"> 
-													    <label class="col-sm-2 control-label" style="text-align:right">รหัสไปรษณ๊ย์<font color="red">*</font>:</label>
-														<div class="col-md-2"> 
-															<input  class="form-control" type="text" id="postcode" name="postcode" maxlength="5" placeholder="รหัสไปรษณ๊ย์" onblur="lp_onBlurPostcode();" value="<%=customerBean.getPostcode()%>"> 
-														</div>
-													</div>
+												<label class="col-sm-2" style="text-align:right">หมู่ที่ :</label>
+												<div class="col-sm-2"> 
+													<input type="text" class="form-control " id="mooNumber" name="mooNumber" value="<%=customerBean.getMooNumber()%>" >
 												</div>
-											</div> 
+											</div>
+											<div class="clear" style="clear:both"></div>
+											<!-- end : form group -->
+
+											<!-- start : form group -->
+											<div class="col-sm-12 form-group">
+											    <label class="col-sm-2 " style="text-align:right">ตรอก/ซอย :</label>
+												<div class="col-sm-4"> 
+													<input type="text" class="form-control" id="soiName" name="soiName"  value="<%=customerBean.getSoiName()%>" > 
+												</div>
+												<label class="col-sm-2 " style="text-align:right">ถนน :</label>
+												<div class="col-sm-4"> 
+													<input type="text" class="form-control" id="streetName" name="streetName"  value="<%=customerBean.getStreetName()%>"  >
+												</div>
+											</div>
+											<div class="clear" style="clear:both"></div>
+											<!-- end : form group -->
+											
+											<!-- start : form group -->
+											<div class="col-sm-12 form-group">
+												<label class="col-sm-2 " style="text-align:right">จังหวัด <font color="red">*</font>:</label>
+												<div class="col-sm-4">  
+													<input class="form-control" id="provinceName" name="provinceName"  placeholder="จังหวัด" title="จังหวัด" value="<%=customerBean.getProvinceName()%>" >
+													<input type="hidden" id="provinceCode" name="provinceCode" >
+												</div> 
+												<label class="col-sm-2 " style="text-align:right">อำเภอ/เขต <font color="red">*</font>:</label>
+												<div class="col-sm-4"> 
+													<input  class="form-control" id="districtName" name="districtName"  placeholder="อำเภอ" title="อำเภอ"  value="<%=customerBean.getDistrictName()%>" >
+													<input type="hidden" id="districtCode" name="districtCode" >
+												</div>
+											</div>
+											<div class="clear" style="clear:both"></div>
+											<!-- end : form group -->
+											
+											<!-- start : form group -->
+											<div class="col-sm-12 form-group">
+											 	<label class="col-sm-2 " style="text-align:right">ตำบล/แขวง <font color="red">*</font>:</label>
+												<div class="col-sm-4"> 
+													<input  class="form-control" id="subdistrictName" name="subdistrictName"  placeholder="ตำบล" title="ตำบล"  value="<%=customerBean.getSubdistrictName()%>"> 
+													<input type="hidden" id="subdistrictCode" name="subdistrictCode"> 
+												</div>
+											    <label class="col-sm-2 " style="text-align:right">รหัสไปรษณ๊ย์<font color="red">*</font>:</label>
+												<div class="col-sm-3"> 
+													<input  class="form-control" type="text" id="postcode" name="postcode" maxlength="5" placeholder="รหัสไปรษณ๊ย์" onblur="lp_onBlurPostcode();" value="<%=customerBean.getPostcode()%>"> 
+												</div>
+											</div>
+											<div class="clear" style="clear:both"></div>
+											<!-- end : form group -->
+											
 										</div>
 										<div class="form-group" align="center">	  
 											<input type="button" class="btn btn-primary" id="btnAdd" name="btnAdd" value="บันทึก" />
@@ -366,7 +379,7 @@
 					</section>
 				</section> 
 			</section> 
-		</section>
+		
 	</section>
 	</form>
 </body>
