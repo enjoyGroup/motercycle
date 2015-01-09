@@ -266,8 +266,8 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 		MotorDetailBean 	   bean 		    = null;
 		BrandBean 	           brandBean 		= null;
 		MotorDetailBean 	   companyBean 		= null; 	
-		boolean				   insertRet		= false;
-		boolean				   updateRet		= false;
+		boolean				   insertRet		= true;
+		boolean				   updateRet		= true;
 		JSONObject 			   obj 			    = new JSONObject();
 		
 		try{	 
@@ -324,6 +324,7 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 				   
 				   	if(getMotorStatus[i].equals("U")){//update
 				   		System.out.println( " MotorDetailServlet update  : " + bean.toString() );  
+				   		updateRet		= false;
 				   		bean.setBrandCode(brandBean.getBrandCode());
 				   	    bean.setCompanyId(companyBean.getCompanyId());
 				   	    
@@ -335,6 +336,7 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 						}
 				    
 				   	}else if(getMotorStatus[i].equals("N") ){//Add new
+				   		insertRet		= false;
 				   		System.out.println( " MotorDetailServlet insert  : " + bean.toString() );   
 				   		bean.setBrandCode(brandBean.getBrandCode());
 				   		bean.setCompanyId(companyBean.getCompanyId());
@@ -359,23 +361,15 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 			} 
 			
 			logger.info("[lp_save] insertRet 	:: " + insertRet); 
-			logger.info("[lp_save] updateRet 	:: " + updateRet); 
-			
-			if(getMotorCode.length==1){
-				if(insertRet==true){
+			logger.info("[lp_save] updateRet 	:: " + updateRet);  
+			 
+			if(insertRet==true && updateRet==true){
 				   obj.put("status", 	"SUCCESS");
-				}else{
-					bean.setErrMsg("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
-					throw new EnjoyException(bean.getErrMsg());
-				}
 			}else{
-				if(insertRet==true && updateRet==true){
-					   obj.put("status", 	"SUCCESS");
-				}else{
-					bean.setErrMsg("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
-					throw new EnjoyException(bean.getErrMsg());
-				}
+				bean.setErrMsg("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+				throw new EnjoyException(bean.getErrMsg());
 			}
+			 
 			
 		}catch(EnjoyException e){
 			obj.put("status", 			"ERROR");

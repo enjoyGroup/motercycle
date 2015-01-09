@@ -340,8 +340,8 @@
 			cell1.innerHTML = "<td width='15px;' align='center'><input type='hidden' name='hidMotorcyclesCode' id='hidMotorcyclesCode' value='" + lv_length + "'/>"+"<b>" + lv_length + "<b>";
 			cell2.innerHTML = "<td width='100px;' align='left' ><input type='hidden' name='hidBrandCode' id='hidBrandCode'  /><input type='text' name='brandName' id='brandName' class='brandNameClass' value='" + brandSearch + "' style='width: 100px;' /></td>";
 			cell3.innerHTML = "<td width='100px;' align='left'><input type='text' name='model' id='model'  style='width: 100px;' maxlength='50'/></td>";	
-			cell4.innerHTML = "<td width='100px;' align='left'><input type='text' name='chassis' id='chassis'   style='width: 100px;' maxlength='15'/></td>";
-			cell5.innerHTML = "<td width='100px;' align='left'><input type='text' name='engineNo' id='engineNo'  style='width: 100px;'  maxlength='15'/></td>";
+			cell4.innerHTML = "<td width='100px;' align='left'><input type='text' name='chassis' id='chassis'   style='width: 100px;' maxlength='20'/></td>";
+			cell5.innerHTML = "<td width='100px;' align='left'><input type='text' name='engineNo' id='engineNo'  style='width: 100px;'  maxlength='20'/></td>";
 			cell6.innerHTML = "<td width='50px;'  align='left'><input type='text' name='size' id='size'   style='width: 100px;' maxlength='4' onblur='lp_onBlurFormatNumber(this);'/></td>";
 			cell7.innerHTML = "<td width='100px;' align='left'><input type='hidden' name='hidCompanyId' id='hidCompanyId'  style='width: 100px;'/>" +
 			                  "<input type='text' name='branchName' id='branchName' class='branchNameClass' value='" +companySearch+ "'  style='width: 150px;' /></td>";
@@ -545,8 +545,8 @@
 															    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=bean.getBrandName()%>" style="width: 100px;" readonly="readonly"/>
 															</td>
 															<td width="100px;" align="left"><input type="text" name="model" id="model" value="<%=bean.getModel()%> " style="width: 100px;" maxlength="50"/></td>
-															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 100px;"  maxlength="15"/></td>
-															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 100px;"  maxlength="15"/></td>
+															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 100px;"  maxlength="20"/></td>
+															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo" value="<%=bean.getEngineNo()%> " style="width: 100px;"  maxlength="20"/></td>
 															<td width="50px;" align="left"><input type="text" name="size" id="size" value="<%=bean.getSize()%> " style="width: 100px;" maxlength="4"  onblur="lp_onBlurFormatNumber(this);"/></td>
 															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId" value="<%=bean.getCompanyId()%> " style="width: 100px;"/>
 															    <input type="text" name="branchName" id="branchName" class="branchNameClass" value="<%=bean.getBranchName()%> "  style="width: 150px;" readonly="readonly"  />
@@ -564,8 +564,8 @@
 															    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=motorDetailBean.getBrandName()%>" style="width: 100px;" />
 															</td>
 															<td width="100px;" align="left"><input type="text" name="model" id="model" style="width: 100px;"  maxlength="50"/></td>
-															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis"   style="width: 100px;"  maxlength="15"/></td>
-															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo"   style="width: 100px;" maxlength="15"/></td>
+															<td width="100px;" align="left"><input type="text" name="chassis" id="chassis"   style="width: 100px;"  maxlength="20"/></td>
+															<td width="100px;" align="left"><input type="text" name="engineNo" id="engineNo"   style="width: 100px;" maxlength="20"/></td>
 															<td width="50px;" align="left"><input type="text" name="size" id="size"   style="width: 100px;" maxlength="4" onblur="lp_onBlurFormatNumber(this);"/></td>
 															<td width="100px;" align="left"><input type="hidden" name="hidCompanyId" id="hidCompanyId"  value="<%=motorDetailBean.getCompanyId()%>"  style="width: 100px;"/>
 															   <input type="text" name="branchName" id="branchName" class="branchNameClass"   value="<%=motorDetailBean.getBranchName()%>" style="width: 150px;"/>
