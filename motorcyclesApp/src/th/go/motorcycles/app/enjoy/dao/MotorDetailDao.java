@@ -207,7 +207,7 @@ public class MotorDetailDao {
 		return lv_ret;
 	}
 	 
-	public boolean deleteMotorcycles(String motorCode){
+	public boolean deleteMotorcycles(MotorDetailBean motorDetailBean){
 		System.out.println("[MotorDetailDao][deleteMotorcycles][Begin]");
 		
 		String 				sql			 		= null;
@@ -216,7 +216,7 @@ public class MotorDetailDao {
 		
 		try{
 			this.db    = new EnjoyConectDbs();
-			motorDelCode    = EnjoyUtils.nullToStr(motorCode); 
+			motorDelCode    = EnjoyUtils.nullToStr(motorDetailBean.getMotorcyclesCode()); 
 			
 			sql 	   = "update motorcyclesdetails set motorcyclesStatus = 'I'  where motorcyclesCode = '" + motorDelCode +"'";
 		 

@@ -430,11 +430,11 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 			bean.setCompanyName(companySearch);
 			
 			if(bean.getMotorcyclesCode()!="" || bean.getMotorcyclesCode()!=null){
-				dataRet = this.dao.deleteMotorcycles(bean.getMotorcyclesCode());
+				dataRet = this.dao.deleteMotorcycles(bean);
 			}
 			 
 			if(dataRet==true){
-				this.motorUtil.writeMSG("OK");
+				this.motorUtil.writeMSG("OK");  
 				this.onSearchAfterDelete(bean);
 			}else{
 				this.motorUtil.writeMSG("MotorDetailServlet Delete failed !!");
@@ -459,9 +459,21 @@ public class MotorDetailServlet<E> extends EnjoyStandardSvc {
 		String       	brandCode		= null;
 		String       	companyId   	= null; 
 		boolean	     	dataRet			= false;
+		String       	brandSearch		= null;
+		String       	companySearch	= null;
+		MotorDetailBean motorDetailBean = null;
 		try{
+			motorDetailBean     = new MotorDetailBean();
+			brandSearch  		= EnjoyUtils.nullToStr(this.request.getParameter("brandSearch")); 
+			companySearch     	= EnjoyUtils.nullToStr(this.request.getParameter("companySearch"));  
 			 
-			listMotorDetail = (List <MotorDetailBean>) this.dao.findModelDetail(bean,this.form); 
+			motorDetailBean.setBrandSearch(brandSearch); 
+			motorDetailBean.setCompanySearch(companySearch);
+			
+			System.out.println("onSearchAfterDelete motorDetailBean getBrandSearch :"+motorDetailBean.getBranchName());
+			System.out.println("onSearchAfterDelete motorDetailBean getCompanySearch :"+motorDetailBean.getCompanySearch());
+			
+			listMotorDetail = (List <MotorDetailBean>) this.dao.findModelDetail(motorDetailBean,this.form); 
 			
 			if(listMotorDetail.size()>0){
 				

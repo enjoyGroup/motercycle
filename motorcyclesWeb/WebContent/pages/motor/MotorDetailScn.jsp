@@ -495,12 +495,12 @@
 														<div class="row"> 
 														    <label class="col-sm-10 control-label" style="text-align:right">ยี่ห้อ<font color="red">*</font>:</label>
 															<div class="col-md-2"> 
-																<input type="text" id="brandSearch" name="brandSearch"  value="<%=motorDetailBean.getBrandSearch()%>" <%if(!motorDetailBean.getBrandSearch().equalsIgnoreCase("")){%> disabled="disabled" <%} %> />
+																<input type="text" id="brandSearch" name="brandSearch"  value="<%=motorDetailBean.getBrandSearch()%>" <%if(!motorDetailBean.getBrandSearch().equalsIgnoreCase("")){%> readonly="readonly"<%} %> />
 																<input type="hidden" name="brandCode" id="brandCode"  value="<%=motorDetailBean.getBrandCode()%>"/> 
 															</div>
 															<label class="col-sm-1 control-label" style="text-align:right">บริษัทที่เก็บ:</label>
 															<div class="col-md-2">  
-																<input type="text" id="companySearch" name="companySearch" value="<%=motorDetailBean.getCompanySearch()%>" <%if((!motorDetailBean.getBrandSearch().equalsIgnoreCase(""))||(!motorDetailBean.getCompanySearch().equalsIgnoreCase(""))){%> disabled="disabled" <%} %> >
+																<input type="text" id="companySearch" name="companySearch" value="<%=motorDetailBean.getCompanySearch()%>" <%if((!motorDetailBean.getBrandSearch().equalsIgnoreCase(""))||(!motorDetailBean.getCompanySearch().equalsIgnoreCase(""))){%> readonly="readonly" <%} %> >
 																<input type="hidden" name="companyId" id="companyId"  value="<%=motorDetailBean.getCompanyId()%>"/>
 															</div> 
 														 
