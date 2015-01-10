@@ -284,6 +284,13 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   throw new EnjoyException(addressBean.getErrMsg());
 		   }
 		   
+		   entrySaleDetailBean = this.dao.getMotorcyclesCode(brandName, model, chassisDisp, engineNoDisp, invoiceId);
+		   if(!entrySaleDetailBean.getErrMsg().equals("")){
+			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
+		   }else{
+			   motorcyclesCode = entrySaleDetailBean.getMotorcyclesCode();
+		   }
+		   
 		   if(cusCode.equals("")){
 			   customerBean.setCustName(EnjoyUtils.nullToStr(this.request.getParameter("custName"))); 
 			   customerBean.setCustSurname(EnjoyUtils.nullToStr(this.request.getParameter("custSurname")));
@@ -324,14 +331,6 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   }
 		   
 		   form.setCustomerBean(customerBean);
-		   
-		   entrySaleDetailBean = this.dao.getMotorcyclesCode(brandName, model, chassisDisp, engineNoDisp);
-		   if(!entrySaleDetailBean.getErrMsg().equals("")){
-			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
-		   }else{
-			   motorcyclesCode = entrySaleDetailBean.getMotorcyclesCode();
-		   }
-		   
 		   form.setMotorcyclesCode(motorcyclesCode);
 		   
 		   productBean.setChassisDisp(chassisDisp);
@@ -980,13 +979,3 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
    }
    
 }
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 

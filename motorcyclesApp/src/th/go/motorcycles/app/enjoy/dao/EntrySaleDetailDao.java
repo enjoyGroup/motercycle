@@ -605,7 +605,7 @@ public class EntrySaleDetailDao {
 		return productBean;
 	}
 	
-	public EntrySaleDetailBean getMotorcyclesCode(String brandName, String model, String chassisDisp, String engineNoDisp){
+	public EntrySaleDetailBean getMotorcyclesCode(String brandName, String model, String chassisDisp, String engineNoDisp, String invoiceId){
 		System.out.println("[EntrySaleDetailDao][getMotorcyclesCode][Begin]");
 		
 		String 							sql			 		= null;
@@ -616,6 +616,7 @@ public class EntrySaleDetailDao {
 		String							errMsg				= null;
 		EnjoyConectDbs 					db 					= null;
 		int								v_cou				= 0;
+		String 							v_where			 	= "";
 		
 		try{
 			db    		= new EnjoyConectDbs();
@@ -646,32 +647,36 @@ public class EntrySaleDetailDao {
 			if(motorcyclesCode==null || motorcyclesCode.equals("")){
 				throw new EnjoyException("กรอกยี่ห้อ หรือ รุ่น ผิด");
 			}
+			
+			if(!invoiceId.equals("")){
+				v_where = " and invoiceId <> '"+invoiceId+"'";
+		    }
 		    
 			/*Begin count chassisDisp*/
-			sql 		= " select count(*) cou from invoicedetails where motorcyclesCode = '" + motorcyclesCode + "' and chassisDisp = '" + chassisDisp + "'";
+			sql 		= " select count(*) cou from invoicedetails where motorcyclesCode = '" + motorcyclesCode + "' and chassisDisp = '" + chassisDisp + "'" + v_where;
 			
 			System.out.println("[EntrySaleDetailDao][getMotorcyclesCode] sql count chassisDisp :: " + sql);
 			rs 			= db.executeQuery(sql);
 			while(rs.next()){
 				v_cou = rs.getInt("cou");
 			}
-//			if(v_cou > 0){
-//				throw new EnjoyException("เลขตัวถังซ้ำกรุณาตรวจสอบ");
-//			}
+			if(v_cou > 0){
+				throw new EnjoyException("เลขตัวถังซ้ำกรุณาตรวจสอบ");
+			}
 			/*End count chassisDisp*/
 			
 			/*Begin count engineNoDisp*/
 			v_cou		= 0;
-			sql 		= " select count(*) cou from invoicedetails where motorcyclesCode = '" + motorcyclesCode + "' and engineNoDisp = '" + engineNoDisp + "'";
+			sql 		= " select count(*) cou from invoicedetails where motorcyclesCode = '" + motorcyclesCode + "' and engineNoDisp = '" + engineNoDisp + "'" + v_where;
 			
 			System.out.println("[EntrySaleDetailDao][getMotorcyclesCode] sql count engineNoDisp :: " + sql);
 			rs 			= db.executeQuery(sql);
 			while(rs.next()){
 				v_cou = rs.getInt("cou");
 			}
-//			if(v_cou > 0){
-//				throw new EnjoyException("เลขเครื่องยนต์ซ้ำกรุณาตรวจสอบ");
-//			}
+			if(v_cou > 0){
+				throw new EnjoyException("เลขเครื่องยนต์ซ้ำกรุณาตรวจสอบ");
+			}
 			/*End count engineNoDisp*/
 			
 		}catch(EnjoyException e){
@@ -1129,19 +1134,3 @@ public class EntrySaleDetailDao {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
