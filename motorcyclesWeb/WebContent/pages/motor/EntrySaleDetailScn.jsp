@@ -1234,6 +1234,11 @@
 	 
 </head>
 <body> 
+<style>
+	.trace,.trace *{outline:1px solid red}
+	table tr td{ padding-top:8px !important;}
+	.form-group .btn{ margin:0px 2px;}
+</style>
 <form class="form-horizontal" id="frm" action="<%=servURL%>/EnjoyGenericSrv">
 	<input type="hidden" id="service" name="service" value="servlet.EntrySaleDetailServlet" />  
 	<input type="hidden" id="pageActionPDF" name="pageActionPDF" /> 
@@ -1284,17 +1289,18 @@
 											</table> 
 										</div>
 									</section>
-									<section class="panel panel-default">
+									<section class="panel panel-default ">
 										<header class="panel-heading font-bold">ข้อมูลลูกค้า</header> 
 										<div class="panel-body"> 
-											<table border="0" width="75%">
+											<table border="0" width="100%" class='col-sm-12'>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">
 														เลขผู้เสียภาษี<font color="red">*</font>:</label>
 													</td>
 													<td colspan="1">
 														<input  type="text"
+																class='col-sm-11 pull-left'
 																id="idNumber" 
 																name="idNumber"
 																size="12"
@@ -1304,7 +1310,7 @@
 														/>
 													</td>
 													<td colspan="4">
-														<label class="col-sm-2 control-label" style="text-align:right">
+														<label class="col-sm-offset-1 col-sm-2 control-label" style="text-align:right">
 															<input  type="radio" 
 																	id="idType1" 
 																	name="idType" 
@@ -1340,10 +1346,11 @@
 													</td>
 													 -->
 													<td width="13%">
-														<label class="col-sm-2 control-label" style="text-align:right">ชื่อ<font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">ชื่อ<font color="red">*</font>:</label>
 													</td>
 													<td width="20%">
 														<input  type="text" 
+																	class='col-sm-11 pull-left'
 																	size="15"
 																	id="custName" 
 																	name="custName"
@@ -1352,10 +1359,11 @@
 															/>
 													</td>
 													<td width="13%">
-														<label class="col-sm-2 control-label" style="text-align:right">นามสกุล<font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">นามสกุล<font color="red">*</font>:</label>
 													</td>
 													<td width="20%" colspan="3">
 														<input  type="text" 
+																	class='col-sm-11 pull-left'
 																	size="15"
 																	id="custSurname" 
 																	name="custSurname"
@@ -1371,10 +1379,11 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">บ้านเลขที่ <font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">บ้านเลขที่ <font color="red">*</font>:</label>
 													</td>
 													<td>
 														<input  type="text"
+																class='col-sm-11 pull-left'
 																id="houseNumber" 
 																name="houseNumber"
 																size="5"
@@ -1382,10 +1391,11 @@
 														/>
 													</td>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">หมู่ที่:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">หมู่ที่:</label>
 													</td>
 													<td colspan="3" align="left">
 														<input  type="text"
+																	class='col-sm-11 pull-left'
 																	id="mooNumber" 
 																	name="mooNumber"
 																	size="5"
@@ -1395,10 +1405,11 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">ตรอกซอย:</label>
+														<label class="col-sm-2 control-label pull-rigth" style="text-align:right">ตรอกซอย:</label>
 													</td>
 													<td>
 														<input  type="text" 
+																class='col-sm-11 pull-left'
 																size="15"
 																id="soiName" 
 																name="soiName"
@@ -1406,10 +1417,11 @@
 														/>
 													</td>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">ถนน:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">ถนน:</label>
 													</td>
 													<td colspan="3">
 														<input  type="text" 
+																class='col-sm-11 pull-left'
 																size="15"
 																id="streetName" 
 																name="streetName"
@@ -1420,10 +1432,11 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">จังหวัด<font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">จังหวัด<font color="red">*</font>:</label>
 													</td>
 													<td>
 														<input  type="text" 
+																class='col-sm-11 pull-left'
 																size="15"
 																id="provinceName" 
 																name="provinceName"
@@ -1432,10 +1445,11 @@
 														/>
 													</td>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">อำเภอ/เขต <font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">อำเภอ/เขต <font color="red">*</font>:</label>
 													</td>
 													<td>
 														<input  type="text"
+																class='col-sm-11 pull-left'
 																id="districtName" 
 																name="districtName"
 																size="15"
@@ -1446,10 +1460,11 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">ตำบล/แขวง <font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">ตำบล/แขวง <font color="red">*</font>:</label>
 													</td>
 													<td>
 														<input  type="text"
+																	class='col-sm-11 pull-left'
 																	id="subdistrictName" 
 																	name="subdistrictName"
 																	size="15"
@@ -1458,10 +1473,11 @@
 															/>
 													</td>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">รหัสไปรษณ๊ย์<font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">รหัสไปรษณ๊ย์<font color="red">*</font>:</label>
 													</td>
 													<td colspan="5">
 														<input  type="text" 
+																class='col-sm-11 pull-left'
 																size="7"
 																id="postcode" 
 																name="postcode"
@@ -1478,22 +1494,24 @@
 										<div class="panel-body"> 
 											<table border="0" width="100%">
 												<tr>
-													<td width="13%">
-														<label class="col-sm-2 control-label" style="text-align:right">ยี่ห้อ <font color="red">*</font>:</label>
+													<td width="10%">
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">ยี่ห้อ <font color="red">*</font>:</label>
 													</td>
-													<td width="29%">
+													<td width="40%">
 														<input  type="text" 
+																class='col-sm-12 pull-left'
 																size="15"
 																id="brandName" 
 																name="brandName"
 																value="<%=productBean.getBrandName() %>"
 														/>
 													</td>
-													<td width="13%">
-														<label class="col-sm-2 control-label" style="text-align:right">รุ่น<font color="red">*</font>:</label>
+													<td width="10%">
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">รุ่น<font color="red">*</font>:</label>
 													</td>
-													<td width="45%" align="left">
+													<td width="40%" align="left">
 														<input  type="text" 
+																class='col-sm-12 pull-left'
 																size="15"
 																id="model" 
 																name="model"
@@ -1504,10 +1522,11 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">เลขตัวถัง <font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-rightd" style="text-align:right">เลขตัวถัง <font color="red">*</font>:</label>
 													</td>
 													<td>
 														<input  type="text" 
+																class='col-sm-6 pull-left'
 																id="chassis" 
 																name="chassis"
 																value="<%=productBean.getChassis() %>"
@@ -1517,6 +1536,7 @@
 					                                       		tabindex="-1"													
 														/>
 														<input  type="text" 
+																class='col-sm-6 pull-left'
 																size="5"
 																id="chassisDisp" 
 																name="chassisDisp"
@@ -1525,10 +1545,11 @@
 														/>
 													</td>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">เลขเครื่องยนต์<font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">เลขเครื่องยนต์<font color="red">*</font>:</label>
 													</td>
 													<td align="left">
 														<input  type="text" 
+																class='col-sm-6 pull-left'
 																id="engineNo" 
 																name="engineNo"
 																value="<%=productBean.getEngineNo() %>"
@@ -1538,6 +1559,7 @@
 					                                       		tabindex="-1"
 														/>
 														<input  type="text" 
+																class='col-sm-6 pull-left'
 																size="10"
 																id="engineNoDisp" 
 																name="engineNoDisp"
@@ -1548,10 +1570,11 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">ซีซี <font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">ซีซี <font color="red">*</font>:</label>
 													</td>
 													<td>
 														<input  type="text" 
+																class='col-sm-12 pull-left'
 																size="15"
 																id="size" 
 																name="size"
@@ -1560,10 +1583,11 @@
 														/>
 													</td>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">สี <font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">สี <font color="red">*</font>:</label>
 													</td>
 													<td>
 														<input  type="text" 
+																class='col-sm-12 pull-left'
 																size="15"
 																id="color" 
 																name="color"
@@ -1574,12 +1598,13 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">
 															รวมสุทธิ: <font color="red">*</font>
 														</label>
 													</td>
 													<td colspan="3">
 														<input  type="text" 
+																class='col-sm-4 pull-left'
 																size="15"
 																id="totalAmount" 
 																name="totalAmount"
@@ -1590,13 +1615,14 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">
 															<script>document.write("ภาษี <%=entrySaleDetailForm.getVat()%>%:");</script>
 															 <font color="red">*</font>
 														</label>
 													</td>
 													<td colspan="3" align="left">
 														<input  type="text" 
+																class='col-sm-4 pull-left'
 																size="15"
 																id="vatAmount" 
 																name="vatAmount"
@@ -1607,10 +1633,11 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">จำนวนเงินที่ขาย:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">จำนวนเงินที่ขาย:</label>
 													</td>
 													<td>
 														<input  type="text" 
+																class='col-sm-12 pull-left'
 																size="15"
 																id="priceAmount" 
 																name="priceAmount"
@@ -1620,10 +1647,11 @@
 														/>
 													</td>
 													<td>
-														<label class="col-sm-2 control-label" style="text-align:right">หมายเหต:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">หมายเหต:</label>
 													</td>
 													<td align="left">
 														<input  type="text" 
+																class='col-sm-12 pull-left'
 																size="15"
 																id="remark" 
 																name="remark"
@@ -1656,7 +1684,7 @@
 												</tr>
 												<tr>
 													<td colspan="4" align="left">
-														<label class="col-sm-2 control-label" style="text-align:right;width:100px;">
+														<label class="col-sm-2 control-label col-sm-offset-3" style="text-align:right;width:100px;">
 															<input  type="radio" 
 																	id="flagCredit1" 
 																	name="flagCredit" 
@@ -1696,7 +1724,7 @@
 												</tr>
 												<tr>
 													<td colspan="4" align="left">
-														<label class="col-sm-2 control-label" style="text-align:right">
+														<label class="col-sm-2 control-label col-sm-offset-2" style="text-align:right">
 															<b>พิมพ์แบบ</b>
 														</label>
 														<label class="col-sm-2 control-label" style="text-align:right">
@@ -1720,11 +1748,11 @@
 											</table>
 											<br/>
 											<div class="form-group" align="center">	 
-												<input type="button" class="btn btn-primary" id="btnPrev" name="btnPrev" value="รายการก่อนหน้า" />  
-												<input type="button" class="btn btn-primary" id="btnSave" name="btnSave" value="บันทึก" />
+												<input type="button" class="btn " id="btnPrev" name="btnPrev" value="รายการก่อนหน้า" />  
+												<input type="button" class="btn btn-success" id="btnSave" name="btnSave" value="บันทึก" />
 												<input type="button" class="btn btn-primary" id="btnPrint" name="btnPrint" value="พิมพ์" />
-												<input type="button" class="btn btn-primary" id="btnReset" name="btnReset" value="เริ่มใหม่" />
-												<input type="button" class="btn btn-primary" id="btnNext" name="btnNext" value="รายการถัดไป" />
+												<input type="button" class="btn btn-danger" id="btnReset" name="btnReset" value="เริ่มใหม่" />
+												<input type="button" class="btn " id="btnNext" name="btnNext" value="รายการถัดไป" />
 											</div>  
 										</div>
 									</section>
