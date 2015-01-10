@@ -516,7 +516,7 @@
 										<table id="tb_result" border="1" class="table span12" style="overflow-y:auto;width:600px;">
 							               <tr bgcolor="#473636"  class="text_white" height="26px;">
 												<th  style="text-align: center;" width="10px;" ><B>ลำดับ</B></th>
-												<th  style="text-align: left;"   width="60px;"><B>ยี่ห้อ</B></th>
+												<th  style="text-align: left;"   width="80px;"><B>ยี่ห้อ</B></th>
 												<th  style="text-align: left;"   width="80px;"><B>รุ่น</B></th> 
 												<th  style="text-align: left;"   width="120px;"><B>เลขตัวถัง</B></th>
 												<th  style="text-align: left;"   width="120px;"><B>เลขเครื่องยนต์</B></th>  
@@ -538,8 +538,8 @@
 													%>
 													 <tr>
 														<td width="10px;" align="center"><input type="hidden" name="hidMotorcyclesCode" id="hidMotorcyclesCode"  value="<%=bean.getMotorcyclesCode()%>"/><B><%=rowNumber%></B></td>
-														<td width="60px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode"  value="<%=bean.getBrandCode()%>"/>
-														    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=bean.getBrandName()%>" style="width: 60px;" readonly="readonly"/>
+														<td width="80px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode"  value="<%=bean.getBrandCode()%>"/>
+														    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=bean.getBrandName()%>" style="width: 80px;" readonly="readonly"/>
 														</td>
 														<td width="80px;" align="left"><input type="text" name="model" id="model" value="<%=bean.getModel()%> " style="width: 80px;" maxlength="50"/></td>
 														<td width="120px;" align="left"><input type="text" name="chassis" id="chassis" value="<%=bean.getChassis()%> " style="width: 120px;"  maxlength="20"/></td>
@@ -557,8 +557,8 @@
 												<% } }else{ %>
 													   <tr>
 														<td width="10px;" align="center"><input type="hidden" name="hidMotorcyclesCode" id="hidMotorcyclesCode"  /><B>1</B></td>
-														<td width="60px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode" value="<%=motorDetailBean.getBrandCode()%>"/>
-														    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=motorDetailBean.getBrandName()%>" style="width: 60px;" />
+														<td width="80px;" align="left" ><input type="hidden" name="hidBrandCode" id="hidBrandCode" value="<%=motorDetailBean.getBrandCode()%>"/>
+														    <input type="text" name="brandName" id="brandName" class="brandNameClass"  value="<%=motorDetailBean.getBrandName()%>" style="width: 80px;" />
 														</td>
 														<td width="80px;" align="left"><input type="text" name="model" id="model" style="width: 80px;"  maxlength="50"/></td>
 														<td width="120px;" align="left"><input type="text" name="chassis" id="chassis"   style="width: 120px;"  maxlength="20"/></td>
