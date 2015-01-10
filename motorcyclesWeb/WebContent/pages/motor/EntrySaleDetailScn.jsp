@@ -1526,22 +1526,22 @@
 													</td>
 													<td>
 														<input  type="text" 
-																class='col-sm-6 pull-left'
+																class='col-sm-7 pull-left'
 																id="chassis" 
 																name="chassis"
 																value="<%=productBean.getChassis() %>"
-																size="7"
+																size="8"
 																class="input-disabled" 
 					                                       		readonly="readonly"		
 					                                       		tabindex="-1"													
 														/>
 														<input  type="text" 
-																class='col-sm-6 pull-left'
-																size="5"
+																class='col-sm-5 pull-left'
+																size="3"
 																id="chassisDisp" 
 																name="chassisDisp"
 																value="<%=productBean.getChassisDisp() %>"
-																maxlength="50"
+																maxlength="10"
 														/>
 													</td>
 													<td>
@@ -1549,22 +1549,22 @@
 													</td>
 													<td align="left">
 														<input  type="text" 
-																class='col-sm-6 pull-left'
+																class='col-sm-7 pull-left'
 																id="engineNo" 
 																name="engineNo"
 																value="<%=productBean.getEngineNo() %>"
-																size="10"
+																size="8"
 																class="input-disabled" 
 					                                       		readonly="readonly"		
 					                                       		tabindex="-1"
 														/>
 														<input  type="text" 
-																class='col-sm-6 pull-left'
-																size="10"
+																class='col-sm-5 pull-left'
+																size="3"
 																id="engineNoDisp" 
 																name="engineNoDisp"
 																value="<%=productBean.getEngineNoDisp() %>"
-																maxlength="50"
+																maxlength="10"
 														/>
 													</td>
 												</tr>

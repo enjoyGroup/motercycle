@@ -80,7 +80,7 @@ public class CustomerDao {
 				address.append(" ตำบล/แขวง ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
 				address.append(" อำเภอ/เขต  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
 				address.append(" จังหวัด   ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
-				address.append(EnjoyUtils.nullToStr(rs.getString("postCode")));
+				address.append(" ").append(EnjoyUtils.nullToStr(rs.getString("postCode")));
 				
 				customerBean.setAddress(address.toString());
 			    System.out.println(customerBean.getAddress());
@@ -144,7 +144,7 @@ public class CustomerDao {
 				address.append(" ตำบล/แขวง ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
 				address.append(" อำเภอ/เขต  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
 				address.append(" จังหวัด  ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
-				address.append(EnjoyUtils.nullToStr(rs.getString("postCode")));
+				address.append(" ").append(EnjoyUtils.nullToStr(rs.getString("postCode")));
 				
 				customerBean.setAddress(address.toString());
 			    System.out.println(customerBean.getAddress());
