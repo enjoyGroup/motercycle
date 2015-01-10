@@ -23,7 +23,7 @@ public class PdfTest {
 //			writePDF("SlipPdfTypeTwoForm", "D:/motor/JSON/motor.json", "D:/motor/PDF/SlipPdfTypeTwoForm.pdf");
 //			writePDF("SummarySalePdfForm", "D:/motor/JSON/motor.json", "D:/motor/PDF/SummarySalePdfForm.pdf");
 
-			writeSlipPdfFormPDFFormDB("SlipPdfForm", "PT58/0001", "D:/SlipPdfForm.pdf");
+			writeSlipPdfFormPDFFormDB("SlipPdfForm", "PT58/0002", "D:/SlipPdfForm.pdf");
 //			writeSlipPdfTypeTwoFormPDFFormDB("SlipPdfTypeTwoForm", "5700000002", "D:/SlipPdfTypeTwoForm.pdf");
 //			writeSummarySalePDFFormDB("SummarySalePdfForm", "D:/SummarySalePdfForm.pdf");
 		} catch (Exception e) {
@@ -92,7 +92,7 @@ public class PdfTest {
 			
 			formClass					= "th.go.motorcycles.app.enjoy.pdf."+formName;
 //			document 					= new Document(PageSize.A5, 36, 36, 36, 70);
-			document 					= new Document(PageSize.A5, 20, 20, 10, 20);
+			document 					= new Document(PageSize.A5, 20, 20, 5, 20);
 			//parser 						= new JSONParser();
 			f 							= new File(pdfPath);
 			fos            				= new FileOutputStream(f.getAbsolutePath());			

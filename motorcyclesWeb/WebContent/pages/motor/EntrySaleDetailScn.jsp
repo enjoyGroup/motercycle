@@ -1213,6 +1213,10 @@
     		lv_invoiceId 		= gp_trim($("#invoiceId").val());
     		lv_userLevel 		= gp_trim($("#userLevel").val());
     		
+    		if(lv_invoiceId!=""){
+    			document.getElementById('flagAddSales').disabled = true;
+    		}
+    		
     		if(lv_invoiceId!="" && parseInt(lv_userLevel) < 9){
     			$("#frm :input").attr("disabled", true);
     			

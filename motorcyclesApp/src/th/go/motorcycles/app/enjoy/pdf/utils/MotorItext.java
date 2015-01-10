@@ -13,6 +13,7 @@ public class MotorItext {
 	private BaseFont bfComic;
 
 	private Font font6;
+	private Font font7;
 	private Font font8;
 	private Font font9;
 	private Font font10;
@@ -39,6 +40,7 @@ public class MotorItext {
 		try{
 			bfComic 		= 	BaseFont.createFont(fontName, BaseFont.IDENTITY_H,BaseFont.EMBEDDED);
 			font6 			= 	new Font(bfComic, 6);
+			font7 			= 	new Font(bfComic, 7);
 			font8 			= 	new Font(bfComic, 8);
 			font8Bold 		= 	new Font(bfComic, 8, Font.BOLD);
 			font9 			= 	new Font(bfComic, 9);
@@ -229,6 +231,12 @@ public class MotorItext {
 	}
 	public void setFont6(Font font6) {
 		this.font6 = font6;
+	}	
+	public Font getFont7() {
+		return font7;
+	}
+	public void setFont7(Font font7) {
+		this.font7 = font7;
 	}
 	public Font getFont8() {
 		return font8;
