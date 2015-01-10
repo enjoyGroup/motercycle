@@ -51,7 +51,6 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 			document.add(this.brLine());
 			document.add(this.brLine());
 			document.add(this.brLine());
-			document.add(this.brLine());
 			document.add(this.genFooter());
 			
 			// ใบส่งเสริมการขาย
@@ -67,7 +66,6 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.genTotalCostAddSales());
-				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.brLine());
@@ -87,7 +85,6 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.genTotalCostCredit());
-				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.brLine());
@@ -184,7 +181,7 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 	
 	private PdfPTable genProduct() throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {15f ,15f ,31f ,27f ,13f};
+		float[] 	widths	 		= {15f ,13f ,31f ,27f ,15f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		JSONObject 	jsonObjectDetail= null;
 		
@@ -196,11 +193,11 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 
 		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
 		jsonObjectDetail = this.formDataObj;
-		table.addCell(setCellWB((String) jsonObjectDetail.get("brandName"),   getFont10(), 1, Element.ALIGN_CENTER, 0));
-		table.addCell(setCellWB((String) jsonObjectDetail.get("model"), 	  getFont10(), 1, Element.ALIGN_CENTER, 0));
-		table.addCell(setCellWB((String) jsonObjectDetail.get("chassisDisp"), getFont10(), 1, Element.ALIGN_CENTER, 0));
-		table.addCell(setCellWB((String) jsonObjectDetail.get("engineNoDisp"),getFont10(), 1, Element.ALIGN_CENTER, 0));
-		table.addCell(setCellWB((String) jsonObjectDetail.get("color"), 		  getFont10(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB((String) jsonObjectDetail.get("brandName"),   getFont8(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB((String) jsonObjectDetail.get("model"), 	  getFont8(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB((String) jsonObjectDetail.get("chassisDisp"), getFont8(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB((String) jsonObjectDetail.get("engineNoDisp"),getFont8(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB((String) jsonObjectDetail.get("color"), 	  getFont8(), 1, Element.ALIGN_CENTER, 0));
 		
 		table.setWidthPercentage(100);
 	
@@ -279,8 +276,9 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 	//**********************************************************************************//
 	private PdfPTable genProductAddSales() throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {15f ,15f ,31f ,27f ,13f};
+		float[] 	widths	 		= {15f ,13f ,31f ,27f ,15f};
 		PdfPTable 	table 			= new PdfPTable(widths);
+		JSONObject 	jsonObjectDetail= null;
 		
 		table.addCell(setCellWB("    ", getFont10Bold(), 1, Element.ALIGN_CENTER, 0)); // ยี่ห้อ
 		table.addCell(setCellWB("    ", getFont10Bold(), 1, Element.ALIGN_CENTER, 0)); // รุ่น
@@ -289,11 +287,11 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 		table.addCell(setCellWB("    ", getFont10Bold(), 1, Element.ALIGN_CENTER, 0)); // ซีซี.
 
 		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
-		table.addCell(setCellWB("    ", getFont10(), 1, Element.ALIGN_CENTER, 0));
-		table.addCell(setCellWB("    ", getFont10(), 1, Element.ALIGN_CENTER, 0));
-		table.addCell(setCellWB("    ", getFont10(), 1, Element.ALIGN_CENTER, 0));
-		table.addCell(setCellWB("    ", getFont10(), 1, Element.ALIGN_CENTER, 0));
-		table.addCell(setCellWB("    ", getFont10(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB("    ", getFont8(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB("    ", getFont8(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB("    ", getFont8(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB("    ", getFont8(), 1, Element.ALIGN_CENTER, 0));
+		table.addCell(setCellWB("    ", getFont8(), 1, Element.ALIGN_CENTER, 0));
 		
 		table.setWidthPercentage(100);
 	

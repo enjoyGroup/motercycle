@@ -51,7 +51,6 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 			document.add(this.brLine());
 			document.add(this.brLine());
 			document.add(this.brLine());
-			document.add(this.brLine());
 			document.add(this.genFooter());
 			
 			// ใบส่งเสริมการขาย
@@ -67,7 +66,6 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.genTotalCostAddSales());
-				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.brLine());
@@ -87,7 +85,6 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.genTotalCostCredit());
-				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.brLine());
 				document.add(this.brLine());
@@ -183,7 +180,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 	
 	private PdfPTable genProduct() throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {15f ,15f ,31f ,27f ,13f};
+		float[] 	widths	 		= {15f ,13f ,31f ,27f ,15f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		JSONObject 	jsonObjectDetail= null;
 		
@@ -195,11 +192,11 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 
 		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
 		jsonObjectDetail = this.formDataObj;
-		table.addCell(setCell((String) jsonObjectDetail.get("brandName"),   getFont10(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell((String) jsonObjectDetail.get("model"), 	    getFont10(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell((String) jsonObjectDetail.get("chassisDisp"), getFont10(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell((String) jsonObjectDetail.get("engineNoDisp"),getFont10(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell((String) jsonObjectDetail.get("color"), 		getFont10(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("brandName"),   getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("model"), 	    getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("chassisDisp"), getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("engineNoDisp"),getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell((String) jsonObjectDetail.get("color"), 		getFont8(), 1, 1, Element.ALIGN_CENTER));
 		
 		table.setWidthPercentage(100);
 	
@@ -208,12 +205,12 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 	
 	private PdfPTable genTotalCost() throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {55f ,12f ,33f};
+		float[] 	widths	 		= {55f ,10f ,35f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		
 		PdfPTable 	subTabL 		= new PdfPTable(1);
 		
-		float[] 	subWR	 		= {20f, 13f};
+		float[] 	subWR	 		= {20f, 15f};
 		PdfPTable 	subTabR 		= new PdfPTable(subWR);
 		
 		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
@@ -277,7 +274,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 	//**********************************************************************************//
 	private PdfPTable genProductAddSales() throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {15f ,15f ,31f ,27f ,13f};
+		float[] 	widths	 		= {15f ,13f ,31f ,27f ,15f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		JSONObject 	jsonObjectDetail= null;
 		
@@ -291,11 +288,11 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
 		jsonObjectDetail = this.formDataObj;
 //		table.addCell(setCell((String) jsonObjectDetail.get("addSalesRemark"),   getFont10(), 5, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("-", getFont10(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("-", getFont10(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("-", getFont10(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("-", getFont10(), 1, 1, Element.ALIGN_CENTER));
-		table.addCell(setCell("-", getFont10(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("-", getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("-", getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("-", getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("-", getFont8(), 1, 1, Element.ALIGN_CENTER));
+		table.addCell(setCell("-", getFont8(), 1, 1, Element.ALIGN_CENTER));
 		
 		table.setWidthPercentage(100);
 	
@@ -303,12 +300,12 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 	}
 	
 	private PdfPTable genTotalCostAddSales() throws DocumentException, MalformedURLException, IOException {		
-		float[] 	widths	 		= {55f ,12f ,33f};
+		float[] 	widths	 		= {55f ,10f ,35f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		
 		PdfPTable 	subTabL 		= new PdfPTable(1);
 		
-		float[] 	subWR	 		= {20f, 13f};
+		float[] 	subWR	 		= {20f, 15f};
 		PdfPTable 	subTabR 		= new PdfPTable(subWR);
 		
 		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ
@@ -386,12 +383,12 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 	
 	private PdfPTable genTotalCostCredit() throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {55f ,12f ,33f};
+		float[] 	widths	 		= {55f ,10f ,35f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		
 		PdfPTable 	subTabL 		= new PdfPTable(1);
 		
-		float[] 	subWR	 		= {20f, 13f};
+		float[] 	subWR	 		= {20f, 15f};
 		PdfPTable 	subTabR 		= new PdfPTable(subWR);
 		
 		// ดึงข้อมูลขึ้นมาแสดงบนหน้าจอ

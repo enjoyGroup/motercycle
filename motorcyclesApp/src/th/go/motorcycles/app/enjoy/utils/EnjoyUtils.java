@@ -19,6 +19,10 @@ public class EnjoyUtils {
 	public static String nullToStr(String str){
         return (str==null?"":str.trim());
     }
+
+	public static String nullToStr(String str, String strRep){
+        return (str==null?strRep:str.trim());
+    }
 	
 	public static String nullToStrUpperCase(String str){
         return (str==null?"":str.trim().toUpperCase());

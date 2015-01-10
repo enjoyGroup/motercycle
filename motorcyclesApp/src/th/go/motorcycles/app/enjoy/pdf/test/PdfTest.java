@@ -92,7 +92,7 @@ public class PdfTest {
 			
 			formClass					= "th.go.motorcycles.app.enjoy.pdf."+formName;
 //			document 					= new Document(PageSize.A5, 36, 36, 36, 70);
-			document 					= new Document(PageSize.A5, 20, 20, 20, 20);
+			document 					= new Document(PageSize.A5, 20, 20, 10, 20);
 			//parser 						= new JSONParser();
 			f 							= new File(pdfPath);
 			fos            				= new FileOutputStream(f.getAbsolutePath());			
