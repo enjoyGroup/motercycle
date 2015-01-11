@@ -1387,16 +1387,16 @@
 													<td>
 														<label class="col-sm-2 control-label pull-right" style="text-align:right">อาคาร:</label>
 													</td>
-													<td>
+													<td colspan="5" >
 														<input  type="text" 
-																class='col-sm-11 pull-left'
+																class='pull-left'
+																style="width: 97%"
 																size="15"
 																id="buildingName" 
 																name="buildingName"
 																value="<%=customerBean.getBuildingName()%>"
 														/>
-													</td>
-													
+													</td>													
 												</tr>
 												<tr>
 													<td>

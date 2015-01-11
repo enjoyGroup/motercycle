@@ -325,8 +325,8 @@
                                             <!-- start : form group -->
 											<div class="col-sm-12 form-group">
 											    <label class="col-sm-2" style="text-align:right">อาคาร:</label>
-												<div class="col-sm-4"> 
-													<input type="text" class="form-control" id="buildingName" name="buildingName" value="<%=customerBean.getBuildingName()%>" > 
+												<div class="col-sm-10"> 
+													<input type="text" class="form-control" id="buildingName" name="buildingName" value="<%=customerBean.getBuildingName()%>"> 
 												</div> 
 											</div>
 											<div class="clear" style="clear:both"></div>
