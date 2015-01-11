@@ -69,16 +69,16 @@ public class CustomerDao {
 				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber")));  
 				
 				if(! EnjoyUtils.nullToStr(rs.getString("buildingName")).equals("")){
-					address.append(" อาคาร").append(EnjoyUtils.nullToStr(rs.getString("buildingName")));
+					address.append(" อาคาร ").append(EnjoyUtils.nullToStr(rs.getString("buildingName")));
 				}
 				if (! EnjoyUtils.nullToStr(rs.getString("mooNumber")).equals("")) {
-					address.append(" หมู่ที่ ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
+					address.append(" หมู่ที่  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
 				}	
 				if (! EnjoyUtils.nullToStr(rs.getString("SoiName")).equals("")) {
-					address.append(" ซอย ").append(EnjoyUtils.nullToStr(rs.getString("SoiName")));
+					address.append(" ซอย  ").append(EnjoyUtils.nullToStr(rs.getString("SoiName")));
 				}	
 				if (! EnjoyUtils.nullToStr(rs.getString("streetName")).equals("")) {
-					address.append(" ถนน ").append(EnjoyUtils.nullToStr(rs.getString("streetName")));
+					address.append(" ถนน  ").append(EnjoyUtils.nullToStr(rs.getString("streetName")));
 				}	
 				address.append(" ตำบล/แขวง ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
 				address.append(" อำเภอ/เขต  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
@@ -137,16 +137,16 @@ public class CustomerDao {
 				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber"))); 
 				
 				if(! EnjoyUtils.nullToStr(rs.getString("buildingName")).equals("")){
-					address.append(" อาคาร").append(EnjoyUtils.nullToStr(rs.getString("buildingName")));
+					address.append(" อาคาร ").append(EnjoyUtils.nullToStr(rs.getString("buildingName")));
 				}
 				if (! EnjoyUtils.nullToStr(rs.getString("mooNumber")).equals("")) {
-					address.append(" หมู่ที่ ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
+					address.append(" หมู่ที่  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
 				}	
 				if (! EnjoyUtils.nullToStr(rs.getString("SoiName")).equals("")) {
-					address.append(" ซอย ").append(EnjoyUtils.nullToStr(rs.getString("SoiName")));
+					address.append(" ซอย  ").append(EnjoyUtils.nullToStr(rs.getString("SoiName")));
 				}	
 				if (! EnjoyUtils.nullToStr(rs.getString("streetName")).equals("")) {
-					address.append(" ถนน ").append(EnjoyUtils.nullToStr(rs.getString("streetName")));
+					address.append(" ถนน  ").append(EnjoyUtils.nullToStr(rs.getString("streetName")));
 				}	
 				address.append(" ตำบล/แขวง ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
 				address.append(" อำเภอ/เขต  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
