@@ -75,7 +75,7 @@ public class InvoicedetailsDao {
 			if(!invoiceDateFrom.equals("")){
 				where += " and invoiceDate BETWEEN STR_TO_DATE('" + invoiceDateFrom + "', '%Y%m%d') AND STR_TO_DATE('" + invoiceDateTo + "', '%Y%m%d')";
 			}
-			sql = sql + where;
+			sql = sql + where + " ORDER BY t.invoiceId ";
 			
 			System.out.println("[InvoicedetailsDao][SummarySalePDF] sql :: " + sql);
 		    rs 				= db.executeQuery(sql);
@@ -228,6 +228,9 @@ public class InvoicedetailsDao {
 		    while(rs.next()){
 				address  =  new StringBuilder();
 				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber"))); 
+				if (! EnjoyUtils.nullToStr(rs.getString("buildingName")).equals("")) {
+					address.append(" อาคาร  ").append(EnjoyUtils.nullToStr(rs.getString("buildingName")));
+				}	
 				if (! EnjoyUtils.nullToStr(rs.getString("mooNumber")).equals("")) {
 					address.append(" หมู่ที่  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
 				}	
