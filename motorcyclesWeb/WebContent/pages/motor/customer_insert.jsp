@@ -18,6 +18,9 @@
 	    border:1px solid #ABADB3;
 	     color:rgb(84, 84, 84);
 	}
+	.form-group{
+		margin-bottom:8px !important
+	}
 </style>  
 
 <script language="JavaScript" type="text/JavaScript">
