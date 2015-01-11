@@ -120,6 +120,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
 		 String			district		= null;
 		 String			subdistrict		= null;
 		 String         postcode        = null;
+		 String         buildingName    = null;
 		 AddressBean	addressBean		= null;
 		 JSONObject 	obj 			= new JSONObject();
 		 
@@ -156,6 +157,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
 					idType 	        = EnjoyUtils.nullToStr(this.request.getParameter("idType"));
 					idNumber 	    = EnjoyUtils.nullToStr(this.request.getParameter("idNumber")); 
 					postcode        = EnjoyUtils.nullToStr(this.request.getParameter("postcode"));
+					buildingName    = EnjoyUtils.nullToStr(this.request.getParameter("buildingName"));
 					cusStatus 	    = "A";  
 					
 					customerBean.setCustName(custName); 
@@ -175,6 +177,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
 					customerBean.setCusStatus(cusStatus);
 					customerBean.setCusCode(cusCode);
 					customerBean.setPostcode(postcode);
+					customerBean.setBuildingName(buildingName);
 					
 					cusCode = this.dao.insertCustomer(customerBean);  
 					customerBean.setCusCode(cusCode);
@@ -239,6 +242,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
 		 String			district		= null;
 		 String			subdistrict		= null;
 		 String         postcode        = null;
+		 String         buildingName    = null;
 		 AddressBean	addressBean		= null;
 		 JSONObject 	obj				= new JSONObject();
 		
@@ -258,6 +262,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
 			idNumber 	    = EnjoyUtils.nullToStr(this.request.getParameter("idNumber")); 
 			cusStatus 	    = EnjoyUtils.nullToStr(this.request.getParameter("cusStatus"));  
 			postcode        = EnjoyUtils.nullToStr(this.request.getParameter("postcode"));
+			buildingName    = EnjoyUtils.nullToStr(this.request.getParameter("buildingName"));
 			
 			   province					= EnjoyUtils.nullToStr(this.request.getParameter("provinceName"));
 			   district					= EnjoyUtils.nullToStr(this.request.getParameter("districtName"));
@@ -291,7 +296,8 @@ public class CustomerServlet extends EnjoyStandardSvc {
 				customerBean.setIdNumber(idNumber);
 				customerBean.setCusStatus(cusStatus);
 				customerBean.setPostcode(postcode);
-	 
+				customerBean.setBuildingName(buildingName);
+				
 			    dataRet	= this.dao.updateCustomer(customerBean);
 			    this.dao.findCustomerByCusCode(customerBean, this.form);
 			    

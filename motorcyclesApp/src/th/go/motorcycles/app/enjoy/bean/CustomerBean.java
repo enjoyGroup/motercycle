@@ -27,6 +27,7 @@ public class CustomerBean implements Serializable {
 	private String cusStatus; 
 	private String address ; 
 	private String postcode;
+	private String buildingName;
 	
 	public CustomerBean(){
 		this.cusCode 			= "";
@@ -48,6 +49,7 @@ public class CustomerBean implements Serializable {
 		this.cusStatus          = "A"; 
 		this.address            = ""; 
 		this.postcode			= "";
+		this.buildingName       = "";
 	}
 
  
@@ -55,17 +57,12 @@ public class CustomerBean implements Serializable {
 
 	public String getPostcode() {
 		return postcode;
-	}
-
-
-
+	} 
 
 	public void setPostcode(String postcode) {
 		this.postcode = postcode;
 	}
-
-
-
+  
 
 	public String getCusCode() {
 		return cusCode;
@@ -222,6 +219,14 @@ public class CustomerBean implements Serializable {
  
 	public void setAddress(String address) {
 		this.address = address;
+	} 
+
+	public String getBuildingName() {
+		return buildingName;
+	}
+ 
+	public void setBuildingName(String buildingName) {
+		this.buildingName = buildingName;
 	}
  
  

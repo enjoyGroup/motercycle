@@ -274,13 +274,13 @@
 										    <div class="col-sm-12 form-group ">
 											    <div class="col-sm-2 col-sm-offset-1"> 
 											        <label class="col-sm-2 control-label" style="text-align:right" > 
-													<input type="radio" name="idType" id="idType1" value="1" style="width:50px;" 
+													<input type="radio" name="idType" id="idType1" value="1" style="width:50px;" checked
 															<%if(customerBean.getIdType().equals("1")){%> checked="checked" <%} %>>บุคคลธรรมดา</label> 
 												</div>
 												
 												<div class="col-sm-2">
 											        <label class="col-sm-2 control-label" style="text-align:right"> 
-													<input type="radio" name="idType" id="idType2" value="2" style="width:50px;"  checked
+													<input type="radio" name="idType" id="idType2" value="2" style="width:50px;"  
 															<%if(customerBean.getIdType().equals("2")){%> checked="checked" <%} %>>นิติบุคคล</label> 
 												</div>
 												<div class="col-sm-7  form-group">
@@ -322,6 +322,16 @@
 											<div class="clear" style="clear:both"></div>
 											<!-- end : form group -->
 
+                                            <!-- start : form group -->
+											<div class="col-sm-12 form-group">
+											    <label class="col-sm-2" style="text-align:right">อาคาร:</label>
+												<div class="col-sm-4"> 
+													<input type="text" class="form-control" id="buildingName" name="buildingName" value="<%=customerBean.getBuildingName()%>" > 
+												</div> 
+											</div>
+											<div class="clear" style="clear:both"></div>
+											<!-- end : form group -->
+											
 											<!-- start : form group -->
 											<div class="col-sm-12 form-group">
 											    <label class="col-sm-2 " style="text-align:right">ตรอก/ซอย :</label>
@@ -359,7 +369,7 @@
 													<input  class="form-control" id="subdistrictName" name="subdistrictName"  placeholder="ตำบล" title="ตำบล"  value="<%=customerBean.getSubdistrictName()%>"> 
 													<input type="hidden" id="subdistrictCode" name="subdistrictCode"> 
 												</div>
-											    <label class="col-sm-2 " style="text-align:right">รหัสไปรษณ๊ย์<font color="red">*</font>:</label>
+											    <label class="col-sm-2 " style="text-align:right">รหัสไปรษณ๊ย์:</label>
 												<div class="col-sm-3"> 
 													<input  class="form-control" type="text" id="postcode" name="postcode" maxlength="5" placeholder="รหัสไปรษณ๊ย์" onblur="lp_onBlurPostcode();" value="<%=customerBean.getPostcode()%>"> 
 												</div>

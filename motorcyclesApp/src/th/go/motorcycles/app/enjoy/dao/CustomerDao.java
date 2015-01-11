@@ -64,10 +64,13 @@ public class CustomerDao {
 				customerBean.setIdType(EnjoyUtils.nullToStr(rs.getString("idType")));
 				customerBean.setIdNumber(EnjoyUtils.nullToStr(rs.getString("idNumber")));
 				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
-
+				 
 				address  =  new StringBuilder();
 				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber")));  
 				
+				if(! EnjoyUtils.nullToStr(rs.getString("buildingName")).equals("")){
+					address.append(" อาคาร").append(EnjoyUtils.nullToStr(rs.getString("buildingName")));
+				}
 				if (! EnjoyUtils.nullToStr(rs.getString("mooNumber")).equals("")) {
 					address.append(" หมู่ที่ ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
 				}	
@@ -132,6 +135,10 @@ public class CustomerDao {
 
 				address  =  new StringBuilder();
 				address.append(EnjoyUtils.nullToStr(rs.getString("houseNumber"))); 
+				
+				if(! EnjoyUtils.nullToStr(rs.getString("buildingName")).equals("")){
+					address.append(" อาคาร").append(EnjoyUtils.nullToStr(rs.getString("buildingName")));
+				}
 				if (! EnjoyUtils.nullToStr(rs.getString("mooNumber")).equals("")) {
 					address.append(" หมู่ที่ ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
 				}	
@@ -200,6 +207,7 @@ public class CustomerDao {
 				customerBean.setDistrictCode(EnjoyUtils.nullToStr(rs.getString("districtId")));
 				customerBean.setProvinceCode(EnjoyUtils.nullToStr(rs.getString("provinceId")));
 				customerBean.setPostcode(EnjoyUtils.nullToStr(rs.getString("postcode")));
+				customerBean.setBuildingName(EnjoyUtils.nullToStr(rs.getString("buildingName")));
 				cusForm.setCustomerBean(customerBean);
 		    } 
 		    
@@ -252,7 +260,8 @@ public class CustomerDao {
 										+ ", idType"
 										+ ", idNumber"
 										+ ", cusStatus"
-										+ ", postcode)"
+										+ ", postcode"
+										+ ", buildingName)"
 							+ " values (	'"+ cusCode + "'"
 										+ ", '" + customerBean.getCustName() 		+ "'"
 										+ ", '" + customerBean.getCustSurname() 	+ "'"
@@ -267,6 +276,7 @@ public class CustomerDao {
 										+ ", '" + customerBean.getIdNumber() 		+ "'"
 										+ ", '" + customerBean.getCusStatus() 		+ "'"
 										+ ", '"	+ customerBean.getPostcode()		+ "'"
+										+ ", '"	+ customerBean.getBuildingName()	+ "'"
 									+ ") ";
 			
 			System.out.println("[CustomerDao][insertCustomer] sql :: " + sql);
@@ -313,6 +323,7 @@ public class CustomerDao {
 									+ ", idType				= '"+bean.getIdType()			+ "'"
 									+ ", idNumber			= '"+bean.getIdNumber()			+ "'"
 									+ ", postcode			= '"+bean.getPostcode()			+ "'"
+									+ ", buildingName		= '"+bean.getBuildingName()		+ "'"
 							+ " where  cusCode = '"+bean.getCusCode()+"'";
 			
 			System.out.println("[CustomerDao][updateCustomer] sql :: " + sql);
