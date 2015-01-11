@@ -105,7 +105,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 					logger.info("[execute] printType :: " + printType);
 					this.lp_viewpdf(printType);
 				} else {
-					this.form.getCustomerBean().setIdType("2");
+					this.form.getCustomerBean().setIdType("1");
 					this.form.setRecordAddDate(MotorUtil.dateToStringThai(date));
 					if(!pageAction.equals(RESET)){
 						request.setAttribute("target", Constants.PAGE_URL + "/EntrySaleDetailScn.jsp");
@@ -307,7 +307,8 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   customerBean.setIdNumber(EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
 			   customerBean.setCusStatus("A");
 			   customerBean.setPostcode(EnjoyUtils.nullToStr(this.request.getParameter("postcode")));
-			   
+			   customerBean.setBuildingName(EnjoyUtils.nullToStr(this.request.getParameter("buildingName")));
+
 			   cusCode = this.customerDao.insertCustomer(customerBean);
 			   customerBean.setCusCode(cusCode);
 		   }else{
@@ -326,6 +327,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   customerBean.setIdType(EnjoyUtils.nullToStr(this.request.getParameter("idType"))); 
 			   customerBean.setIdNumber(EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
 			   customerBean.setPostcode(EnjoyUtils.nullToStr(this.request.getParameter("postcode")));
+			   customerBean.setBuildingName(EnjoyUtils.nullToStr(this.request.getParameter("buildingName")));
 			   
 			   this.customerDao.updateCustomer(customerBean);
 		   }
@@ -419,6 +421,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   obj.put("idNumber", 			customerBeanDb.getIdNumber());
 			   obj.put("cusStatus", 		customerBeanDb.getCusStatus());
 			   obj.put("postcode", 			customerBeanDb.getPostcode());
+			   obj.put("buildingName", 	    customerBeanDb.getBuildingName());
 			   
 		   }else{
 			   obj.put("status", 			"ERROR");
@@ -471,6 +474,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   obj.put("idNumber", 			customerBeanDb.getIdNumber());
 			   obj.put("cusStatus", 		customerBeanDb.getCusStatus());
 			   obj.put("postcode", 			customerBeanDb.getPostcode());
+			   obj.put("buildingName", 	    customerBeanDb.getBuildingName());
 			   
 		   }else{
 			   obj.put("status", 			"ERROR");
@@ -520,6 +524,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   obj.put("idNumber", 			customerBeanDb.getIdNumber());
 			   obj.put("cusStatus", 		customerBeanDb.getCusStatus());
 			   obj.put("postcode", 			customerBeanDb.getPostcode());
+			   obj.put("buildingName", 	    customerBeanDb.getBuildingName());
 			   
 		   }else{
 			   obj.put("status", 			"ERROR");

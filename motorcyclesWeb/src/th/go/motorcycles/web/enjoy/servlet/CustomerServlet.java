@@ -74,6 +74,7 @@ public class CustomerServlet extends EnjoyStandardSvc {
  				request.setAttribute("target", Constants.PAGE_URL +"/customer_insert.jsp");
  			}else if(pageAction.equals("new")|| pageAction.equals("reset")){ 
  				this.form = new CustomerForm();
+ 				this.form.getCustomerBean().setIdType("1");
  				request.setAttribute("target", Constants.PAGE_URL +"/customer_insert.jsp"); 
  			}else if(pageAction.equals("addRecord")){
  				this.addRecord();

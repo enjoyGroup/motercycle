@@ -76,6 +76,8 @@ public class EntrySaleDetailDao {
 				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
 				
 				customerBean.setPostcode(EnjoyUtils.nullToStr(rs.getString("postcode")));
+				customerBean.setBuildingName(EnjoyUtils.nullToStr(rs.getString("buildingName")));
+			 
 		    }	 
 			
 		}catch(Exception e){
@@ -140,6 +142,7 @@ public class EntrySaleDetailDao {
 				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
 				
 				customerBean.setPostcode(EnjoyUtils.nullToStr(rs.getString("postcode")));
+				customerBean.setBuildingName(EnjoyUtils.nullToStr(rs.getString("buildingName")));
 		    }	 
 			
 		}catch(Exception e){
@@ -204,6 +207,7 @@ public class EntrySaleDetailDao {
 				customerBean.setCusStatus(EnjoyUtils.nullToStr(rs.getString("cusStatus")));
 				
 				customerBean.setPostcode(EnjoyUtils.nullToStr(rs.getString("postcode")));
+				customerBean.setBuildingName(EnjoyUtils.nullToStr(rs.getString("buildingName")));
 		    }	 
 			
 		}catch(Exception e){

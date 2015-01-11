@@ -576,8 +576,8 @@
 	}
 	
 	function lp_validate(){
-		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassisDisp", "engineNoDisp", "size", "color", "totalAmount", "vatAmount", "recordAddDate", "postcode");
-	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "สี", "รวมสุทธิ", "ภาษี", "วันที่บันทึก", "รหัสไปรษณ๊ย์");
+		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassisDisp", "engineNoDisp", "size", "color", "totalAmount", "vatAmount", "recordAddDate");
+	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "สี", "รวมสุทธิ", "ภาษี", "วันที่บันทึก");
 	    var lo_flagAddSales			= null;
 	    var lo_commAmount			= null;
 	    
@@ -668,6 +668,7 @@
 	            			$("#idNumber").val(jsonObj.idNumber);
 	            			$("#cusStatus").val(jsonObj.cusStatus);
 	            			$("#postcode").val(jsonObj.postcode);
+	            			$("#buildingName").val(jsonObj.buildingName);
 	            			
 	            		}else{
 	            			$("#cusCode").val("");
@@ -744,6 +745,7 @@
 	            			$("#idNumber").val(jsonObj.idNumber);
 	            			$("#cusStatus").val(jsonObj.cusStatus);
 	            			$("#postcode").val(jsonObj.postcode);
+	            			$("#buildingName").val(jsonObj.buildingName);
 	            			
 	            		}else{
 	            			$("#cusCode").val("");
@@ -805,7 +807,7 @@
 	            			$("#idNumber").val(jsonObj.idNumber);
 	            			$("#cusStatus").val(jsonObj.cusStatus);
 	            			$("#postcode").val(jsonObj.postcode);
-	            			
+	            			$("#buildingName").val(jsonObj.buildingName);
 	            		}else{
 	            			$("#cusCode").val("");
 	            		}
@@ -1383,6 +1385,21 @@
 												</tr>
 												<tr>
 													<td>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">อาคาร:</label>
+													</td>
+													<td>
+														<input  type="text" 
+																class='col-sm-11 pull-left'
+																size="15"
+																id="buildingName" 
+																name="buildingName"
+																value="<%=customerBean.getBuildingName()%>"
+														/>
+													</td>
+													
+												</tr>
+												<tr>
+													<td>
 														<label class="col-sm-2 control-label pull-right" style="text-align:right">บ้านเลขที่ <font color="red">*</font>:</label>
 													</td>
 													<td>
@@ -1477,7 +1494,7 @@
 															/>
 													</td>
 													<td>
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">รหัสไปรษณ๊ย์<font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">รหัสไปรษณ๊ย์:</label>
 													</td>
 													<td colspan="5">
 														<input  type="text" 
