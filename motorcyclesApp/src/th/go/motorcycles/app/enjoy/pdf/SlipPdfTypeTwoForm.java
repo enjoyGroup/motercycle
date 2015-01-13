@@ -116,10 +116,10 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 		String      companyName		= (String) jsonObjectMain.get("CompanyName");
 		String      companyAddress	= (String) jsonObjectMain.get("CompanyAddress");
 		
-		table.addCell(setCellWB("    ", getFont12Bold(), 2, Element.ALIGN_LEFT, 0));   // companyName
+		table.addCell(setCellWB("    ", getFont11Bold(), 2, Element.ALIGN_LEFT, 0));   // companyName
 			
 		table.addCell(setCellWB("    ", getFont8(), 1, Element.ALIGN_LEFT, 0));		   // companyAddress
-		table.addCell(setCellWB("		ใบกำกับภาษี/ใบเสร็จรับเงิน", getFont11Bold(), 1, Element.ALIGN_RIGHT, 0));
+		table.addCell(setCellWB("		ใบกำกับภาษี/ใบเสร็จรับเงิน", getFont10Bold(), 1, Element.ALIGN_RIGHT, 0));
 		
 		subTab.addCell(setCellWB("    ", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));   // โทรศัพท์ :
 		subTab.addCell(setCellWB("    ", getFont8(), 1, Element.ALIGN_LEFT, 0));	   // (String) jsonObjectMain.get("tel")
@@ -150,7 +150,7 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 //		String      invoiceId		= (String) jsonObjectMain.get("invoiceId");
 		String      invoiceDate		= (String) jsonObjectMain.get("invoiceDate");
 		String      cusNameDisp		= (String) jsonObjectMain.get("cusNameDisp") + 
-										" (" + (String) jsonObjectMain.get("idNumber") + ") ";
+										" (" + (String) jsonObjectMain.get("idNumber") + ")";
 		String      cusAddress		= (String) jsonObjectMain.get("cusAddress");
 		
 		table.addCell(setCellWB("", getFont12Bold(), 3, Element.ALIGN_LEFT, 0));
@@ -356,13 +356,13 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 		String      companyAddress	= (String) jsonObjectMain.get("CompanyAddress");
 		String      flagCredit		= (String) jsonObjectMain.get("flagCredit");
 
-		table.addCell(setCellWB("    ", getFont12Bold(), 2, Element.ALIGN_LEFT, 0));   // companyName
+		table.addCell(setCellWB("    ", getFont11Bold(), 2, Element.ALIGN_LEFT, 0));   // companyName
 		
 		table.addCell(setCellWB("    ", getFont8(), 1, Element.ALIGN_LEFT, 0));		   // companyAddress
 		if (flagCredit.equals("A")) {
-			table.addCell(setCellWB("ใบกำกับภาษี/ใบเพิ่มหนี้", getFont11Bold(), 1, Element.ALIGN_RIGHT, 0)); // ใบเพิ่มหนี้
+			table.addCell(setCellWB("ใบกำกับภาษี/ใบเพิ่มหนี้", getFont10Bold(), 1, Element.ALIGN_RIGHT, 0)); // ใบเพิ่มหนี้
 		} else if (flagCredit.equals("C")) {
-			table.addCell(setCellWB("ใบกำกับภาษี/ใบลดหนี้", getFont11Bold(), 1, Element.ALIGN_RIGHT, 0)); // ใบลดหนี้
+			table.addCell(setCellWB("ใบกำกับภาษี/ใบลดหนี้", getFont10Bold(), 1, Element.ALIGN_RIGHT, 0)); // ใบลดหนี้
 		}	
 		
 		subTab.addCell(setCellWB("    ", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));   // โทรศัพท์ :

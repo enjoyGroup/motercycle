@@ -117,10 +117,10 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		String      companyName		= (String) jsonObjectMain.get("CompanyName");
 		String      companyAddress	= (String) jsonObjectMain.get("CompanyAddress");
 		
-		table.addCell(setCellWB(companyName, getFont12Bold(), 2, Element.ALIGN_LEFT, 0));
+		table.addCell(setCellWB(companyName, getFont11Bold(), 2, Element.ALIGN_LEFT, 0));
 		
 		table.addCell(setCellWB(companyAddress, getFont8(), 1, Element.ALIGN_LEFT, 0));
-		table.addCell(setCellWB("		ใบกำกับภาษี/ใบเสร็จรับเงิน", getFont11Bold(), 1, Element.ALIGN_RIGHT, 0));
+		table.addCell(setCellWB("		ใบกำกับภาษี/ใบเสร็จรับเงิน", getFont10Bold(), 1, Element.ALIGN_RIGHT, 0));
 		
 		subTab.addCell(setCellWB("โทรศัพท์ :", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
 		subTab.addCell(setCellWB((String) jsonObjectMain.get("tel"), getFont8(), 1, Element.ALIGN_LEFT, 0));
@@ -151,7 +151,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 //		String      invoiceId		= (String) jsonObjectMain.get("invoiceId");
 		String      invoiceDate		= (String) jsonObjectMain.get("invoiceDate");
 		String      cusNameDisp		= (String) jsonObjectMain.get("cusNameDisp") + 
-										" (" + (String) jsonObjectMain.get("idNumber") + ") ";
+										" (" + (String) jsonObjectMain.get("idNumber") + ")";
 		String      cusAddress		= (String) jsonObjectMain.get("cusAddress");
 		
 		table.addCell(setCellWB("", getFont12Bold(), 3, Element.ALIGN_LEFT, 0));
@@ -357,13 +357,13 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		String      companyAddress	= (String) jsonObjectMain.get("CompanyAddress");
 		String      flagCredit		= (String) jsonObjectMain.get("flagCredit");
 		
-		table.addCell(setCellWB(companyName, getFont12Bold(), 2, Element.ALIGN_LEFT, 0));
+		table.addCell(setCellWB(companyName, getFont11Bold(), 2, Element.ALIGN_LEFT, 0));
 		
 		table.addCell(setCellWB(companyAddress, getFont8(), 1, Element.ALIGN_LEFT, 0));
 		if (flagCredit.equals("A")) {
-			table.addCell(setCellWB("ใบกำกับภาษี/ใบเพิ่มหนี้", getFont11Bold(), 1, Element.ALIGN_RIGHT, 0));
+			table.addCell(setCellWB("ใบกำกับภาษี/ใบเพิ่มหนี้", getFont10Bold(), 1, Element.ALIGN_RIGHT, 0));
 		} else if (flagCredit.equals("C")) {
-			table.addCell(setCellWB("ใบกำกับภาษี/ใบลดหนี้", getFont11Bold(), 1, Element.ALIGN_RIGHT, 0));
+			table.addCell(setCellWB("ใบกำกับภาษี/ใบลดหนี้", getFont10Bold(), 1, Element.ALIGN_RIGHT, 0));
 		}	
 		
 		subTab.addCell(setCellWB("โทรศัพท์ :", getFont8Bold(), 1, Element.ALIGN_LEFT, 0));
