@@ -242,7 +242,7 @@ public class InvoicedetailsDao {
 				address.append(" ตำบล/แขวง  ").append(EnjoyUtils.nullToStr(rs.getString("subdistrictName")));
 				address.append(" อำเภอ/เขต  ").append(EnjoyUtils.nullToStr(rs.getString("districtName"))); 
 				address.append(" จังหวัด  ").append(EnjoyUtils.nullToStr(rs.getString("provinceName")));  
-		    	
+				address.append(" ").append(EnjoyUtils.nullToStr(rs.getString("postcode")));  	    	
 		    } 
 			
 		}catch(Exception e){
