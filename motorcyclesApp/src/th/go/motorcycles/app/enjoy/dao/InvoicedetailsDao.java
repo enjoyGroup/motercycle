@@ -175,7 +175,8 @@ public class InvoicedetailsDao {
 		    	jsonObjectDetail.put("chassisDisp",     EnjoyUtils.nullToStr(rs.getString("chassisDisp")));
 		    	jsonObjectDetail.put("engineNoDisp",    EnjoyUtils.nullToStr(rs.getString("engineNoDisp")));
 		    	jsonObjectDetail.put("color",    		EnjoyUtils.nullToStr(rs.getString("color")));
-		    	jsonObjectDetail.put("size",    		EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("size"),"0"),0));
+//		    	jsonObjectDetail.put("size",    		EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("size"),"0"),0));
+		    	jsonObjectDetail.put("size",    		EnjoyUtils.nullToStr(rs.getString("size"),"0"));
 		    	jsonObjectDetail.put("priceAmount",     EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("priceAmount"),"0"),2));
 		    	jsonObjectDetail.put("vatAmount",       EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("vatAmount"),"0")  ,2));
 		    	jsonObjectDetail.put("totalAmount",     EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("totalAmount"),"0"),2));
