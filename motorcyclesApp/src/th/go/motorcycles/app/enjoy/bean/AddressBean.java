@@ -1,24 +1,20 @@
 package th.go.motorcycles.app.enjoy.bean;
 
+import th.go.motorcycles.app.enjoy.main.Constants;
+
 public class AddressBean {
 	private String 						provinceId;
 	private String 						districtId;
 	private String 						subdistrictId;
 	private	String						errMsg;
+	private String 						errType;
 	
 	public AddressBean(){
 		this.provinceId 				= "";
 		this.districtId 				= "";
 		this.subdistrictId	 			= "";
 		this.errMsg						= "";
-	}
-
-	public String getErrMsg() {
-		return errMsg;
-	}
-
-	public void setErrMsg(String errMsg) {
-		this.errMsg = errMsg;
+		this.errType					= Constants.ERR_ERROR;
 	}
 
 	public String getProvinceId() {
@@ -44,8 +40,21 @@ public class AddressBean {
 	public void setSubdistrictId(String subdistrictId) {
 		this.subdistrictId = subdistrictId;
 	}
-	
-	
 
+	public String getErrMsg() {
+		return errMsg;
+	}
+
+	public void setErrMsg(String errMsg) {
+		this.errMsg = errMsg;
+	}
+
+	public String getErrType() {
+		return errType;
+	}
+
+	public void setErrType(String errType) {
+		this.errType = errType;
+	}
 	
 }

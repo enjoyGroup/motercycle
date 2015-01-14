@@ -11,6 +11,7 @@ import th.go.motorcycles.app.enjoy.bean.ProductBean;
 import th.go.motorcycles.app.enjoy.exception.EnjoyException;
 import th.go.motorcycles.app.enjoy.form.EntrySaleDetailForm;
 import th.go.motorcycles.app.enjoy.main.ConfigFile;
+import th.go.motorcycles.app.enjoy.main.Constants;
 import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
 import th.go.motorcycles.app.enjoy.utils.EnjoyUtils;
 
@@ -621,6 +622,7 @@ public class EntrySaleDetailDao {
 		EnjoyConectDbs 					db 					= null;
 		int								v_cou				= 0;
 		String 							v_where			 	= "";
+		String 							v_msg			 	= "";
 		
 		try{
 			db    		= new EnjoyConectDbs();
@@ -665,23 +667,34 @@ public class EntrySaleDetailDao {
 				v_cou = rs.getInt("cou");
 			}
 			if(v_cou > 0){
-				throw new EnjoyException("เลขตัวถังซ้ำกรุณาตรวจสอบ");
+				v_msg = "เลขตัวถัง";
+//				throw new EnjoyException("เลขตัวถังซ้ำกรุณาตรวจสอบ");
 			}
 			/*End count chassisDisp*/
 			
 			/*Begin count engineNoDisp*/
-			v_cou		= 0;
 			sql 		= " select count(*) cou from invoicedetails where motorcyclesCode = '" + motorcyclesCode + "' and engineNoDisp = '" + engineNoDisp + "'" + v_where;
 			
 			System.out.println("[EntrySaleDetailDao][getMotorcyclesCode] sql count engineNoDisp :: " + sql);
 			rs 			= db.executeQuery(sql);
+			v_cou		= 0;
 			while(rs.next()){
 				v_cou = rs.getInt("cou");
 			}
 			if(v_cou > 0){
-				throw new EnjoyException("เลขเครื่องยนต์ซ้ำกรุณาตรวจสอบ");
+				if(v_msg.equals("")){
+					v_msg = "เลขเครื่องยนต์";
+				}else{
+					v_msg = v_msg + "และเลขเครื่องยนต์";
+				}
+//				throw new EnjoyException("เลขเครื่องยนต์ซ้ำกรุณาตรวจสอบ");
 			}
 			/*End count engineNoDisp*/
+			
+			if(!v_msg.equals("")){
+				bean.setErrType(Constants.ERR_WARNING);
+				throw new EnjoyException(v_msg + "ซ้ำจะดำเนินการต่อมั้ย");
+			}
 			
 		}catch(EnjoyException e){
 			errMsg = e.getMessage();

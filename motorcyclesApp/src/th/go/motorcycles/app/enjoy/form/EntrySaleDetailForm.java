@@ -7,9 +7,9 @@ import th.go.motorcycles.app.enjoy.main.ConfigFile;
 public class EntrySaleDetailForm {
 	
 	/*Flag สำหรับเก็บ A- ใบเพิ่มหนี้ , C- ใบลดหนี้, N- ไม่มีเพิ่มเติม*/
-	public static final String FLAG_A = "A";
-	public static final String FLAG_C = "C";
-	public static final String FLAG_N = "N";
+	public static final String FLAG_A 		= "A";
+	public static final String FLAG_C 		= "C";
+	public static final String FLAG_N 		= "N";
 	
 	private CustomerBean 						customerBean;
 	private ProductBean							productBean;
@@ -33,6 +33,9 @@ public class EntrySaleDetailForm {
 	private String								vat;
 	private String								userLevel;
 	private String 								formatInvoie;
+	private String 								remarkAddSales;
+	private String 								commVatAmount;
+	private String 								commTotalAmount;
 	
 	public EntrySaleDetailForm(){
 		this.customerBean 				= new CustomerBean();
@@ -57,6 +60,33 @@ public class EntrySaleDetailForm {
 		this.vat						= ConfigFile.getVAT_RATE();
 		this.userLevel					= "";
 		this.formatInvoie				= "";
+		this.remarkAddSales				= "";
+		this.commVatAmount				= "0.00";
+		this.commTotalAmount			= "0.00";
+	}
+
+	public String getRemarkAddSales() {
+		return remarkAddSales;
+	}
+
+	public void setRemarkAddSales(String remarkAddSales) {
+		this.remarkAddSales = remarkAddSales;
+	}
+
+	public String getCommVatAmount() {
+		return commVatAmount;
+	}
+
+	public void setCommVatAmount(String commVatAmount) {
+		this.commVatAmount = commVatAmount;
+	}
+
+	public String getCommTotalAmount() {
+		return commTotalAmount;
+	}
+
+	public void setCommTotalAmount(String commTotalAmount) {
+		this.commTotalAmount = commTotalAmount;
 	}
 
 	public String getFormatInvoie() {

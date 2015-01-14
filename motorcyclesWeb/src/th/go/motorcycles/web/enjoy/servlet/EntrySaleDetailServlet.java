@@ -58,6 +58,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
    private static final String 		GET_MODEL	 			= "getModel";
    private static final String 		GET_NEXT_INVOICE	 	= "getNextInvoice";
    private static final String 		GET_PREVIOUS_INVOICE	= "getPreviousInvoice";
+   private static final String 		VALIDATE				= "validate";
    
    private MotorUtil               		motorUtil                   = null;
    private EntrySaleDetailForm	        form                        = null;
@@ -146,6 +147,8 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 				this.lp_getNextInvoice();
 			}else if(pageAction.equals(GET_PREVIOUS_INVOICE)){
 				this.lp_getPreviousInvoice();
+			}else if(pageAction.equals(VALIDATE)){
+				this.lp_validate();
 			}
 			
 			session.setAttribute(FORM_NAME, this.form);
@@ -156,6 +159,95 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		}finally{
 			logger.info("[execute][End]");
 		}
+   }
+   
+   private void lp_validate(){
+	   logger.info("[lp_validate][Begin]");
+	   
+	   EntrySaleDetailBean 	entrySaleDetailBean 		= null;
+	   String				invoiceId 					= null;
+	   String				motorcyclesCode 			= null;
+	   String				provinceId					= null;
+	   String				districtId					= null;
+	   String				subdistrictId				= null;
+	   String				provinceName				= null;
+	   String				districtName				= null;
+	   String				subdistrictName				= null;
+	   String 				brandName					= null;
+	   String 				model						= null;
+	   JSONObject 			obj 						= new JSONObject();
+	   AddressBean			addressBean					= null;
+	   String 				chassisDisp					= null;
+	   String 				engineNoDisp				= null;
+	   
+	   try{
+		   invoiceId		= EnjoyUtils.nullToStr(this.request.getParameter("invoiceId"));
+		   provinceName		= EnjoyUtils.nullToStr(this.request.getParameter("provinceName"));
+		   districtName		= EnjoyUtils.nullToStr(this.request.getParameter("districtName"));
+		   subdistrictName	= EnjoyUtils.nullToStr(this.request.getParameter("subdistrictName"));
+		   brandName		= EnjoyUtils.nullToStr(this.request.getParameter("brandName"));
+		   model			= EnjoyUtils.nullToStr(this.request.getParameter("model"));
+		   chassisDisp		= EnjoyUtils.nullToStr(this.request.getParameter("chassisDisp"));
+		   engineNoDisp		= EnjoyUtils.nullToStr(this.request.getParameter("engineNoDisp"));
+		   
+		   logger.info("[lp_validate] invoiceId 			:: " + invoiceId);
+		   logger.info("[lp_validate] provinceName 			:: " + provinceName);
+		   logger.info("[lp_validate] districtName 			:: " + districtName);
+		   logger.info("[lp_validate] subdistrictName 		:: " + subdistrictName);
+		   logger.info("[lp_validate] brandName 			:: " + brandName);
+		   logger.info("[lp_validate] model 				:: " + model);
+		   logger.info("[lp_validate] chassisDisp 			:: " + chassisDisp);
+		   logger.info("[lp_validate] engineNoDisp 			:: " + engineNoDisp);
+		   
+		   addressBean 		= this.addressDao.validateAddress(provinceName, districtName, subdistrictName);
+		   
+		   if(addressBean.getErrMsg().equals("")){
+			   
+			   provinceId 		= addressBean.getProvinceId();
+			   districtId 		= addressBean.getDistrictId();
+			   subdistrictId 	= addressBean.getSubdistrictId();
+			   
+			   logger.info("[lp_validate] provinceId 			:: " + provinceId);
+			   logger.info("[lp_validate] districtId 			:: " + districtId);
+			   logger.info("[lp_validate] subdistrictId 		:: " + subdistrictId);
+			   
+		   }else{
+			   obj.put(ERR_TYPE, 			addressBean.getErrType());
+			   throw new EnjoyException(addressBean.getErrMsg());
+		   }
+		   
+		   entrySaleDetailBean = this.dao.getMotorcyclesCode(brandName, model, chassisDisp, engineNoDisp, invoiceId);
+		   if(!entrySaleDetailBean.getErrMsg().equals("")){
+			   obj.put(ERR_TYPE, 			entrySaleDetailBean.getErrType());
+			   
+			   motorcyclesCode = entrySaleDetailBean.getMotorcyclesCode();
+			   obj.put("provinceId", 		provinceId);
+			   obj.put("districtId", 		districtId);
+			   obj.put("subdistrictId", 	subdistrictId);
+			   obj.put("motorcyclesCode", 	motorcyclesCode);
+			   
+			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
+		   }else{
+			   motorcyclesCode = entrySaleDetailBean.getMotorcyclesCode();
+			   obj.put(STATUS, 				SUCCESS);
+			   obj.put("provinceId", 		provinceId);
+			   obj.put("districtId", 		districtId);
+			   obj.put("subdistrictId", 	subdistrictId);
+			   obj.put("motorcyclesCode", 	motorcyclesCode);
+		   }
+	   }catch(EnjoyException e){
+		   obj.put(STATUS, 				ERROR);
+		   obj.put(ERR_MSG, 			e.getMessage());
+	   }catch(Exception e){
+			obj.put(STATUS, 			ERROR);
+			obj.put(ERR_TYPE, 			ERR_ERROR);
+			obj.put(ERR_MSG, 			"เกิดข้อผิดพลาดในการตรวจสอบข้อมูล");
+			logger.info(e.getMessage());
+			e.printStackTrace();
+	   }finally{
+		   this.motorUtil.writeMSG(obj.toString());
+		   logger.info("[lp_validate][End]");
+	   }
    }
    
    private void lp_saveData(){
@@ -177,13 +269,13 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 	   String				provinceId					= null;
 	   String				districtId					= null;
 	   String				subdistrictId				= null;
-	   String				provinceName				= null;
-	   String				districtName				= null;
-	   String				subdistrictName				= null;
-	   String 				brandName					= null;
-	   String 				model						= null;
+//	   String				provinceName				= null;
+//	   String				districtName				= null;
+//	   String				subdistrictName				= null;
+//	   String 				brandName					= null;
+//	   String 				model						= null;
 	   JSONObject 			obj 						= new JSONObject();
-	   AddressBean			addressBean					= null;
+//	   AddressBean			addressBean					= null;
 	   EntrySaleDetailForm	form						= null;
 	   String 				chassisDisp					= null;
 	   String 				engineNoDisp				= null;
@@ -208,11 +300,11 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   cusCode			= EnjoyUtils.nullToStr(this.request.getParameter("cusCode"));
 		   userUniqueId		= this.userBean.getUserUniqueId();
 		   invoiceMode		= EnjoyUtils.nullToStr(this.request.getParameter("invoiceMode"));
-		   provinceName		= EnjoyUtils.nullToStr(this.request.getParameter("provinceName"));
-		   districtName		= EnjoyUtils.nullToStr(this.request.getParameter("districtName"));
-		   subdistrictName	= EnjoyUtils.nullToStr(this.request.getParameter("subdistrictName"));
-		   brandName		= EnjoyUtils.nullToStr(this.request.getParameter("brandName"));
-		   model			= EnjoyUtils.nullToStr(this.request.getParameter("model"));
+//		   provinceName		= EnjoyUtils.nullToStr(this.request.getParameter("provinceName"));
+//		   districtName		= EnjoyUtils.nullToStr(this.request.getParameter("districtName"));
+//		   subdistrictName	= EnjoyUtils.nullToStr(this.request.getParameter("subdistrictName"));
+//		   brandName		= EnjoyUtils.nullToStr(this.request.getParameter("brandName"));
+//		   model			= EnjoyUtils.nullToStr(this.request.getParameter("model"));
 		   chassisDisp		= EnjoyUtils.nullToStr(this.request.getParameter("chassisDisp"));
 		   engineNoDisp		= EnjoyUtils.nullToStr(this.request.getParameter("engineNoDisp"));
 		   size				= EnjoyUtils.replaceComma(this.request.getParameter("size"));
@@ -222,6 +314,10 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   color			= EnjoyUtils.nullToStr(this.request.getParameter("color"));
 		   recordAddDate	= EnjoyUtils.nullToStr(this.request.getParameter("recordAddDate"));
 		   formatInvoie		= EnjoyUtils.nullToStr(this.userBean.getFormatInvoie());
+		   provinceId 		= EnjoyUtils.nullToStr(this.request.getParameter("provinceId"));
+		   districtId 		= EnjoyUtils.nullToStr(this.request.getParameter("districtId"));
+		   subdistrictId 	= EnjoyUtils.nullToStr(this.request.getParameter("subdistrictId"));
+		   motorcyclesCode 	= EnjoyUtils.nullToStr(this.request.getParameter("motorcyclesCode"));
 		   
 		   logger.info("[lp_saveData] invoiceId 			:: " + invoiceId);
 		   logger.info("[lp_saveData] priceAmount 			:: " + priceAmount);
@@ -232,11 +328,11 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   logger.info("[lp_saveData] cusCode 				:: " + cusCode);
 		   logger.info("[lp_saveData] userUniqueId 			:: " + userUniqueId);
 		   logger.info("[lp_saveData] invoiceMode 			:: " + invoiceMode);
-		   logger.info("[lp_saveData] provinceName 			:: " + provinceName);
-		   logger.info("[lp_saveData] districtName 			:: " + districtName);
-		   logger.info("[lp_saveData] subdistrictName 		:: " + subdistrictName);
-		   logger.info("[lp_saveData] brandName 			:: " + brandName);
-		   logger.info("[lp_saveData] model 				:: " + model);
+//		   logger.info("[lp_saveData] provinceName 			:: " + provinceName);
+//		   logger.info("[lp_saveData] districtName 			:: " + districtName);
+//		   logger.info("[lp_saveData] subdistrictName 		:: " + subdistrictName);
+//		   logger.info("[lp_saveData] brandName 			:: " + brandName);
+//		   logger.info("[lp_saveData] model 				:: " + model);
 		   logger.info("[lp_saveData] chassisDisp 			:: " + chassisDisp);
 		   logger.info("[lp_saveData] engineNoDisp 			:: " + engineNoDisp);
 		   logger.info("[lp_saveData] size 					:: " + size);
@@ -246,6 +342,10 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   logger.info("[lp_saveData] totalAmount	 		:: " + totalAmount);
 		   logger.info("[lp_saveData] recordAddDate	 		:: " + recordAddDate);
 		   logger.info("[lp_saveData] formatInvoie	 		:: " + formatInvoie);
+		   logger.info("[lp_saveData] provinceId	 		:: " + provinceId);
+		   logger.info("[lp_saveData] districtId	 		:: " + districtId);
+		   logger.info("[lp_saveData] subdistrictId	 		:: " + subdistrictId);
+		   logger.info("[lp_saveData] motorcyclesCode	 	:: " + motorcyclesCode);
 		   logger.info("[lp_saveData] idType 				:: " + this.request.getParameter("idType"));
 		   logger.info("[lp_saveData] idNumber 				:: " + EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
 		   
@@ -268,28 +368,28 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   form.setFlagCredit(flagCredit);
 		   }
 		   
-		   addressBean 		= this.addressDao.validateAddress(provinceName, districtName, subdistrictName);
-		   
-		   if(addressBean.getErrMsg().equals("")){
-			   
-			   provinceId 		= addressBean.getProvinceId();
-			   districtId 		= addressBean.getDistrictId();
-			   subdistrictId 	= addressBean.getSubdistrictId();
-			   
-			   logger.info("[lp_saveData] provinceId 			:: " + provinceId);
-			   logger.info("[lp_saveData] districtId 			:: " + districtId);
-			   logger.info("[lp_saveData] subdistrictId 		:: " + subdistrictId);
-			   
-		   }else{
-			   throw new EnjoyException(addressBean.getErrMsg());
-		   }
-		   
-		   entrySaleDetailBean = this.dao.getMotorcyclesCode(brandName, model, chassisDisp, engineNoDisp, invoiceId);
-		   if(!entrySaleDetailBean.getErrMsg().equals("")){
-			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
-		   }else{
-			   motorcyclesCode = entrySaleDetailBean.getMotorcyclesCode();
-		   }
+//		   addressBean 		= this.addressDao.validateAddress(provinceName, districtName, subdistrictName);
+//		   
+//		   if(addressBean.getErrMsg().equals("")){
+//			   
+//			   provinceId 		= addressBean.getProvinceId();
+//			   districtId 		= addressBean.getDistrictId();
+//			   subdistrictId 	= addressBean.getSubdistrictId();
+//			   
+//			   logger.info("[lp_saveData] provinceId 			:: " + provinceId);
+//			   logger.info("[lp_saveData] districtId 			:: " + districtId);
+//			   logger.info("[lp_saveData] subdistrictId 		:: " + subdistrictId);
+//			   
+//		   }else{
+//			   throw new EnjoyException(addressBean.getErrMsg());
+//		   }
+//		   
+//		   entrySaleDetailBean = this.dao.getMotorcyclesCode(brandName, model, chassisDisp, engineNoDisp, invoiceId);
+//		   if(!entrySaleDetailBean.getErrMsg().equals("")){
+//			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
+//		   }else{
+//			   motorcyclesCode = entrySaleDetailBean.getMotorcyclesCode();
+//		   }
 		   
 		   if(cusCode.equals("")){
 			   customerBean.setCustName(EnjoyUtils.nullToStr(this.request.getParameter("custName"))); 
@@ -347,22 +447,25 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   }
 		   
 		   if(!entrySaleDetailBean.getErrMsg().equals("")){
+			   obj.put(ERR_TYPE, 			entrySaleDetailBean.getErrType());
 			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
 		   }else{
-			   obj.put("status", 			"SUCCESS");
+			   obj.put(STATUS, 				SUCCESS);
 			   obj.put("invoiceId", 		entrySaleDetailBean.getInvoiceId());
 		   }
 		   
 		   
 	   }
 	   catch(EnjoyException e){
-		   obj.put("status", 			"ERROR");
-		   obj.put("errMsg", 			e.getMessage());
+		   obj.put(STATUS, 				ERROR);
+		   obj.put(ERR_MSG, 			e.getMessage());
 		}
 	   catch(Exception e){
-			obj.put("status", 			"ERROR");
-			obj.put("errMsg", 			"เกิดข้อผิดพลาดในการบันทึกข้อมูล");
-		   e.printStackTrace();
+			obj.put(STATUS, 			ERROR);
+			obj.put(ERR_TYPE, 			ERR_ERROR);
+			obj.put(ERR_MSG, 			"เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+			logger.info(e.getMessage());
+			e.printStackTrace();
 	   }finally{
 		   this.motorUtil.writeMSG(obj.toString());
 		   logger.info("[lp_saveData][End]");
@@ -406,7 +509,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   this.dao.getCustomerDetail(cusCode, customerBeanDb);
 		   
 		   if(!customerBeanDb.getCusCode().equals("")){
-			   obj.put("status", 			"SUCCESS");
+			   obj.put(STATUS, 			SUCCESS);
 			   obj.put("cusCode", 			customerBeanDb.getCusCode());
 			   obj.put("custName", 			customerBeanDb.getCustName());
 			   obj.put("custSurname", 		customerBeanDb.getCustSurname());
@@ -424,13 +527,13 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   obj.put("buildingName", 	    customerBeanDb.getBuildingName());
 			   
 		   }else{
-			   obj.put("status", 			"ERROR");
+			   obj.put(STATUS, 			ERROR);
 		   }
 		   
 		   this.form.setCustomerBean(customerBeanDb);
 		   
 	   }catch(Exception e){
-		   obj.put("status", 			"ERROR");
+		   obj.put(STATUS, 			ERROR);
 		   e.printStackTrace();
 		   logger.info("[lp_getCustDtl] " + e.getMessage());
 	   }finally{
@@ -459,7 +562,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   this.dao.getCustomerDetail(custName, custSurname, customerBeanDb);
 		   
 		   if(!customerBeanDb.getCusCode().equals("")){
-			   obj.put("status", 			"SUCCESS");
+			   obj.put(STATUS, 			SUCCESS);
 			   obj.put("cusCode", 			customerBeanDb.getCusCode());
 			   obj.put("custName", 			customerBeanDb.getCustName());
 			   obj.put("custSurname", 		customerBeanDb.getCustSurname());
@@ -477,13 +580,13 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   obj.put("buildingName", 	    customerBeanDb.getBuildingName());
 			   
 		   }else{
-			   obj.put("status", 			"ERROR");
+			   obj.put(STATUS, 			ERROR);
 		   }
 		   
 		   this.form.setCustomerBean(customerBeanDb);
 		   
 	   }catch(Exception e){
-		   obj.put("status", 			"ERROR");
+		   obj.put(STATUS, 			ERROR);
 		   e.printStackTrace();
 		   logger.info("[lp_getCustDtlByName] " + e.getMessage());
 	   }finally{
@@ -509,7 +612,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   this.dao.getCustomerDetailByIdNumber(idNumber, customerBeanDb);
 		   
 		   if(!customerBeanDb.getCusCode().equals("")){
-			   obj.put("status", 			"SUCCESS");
+			   obj.put(STATUS, 			SUCCESS);
 			   obj.put("cusCode", 			customerBeanDb.getCusCode());
 			   obj.put("custName", 			customerBeanDb.getCustName());
 			   obj.put("custSurname", 		customerBeanDb.getCustSurname());
@@ -527,13 +630,13 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   obj.put("buildingName", 	    customerBeanDb.getBuildingName());
 			   
 		   }else{
-			   obj.put("status", 			"ERROR");
+			   obj.put(STATUS, 			ERROR);
 		   }
 		   
 		   this.form.setCustomerBean(customerBeanDb);
 		   
 	   }catch(Exception e){
-		   obj.put("status", 			"ERROR");
+		   obj.put(STATUS, 			ERROR);
 		   e.printStackTrace();
 		   logger.info("[lp_getCustDtlByIdNumber] " + e.getMessage());
 	   }finally{
@@ -563,7 +666,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   
 		   logger.info("[lp_getProdDtl] productBeanDb.getModel() 			:: " + productBeanDb.getModel());
 		   if(!productBeanDb.getModel().equals("")){
-			   obj.put("status", 			"SUCCESS");
+			   obj.put(STATUS, 			SUCCESS);
 			   obj.put("brandName", 		productBeanDb.getBrandName());
 			   obj.put("model", 			productBeanDb.getModel());
 			   obj.put("chassis", 			productBeanDb.getChassis());
@@ -571,13 +674,13 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   obj.put("size", 				productBeanDb.getSize());
 			   
 		   }else{
-			   obj.put("status", 			"ERROR");
+			   obj.put(STATUS, 			ERROR);
 		   }
 		   
 		   this.form.setProductBean(productBeanDb);
 		   
 	   }catch(Exception e){
-		   obj.put("status", 			"ERROR");
+		   obj.put(STATUS, 			ERROR);
 		   e.printStackTrace();
 		   logger.info("[lp_getProdDtl] " + e.getMessage());
 	   }finally{
@@ -931,16 +1034,16 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
 		   }
 		   
-		   obj.put("status", 			"SUCCESS");
+		   obj.put(STATUS, 			SUCCESS);
 		   obj.put("invoiceId", 		entrySaleDetailBean.getInvoiceId());
 		   
 	   }catch(EnjoyException e){
-		   obj.put("status", 			"ERROR");
-		   obj.put("errMsg", 			e.getMessage());
+		   obj.put(STATUS, 			ERROR);
+		   obj.put(ERR_MSG, 			e.getMessage());
 		   e.printStackTrace();
 	   }catch(Exception e){
-		   obj.put("status", 			"ERROR");
-		   obj.put("errMsg", 			"เกิดข้อผิดพลาดในการดึง invoiceId");
+		   obj.put(STATUS, 			ERROR);
+		   obj.put(ERR_MSG, 			"เกิดข้อผิดพลาดในการดึง invoiceId");
 		   e.printStackTrace();
 	   }finally{
 		   this.motorUtil.writeMSG(obj.toString());
@@ -966,16 +1069,16 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			   throw new EnjoyException(entrySaleDetailBean.getErrMsg());
 		   }
 		   
-		   obj.put("status", 			"SUCCESS");
+		   obj.put(STATUS, 			SUCCESS);
 		   obj.put("invoiceId", 		entrySaleDetailBean.getInvoiceId());
 		   
 	   }catch(EnjoyException e){
-		   obj.put("status", 			"ERROR");
-		   obj.put("errMsg", 			e.getMessage());
+		   obj.put(STATUS, 			ERROR);
+		   obj.put(ERR_MSG, 			e.getMessage());
 		   e.printStackTrace();
 	   }catch(Exception e){
-		   obj.put("status", 			"ERROR");
-		   obj.put("errMsg", 			"เกิดข้อผิดพลาดในการดึง invoiceId");
+		   obj.put(STATUS, 			ERROR);
+		   obj.put(ERR_MSG, 			"เกิดข้อผิดพลาดในการดึง invoiceId");
 		   e.printStackTrace();
 	   }finally{
 		   this.motorUtil.writeMSG(obj.toString());

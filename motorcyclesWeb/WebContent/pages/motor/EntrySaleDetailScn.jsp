@@ -409,11 +409,9 @@
 	$('#btnSave').click(function(){
 		    
 		    try{
-		    	
 		    	if(!lp_validate()){
 		    		return;
 		    	}
-		    	
 				$.ajax({
 					async:false,
 		            type: "POST",
@@ -580,6 +578,7 @@
 	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "สี", "รวมสุทธิ", "ภาษี", "วันที่บันทึก");
 	    var lo_flagAddSales			= null;
 	    var lo_commAmount			= null;
+	    var lv_return				= true;
 	    
 		try{
 			
@@ -612,6 +611,54 @@
 				alert("กรุณาระบุจำนวนส่งเสริมการขาย");
 				return false;
 			}
+			
+			$.ajax({
+				async:false,
+	            type: "POST",
+	            url: gv_url,
+	            data: gv_service + "&pageAction=validate&" + $('#frm').serialize(),
+	            beforeSend: "",
+	            success: function(data){
+	            	var jsonObj 			= null;
+	            	var status				= null;
+	            	var errMsg				= null;
+	            	var errType				= null;
+	            	
+	            	try{
+	            		jsonObj = JSON.parse(data);
+	            		status	= jsonObj.status;
+	            		
+	            		if(status=="SUCCESS"){
+	            			
+	            			$("#provinceId").val(jsonObj.provinceId);
+	            			$("#districtId").val(jsonObj.districtId);
+	            			$("#subdistrictId").val(jsonObj.subdistrictId);
+	            			$("#motorcyclesCode").val(jsonObj.motorcyclesCode);
+	            			
+	            			lv_return = true;
+	            		}else{
+	            			errMsg 	= jsonObj.errMsg;
+	            			errType = jsonObj.errType;
+	            			
+	            			if(errType=="E"){
+	            				alert(errMsg);
+	            				lv_return = false;
+	            			}else{
+	            				$("#provinceId").val(jsonObj.provinceId);
+		            			$("#districtId").val(jsonObj.districtId);
+		            			$("#subdistrictId").val(jsonObj.subdistrictId);
+		            			$("#motorcyclesCode").val(jsonObj.motorcyclesCode);
+	            				lv_return = confirm(errMsg);
+	            			}
+	            		}
+	            	}catch(e){
+	            		alert("in btnSave :: " + e);
+	            		lv_return = false;
+	            	}
+	            }
+	        });
+			
+			return lv_return;
 			
 		}catch(e){
 			alert("lp_validate :: " + e);
@@ -1250,6 +1297,10 @@
 	<input type="hidden" id="pageActionPDF" name="pageActionPDF" /> 
 	<input type="hidden" id="vat" name="vat" value="<%=entrySaleDetailForm.getVat() %>" /> 
 	<input type="hidden" id="userLevel" name="userLevel" value="<%=entrySaleDetailForm.getUserLevel() %>" /> 
+	<input type="hidden" id="provinceId" name="provinceId" value="" />
+	<input type="hidden" id="districtId" name="districtId" value="" />
+	<input type="hidden" id="subdistrictId" name="subdistrictId" value="" />
+	<input type="hidden" id="motorcyclesCode" name="motorcyclesCode" value="" />
 	<section class="vbox"> 
 		<section>
 			<section class="hbox stretch"> 
