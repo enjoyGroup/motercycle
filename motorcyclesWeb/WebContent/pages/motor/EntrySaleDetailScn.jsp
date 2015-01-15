@@ -1569,10 +1569,10 @@
 										<div class="panel-body"> 
 											<table border="0" width="100%">
 												<tr>
-													<td width="10%">
+													<td width="20%">
 														<label class="col-sm-2 control-label pull-right" style="text-align:right">ยี่ห้อ <font color="red">*</font>:</label>
 													</td>
-													<td width="40%">
+													<td width="30%">
 														<input  type="text" 
 																class='col-sm-12 pull-left'
 																size="15"
@@ -1737,27 +1737,45 @@
 												</tr>
 												<tr>
 													<td colspan="4" align="left" style="white-space:nowrap;">
-														<label class="col-sm-2 control-label" style="text-align:right">
-															<input  type="checkbox" 
-																	id="flagAddSales" 
-																	name="flagAddSales" 
-																	onclick="lp_chkAddSales()"
-																	<%if(entrySaleDetailForm.getFlagAddSales().equalsIgnoreCase("Y")){%> checked="checked" <%} %> 
-																	value="Y" />
-															มีการส่งเสริมการขาย
-														</label>
-														<input  type="text" 
-																size="15"
-																id="commAmount" 
-																name="commAmount"
-						                                        class="input-disabled" 
-						                                        readonly="readonly" 
-						                                        onblur="lp_onBlurCommAmount();"
-																value="<%=entrySaleDetailForm.getCommAmount() %>"
-														/>
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">
-															หมายเหตุของส่งเสริมการขาย
-														</label>
+														<table border="0" width="100%">
+															<tr>
+																<td width="30%">
+																	<label class="col-sm-2 control-label" style="text-align:right">
+																		<input  type="checkbox" 
+																				id="flagAddSales" 
+																				name="flagAddSales" 
+																				onclick="lp_chkAddSales()"
+																				<%if(entrySaleDetailForm.getFlagAddSales().equalsIgnoreCase("Y")){%> checked="checked" <%} %> 
+																				value="Y" />
+																		มีการส่งเสริมการขาย
+																	</label>
+																	<input  type="text" 
+																			size="15"
+																			id="commAmount" 
+																			name="commAmount"
+									                                        class="input-disabled" 
+									                                        readonly="readonly" 
+									                                        onblur="lp_onBlurCommAmount();"
+																			value="<%=entrySaleDetailForm.getCommAmount() %>"
+																	/>
+																</td>
+																<td width="35%" style="white-space:nowrap;">
+																	<label class="control-label pull-right" style="text-align:right;">
+																		หมายเหตุของส่งเสริมการขาย:
+																	</label>
+																</td>
+																<td align="left" width="35%">
+																	<input  type="text" 
+																			size="15"
+																			class='col-sm-12 pull-left'
+																			id="remarkAddSales" 
+																			name="remarkAddSales"
+																			maxlength="100"
+																			value="<%=entrySaleDetailForm.getRemarkAddSales() %>"
+																	/>
+																</td>
+															</tr>
+														</table>
 													</td>
 												</tr>
 												<tr>
@@ -1789,6 +1807,49 @@
 																	value="<%=EntrySaleDetailForm.FLAG_N %>" />
 															ไม่มีเพิ่มเติม
 														</label>
+													</td>
+												</tr>
+												<tr>
+													<td align="right" style="margin-right:0px;">
+														<label class="control-label" style="text-align:right;white-space: nowrap;">
+															จำนวนเงินรวมเพิ่มหนี้/ลดหนี้:
+														</label>
+													</td>
+													<td colspan="3">
+														<input  type="text" 
+																class='col-sm-4 pull-left'
+																size="15"
+																id="commTotalAmount" 
+																name="commTotalAmount"
+																onblur="lp_onBlurTotalAmount();"
+																value="<%=entrySaleDetailForm.getCommTotalAmount() %>"
+														/>
+													</td>
+												</tr>
+												<tr>
+													<td lign="right">
+														<label class="control-label" style="text-align:right;white-space: nowrap;">
+															<script>document.write("ภาษีจำนวนเงินเพิ่มหนี้/ลดหนี้ <%=entrySaleDetailForm.getVat()%>%:");</script>
+														</label>
+													</td>
+													<td colspan="3">
+														<input  type="text" 
+																class='col-sm-4 pull-left'
+																size="15"
+																id="commVatAmount" 
+																name="commVatAmount"
+																onblur="lp_onBlurTotalAmount();"
+																value="<%=entrySaleDetailForm.getCommVatAmount() %>"
+														/>
+													</td>
+												</tr>
+												<tr>
+													<td align="right">
+														<label class="control-label" style="text-align:right;white-space: nowrap;">
+															จำนวนเงินเพิ่มหนี้/ลดหนี้:
+														</label>
+													</td>
+													<td colspan="3">
 														<input  type="text" 
 																size="15"
 																id="creditAmount" 
