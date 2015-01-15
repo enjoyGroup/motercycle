@@ -593,12 +593,15 @@
 		            	alert("กรุณาระบุ " + la_msg[i]);
 		                return false;
 		            }
-	            }else if(la_idName[i]=="size"){
+	            }
+	            //สามารถกรอก 0 ได้ตามคำบอกคุณนุ้ย 15/01/2015
+	            /*else if(la_idName[i]=="size"){
 	            	if(gp_trim(lo_obj.value)=="0"){
 		            	alert("กรุณาระบุ " + la_msg[i]);
 		                return false;
 		            }
-	            }else{
+	            }*/
+	            else{
 		            if(gp_trim(lo_obj.value)==""){
 		            	alert("กรุณาระบุ " + la_msg[i]);
 		                return false;
@@ -1733,7 +1736,7 @@
 													</td>
 												</tr>
 												<tr>
-													<td colspan="4" align="left">
+													<td colspan="4" align="left" style="white-space:nowrap;">
 														<label class="col-sm-2 control-label" style="text-align:right">
 															<input  type="checkbox" 
 																	id="flagAddSales" 
@@ -1752,6 +1755,9 @@
 						                                        onblur="lp_onBlurCommAmount();"
 																value="<%=entrySaleDetailForm.getCommAmount() %>"
 														/>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">
+															หมายเหตุของส่งเสริมการขาย
+														</label>
 													</td>
 												</tr>
 												<tr>
