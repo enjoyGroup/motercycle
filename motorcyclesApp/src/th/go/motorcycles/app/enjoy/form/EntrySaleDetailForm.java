@@ -36,6 +36,8 @@ public class EntrySaleDetailForm {
 	private String 								remarkAddSales;
 	private String 								commVatAmount;
 	private String 								commTotalAmount;
+	private String								creditVatAmount;
+	private String								creditTotalAmount;
 	
 	public EntrySaleDetailForm(){
 		this.customerBean 				= new CustomerBean();
@@ -63,6 +65,24 @@ public class EntrySaleDetailForm {
 		this.remarkAddSales				= "";
 		this.commVatAmount				= "0.00";
 		this.commTotalAmount			= "0.00";
+		this.creditVatAmount			= "0.00";
+		this.creditTotalAmount			= "0.00";
+	}
+
+	public String getCreditVatAmount() {
+		return creditVatAmount;
+	}
+
+	public void setCreditVatAmount(String creditVatAmount) {
+		this.creditVatAmount = creditVatAmount;
+	}
+
+	public String getCreditTotalAmount() {
+		return creditTotalAmount;
+	}
+
+	public void setCreditTotalAmount(String creditTotalAmount) {
+		this.creditTotalAmount = creditTotalAmount;
 	}
 
 	public String getRemarkAddSales() {

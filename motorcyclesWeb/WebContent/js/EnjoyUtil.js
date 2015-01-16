@@ -176,6 +176,34 @@ function gp_toDate(av_val){
     return d;
 }
 
+function gp_checkAmtOnly(ao_obj){
+	try{
+		if(gp_trim(ao_obj.value)==""){
+			ao_obj.value = "0.00";
+		}
+		
+		if(gp_format(ao_obj, 2)==false){
+			alert("กรุณาระบุตัวเลขเท่านั้น");
+			ao_obj.value = "0.00";
+			//ao_obj.focus().select();
+			eval("$('#" + ao_obj.id + "').focus().select();");
+			return false;
+		}
+		
+		if(gp_replaceComma(ao_obj.value).length > 15){
+			alert("ระบุได้สูงสุด 14 ตัวอักษร");
+			//ao_obj.select();
+			eval("$('#" + ao_obj.id + "').focus().select();");
+			return false;
+		}
+		
+		return true;
+		
+	}catch(e){
+		alert("gp_checkAmtOnly :: " + e);
+	}
+}
+
 function gp_progressBarOn(){
     scroll(0,0);
     var outerPane = document.getElementById('FreezePane');

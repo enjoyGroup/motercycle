@@ -739,6 +739,9 @@ public class EntrySaleDetailDao {
 		String				color				= null;
 		String				recordAddDate		= null;
 		String				formatInvoie		= null;
+		String 				creditVatAmount		= null;
+	    String 				creditTotalAmount	= null;
+	    String 				remarkAddSales		= null;
 		EnjoyConectDbs 		db 					= null;
 		
 		try{
@@ -763,6 +766,9 @@ public class EntrySaleDetailDao {
 			totalAmount			= form.getTotalAmount();
 			color				= form.getColor();
 			recordAddDate		= EnjoyUtils.dateFormat(form.getRecordAddDate(), "dd/MM/yyyy", "yyyyMMdd");
+			creditVatAmount		= form.getCreditVatAmount();
+			creditTotalAmount	= form.getCreditTotalAmount();
+			remarkAddSales		= form.getRemarkAddSales();
 			
 			sql 		= "insert into invoicedetails ( invoiceId"
 													+ " ,invoiceDate"	
@@ -781,7 +787,10 @@ public class EntrySaleDetailDao {
 													+ " ,userUniqueId"
 //													+ " ,invoiceIdAddSales"
 													+ " ,flagCredit"
-													+ " ,creditAmount)"
+													+ " ,creditAmount"
+													+ " ,remarkAddSales"
+													+ " ,creditVatAmount"
+													+ " ,creditTotalAmount)"
 										+ " values(		'"+invoiceId+"'"
 													+ " ,'"+recordAddDate+"'"
 													+ " ,'"+cusCode+"'"
@@ -799,7 +808,10 @@ public class EntrySaleDetailDao {
 													+ " ,'"+userUniqueId+"'"
 //													+ " ,'"+invoiceIdAddSales+"'"
 													+ " ,'"+flagCredit+"'"
-													+ " ,'"+creditAmount+"')";
+													+ " ,'"+creditAmount+"'"
+													+ " ,'"+remarkAddSales+"'"
+													+ " ,'"+creditVatAmount+"'"
+													+ " ,'"+creditTotalAmount+"')";
 			
 			System.out.println("[EntrySaleDetailDao][insertInvoiceDetail] sql :: " + sql);
 			
@@ -846,6 +858,7 @@ public class EntrySaleDetailDao {
 		String				formatInvoie		= null;
 		String 				invoiceAddSalesId	= null;
 		String 				remark				= null;
+		String 				remarkAddSales		= null;
 		EnjoyConectDbs 		db 					= null;
 		
 		try{
@@ -868,6 +881,7 @@ public class EntrySaleDetailDao {
 			creditAmount 		= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
 			remark		 		= "เป็นใบส่งเสริมการขาย";						// เนื่องจากเป็นใบส่งเสริมการขาย
 			recordAddDate		= EnjoyUtils.dateFormat(form.getRecordAddDate(), "dd/MM/yyyy", "yyyyMMdd");
+			remarkAddSales		= form.getRemarkAddSales();
 			
 			sql 		= "insert into invoicedetails ( invoiceId"
 													+ " ,invoiceDate"
@@ -882,7 +896,8 @@ public class EntrySaleDetailDao {
 													+ " ,invoiceIdAddSales"
 													+ " ,flagCredit"
 													+ " ,creditAmount"
-													+ " ,remark)"
+													+ " ,remark"
+													+ " ,remarkAddSales)"
 										+ " values(		'"+invoiceAddSalesId+"'"
 													+ " ,'"+recordAddDate+"'"
 													+ " ,'"+cusCode+"'"
@@ -896,7 +911,8 @@ public class EntrySaleDetailDao {
 													+ " ,'"+invoiceIdAddSales+"'"
 													+ " ,'"+flagCredit+"'"
 													+ " ,'"+creditAmount+"'"
-													+ " ,'"+remark+"')";
+													+ " ,'"+remark+"'"
+													+ " ,'"+remarkAddSales+"')";
 								
 			System.out.println("[EntrySaleDetailDao][saveInvoiceAddSales] AddSales sql :: " + sql);
 			
@@ -974,8 +990,8 @@ public class EntrySaleDetailDao {
 		String 				priceAmount 		= null;
 		String 				vatAmount 			= null;
 		String 				remark 				= null;
-		String 				commAmount 			= null;
-		String 				flagAddSales 		= null;
+//		String 				commAmount 			= null;
+//		String 				flagAddSales 		= null;
 		String				cusCode 			= null;
 		String				motorcyclesCode 	= null;
 		String				userUniqueId 		= null;
@@ -991,6 +1007,9 @@ public class EntrySaleDetailDao {
 		String				recordAddDate		= null;
 		String				totalAmount			= null;
 		String				color				= null;
+		String 				creditVatAmount		= null;
+	    String 				creditTotalAmount	= null;
+//	    String 				remarkAddSales		= null;
 		
 		try{
 			db    				= new EnjoyConectDbs();
@@ -1001,8 +1020,8 @@ public class EntrySaleDetailDao {
 			priceAmount 		= form.getPriceAmount();
 			vatAmount 			= form.getVatAmount();
 			remark	 			= form.getRemark();
-			commAmount 			= form.getCommAmount();
-			flagAddSales 		= form.getFlagAddSales();
+//			commAmount 			= form.getCommAmount();
+//			flagAddSales 		= form.getFlagAddSales();
 			cusCode 			= customerBean.getCusCode();
 			motorcyclesCode 	= form.getMotorcyclesCode();
 			userUniqueId 		= form.getUserUniqueId();
@@ -1015,6 +1034,9 @@ public class EntrySaleDetailDao {
 			flagCredit 			= form.getFlagCredit();
 			creditAmount 		= form.getCreditAmount();
 			recordAddDate		= EnjoyUtils.dateFormat(form.getRecordAddDate(), "dd/MM/yyyy", "yyyyMMdd");
+			creditVatAmount		= form.getCreditVatAmount();
+			creditTotalAmount	= form.getCreditTotalAmount();
+//			remarkAddSales		= form.getRemarkAddSales();
 			
 //			if(flagAddSales.equals("Y")){
 //				invoiceIdAddSales = invoiceId;
@@ -1031,12 +1053,15 @@ public class EntrySaleDetailDao {
 													+ ", vatAmount 			= '" + vatAmount + "'"
 													+ ", totalAmount 		= '" + totalAmount + "'"
 													+ ", remark 			= '" + remark + "'"
-													+ ", flagAddSales 		= '" + flagAddSales + "'"
-													+ ", commAmount 		= '" + commAmount + "'"
+//													+ ", flagAddSales 		= '" + flagAddSales + "'"
+//													+ ", commAmount 		= '" + commAmount + "'"
 													+ ", userUniqueId 		= '" + userUniqueId + "'"
 //													+ ", invoiceIdAddSales 	= '" + invoiceIdAddSales + "'"
 													+ ", flagCredit 		= '" + flagCredit + "'"
 													+ ", creditAmount 		= '" + creditAmount + "'"
+//													+ ", remarkAddSales 	= '" + remarkAddSales + "'"
+													+ ", creditVatAmount 	= '" + creditVatAmount + "'"
+													+ ", creditTotalAmount 	= '" + creditTotalAmount + "'"
 										+ " where invoiceId = '" + invoiceId + "'";
 			
 			System.out.println("[EntrySaleDetailDao][updateInvoiceDetail] sql :: " + sql);
@@ -1054,6 +1079,80 @@ public class EntrySaleDetailDao {
 		}
 		
 		return bean;
+	}
+	
+	public void manageInvoiceAddSales(EntrySaleDetailForm form) throws Exception{
+		System.out.println("[EntrySaleDetailDao][manageInvoiceAddSales][Begin]");
+		
+		String 				sql			 		= null;
+		String				invoiceId			= null;
+		String 				commAmount 			= null;
+		String 				flagAddSales 		= null;
+		String 				flagAddSalesDb 		= null;
+		String				invoiceIdAddSales	= "";
+		EnjoyConectDbs 		db 					= null;
+		ResultSet 			rs 					= null;
+		String 				remarkAddSales		= null;
+		
+		try{
+			db    				= new EnjoyConectDbs();
+			flagAddSales 		= form.getFlagAddSales();
+			invoiceId			= form.getInvoiceId();
+			commAmount 			= form.getCommAmount();
+			flagAddSales 		= form.getFlagAddSales();
+			remarkAddSales		= form.getRemarkAddSales();
+			
+			
+			sql 		= "SELECT flagAddSales, invoiceIdAddSales"
+						   + " FROM invoicedetails" 
+						   + " where invoiceId = '" + invoiceId + "'";
+	
+			System.out.println("[EntrySaleDetailDao][manageInvoiceAddSales] sql :: " + sql);
+			
+			rs 			= db.executeQuery(sql);
+			while(rs.next()){
+				flagAddSalesDb 		= EnjoyUtils.nullToStr(rs.getString("flagAddSales"));
+				invoiceIdAddSales 	= EnjoyUtils.nullToStr(rs.getString("invoiceIdAddSales"));
+			}
+			
+			if(flagAddSalesDb!=null && !flagAddSales.equals(flagAddSalesDb)){
+				
+				if(flagAddSales.equals("N")){
+					//รายการหลัก
+					sql 		= "update invoicedetails set flagAddSales 		= 'N'"
+														+ ", commAmount 		= '0.00'"
+														+ ", invoiceIdAddSales 	= ''"
+														+ ", remarkAddSales 	= ''"
+											+ " where invoiceId = '" + invoiceId + "'";
+					db.execute(sql);
+					
+					//รายการส่งเสริมการขาย
+					sql 		= "update invoicedetails set flagAddSales 		= 'N'"
+														+ ", invoiceIdAddSales 	= ''"
+														+ ", remarkAddSales 	= ''"
+											+ " where invoiceId = '" + invoiceIdAddSales + "'";
+					db.execute(sql);
+				}else{
+					//รายการหลัก
+					sql 		= "update invoicedetails set flagAddSales 		= '"+flagAddSales+"'"
+														+ ", commAmount 		= '"+commAmount+"'"
+														+ ", remarkAddSales 	= '"+remarkAddSales+"'"
+											+ " where invoiceId = '" + invoiceId + "'";
+					db.execute(sql);
+					
+					//บันทึกส่งเสรืมการขายใบใหม่
+					this.saveInvoiceAddSales(form, invoiceId);
+				}
+				
+			}
+			
+			
+		}catch(Exception e){
+			throw e;
+		}finally{
+			db.setDisconnection();
+			System.out.println("[EntrySaleDetailDao][manageInvoiceAddSales][End]");
+		}
 	}
 	
 	public EntrySaleDetailBean getNextInvoiceId(String invoiceId){

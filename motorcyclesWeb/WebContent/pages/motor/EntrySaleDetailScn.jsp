@@ -928,7 +928,7 @@
 		}
 	}
 	
-	function lp_onBlurVatAmount(){
+	/*function lp_onBlurVatAmount(){
 		
 		var lo_vatAmount 		= null;
 		
@@ -955,7 +955,7 @@
 			alert("lp_onBlurVatAmount :: " + e);
 		}
 		
-	}
+	}*/
 	
 	function lp_onBlurTotalAmount(){
 		
@@ -964,7 +964,11 @@
 		try{
 			lo_totalAmount 			= document.getElementById("totalAmount");
 			
-			if(gp_trim(lo_totalAmount.value)==""){
+			if(!gp_checkAmtOnly(lo_totalAmount)){
+				return;
+			}
+			
+			/*if(gp_trim(lo_totalAmount.value)==""){
 				lo_totalAmount.value = "0.00";
 			}
 			
@@ -978,7 +982,7 @@
 				alert("ระบุได้สูงสุด 14 ตัวอักษร");
 				$('#totalAmount').focus().select();
 				return;
-			}
+			}*/
 			
 			lp_calVatAmount();
 			
@@ -988,7 +992,59 @@
 		
 	}
 	
-	function lp_onBlurCommAmount(){
+	function lp_onBlurCreditTotalAmount(){
+		
+		var lo_creditTotalAmount 		= null;
+		
+		try{
+			lo_creditTotalAmount 			= document.getElementById("creditTotalAmount");
+			
+			if(!gp_checkAmtOnly(lo_creditTotalAmount)){
+				return;
+			}
+			
+			lp_calCreditVatAmount();
+			
+		}catch(e){
+			alert("lp_onBlurCreditTotalAmount :: " + e);
+		}
+		
+	}
+	
+	function lp_calCreditVatAmount(){
+		
+		var lo_creditVatAmount 			= null;
+		var lo_creditTotalAmount		= null;
+		var lo_creditAmount				= null;
+		var lv_creditAmount				= "0.00";
+		var lv_creditVatAmount 			= "0.00";
+		var lv_creditTotalAmount		= "0.00";
+		var lv_vat						= null;
+		
+		try{
+			lv_vat			= 100 + parseInt($("#vat").val());
+			lo_creditAmount		= document.getElementById("creditAmount");
+			lo_creditTotalAmount	= document.getElementById("creditTotalAmount");
+			lo_creditVatAmount	= document.getElementById("creditVatAmount");
+			//lv_priceAmount	= gp_replaceComma(document.getElementById("priceAmount").value);
+			
+			lv_creditTotalAmount 	= parseFloat(gp_replaceComma(lo_creditTotalAmount.value));
+			lv_creditAmount		= lv_creditTotalAmount * 100/(lv_vat);
+			lv_creditVatAmount	= lv_creditTotalAmount - lv_creditAmount;
+			
+			lo_creditAmount.value 	= lv_creditAmount;
+			lo_creditVatAmount.value 		= lv_creditVatAmount;
+			
+			gp_format(lo_creditAmount, 2);
+			gp_format(lo_creditVatAmount, 2);
+			
+		}catch(e){
+			alert("lp_calCreditVatAmount :: " + e);
+		}
+		
+	}
+	
+	/*function lp_onBlurCommAmount(){
 		
 		var lo_commAmount 		= null;
 		
@@ -1015,9 +1071,9 @@
 			alert("lp_onBlurCommAmount :: " + e);
 		}
 		
-	}
+	}*/
 	
-	function lp_onBlurCreditAmount(){
+	/*function lp_onBlurCreditAmount(){
 		
 		var lo_creditAmount 		= null;
 		
@@ -1044,7 +1100,7 @@
 			alert("lp_onBlurCreditAmount :: " + e);
 		}
 		
-	}
+	}*/
 	
 	function lp_size(){
 		
@@ -1141,24 +1197,29 @@
 	
 	function lp_chkAddSales(){
 		
-		var lo_flagAddSales = null;
-		var lo_commAmount	= null;
+		var lo_flagAddSales 	= null;
+		var lo_commAmount		= null;
+		var lo_remarkAddSales	= null;
 		
 		try{
 			lo_flagAddSales 	= document.getElementById("flagAddSales");
 			lo_commAmount 		= document.getElementById("commAmount");
+			lo_remarkAddSales 	= document.getElementById("remarkAddSales");
 			
 			if(lo_flagAddSales.checked==true){
 				lo_commAmount.className 	= "";
 				lo_commAmount.readOnly 		= false;
+				lo_remarkAddSales.readOnly 	= false;
 				//lo_commAmount.onkeypress	= function(){};
 				//lo_commAmount.onkeydown		= function(){};
 			}else{
 				lo_commAmount.className 	= "input-disabled";
 				lo_commAmount.readOnly 		= true;
+				lo_remarkAddSales.readOnly 	= true;
 				//lo_commAmount.onkeypress	= function(){return false;};
 				//lo_commAmount.onkeydown		= function(){return false;};
 				lo_commAmount.value 		= "0.00";
+				lo_remarkAddSales.value 	= "";
 				
 			}
 			
@@ -1173,9 +1234,13 @@
 		var lv_invoiceId 		= null;
 		var la_flagCredit		= null;
 		var lo_creditAmount		= null;
+		var lo_creditVatAmount	= null;
+		var lo_creditTotalAmount	= null;
 		
 		try{
 			lv_invoiceId 		= gp_trim($("#invoiceId").val());
+			lo_creditTotalAmount	= document.getElementById("creditTotalAmount");
+			lo_creditVatAmount	= document.getElementById("creditVatAmount");
 			lo_creditAmount		= document.getElementById("creditAmount");
 			la_flagCredit		= document.getElementsByName("flagCredit");//ใบเพิ่มหนี้ : A, ใบลดหนี้ : C, ไม่มีเพิ่มเติม: N
 			
@@ -1184,17 +1249,23 @@
 				for(var i=0;i<la_flagCredit.length;i++){
 					la_flagCredit[i].disabled = true;
 				}
-				lo_creditAmount.className 	= "input-disabled";
-				lo_creditAmount.readOnly 	= true;
+				//lo_creditAmount.className 	= "input-disabled";
+				lo_creditTotalAmount.readOnly = true;
+				lo_creditVatAmount.readOnly 	= true;
+				//lo_creditAmount.readOnly 	= true;
 				//lo_creditAmount.onkeypress	= function(){return false;};
 				//lo_creditAmount.onkeydown	= function(){return false;};
+				lo_creditTotalAmount.value 	= "0.00";
+				lo_creditVatAmount.value 		= "0.00";
 				lo_creditAmount.value 		= "0.00";
 			}else{
 				for(var i=0;i<la_flagCredit.length;i++){
 					la_flagCredit[i].disabled = false;
 				}
-				lo_creditAmount.className 	= "";
-				lo_creditAmount.readOnly 	= false;
+				//lo_creditAmount.className 	= "";
+				lo_creditTotalAmount.readOnly = false;
+				lo_creditVatAmount.readOnly 	= false;
+				//lo_creditAmount.readOnly 	= false;
 				//lo_creditAmount.onkeypress	= function(){};
 				//lo_creditAmount.onkeydown	= function(){};
 			}
@@ -1208,22 +1279,32 @@
 		
 		var la_flagCredit		= null;
 		var lo_creditAmount		= null;
+		var lo_creditVatAmount	= null;
+		var lo_creditTotalAmount	= null;
 		
 		try{
+			lo_creditTotalAmount	= document.getElementById("creditTotalAmount");
+			lo_creditVatAmount	= document.getElementById("creditVatAmount");
 			lo_creditAmount		= document.getElementById("creditAmount");
 			la_flagCredit		= document.getElementsByName("flagCredit");//Flag สำหรับเก็บ A- ใบเพิ่มหนี้ , C- ใบลดหนี้, N- ไม่มีเพิ่มเติม
 			
 			//ใบเพิ่มหนี้ : A, ใบลดหนี้ : C
 			if(la_flagCredit[0].checked==true || la_flagCredit[1].checked==true){
-				lo_creditAmount.className 	= "";
-				lo_creditAmount.readOnly 	= false;
+				//lo_creditAmount.className 	= "";
+				lo_creditTotalAmount.readOnly = false;
+				lo_creditVatAmount.readOnly 	= false;
+				//lo_creditAmount.readOnly 	= false;
 				//lo_creditAmount.onkeypress	= function(){};
 				//lo_creditAmount.onkeydown	= function(){};
 			}else{
-				lo_creditAmount.className 	= "input-disabled";
-				lo_creditAmount.readOnly 	= true;
+				//lo_creditAmount.className 	= "input-disabled";
+				lo_creditTotalAmount.readOnly = true;
+				lo_creditVatAmount.readOnly 	= true;
+				//lo_creditAmount.readOnly 	= true;
 				//lo_creditAmount.onkeypress	= function(){return false;};
 				//lo_creditAmount.onkeydown	= function(){return false;};
+				lo_creditTotalAmount.value 	= "0.00";
+				lo_creditVatAmount.value 		= "0.00";
 				lo_creditAmount.value 		= "0.00";
 			}
 			
@@ -1265,9 +1346,9 @@
     		lv_invoiceId 		= gp_trim($("#invoiceId").val());
     		lv_userLevel 		= gp_trim($("#userLevel").val());
     		
-    		if(lv_invoiceId!=""){
+    		/*if(lv_invoiceId!=""){
     			document.getElementById('flagAddSales').disabled = true;
-    		}
+    		}*/
     		
     		if(lv_invoiceId!="" && parseInt(lv_userLevel) < 9){
     			$("#frm :input").attr("disabled", true);
@@ -1597,7 +1678,7 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label pull-rightd" style="text-align:right">เลขตัวถัง <font color="red">*</font>:</label>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">เลขตัวถัง <font color="red">*</font>:</label>
 													</td>
 													<td>
 														<input  type="text" 
@@ -1701,7 +1782,7 @@
 																size="15"
 																id="vatAmount" 
 																name="vatAmount"
-																onblur="lp_onBlurVatAmount();"
+																onblur="gp_checkAmtOnly(this);"
 																value="<%=entrySaleDetailForm.getVatAmount() %>"
 														/>
 													</td>
@@ -1716,7 +1797,6 @@
 																size="15"
 																id="priceAmount" 
 																name="priceAmount"
-								                                class="input-disabled" 
 								                                readonly="readonly" 
 																value="<%=entrySaleDetailForm.getPriceAmount() %>"
 														/>
@@ -1755,7 +1835,7 @@
 																			name="commAmount"
 									                                        class="input-disabled" 
 									                                        readonly="readonly" 
-									                                        onblur="lp_onBlurCommAmount();"
+									                                        onblur="gp_checkAmtOnly(this);"
 																			value="<%=entrySaleDetailForm.getCommAmount() %>"
 																	/>
 																</td>
@@ -1768,6 +1848,7 @@
 																	<input  type="text" 
 																			size="15"
 																			class='col-sm-12 pull-left'
+																			readonly="readonly" 
 																			id="remarkAddSales" 
 																			name="remarkAddSales"
 																			maxlength="100"
@@ -1780,7 +1861,7 @@
 												</tr>
 												<tr>
 													<td colspan="4" align="left">
-														<label class="col-sm-2 control-label col-sm-offset-3" style="text-align:right;width:100px;">
+														<label class="col-sm-2 control-label" style="text-align:right;width:100px;">
 															<input  type="radio" 
 																	id="flagCredit1" 
 																	name="flagCredit" 
@@ -1811,55 +1892,59 @@
 												</tr>
 												<tr>
 													<td align="right" style="margin-right:0px;">
-														<label class="control-label" style="text-align:right;white-space: nowrap;">
+														<label class="control-label pull-right" style="text-align:right;white-space: nowrap;">
 															จำนวนเงินรวมเพิ่มหนี้/ลดหนี้:
 														</label>
 													</td>
-													<td colspan="3">
+													<td>
 														<input  type="text" 
-																class='col-sm-4 pull-left'
+																class='col-sm-12 pull-left'
+																readonly="readonly" 
 																size="15"
-																id="commTotalAmount" 
-																name="commTotalAmount"
-																onblur="lp_onBlurTotalAmount();"
-																value="<%=entrySaleDetailForm.getCommTotalAmount() %>"
+																id="creditTotalAmount" 
+																name="creditTotalAmount"
+																onblur="lp_onBlurCreditTotalAmount();"
+																value="<%=entrySaleDetailForm.getCreditTotalAmount() %>"
 														/>
 													</td>
+													<td colspan="2"></td>
 												</tr>
 												<tr>
-													<td lign="right">
-														<label class="control-label" style="text-align:right;white-space: nowrap;">
-															<script>document.write("ภาษีจำนวนเงินเพิ่มหนี้/ลดหนี้ <%=entrySaleDetailForm.getVat()%>%:");</script>
+													<<td align="right" style="margin-right:0px;">
+														<label class="control-label pull-right" style="text-align:right;">
+															<script>document.write("ภาษีเงินเพิ่มหนี้/ลดหนี้ <%=entrySaleDetailForm.getVat()%>%:");</script>
 														</label>
 													</td>
-													<td colspan="3">
+													<td>
 														<input  type="text" 
-																class='col-sm-4 pull-left'
+																class='col-sm-12 pull-left'
+																readonly="readonly" 
 																size="15"
-																id="commVatAmount" 
-																name="commVatAmount"
-																onblur="lp_onBlurTotalAmount();"
-																value="<%=entrySaleDetailForm.getCommVatAmount() %>"
+																id="creditVatAmount" 
+																name="creditVatAmount"
+																onblur="gp_checkAmtOnly(this);"
+																value="<%=entrySaleDetailForm.getCreditVatAmount() %>"
 														/>
 													</td>
+													<td colspan="2"></td>
 												</tr>
 												<tr>
-													<td align="right">
-														<label class="control-label" style="text-align:right;white-space: nowrap;">
+													<td align="right" style="margin-right:0px;">
+														<label class="control-label pull-right" style="text-align:right;white-space: nowrap;">
 															จำนวนเงินเพิ่มหนี้/ลดหนี้:
 														</label>
 													</td>
-													<td colspan="3">
+													<td>
 														<input  type="text" 
+																class='col-sm-12 pull-left'
+						                                        readonly="readonly" 
 																size="15"
 																id="creditAmount" 
 																name="creditAmount"
-						                                        class="input-disabled" 
-						                                        readonly="readonly" 
-						                                        onblur="lp_onBlurCreditAmount();"
 																value="<%=entrySaleDetailForm.getCreditAmount() %>"
 														/>
 													</td>
+													<td colspan="2"></td>
 												</tr>
 												<tr>
 													<td colspan="4" align="left">
