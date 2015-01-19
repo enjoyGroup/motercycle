@@ -577,13 +577,13 @@
 		var la_idName               = new Array("custName", "custSurname", "idNumber", "houseNumber", "provinceName", "districtName", "subdistrictName", "brandName", "model", "chassisDisp", "engineNoDisp", "size", "color", "totalAmount", "vatAmount", "recordAddDate");
 	    var la_msg               	= new Array("ชื่อ"	  , "นามสกุล"	 , "เลขที่บัตรประชาชนหรือเลขผู้เสียภาษี", "บ้านเลขที่", "จังหวัด", "อำเภอ", "ตำบล", "ยี่ห้อ", "รุ่น", "เลขตัวถัง", "เลขเครื่องยนต์", "ซีซี", "สี", "รวมสุทธิ", "ภาษี", "วันที่บันทึก");
 	    var lo_flagAddSales			= null;
-	    var lo_commAmount			= null;
+	    var lo_commTotalAmount		= null;
 	    var lv_return				= true;
 	    
 		try{
 			
-			lo_flagAddSales 	= document.getElementById("flagAddSales");
-			lo_commAmount 		= document.getElementById("commAmount");
+			lo_flagAddSales 		= document.getElementById("flagAddSales");
+			lo_commTotalAmount 		= document.getElementById("commTotalAmount");
 			
 			for(var i=0;i<la_idName.length;i++){
 	            lo_obj          = eval('document.getElementById("' + la_idName[i] + '")');
@@ -610,8 +610,8 @@
 	        }
 			
 			
-			if(lo_flagAddSales.checked==true && lo_commAmount.value=="0.00"){
-				alert("กรุณาระบุจำนวนส่งเสริมการขาย");
+			if(lo_flagAddSales.checked==true && lo_commTotalAmount.value=="0.00"){
+				alert("กรุณาระบุจำนวนเงินรวมส่งเสริมการขาย");
 				return false;
 			}
 			
@@ -1022,17 +1022,17 @@
 		var lv_vat						= null;
 		
 		try{
-			lv_vat			= 100 + parseInt($("#vat").val());
-			lo_creditAmount		= document.getElementById("creditAmount");
-			lo_creditTotalAmount	= document.getElementById("creditTotalAmount");
-			lo_creditVatAmount	= document.getElementById("creditVatAmount");
-			//lv_priceAmount	= gp_replaceComma(document.getElementById("priceAmount").value);
+			lv_vat							= 100 + parseInt($("#vat").val());
+			lo_creditAmount					= document.getElementById("creditAmount");
+			lo_creditTotalAmount			= document.getElementById("creditTotalAmount");
+			lo_creditVatAmount				= document.getElementById("creditVatAmount");
+			//lv_priceAmount				= gp_replaceComma(document.getElementById("priceAmount").value);
 			
-			lv_creditTotalAmount 	= parseFloat(gp_replaceComma(lo_creditTotalAmount.value));
-			lv_creditAmount		= lv_creditTotalAmount * 100/(lv_vat);
-			lv_creditVatAmount	= lv_creditTotalAmount - lv_creditAmount;
+			lv_creditTotalAmount 			= parseFloat(gp_replaceComma(lo_creditTotalAmount.value));
+			lv_creditAmount					= lv_creditTotalAmount * 100/(lv_vat);
+			lv_creditVatAmount				= lv_creditTotalAmount - lv_creditAmount;
 			
-			lo_creditAmount.value 	= lv_creditAmount;
+			lo_creditAmount.value 			= lv_creditAmount;
 			lo_creditVatAmount.value 		= lv_creditVatAmount;
 			
 			gp_format(lo_creditAmount, 2);
@@ -1040,6 +1040,57 @@
 			
 		}catch(e){
 			alert("lp_calCreditVatAmount :: " + e);
+		}
+		
+	}
+	
+	function lp_onBlurCommTotalAmount(){
+		
+		var lo_commTotalAmount 		= null;
+		
+		try{
+			lo_commTotalAmount 			= document.getElementById("commTotalAmount");
+			
+			if(!gp_checkAmtOnly(lo_commTotalAmount)){
+				return;
+			}
+			
+			lp_calCommVatAmount();
+			
+		}catch(e){
+			alert("lp_onBlurCommTotalAmount :: " + e);
+		}
+		
+	}
+	
+	function lp_calCommVatAmount(){
+		
+		var lo_commVatAmount 			= null;
+		var lo_commTotalAmount			= null;
+		var lo_commAmount				= null;
+		var lv_commAmount				= "0.00";
+		var lv_commVatAmount 			= "0.00";
+		var lv_commTotalAmount			= "0.00";
+		var lv_vat						= null;
+		
+		try{
+			lv_vat							= 100 + parseInt($("#vat").val());
+			lo_commAmount					= document.getElementById("commAmount");
+			lo_commTotalAmount				= document.getElementById("commTotalAmount");
+			lo_commVatAmount				= document.getElementById("commVatAmount");
+			
+			lv_commTotalAmount 				= parseFloat(gp_replaceComma(lo_commTotalAmount.value));
+			lv_commAmount					= lv_commTotalAmount * 100/(lv_vat);
+			lv_commVatAmount				= lv_commTotalAmount - lv_commAmount;
+			
+			lo_commAmount.value 			= lv_commAmount;
+			lo_commVatAmount.value 			= lv_commVatAmount;
+			
+			gp_format(lo_commAmount, 2);
+			gp_format(lo_commVatAmount, 2);
+			
+		}catch(e){
+			alert("lp_calCommVatAmount :: " + e);
 		}
 		
 	}
@@ -1173,15 +1224,15 @@
 		var lv_vat			= null;
 		
 		try{
-			lv_vat			= 100 + parseInt($("#vat").val());
-			lo_priceAmount	= document.getElementById("priceAmount");
-			lo_vatAmount 	= document.getElementById("vatAmount");
-			lo_totalAmount	= document.getElementById("totalAmount");
-			//lv_priceAmount	= gp_replaceComma(document.getElementById("priceAmount").value);
+			lv_vat					= 100 + parseInt($("#vat").val());
+			lo_priceAmount			= document.getElementById("priceAmount");
+			lo_vatAmount 			= document.getElementById("vatAmount");
+			lo_totalAmount			= document.getElementById("totalAmount");
+			//lv_priceAmount		= gp_replaceComma(document.getElementById("priceAmount").value);
 			
-			lv_totalAmount 	= parseFloat(gp_replaceComma(lo_totalAmount.value));
-			lv_priceAmount	= lv_totalAmount * 100/(lv_vat);
-			lv_vatAmount	= lv_totalAmount - lv_priceAmount;
+			lv_totalAmount 			= parseFloat(gp_replaceComma(lo_totalAmount.value));
+			lv_priceAmount			= lv_totalAmount * 100/(lv_vat);
+			lv_vatAmount			= lv_totalAmount - lv_priceAmount;
 			
 			lo_priceAmount.value 	= lv_priceAmount;
 			lo_vatAmount.value 		= lv_vatAmount;
@@ -1198,28 +1249,41 @@
 	function lp_chkAddSales(){
 		
 		var lo_flagAddSales 	= null;
+		var lo_commTotalAmount	= null;
+		var lo_commVatAmount	= null;
 		var lo_commAmount		= null;
 		var lo_remarkAddSales	= null;
 		
 		try{
 			lo_flagAddSales 	= document.getElementById("flagAddSales");
+			lo_commTotalAmount 	= document.getElementById("commTotalAmount");
+			lo_commVatAmount 	= document.getElementById("commVatAmount");
 			lo_commAmount 		= document.getElementById("commAmount");
 			lo_remarkAddSales 	= document.getElementById("remarkAddSales");
 			
 			if(lo_flagAddSales.checked==true){
-				lo_commAmount.className 	= "";
-				lo_commAmount.readOnly 		= false;
-				lo_remarkAddSales.readOnly 	= false;
+				lo_commTotalAmount.readOnly 		= false;
+				lo_commVatAmount.readOnly 			= false;
+				lo_commAmount.readOnly 				= false;
+				lo_remarkAddSales.readOnly 			= false;
+				
+				//lo_commAmount.className 	= "";
 				//lo_commAmount.onkeypress	= function(){};
 				//lo_commAmount.onkeydown		= function(){};
 			}else{
-				lo_commAmount.className 	= "input-disabled";
-				lo_commAmount.readOnly 		= true;
-				lo_remarkAddSales.readOnly 	= true;
+				lo_commTotalAmount.readOnly 		= true;
+				lo_commVatAmount.readOnly 			= true;
+				lo_commAmount.readOnly 				= true;
+				lo_remarkAddSales.readOnly 			= true;
+				
+				lo_commTotalAmount.value 			= "0.00";
+				lo_commVatAmount.value 				= "0.00";
+				lo_commAmount.value 				= "0.00";
+				lo_remarkAddSales.value 			= "";
+				
+				//lo_commAmount.className 	= "input-disabled";
 				//lo_commAmount.onkeypress	= function(){return false;};
 				//lo_commAmount.onkeydown		= function(){return false;};
-				lo_commAmount.value 		= "0.00";
-				lo_remarkAddSales.value 	= "";
 				
 			}
 			
@@ -1238,36 +1302,40 @@
 		var lo_creditTotalAmount	= null;
 		
 		try{
-			lv_invoiceId 		= gp_trim($("#invoiceId").val());
+			lv_invoiceId 			= gp_trim($("#invoiceId").val());
 			lo_creditTotalAmount	= document.getElementById("creditTotalAmount");
-			lo_creditVatAmount	= document.getElementById("creditVatAmount");
-			lo_creditAmount		= document.getElementById("creditAmount");
-			la_flagCredit		= document.getElementsByName("flagCredit");//ใบเพิ่มหนี้ : A, ใบลดหนี้ : C, ไม่มีเพิ่มเติม: N
+			lo_creditVatAmount		= document.getElementById("creditVatAmount");
+			lo_creditAmount			= document.getElementById("creditAmount");
+			la_flagCredit			= document.getElementsByName("flagCredit");//ใบเพิ่มหนี้ : A, ใบลดหนี้ : C, ไม่มีเพิ่มเติม: N
 			
 			//Case new
 			if(lv_invoiceId==""){
 				for(var i=0;i<la_flagCredit.length;i++){
-					la_flagCredit[i].disabled = true;
+					la_flagCredit[i].disabled 	= true;
 				}
-				//lo_creditAmount.className 	= "input-disabled";
-				lo_creditTotalAmount.readOnly = true;
+				
+				lo_creditTotalAmount.readOnly 	= true;
 				lo_creditVatAmount.readOnly 	= true;
-				//lo_creditAmount.readOnly 	= true;
-				//lo_creditAmount.onkeypress	= function(){return false;};
-				//lo_creditAmount.onkeydown	= function(){return false;};
-				lo_creditTotalAmount.value 	= "0.00";
+				lo_creditTotalAmount.value 		= "0.00";
 				lo_creditVatAmount.value 		= "0.00";
-				lo_creditAmount.value 		= "0.00";
+				lo_creditAmount.value 			= "0.00";
+				
+				//lo_creditAmount.className 	= "input-disabled";
+				//lo_creditAmount.readOnly 		= true;
+				//lo_creditAmount.onkeypress	= function(){return false;};
+				//lo_creditAmount.onkeydown		= function(){return false;};
 			}else{
 				for(var i=0;i<la_flagCredit.length;i++){
 					la_flagCredit[i].disabled = false;
 				}
-				//lo_creditAmount.className 	= "";
-				lo_creditTotalAmount.readOnly = false;
+				
+				lo_creditTotalAmount.readOnly 	= false;
 				lo_creditVatAmount.readOnly 	= false;
-				//lo_creditAmount.readOnly 	= false;
+				
+				//lo_creditAmount.className 	= "";
+				//lo_creditAmount.readOnly 		= false;
 				//lo_creditAmount.onkeypress	= function(){};
-				//lo_creditAmount.onkeydown	= function(){};
+				//lo_creditAmount.onkeydown		= function(){};
 			}
 			
 		}catch(e){
@@ -1284,28 +1352,33 @@
 		
 		try{
 			lo_creditTotalAmount	= document.getElementById("creditTotalAmount");
-			lo_creditVatAmount	= document.getElementById("creditVatAmount");
-			lo_creditAmount		= document.getElementById("creditAmount");
-			la_flagCredit		= document.getElementsByName("flagCredit");//Flag สำหรับเก็บ A- ใบเพิ่มหนี้ , C- ใบลดหนี้, N- ไม่มีเพิ่มเติม
+			lo_creditVatAmount		= document.getElementById("creditVatAmount");
+			lo_creditAmount			= document.getElementById("creditAmount");
+			la_flagCredit			= document.getElementsByName("flagCredit");//Flag สำหรับเก็บ A- ใบเพิ่มหนี้ , C- ใบลดหนี้, N- ไม่มีเพิ่มเติม
 			
 			//ใบเพิ่มหนี้ : A, ใบลดหนี้ : C
 			if(la_flagCredit[0].checked==true || la_flagCredit[1].checked==true){
-				//lo_creditAmount.className 	= "";
-				lo_creditTotalAmount.readOnly = false;
+				
+				lo_creditTotalAmount.readOnly 	= false;
 				lo_creditVatAmount.readOnly 	= false;
-				//lo_creditAmount.readOnly 	= false;
+				
+				//lo_creditAmount.className 	= "";
+				//lo_creditAmount.readOnly 		= false;
 				//lo_creditAmount.onkeypress	= function(){};
-				//lo_creditAmount.onkeydown	= function(){};
+				//lo_creditAmount.onkeydown		= function(){};
 			}else{
-				//lo_creditAmount.className 	= "input-disabled";
-				lo_creditTotalAmount.readOnly = true;
+				
+				lo_creditTotalAmount.readOnly 	= true;
 				lo_creditVatAmount.readOnly 	= true;
-				//lo_creditAmount.readOnly 	= true;
-				//lo_creditAmount.onkeypress	= function(){return false;};
-				//lo_creditAmount.onkeydown	= function(){return false;};
-				lo_creditTotalAmount.value 	= "0.00";
+				
+				lo_creditTotalAmount.value 		= "0.00";
 				lo_creditVatAmount.value 		= "0.00";
-				lo_creditAmount.value 		= "0.00";
+				lo_creditAmount.value 			= "0.00";
+				
+				//lo_creditAmount.className 	= "input-disabled";
+				//lo_creditAmount.readOnly 		= true;
+				//lo_creditAmount.onkeypress	= function(){return false;};
+				//lo_creditAmount.onkeydown		= function(){return false;};
 			}
 			
 		}catch(e){
@@ -1816,47 +1889,87 @@
 													</td>
 												</tr>
 												<tr>
-													<td colspan="4" align="left" style="white-space:nowrap;">
-														<table border="0" width="100%">
-															<tr>
-																<td width="30%">
-																	<label class="col-sm-2 control-label" style="text-align:right">
-																		<input  type="checkbox" 
-																				id="flagAddSales" 
-																				name="flagAddSales" 
-																				onclick="lp_chkAddSales()"
-																				<%if(entrySaleDetailForm.getFlagAddSales().equalsIgnoreCase("Y")){%> checked="checked" <%} %> 
-																				value="Y" />
-																		มีการส่งเสริมการขาย
-																	</label>
-																	<input  type="text" 
-																			size="15"
-																			id="commAmount" 
-																			name="commAmount"
-									                                        class="input-disabled" 
-									                                        readonly="readonly" 
-									                                        onblur="gp_checkAmtOnly(this);"
-																			value="<%=entrySaleDetailForm.getCommAmount() %>"
-																	/>
-																</td>
-																<td width="35%" style="white-space:nowrap;">
-																	<label class="control-label pull-right" style="text-align:right;">
-																		หมายเหตุของส่งเสริมการขาย:
-																	</label>
-																</td>
-																<td align="left" width="35%">
-																	<input  type="text" 
-																			size="15"
-																			class='col-sm-12 pull-left'
-																			readonly="readonly" 
-																			id="remarkAddSales" 
-																			name="remarkAddSales"
-																			maxlength="100"
-																			value="<%=entrySaleDetailForm.getRemarkAddSales() %>"
-																	/>
-																</td>
-															</tr>
-														</table>
+													<td colspan="4" align="left">
+														<label class="col-sm-2 control-label" style="text-align:right">
+															<input  type="checkbox" 
+																	id="flagAddSales" 
+																	name="flagAddSales" 
+																	onclick="lp_chkAddSales()"
+																	<%if(entrySaleDetailForm.getFlagAddSales().equalsIgnoreCase("Y")){%> checked="checked" <%} %> 
+																	value="Y" />
+															มีการส่งเสริมการขาย
+														</label>
+													</td>
+												</tr>
+												<tr>
+													<td align="right" style="margin-right:0px;">
+														<label class="control-label pull-right" style="text-align:right;white-space: nowrap;">
+															จำนวนเงินรวม:
+														</label>
+													</td>
+													<td>
+														<input  type="text" 
+																class='col-sm-12 pull-left'
+																readonly="readonly" 
+																size="15"
+																id="commTotalAmount" 
+																name="commTotalAmount"
+																onblur="lp_onBlurCommTotalAmount();"
+																value="<%=entrySaleDetailForm.getCommTotalAmount() %>"
+														/>
+													</td>
+													<td colspan="2"></td>
+												</tr>
+												<tr>
+													<td align="right" style="margin-right:0px;">
+														<label class="control-label pull-right" style="text-align:right;">
+															<script>document.write("ภาษี<%=entrySaleDetailForm.getVat()%>%:");</script>
+														</label>
+													</td>
+													<td>
+														<input  type="text" 
+																class='col-sm-12 pull-left'
+																readonly="readonly" 
+																size="15"
+																id="commVatAmount" 
+																name="commVatAmount"
+																onblur="gp_checkAmtOnly(this);"
+																value="<%=entrySaleDetailForm.getCommVatAmount() %>"
+														/>
+													</td>
+													<td colspan="2"></td>
+												</tr>
+												<tr>
+													<td align="right" style="margin-right:0px;">
+														<label class="control-label pull-right" style="text-align:right;white-space: nowrap;">
+															จำนวนเงิน:
+														</label>
+													</td>
+													<td>
+														<input  type="text" 
+																class='col-sm-12 pull-left'
+						                                        readonly="readonly" 
+																size="15"
+																id="commAmount" 
+																name="commAmount"
+																value="<%=entrySaleDetailForm.getCommAmount() %>"
+														/>
+													</td>
+													<td align="right" style="margin-right:0px;">
+														<label class="control-label pull-right" style="text-align:right;white-space: nowrap;">
+															หมายเหต:
+														</label>
+													</td>
+													<td>
+														<input  type="text" 
+																size="15"
+																class='col-sm-12 pull-left'
+																readonly="readonly" 
+																id="remarkAddSales" 
+																name="remarkAddSales"
+																maxlength="100"
+																value="<%=entrySaleDetailForm.getRemarkAddSales() %>"
+														/>
 													</td>
 												</tr>
 												<tr>

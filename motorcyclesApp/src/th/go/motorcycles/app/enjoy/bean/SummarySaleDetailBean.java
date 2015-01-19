@@ -10,6 +10,9 @@ public class SummarySaleDetailBean {
 	private String						totalAmount;
 	private String						commAmount;
 	private String						remark;
+	private String 						chassisDisp;
+	private String 						engineNoDisp;
+	private String 						flagAddSales;
 	
 	public SummarySaleDetailBean(){
 		this.invoiceId 				= "";
@@ -20,6 +23,9 @@ public class SummarySaleDetailBean {
 		this.totalAmount			= "";
 		this.commAmount 			= "";
 		this.remark					= "";
+		this.chassisDisp			= "";
+		this.engineNoDisp			= "";
+		this.flagAddSales			= "N";
 	}
 
 	public String getInvoiceId() {
@@ -62,6 +68,14 @@ public class SummarySaleDetailBean {
 		this.vatAmount = vatAmount;
 	}
 
+	public String getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(String totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
 	public String getCommAmount() {
 		return commAmount;
 	}
@@ -78,12 +92,28 @@ public class SummarySaleDetailBean {
 		this.remark = remark;
 	}
 
-	public String getTotalAmount() {
-		return totalAmount;
+	public String getChassisDisp() {
+		return chassisDisp;
 	}
 
-	public void setTotalAmount(String totalAmount) {
-		this.totalAmount = totalAmount;
+	public void setChassisDisp(String chassisDisp) {
+		this.chassisDisp = chassisDisp;
+	}
+
+	public String getEngineNoDisp() {
+		return engineNoDisp;
+	}
+
+	public void setEngineNoDisp(String engineNoDisp) {
+		this.engineNoDisp = engineNoDisp;
+	}
+
+	public String getFlagAddSales() {
+		return flagAddSales;
+	}
+
+	public void setFlagAddSales(String flagAddSales) {
+		this.flagAddSales = flagAddSales;
 	}
 
 }

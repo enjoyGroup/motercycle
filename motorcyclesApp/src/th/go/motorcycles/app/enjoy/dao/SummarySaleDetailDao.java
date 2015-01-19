@@ -61,10 +61,13 @@ public class SummarySaleDetailDao {
 											+ " , i.commAmount commAmount"
 											+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate"
 											+ " ,i.remark remark"
+											+ " ,i.chassisDisp chassisDisp"
+											+ " ,i.EngineNoDisp EngineNoDisp"
+											+ " ,i.flagAddSales flagAddSales"
 											+ " from  invoicedetails i, customer c, motorcyclesdetails m, branddetails b"
 											+ " where c.cusCode         = i.cusCode"
 											+ "  and m.motorcyclesCode  = i.motorcyclesCode"
-											+ "  and i.chassisDisp is not null"
+											//+ "  and i.chassisDisp is not null"
 											+ "  and b.brandCode	    = m.brandCode) t where 1=1 ";
 			
 			if(!invoiceId.equals("")){
@@ -116,6 +119,9 @@ public class SummarySaleDetailDao {
 		    	bean.setTotalAmount			(totalAmount);
 		    	bean.setCommAmount			(commAmount);
 		    	bean.setRemark				(EnjoyUtils.nullToStr(rs.getString("remark")));
+		    	bean.setChassisDisp			(EnjoyUtils.nullToStr(rs.getString("chassisDisp")));
+		    	bean.setEngineNoDisp		(EnjoyUtils.nullToStr(rs.getString("EngineNoDisp")));
+		    	bean.setFlagAddSales		(EnjoyUtils.chkBoxtoDb(rs.getString("flagAddSales")));
 		    	
 		    	if(cou==10){
 		    		cou 	= 0;

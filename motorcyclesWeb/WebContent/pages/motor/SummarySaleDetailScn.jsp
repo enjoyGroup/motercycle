@@ -185,9 +185,26 @@
 		
 	});
 	
-	function lp_sendEditPage(av_val){
+	function lp_sendEditPage(av_val, av_index){
+		
+		var la_chassisDisp 	= null;
+		var la_engineNoDisp = null;
+		var la_flagAddSales = null;
+		
 		try{
-			window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=edit&invoiceId=" + av_val);
+			
+			la_chassisDisp 		= document.getElementsByName("chassisDisp");
+			la_engineNoDisp 	= document.getElementsByName("engineNoDisp");
+			la_flagAddSales 	= document.getElementsByName("flagAddSales");
+			
+			if(la_flagAddSales[av_index].value=="N" || 
+					(la_flagAddSales[av_index].value=="Y" && (la_chassisDisp[av_index].value!="" && la_engineNoDisp[av_index].value!=""))){
+				window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=edit&invoiceId=" + av_val);
+			}else{
+				alert("ไม่อนุญาตให้แก้ไขใบส่งเสิรมการขายโดยตรง");
+			}
+			
+			//window.location.replace(gv_url + "?service=servlet.EntrySaleDetailServlet&pageAction=edit&invoiceId=" + av_val);
 		}catch(e){
 			alert("lp_sendEditPage :: " + e);
 		}
@@ -321,7 +338,7 @@
 																bean = dataList.get(i);
 															
 														%>
-														<tr class="rowSelect" onclick="lp_sendEditPage('<%=bean.getInvoiceId()%>')">
+														<tr class="rowSelect" onclick="lp_sendEditPage('<%=bean.getInvoiceId()%>', <%=i%>)">
 															<td style="text-align:center"><%=seq%></td>
 															<td><%=bean.getInvoiceId()%></td>
 															<td><%=bean.getCusName()%></td>
@@ -329,7 +346,12 @@
 															<td class="money-text"><%=bean.getPriceAmount()%></td>
 															<td class="money-text"><%=bean.getVatAmount()%></td>
 															<td class="money-text"><%=bean.getTotalAmount()%></td>
-															<td><%=bean.getRemark()%></td>
+															<td>
+																<%=bean.getRemark()%>
+																<input type="hidden" name="chassisDisp" value="<%=bean.getChassisDisp()%>" />
+																<input type="hidden" name="engineNoDisp" value="<%=bean.getEngineNoDisp()%>" />
+																<input type="hidden" name="flagAddSales" value="<%=bean.getFlagAddSales()%>" />
+															</td>
 														</tr>
 														<% seq++;} %>
 													</tbody>

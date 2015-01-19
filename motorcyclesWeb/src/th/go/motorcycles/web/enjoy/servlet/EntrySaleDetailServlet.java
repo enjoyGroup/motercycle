@@ -287,33 +287,45 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 	   String				recordAddDate				= null;
 	   String 				formatInvoie				= null;
 	   String 				creditVatAmount				= null;
-	   String 				creditTotalAmount				= null;
+	   String 				creditTotalAmount			= null;
 	   String 				remarkAddSales				= null;
+	   String 				commVatAmount				= null;
+	   String 				commTotalAmount				= null;
 	   
 	   try{
 		   customerBean 		= new CustomerBean();
 		   productBean 			= new ProductBean();
 		   form					= new EntrySaleDetailForm();
 		   invoiceId			= EnjoyUtils.nullToStr(this.request.getParameter("invoiceId"));
-		   priceAmount			= EnjoyUtils.replaceComma(this.request.getParameter("priceAmount"));
-		   vatAmount			= EnjoyUtils.replaceComma(this.request.getParameter("vatAmount"));
 		   remark				= EnjoyUtils.nullToStr(this.request.getParameter("remark"));
+		   
+		   /*Begin ส่งเสรืมการขาย*/
+		   commTotalAmount		= EnjoyUtils.replaceComma(this.request.getParameter("commTotalAmount"));
+		   commVatAmount		= EnjoyUtils.replaceComma(this.request.getParameter("commVatAmount"));
 		   commAmount			= EnjoyUtils.replaceComma(this.request.getParameter("commAmount"));
 		   flagAddSales			= EnjoyUtils.chkBoxtoDb(this.request.getParameter("flagAddSales"));
+		   remarkAddSales 		= EnjoyUtils.nullToStr(this.request.getParameter("remarkAddSales"));
+		   /*End ส่งเสริมการขาย*/
+		   
+		   /*Begin เพิ่มหนี้/ลดหนี้*/
+		   flagCredit			= EnjoyUtils.nullToStr(this.request.getParameter("flagCredit"));
+		   creditTotalAmount	= EnjoyUtils.replaceComma(this.request.getParameter("creditTotalAmount"));
+		   creditVatAmount		= EnjoyUtils.replaceComma(this.request.getParameter("creditVatAmount"));
+		   creditAmount			= EnjoyUtils.replaceComma(this.request.getParameter("creditAmount"));
+		   /*End เพิ่มหนี้/ลดหนี้*/
+		   
+		   /*Begin จำนวนเงินที่ขาย*/
+		   totalAmount			= EnjoyUtils.replaceComma(this.request.getParameter("totalAmount"));
+		   vatAmount			= EnjoyUtils.replaceComma(this.request.getParameter("vatAmount"));
+		   priceAmount			= EnjoyUtils.replaceComma(this.request.getParameter("priceAmount"));
+		   /*End จำนวนเงินที่ขาย*/
+		   
 		   cusCode				= EnjoyUtils.nullToStr(this.request.getParameter("cusCode"));
 		   userUniqueId			= this.userBean.getUserUniqueId();
 		   invoiceMode			= EnjoyUtils.nullToStr(this.request.getParameter("invoiceMode"));
-//		   provinceName			= EnjoyUtils.nullToStr(this.request.getParameter("provinceName"));
-//		   districtName			= EnjoyUtils.nullToStr(this.request.getParameter("districtName"));
-//		   subdistrictName		= EnjoyUtils.nullToStr(this.request.getParameter("subdistrictName"));
-//		   brandName			= EnjoyUtils.nullToStr(this.request.getParameter("brandName"));
-//		   model				= EnjoyUtils.nullToStr(this.request.getParameter("model"));
 		   chassisDisp			= EnjoyUtils.nullToStr(this.request.getParameter("chassisDisp"));
 		   engineNoDisp			= EnjoyUtils.nullToStr(this.request.getParameter("engineNoDisp"));
 		   size					= EnjoyUtils.replaceComma(this.request.getParameter("size"));
-		   flagCredit			= EnjoyUtils.nullToStr(this.request.getParameter("flagCredit"));
-		   creditAmount			= EnjoyUtils.replaceComma(this.request.getParameter("creditAmount"));
-		   totalAmount			= EnjoyUtils.replaceComma(this.request.getParameter("totalAmount"));
 		   color				= EnjoyUtils.nullToStr(this.request.getParameter("color"));
 		   recordAddDate		= EnjoyUtils.nullToStr(this.request.getParameter("recordAddDate"));
 		   formatInvoie			= EnjoyUtils.nullToStr(this.userBean.getFormatInvoie());
@@ -321,9 +333,12 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   districtId 			= EnjoyUtils.nullToStr(this.request.getParameter("districtId"));
 		   subdistrictId 		= EnjoyUtils.nullToStr(this.request.getParameter("subdistrictId"));
 		   motorcyclesCode 		= EnjoyUtils.nullToStr(this.request.getParameter("motorcyclesCode"));
-		   creditVatAmount		= EnjoyUtils.replaceComma(this.request.getParameter("creditVatAmount"));
-		   creditTotalAmount	= EnjoyUtils.replaceComma(this.request.getParameter("creditTotalAmount"));
-		   remarkAddSales 		= EnjoyUtils.nullToStr(this.request.getParameter("remarkAddSales"));
+		   
+//		   provinceName			= EnjoyUtils.nullToStr(this.request.getParameter("provinceName"));
+//		   districtName			= EnjoyUtils.nullToStr(this.request.getParameter("districtName"));
+//		   subdistrictName		= EnjoyUtils.nullToStr(this.request.getParameter("subdistrictName"));
+//		   brandName			= EnjoyUtils.nullToStr(this.request.getParameter("brandName"));
+//		   model				= EnjoyUtils.nullToStr(this.request.getParameter("model"));
 		   
 		   logger.info("[lp_saveData] invoiceId 			:: " + invoiceId);
 		   logger.info("[lp_saveData] priceAmount 			:: " + priceAmount);
@@ -355,6 +370,8 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   logger.info("[lp_saveData] creditVatAmount	 	:: " + creditVatAmount);
 		   logger.info("[lp_saveData] creditTotalAmount	 	:: " + creditTotalAmount);
 		   logger.info("[lp_saveData] remarkAddSales	 	:: " + remarkAddSales);
+		   logger.info("[lp_saveData] commVatAmount	 		:: " + commVatAmount);
+		   logger.info("[lp_saveData] commTotalAmount	 	:: " + commTotalAmount);
 		   logger.info("[lp_saveData] idType 				:: " + this.request.getParameter("idType"));
 		   logger.info("[lp_saveData] idNumber 				:: " + EnjoyUtils.nullToStr(this.request.getParameter("idNumber")));
 		   
@@ -362,6 +379,8 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   form.setPriceAmount(priceAmount);
 		   form.setVatAmount(vatAmount);
 		   form.setRemark(remark);
+		   form.setCommTotalAmount(commTotalAmount);
+		   form.setCommVatAmount(commVatAmount);
 		   form.setCommAmount(commAmount);
 		   form.setFlagAddSales(flagAddSales);
 		   form.setUserUniqueId(userUniqueId);

@@ -233,8 +233,12 @@ public class EntrySaleDetailDao {
 		String				vatAmount			= null;
 		String				totalAmount			= null;
 		String				commAmount			= null;
+		String				commTotalAmount		= null;
+		String				commVatAmount		= null;
+		String				creditTotalAmount	= null;
+		String				creditVatAmount		= null;
 		String				creditAmount		= null;
-		String 				size				= null;
+//		String 				size				= null;
 		EnjoyConectDbs 		db 					= null;
 		
 		try{
@@ -254,11 +258,16 @@ public class EntrySaleDetailDao {
 								+ " , i.color color"
 								+ " , i.invoiceIdAddSales invoiceIdAddSales"
 								+ " , i.flagCredit flagCredit"
+								+ " , i.creditTotalAmount creditTotalAmount"
+								+ " , i.creditVatAmount creditVatAmount"
 								+ " , i.creditAmount creditAmount"
 								+ " , i.priceAmount priceAmount" 
 								+ " , i.totalAmount totalAmount" 
 								+ " , i.vatAmount vatAmount" 
+								+ " , i.commTotalAmount commTotalAmount" 
+								+ " , i.commVatAmount commVatAmount" 
 								+ " , i.commAmount commAmount" 
+								+ " , i.remarkAddSales remarkAddSales" 
 								+ " , i.remark remark"
 								+ " , i.flagAddSales flagAddSales"
 								+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate" 
@@ -302,18 +311,30 @@ public class EntrySaleDetailDao {
 //		    		form.setVatFlag("Y");
 //		    	}
 		    	
-		    	totalAmount 	= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("totalAmount")), 2);
-		    	vatAmount 		= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("vatAmount")), 2);
-		    	priceAmount		= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("priceAmount")), 2);
-		    	commAmount 		= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("commAmount")), 2);
-		    	creditAmount 	= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("creditAmount")), 2);
+		    	totalAmount 		= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("totalAmount")), 2);
+		    	vatAmount 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("vatAmount")), 2);
+		    	priceAmount			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("priceAmount")), 2);
+		    	commTotalAmount 	= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("commTotalAmount")), 2);
+		    	commVatAmount 		= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("commVatAmount")), 2);
+		    	commAmount 			= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("commAmount")), 2);
+		    	creditTotalAmount 	= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("creditTotalAmount")), 2);
+		    	creditVatAmount 	= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("creditVatAmount")), 2);
+		    	creditAmount 		= EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("creditAmount")), 2);
 		    	
 		    	form.setPriceAmount(priceAmount);
 		    	form.setVatAmount(vatAmount);
-		    	form.setCommAmount(commAmount);
 		    	form.setTotalAmount(totalAmount);
+		    	
+		    	form.setCommTotalAmount(commTotalAmount);
+		    	form.setCommVatAmount(commVatAmount);
+		    	form.setCommAmount(commAmount);
+		    	
+		    	form.setCreditTotalAmount(creditTotalAmount);
+		    	form.setCreditVatAmount(creditVatAmount);
 		    	form.setCreditAmount(creditAmount);
+		    	
 		    	form.setRemark(EnjoyUtils.nullToStr(rs.getString("remark")));
+		    	form.setRemarkAddSales(EnjoyUtils.nullToStr(rs.getString("remarkAddSales")));
 		    	form.setFlagAddSales(EnjoyUtils.nullToStr(rs.getString("flagAddSales")));
 		    	form.setColor(EnjoyUtils.nullToStr(rs.getString("color")));
 		    	form.setInvoiceIdAddSales(EnjoyUtils.nullToStr(rs.getString("invoiceIdAddSales")));
@@ -742,6 +763,8 @@ public class EntrySaleDetailDao {
 		String 				creditVatAmount		= null;
 	    String 				creditTotalAmount	= null;
 	    String 				remarkAddSales		= null;
+	    String 				commVatAmount		= null;
+	    String 				commTotalAmount		= null;
 		EnjoyConectDbs 		db 					= null;
 		
 		try{
@@ -769,6 +792,8 @@ public class EntrySaleDetailDao {
 			creditVatAmount		= form.getCreditVatAmount();
 			creditTotalAmount	= form.getCreditTotalAmount();
 			remarkAddSales		= form.getRemarkAddSales();
+			commVatAmount		= form.getCommVatAmount();
+			commTotalAmount		= form.getCommTotalAmount();
 			
 			sql 		= "insert into invoicedetails ( invoiceId"
 													+ " ,invoiceDate"	
@@ -789,6 +814,8 @@ public class EntrySaleDetailDao {
 													+ " ,flagCredit"
 													+ " ,creditAmount"
 													+ " ,remarkAddSales"
+													+ " ,commVatAmount"
+													+ " ,commTotalAmount"
 													+ " ,creditVatAmount"
 													+ " ,creditTotalAmount)"
 										+ " values(		'"+invoiceId+"'"
@@ -810,6 +837,8 @@ public class EntrySaleDetailDao {
 													+ " ,'"+flagCredit+"'"
 													+ " ,'"+creditAmount+"'"
 													+ " ,'"+remarkAddSales+"'"
+													+ " ,'"+commVatAmount+"'"
+													+ " ,'"+commTotalAmount+"'"
 													+ " ,'"+creditVatAmount+"'"
 													+ " ,'"+creditTotalAmount+"')";
 			
@@ -859,6 +888,10 @@ public class EntrySaleDetailDao {
 		String 				invoiceAddSalesId	= null;
 		String 				remark				= null;
 		String 				remarkAddSales		= null;
+		String 				commVatAmount		= null;
+	    String 				commTotalAmount		= null;
+	    String 				creditVatAmount		= null;
+	    String 				creditTotalAmount	= null;
 		EnjoyConectDbs 		db 					= null;
 		
 		try{
@@ -871,15 +904,19 @@ public class EntrySaleDetailDao {
 //			priceAmount 		= form.getPriceAmount();
 //			vatAmount 			= form.getVatAmount();
 //			totalAmount			= form.getTotalAmount();
-			priceAmount 		= form.getCommAmount();
-			vatAmount 			= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
-			totalAmount			= form.getCommAmount();	
+			priceAmount 		= form.getCommAmount();		// เนื่องจากเป็นใบส่งเสริมการขาย
+			vatAmount 			= form.getCommVatAmount();	// เนื่องจากเป็นใบส่งเสริมการขาย
+			totalAmount			= form.getCommTotalAmount();// เนื่องจากเป็นใบส่งเสริมการขาย	
+			commTotalAmount		= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
+			commVatAmount		= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
 			commAmount 			= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
 			flagAddSales 		= form.getFlagAddSales();
 			userUniqueId 		= form.getUserUniqueId();
 			flagCredit 			= "N";						// เนื่องจากเป็นใบส่งเสริมการขาย
+			creditTotalAmount 	= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
+			creditVatAmount 	= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
 			creditAmount 		= "0.00";					// เนื่องจากเป็นใบส่งเสริมการขาย
-			remark		 		= "เป็นใบส่งเสริมการขาย";						// เนื่องจากเป็นใบส่งเสริมการขาย
+			remark		 		= "เป็นใบส่งเสริมการขาย";			// เนื่องจากเป็นใบส่งเสริมการขาย
 			recordAddDate		= EnjoyUtils.dateFormat(form.getRecordAddDate(), "dd/MM/yyyy", "yyyyMMdd");
 			remarkAddSales		= form.getRemarkAddSales();
 			
@@ -891,13 +928,18 @@ public class EntrySaleDetailDao {
 													+ " ,vatAmount"
 													+ " ,totalAmount"
 													+ " ,flagAddSales"	
+													+ " ,commTotalAmount"
+													+ " ,commVatAmount"
 													+ " ,commAmount"
 													+ " ,userUniqueId"
 													+ " ,invoiceIdAddSales"
 													+ " ,flagCredit"
+													+ " ,creditTotalAmount"
+													+ " ,creditVatAmount"
 													+ " ,creditAmount"
 													+ " ,remark"
-													+ " ,remarkAddSales)"
+													+ " ,remarkAddSales"
+													+ " ,masterInvoiceId)"
 										+ " values(		'"+invoiceAddSalesId+"'"
 													+ " ,'"+recordAddDate+"'"
 													+ " ,'"+cusCode+"'"
@@ -906,13 +948,18 @@ public class EntrySaleDetailDao {
 													+ " ,'"+vatAmount+"'"
 													+ " ,'"+totalAmount+"'"
 													+ " ,'"+flagAddSales+"'"
+													+ " ,'"+commTotalAmount+"'"
+													+ " ,'"+commVatAmount+"'"
 													+ " ,'"+commAmount+"'"
 													+ " ,'"+userUniqueId+"'"
 													+ " ,'"+invoiceIdAddSales+"'"
 													+ " ,'"+flagCredit+"'"
+													+ " ,'"+creditTotalAmount+"'"
+													+ " ,'"+creditVatAmount+"'"
 													+ " ,'"+creditAmount+"'"
 													+ " ,'"+remark+"'"
-													+ " ,'"+remarkAddSales+"')";
+													+ " ,'"+remarkAddSales+"'"
+													+ " ,'"+invoiceId+"')";
 								
 			System.out.println("[EntrySaleDetailDao][saveInvoiceAddSales] AddSales sql :: " + sql);
 			
@@ -1086,6 +1133,8 @@ public class EntrySaleDetailDao {
 		
 		String 				sql			 		= null;
 		String				invoiceId			= null;
+		String 				commTotalAmount		= null;
+		String 				commVatAmount		= null;
 		String 				commAmount 			= null;
 		String 				flagAddSales 		= null;
 		String 				flagAddSalesDb 		= null;
@@ -1098,6 +1147,8 @@ public class EntrySaleDetailDao {
 			db    				= new EnjoyConectDbs();
 			flagAddSales 		= form.getFlagAddSales();
 			invoiceId			= form.getInvoiceId();
+			commTotalAmount 	= form.getCommTotalAmount();
+			commVatAmount 		= form.getCommVatAmount();
 			commAmount 			= form.getCommAmount();
 			flagAddSales 		= form.getFlagAddSales();
 			remarkAddSales		= form.getRemarkAddSales();
@@ -1120,6 +1171,8 @@ public class EntrySaleDetailDao {
 				if(flagAddSales.equals("N")){
 					//รายการหลัก
 					sql 		= "update invoicedetails set flagAddSales 		= 'N'"
+														+ ", commTotalAmount 	= '0.00'"
+														+ ", commVatAmount 		= '0.00'"
 														+ ", commAmount 		= '0.00'"
 														+ ", invoiceIdAddSales 	= ''"
 														+ ", remarkAddSales 	= ''"
@@ -1129,12 +1182,14 @@ public class EntrySaleDetailDao {
 					//รายการส่งเสริมการขาย
 					sql 		= "update invoicedetails set flagAddSales 		= 'N'"
 														+ ", invoiceIdAddSales 	= ''"
-														+ ", remarkAddSales 	= ''"
+														+ ", masterInvoiceId 	= ''"
 											+ " where invoiceId = '" + invoiceIdAddSales + "'";
 					db.execute(sql);
 				}else{
 					//รายการหลัก
 					sql 		= "update invoicedetails set flagAddSales 		= '"+flagAddSales+"'"
+														+ ", commTotalAmount 	= '"+commTotalAmount+"'"
+														+ ", commVatAmount 		= '"+commVatAmount+"'"
 														+ ", commAmount 		= '"+commAmount+"'"
 														+ ", remarkAddSales 	= '"+remarkAddSales+"'"
 											+ " where invoiceId = '" + invoiceId + "'";
