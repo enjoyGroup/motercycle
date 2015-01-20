@@ -1115,6 +1115,8 @@ public class EntrySaleDetailDao {
 			
 			db.execute(sql);
 			
+			this.manageInvoiceAddSales(form);
+			
 			bean.setInvoiceId(invoiceId);
 			
 		}catch(Exception e){

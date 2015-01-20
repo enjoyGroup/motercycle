@@ -1345,9 +1345,9 @@
 	
 	function lp_controlCreditAmount(){
 		
-		var la_flagCredit		= null;
-		var lo_creditAmount		= null;
-		var lo_creditVatAmount	= null;
+		var la_flagCredit			= null;
+		var lo_creditAmount			= null;
+		var lo_creditVatAmount		= null;
 		var lo_creditTotalAmount	= null;
 		
 		try{
@@ -1433,6 +1433,7 @@
     		}else{
     			lp_manageObligation();
     	    	lp_controlCreditAmount();
+    	    	lp_chkAddSales();
     		}
     		
     	}catch(e){
@@ -1719,379 +1720,381 @@
 												</tr>
 											</table>
 										</div>
-										<header class="panel-heading font-bold">ข้อมูลสินค้า</header> 
-										<div class="panel-body"> 
-											<table border="0" width="100%">
-												<tr>
-													<td width="20%">
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">ยี่ห้อ <font color="red">*</font>:</label>
-													</td>
-													<td width="30%">
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-																size="15"
-																id="brandName" 
-																name="brandName"
-																value="<%=productBean.getBrandName() %>"
-														/>
-													</td>
-													<td width="10%">
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">รุ่น<font color="red">*</font>:</label>
-													</td>
-													<td width="40%" align="left">
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-																size="15"
-																id="model" 
-																name="model"
-																onblur="lp_getProdDtl();"
-																value="<%=productBean.getModel() %>"
-														/>
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">เลขตัวถัง <font color="red">*</font>:</label>
-													</td>
-													<td>
-														<input  type="text" 
-																class='col-sm-7 pull-left'
-																id="chassis" 
-																name="chassis"
-																value="<%=productBean.getChassis() %>"
-																size="8"
-																class="input-disabled" 
-					                                       		readonly="readonly"		
-					                                       		tabindex="-1"													
-														/>
-														<input  type="text" 
-																class='col-sm-5 pull-left'
-																size="3"
-																id="chassisDisp" 
-																name="chassisDisp"
-																value="<%=productBean.getChassisDisp() %>"
-																maxlength="10"
-														/>
-													</td>
-													<td>
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">เลขเครื่องยนต์<font color="red">*</font>:</label>
-													</td>
-													<td align="left">
-														<input  type="text" 
-																class='col-sm-7 pull-left'
-																id="engineNo" 
-																name="engineNo"
-																value="<%=productBean.getEngineNo() %>"
-																size="8"
-																class="input-disabled" 
-					                                       		readonly="readonly"		
-					                                       		tabindex="-1"
-														/>
-														<input  type="text" 
-																class='col-sm-5 pull-left'
-																size="3"
-																id="engineNoDisp" 
-																name="engineNoDisp"
-																value="<%=productBean.getEngineNoDisp() %>"
-																maxlength="10"
-														/>
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">ซีซี <font color="red">*</font>:</label>
-													</td>
-													<td>
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-																size="15"
-																id="size" 
-																name="size"
-																onblur="lp_size();"
-																value="<%=productBean.getSize() %>"
-														/>
-													</td>
-													<td>
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">สี <font color="red">*</font>:</label>
-													</td>
-													<td>
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-																size="15"
-																id="color" 
-																name="color"
-																value="<%=entrySaleDetailForm.getColor() %>"
-																maxlength="50"
-														/>
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">
-															รวมสุทธิ: <font color="red">*</font>
-														</label>
-													</td>
-													<td colspan="3">
-														<input  type="text" 
-																class='col-sm-4 pull-left'
-																size="15"
-																id="totalAmount" 
-																name="totalAmount"
-																onblur="lp_onBlurTotalAmount();"
-																value="<%=entrySaleDetailForm.getTotalAmount() %>"
-														/>
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">
-															<script>document.write("ภาษี <%=entrySaleDetailForm.getVat()%>%:");</script>
-															 <font color="red">*</font>
-														</label>
-													</td>
-													<td colspan="3" align="left">
-														<input  type="text" 
-																class='col-sm-4 pull-left'
-																size="15"
-																id="vatAmount" 
-																name="vatAmount"
-																onblur="gp_checkAmtOnly(this);"
-																value="<%=entrySaleDetailForm.getVatAmount() %>"
-														/>
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">จำนวนเงินที่ขาย:</label>
-													</td>
-													<td>
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-																size="15"
-																id="priceAmount" 
-																name="priceAmount"
-								                                readonly="readonly" 
-																value="<%=entrySaleDetailForm.getPriceAmount() %>"
-														/>
-													</td>
-													<td>
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">หมายเหต:</label>
-													</td>
-													<td align="left">
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-																size="15"
-																id="remark" 
-																name="remark"
-																maxlength="100"
-																value="<%=entrySaleDetailForm.getRemark() %>"
-														/>
-													</td>
-												</tr>
-												<tr>
-													<td colspan="4" align="left">
-														<label class="col-sm-2 control-label" style="text-align:right">
-															<input  type="checkbox" 
-																	id="flagAddSales" 
-																	name="flagAddSales" 
-																	onclick="lp_chkAddSales()"
-																	<%if(entrySaleDetailForm.getFlagAddSales().equalsIgnoreCase("Y")){%> checked="checked" <%} %> 
-																	value="Y" />
-															มีการส่งเสริมการขาย
-														</label>
-													</td>
-												</tr>
-												<tr>
-													<td align="right" style="margin-right:0px;">
-														<label class="control-label pull-right" style="text-align:right;white-space: nowrap;">
-															จำนวนเงินรวม:
-														</label>
-													</td>
-													<td>
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-																readonly="readonly" 
-																size="15"
-																id="commTotalAmount" 
-																name="commTotalAmount"
-																onblur="lp_onBlurCommTotalAmount();"
-																value="<%=entrySaleDetailForm.getCommTotalAmount() %>"
-														/>
-													</td>
-													<td colspan="2"></td>
-												</tr>
-												<tr>
-													<td align="right" style="margin-right:0px;">
-														<label class="control-label pull-right" style="text-align:right;">
-															<script>document.write("ภาษี<%=entrySaleDetailForm.getVat()%>%:");</script>
-														</label>
-													</td>
-													<td>
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-																readonly="readonly" 
-																size="15"
-																id="commVatAmount" 
-																name="commVatAmount"
-																onblur="gp_checkAmtOnly(this);"
-																value="<%=entrySaleDetailForm.getCommVatAmount() %>"
-														/>
-													</td>
-													<td colspan="2"></td>
-												</tr>
-												<tr>
-													<td align="right" style="margin-right:0px;">
-														<label class="control-label pull-right" style="text-align:right;white-space: nowrap;">
-															จำนวนเงิน:
-														</label>
-													</td>
-													<td>
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-						                                        readonly="readonly" 
-																size="15"
-																id="commAmount" 
-																name="commAmount"
-																value="<%=entrySaleDetailForm.getCommAmount() %>"
-														/>
-													</td>
-													<td align="right" style="margin-right:0px;">
-														<label class="control-label pull-right" style="text-align:right;white-space: nowrap;">
-															หมายเหต:
-														</label>
-													</td>
-													<td>
-														<input  type="text" 
-																size="15"
-																class='col-sm-12 pull-left'
-																readonly="readonly" 
-																id="remarkAddSales" 
-																name="remarkAddSales"
-																maxlength="100"
-																value="<%=entrySaleDetailForm.getRemarkAddSales() %>"
-														/>
-													</td>
-												</tr>
-												<tr>
-													<td colspan="4" align="left">
-														<label class="col-sm-2 control-label" style="text-align:right;width:100px;">
-															<input  type="radio" 
-																	id="flagCredit1" 
-																	name="flagCredit" 
-																	onclick="lp_controlCreditAmount();"
-																	<%if(entrySaleDetailForm.getFlagCredit().equalsIgnoreCase(EntrySaleDetailForm.FLAG_A)){%> checked="checked" <%} %> 
-																	value="<%=EntrySaleDetailForm.FLAG_A %>" />
-															ใบเพิ่มหนี้ 
-														</label>
-														<label class="col-sm-2 control-label" style="text-align:right;width:100px;">
-															<input  type="radio" 
-																	id="flagCredit2" 
-																	name="flagCredit" 
-																	onclick="lp_controlCreditAmount();"
-																	<%if(entrySaleDetailForm.getFlagCredit().equalsIgnoreCase(EntrySaleDetailForm.FLAG_C)){%> checked="checked" <%} %> 
-																	value="<%=EntrySaleDetailForm.FLAG_C %>" />
-															ใบลดหนี้ 
-														</label>
-														<label class="col-sm-2 control-label" style="text-align:right;width:120px;">
-															<input  type="radio" 
-																	id="flagCredit3" 
-																	name="flagCredit" 
-																	onclick="lp_controlCreditAmount();"
-																	<%if(entrySaleDetailForm.getFlagCredit().equalsIgnoreCase(EntrySaleDetailForm.FLAG_N)){%> checked="checked" <%} %> 
-																	value="<%=EntrySaleDetailForm.FLAG_N %>" />
-															ไม่มีเพิ่มเติม
-														</label>
-													</td>
-												</tr>
-												<tr>
-													<td align="right" style="margin-right:0px;">
-														<label class="control-label pull-right" style="text-align:right;white-space: nowrap;">
-															จำนวนเงินรวมเพิ่มหนี้/ลดหนี้:
-														</label>
-													</td>
-													<td>
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-																readonly="readonly" 
-																size="15"
-																id="creditTotalAmount" 
-																name="creditTotalAmount"
-																onblur="lp_onBlurCreditTotalAmount();"
-																value="<%=entrySaleDetailForm.getCreditTotalAmount() %>"
-														/>
-													</td>
-													<td colspan="2"></td>
-												</tr>
-												<tr>
-													<<td align="right" style="margin-right:0px;">
-														<label class="control-label pull-right" style="text-align:right;">
-															<script>document.write("ภาษีเงินเพิ่มหนี้/ลดหนี้ <%=entrySaleDetailForm.getVat()%>%:");</script>
-														</label>
-													</td>
-													<td>
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-																readonly="readonly" 
-																size="15"
-																id="creditVatAmount" 
-																name="creditVatAmount"
-																onblur="gp_checkAmtOnly(this);"
-																value="<%=entrySaleDetailForm.getCreditVatAmount() %>"
-														/>
-													</td>
-													<td colspan="2"></td>
-												</tr>
-												<tr>
-													<td align="right" style="margin-right:0px;">
-														<label class="control-label pull-right" style="text-align:right;white-space: nowrap;">
-															จำนวนเงินเพิ่มหนี้/ลดหนี้:
-														</label>
-													</td>
-													<td>
-														<input  type="text" 
-																class='col-sm-12 pull-left'
-						                                        readonly="readonly" 
-																size="15"
-																id="creditAmount" 
-																name="creditAmount"
-																value="<%=entrySaleDetailForm.getCreditAmount() %>"
-														/>
-													</td>
-													<td colspan="2"></td>
-												</tr>
-												<tr>
-													<td colspan="4" align="left">
-														<label class="col-sm-2 control-label col-sm-offset-2" style="text-align:right">
-															<b>พิมพ์แบบ</b>
-														</label>
-														<label class="col-sm-2 control-label" style="text-align:right">
-															<input  type="radio" 
-																	id="printType1" 
-																	name="printType" 
-																	<%if(entrySaleDetailForm.getPrintType().equalsIgnoreCase("1")){%> checked="checked" <%} %> 
-																	value="1" />
-															มีโครง
-														</label>
-														<label class="col-sm-2 control-label" style="text-align:right">
-															<input  type="radio" 
-																	id="printType2" 
-																	name="printType" 
-																	<%if(entrySaleDetailForm.getPrintType().equalsIgnoreCase("2")){%> checked="checked" <%} %> 
-																	value="2" />
-															ไม่มีโครง
-														</label>
-													</td>
-												</tr>
-											</table>
-											<br/>
-											<div class="form-group" align="center">	 
-												<input type="button" class="btn " id="btnPrev" name="btnPrev" value="รายการก่อนหน้า" />  
-												<input type="button" class="btn btn-success" id="btnSave" name="btnSave" value="บันทึก" />
-												<input type="button" class="btn btn-primary" id="btnPrint" name="btnPrint" value="พิมพ์" />
-												<input type="button" class="btn btn-danger" id="btnReset" name="btnReset" value="เริ่มใหม่" />
-												<input type="button" class="btn " id="btnNext" name="btnNext" value="รายการถัดไป" />
-											</div>  
-										</div>
+										</section>
+										<section class="panel panel-default ">
+											<header class="panel-heading font-bold">ข้อมูลสินค้า</header> 
+											<div class="panel-body"> 
+												<table border="0" width="100%" class='col-sm-12'>
+													<tr>
+														<td width="15%">
+															<label class="col-sm-2 control-label pull-right" style="text-align:right">ยี่ห้อ <font color="red">*</font>:</label>
+														</td>
+														<td width="35%">
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+																	size="15"
+																	id="brandName" 
+																	name="brandName"
+																	value="<%=productBean.getBrandName() %>"
+															/>
+														</td>
+														<td width="10%">
+															<label class="col-sm-2 control-label pull-right" style="text-align:right">รุ่น<font color="red">*</font>:</label>
+														</td>
+														<td width="40%" align="left">
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+																	size="15"
+																	id="model" 
+																	name="model"
+																	onblur="lp_getProdDtl();"
+																	value="<%=productBean.getModel() %>"
+															/>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<label class="col-sm-2 control-label pull-right" style="text-align:right">เลขตัวถัง <font color="red">*</font>:</label>
+														</td>
+														<td>
+															<input  type="text" 
+																	class='col-sm-7 pull-left'
+																	id="chassis" 
+																	name="chassis"
+																	value="<%=productBean.getChassis() %>"
+																	size="8"
+																	class="input-disabled" 
+						                                       		readonly="readonly"		
+						                                       		tabindex="-1"													
+															/>
+															<input  type="text" 
+																	class='col-sm-5 pull-left'
+																	size="3"
+																	id="chassisDisp" 
+																	name="chassisDisp"
+																	value="<%=productBean.getChassisDisp() %>"
+																	maxlength="10"
+															/>
+														</td>
+														<td>
+															<label class="col-sm-2 control-label pull-right" style="text-align:right">เลขเครื่องยนต์<font color="red">*</font>:</label>
+														</td>
+														<td align="left">
+															<input  type="text" 
+																	class='col-sm-7 pull-left'
+																	id="engineNo" 
+																	name="engineNo"
+																	value="<%=productBean.getEngineNo() %>"
+																	size="8"
+																	class="input-disabled" 
+						                                       		readonly="readonly"		
+						                                       		tabindex="-1"
+															/>
+															<input  type="text" 
+																	class='col-sm-5 pull-left'
+																	size="3"
+																	id="engineNoDisp" 
+																	name="engineNoDisp"
+																	value="<%=productBean.getEngineNoDisp() %>"
+																	maxlength="10"
+															/>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<label class="col-sm-2 control-label pull-right" style="text-align:right">ซีซี:</label>
+														</td>
+														<td>
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+																	size="15"
+																	id="size" 
+																	name="size"
+																	onblur="lp_size();"
+																	value="<%=productBean.getSize() %>"
+															/>
+														</td>
+														<td>
+															<label class="col-sm-2 control-label pull-right" style="text-align:right">สี <font color="red">*</font>:</label>
+														</td>
+														<td>
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+																	size="15"
+																	id="color" 
+																	name="color"
+																	value="<%=entrySaleDetailForm.getColor() %>"
+																	maxlength="50"
+															/>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<label class="col-sm-2 control-label pull-right" style="text-align:right">
+																รวมสุทธิ: <font color="red">*</font>
+															</label>
+														</td>
+														<td colspan="3">
+															<input  type="text" 
+																	class='col-sm-4 pull-left'
+																	size="15"
+																	id="totalAmount" 
+																	name="totalAmount"
+																	onblur="lp_onBlurTotalAmount();"
+																	value="<%=entrySaleDetailForm.getTotalAmount() %>"
+															/>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<label class="col-sm-2 control-label pull-right" style="text-align:right">
+																<script>document.write("ภาษี <%=entrySaleDetailForm.getVat()%>%:");</script>
+																 <font color="red">*</font>
+															</label>
+														</td>
+														<td colspan="3" align="left">
+															<input  type="text" 
+																	class='col-sm-4 pull-left'
+																	size="15"
+																	id="vatAmount" 
+																	name="vatAmount"
+																	onblur="gp_checkAmtOnly(this);"
+																	value="<%=entrySaleDetailForm.getVatAmount() %>"
+															/>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<label class="col-sm-2 control-label pull-right" style="text-align:right">จำนวนเงินที่ขาย:</label>
+														</td>
+														<td>
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+																	size="15"
+																	id="priceAmount" 
+																	name="priceAmount"
+									                                readonly="readonly" 
+																	value="<%=entrySaleDetailForm.getPriceAmount() %>"
+															/>
+														</td>
+														<td>
+															<label class="col-sm-2 control-label pull-right" style="text-align:right">หมายเหต:</label>
+														</td>
+														<td align="left">
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+																	size="15"
+																	id="remark" 
+																	name="remark"
+																	maxlength="100"
+																	value="<%=entrySaleDetailForm.getRemark() %>"
+															/>
+														</td>
+													</tr>
+													<tr>
+														<td colspan="4" align="left">
+															<label class="col-sm-2 control-label" style="text-align:right">
+																<input  type="checkbox" 
+																		id="flagAddSales" 
+																		name="flagAddSales" 
+																		onclick="lp_chkAddSales()"
+																		<%if(entrySaleDetailForm.getFlagAddSales().equalsIgnoreCase("Y")){%> checked="checked" <%} %> 
+																		value="Y" />
+																มีการส่งเสริมการขาย
+															</label>
+														</td>
+													</tr>
+													<tr>
+														<td align="right">
+															<label class="col-sm-2 control-label pull-right" style="text-align:right;white-space: nowrap;">
+																จำนวนเงินรวม:
+															</label>
+														</td>
+														<td>
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+																	readonly="readonly" 
+																	size="15"
+																	id="commTotalAmount" 
+																	name="commTotalAmount"
+																	onblur="lp_onBlurCommTotalAmount();"
+																	value="<%=entrySaleDetailForm.getCommTotalAmount() %>"
+															/>
+														</td>
+														<td colspan="2"></td>
+													</tr>
+													<tr>
+														<td align="right">
+															<label class="col-sm-2 control-label pull-right" style="text-align:right;">
+																<script>document.write("ภาษี<%=entrySaleDetailForm.getVat()%>%:");</script>
+															</label>
+														</td>
+														<td>
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+																	readonly="readonly" 
+																	size="15"
+																	id="commVatAmount" 
+																	name="commVatAmount"
+																	onblur="gp_checkAmtOnly(this);"
+																	value="<%=entrySaleDetailForm.getCommVatAmount() %>"
+															/>
+														</td>
+														<td colspan="2"></td>
+													</tr>
+													<tr>
+														<td align="right">
+															<label class="col-sm-2 control-label pull-right" style="text-align:right;white-space: nowrap;">
+																จำนวนเงิน:
+															</label>
+														</td>
+														<td>
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+							                                        readonly="readonly" 
+																	size="15"
+																	id="commAmount" 
+																	name="commAmount"
+																	value="<%=entrySaleDetailForm.getCommAmount() %>"
+															/>
+														</td>
+														<td align="right">
+															<label class="col-sm-2 control-label pull-right" style="text-align:right;white-space: nowrap;">
+																หมายเหต:
+															</label>
+														</td>
+														<td>
+															<input  type="text" 
+																	size="15"
+																	class='col-sm-12 pull-left'
+																	readonly="readonly" 
+																	id="remarkAddSales" 
+																	name="remarkAddSales"
+																	maxlength="100"
+																	value="<%=entrySaleDetailForm.getRemarkAddSales() %>"
+															/>
+														</td>
+													</tr>
+													<tr>
+														<td colspan="4" align="left">
+															<label class="col-sm-2 control-label" style="text-align:right;width:100px;">
+																<input  type="radio" 
+																		id="flagCredit1" 
+																		name="flagCredit" 
+																		onclick="lp_controlCreditAmount();"
+																		<%if(entrySaleDetailForm.getFlagCredit().equalsIgnoreCase(EntrySaleDetailForm.FLAG_A)){%> checked="checked" <%} %> 
+																		value="<%=EntrySaleDetailForm.FLAG_A %>" />
+																ใบเพิ่มหนี้ 
+															</label>
+															<label class="col-sm-2 control-label" style="text-align:right;width:100px;">
+																<input  type="radio" 
+																		id="flagCredit2" 
+																		name="flagCredit" 
+																		onclick="lp_controlCreditAmount();"
+																		<%if(entrySaleDetailForm.getFlagCredit().equalsIgnoreCase(EntrySaleDetailForm.FLAG_C)){%> checked="checked" <%} %> 
+																		value="<%=EntrySaleDetailForm.FLAG_C %>" />
+																ใบลดหนี้ 
+															</label>
+															<label class="col-sm-2 control-label" style="text-align:right;width:120px;">
+																<input  type="radio" 
+																		id="flagCredit3" 
+																		name="flagCredit" 
+																		onclick="lp_controlCreditAmount();"
+																		<%if(entrySaleDetailForm.getFlagCredit().equalsIgnoreCase(EntrySaleDetailForm.FLAG_N)){%> checked="checked" <%} %> 
+																		value="<%=EntrySaleDetailForm.FLAG_N %>" />
+																ไม่มีเพิ่มเติม
+															</label>
+														</td>
+													</tr>
+													<tr>
+														<td align="right">
+															<label class="col-sm-2 control-label pull-right">
+																จำนวนเงินรวม:
+															</label>
+														</td>
+														<td>
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+																	readonly="readonly" 
+																	size="15"
+																	id="creditTotalAmount" 
+																	name="creditTotalAmount"
+																	onblur="lp_onBlurCreditTotalAmount();"
+																	value="<%=entrySaleDetailForm.getCreditTotalAmount() %>"
+															/>
+														</td>
+														<td colspan="2"></td>
+													</tr>
+													<tr>
+														<<td align="right">
+															<label class="col-sm-2 control-label pull-right">
+																<script>document.write("ภาษี <%=entrySaleDetailForm.getVat()%>%:");</script>
+															</label>
+														</td>
+														<td>
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+																	readonly="readonly" 
+																	size="15"
+																	id="creditVatAmount" 
+																	name="creditVatAmount"
+																	onblur="gp_checkAmtOnly(this);"
+																	value="<%=entrySaleDetailForm.getCreditVatAmount() %>"
+															/>
+														</td>
+														<td colspan="2"></td>
+													</tr>
+													<tr>
+														<td align="right">
+															<label class="col-sm-2 control-label pull-right">
+																จำนวนเงิน:
+															</label>
+														</td>
+														<td>
+															<input  type="text" 
+																	class='col-sm-12 pull-left'
+							                                        readonly="readonly" 
+																	size="15"
+																	id="creditAmount" 
+																	name="creditAmount"
+																	value="<%=entrySaleDetailForm.getCreditAmount() %>"
+															/>
+														</td>
+														<td colspan="2"></td>
+													</tr>
+													<tr>
+														<td colspan="4" align="left">
+															<label class="col-sm-2 control-label col-sm-offset-2" style="text-align:right">
+																<b>พิมพ์แบบ</b>
+															</label>
+															<label class="col-sm-2 control-label" style="text-align:right">
+																<input  type="radio" 
+																		id="printType1" 
+																		name="printType" 
+																		<%if(entrySaleDetailForm.getPrintType().equalsIgnoreCase("1")){%> checked="checked" <%} %> 
+																		value="1" />
+																มีโครง
+															</label>
+															<label class="col-sm-2 control-label" style="text-align:right">
+																<input  type="radio" 
+																		id="printType2" 
+																		name="printType" 
+																		<%if(entrySaleDetailForm.getPrintType().equalsIgnoreCase("2")){%> checked="checked" <%} %> 
+																		value="2" />
+																ไม่มีโครง
+															</label>
+														</td>
+													</tr>
+												</table>
+												<br/>
+												<div class="form-group" align="center">	 
+													<input type="button" class="btn " id="btnPrev" name="btnPrev" value="รายการก่อนหน้า" />  
+													<input type="button" class="btn btn-success" id="btnSave" name="btnSave" value="บันทึก" />
+													<input type="button" class="btn btn-primary" id="btnPrint" name="btnPrint" value="พิมพ์" />
+													<input type="button" class="btn btn-danger" id="btnReset" name="btnReset" value="เริ่มใหม่" />
+													<input type="button" class="btn " id="btnNext" name="btnNext" value="รายการถัดไป" />
+												</div>  
+											</div>
 									</section>
 								</div>
 							</div> 
