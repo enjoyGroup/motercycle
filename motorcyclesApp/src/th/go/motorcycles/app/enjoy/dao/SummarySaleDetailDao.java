@@ -97,9 +97,9 @@ public class SummarySaleDetailDao {
 				where += " and invoiceDate BETWEEN STR_TO_DATE('" + invoiceDateFrom + "', '%Y%m%d') AND STR_TO_DATE('" + invoiceDateTo + "', '%Y%m%d')";
 			}
 			
-			System.out.println("[SummarySaleDetail][searchSaleDetails] sql :: " + sql + where);
+			System.out.println("[SummarySaleDetail][searchSaleDetails] sql :: " + sql + where + " ORDER BY t.invoiceId ");
 			
-		    rs 			= this.db.executeQuery(sql + where);
+		    rs 			= this.db.executeQuery(sql + where + " ORDER BY t.invoiceId ");
 		    
 		    hashTable.put(pageNum, list);
 		    while(rs.next()){

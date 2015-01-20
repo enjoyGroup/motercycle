@@ -266,7 +266,7 @@ public class InvoicedetailsDao {
 					+ " , i.priceAmount priceAmount"
 					+ " , i.vatAmount vatAmount"
 					+ " , i.totalAmount totalAmount"
-					+ " , i.remark remark"
+					+ " , i.remarkAddSales remark"
 					+ " from  invoicedetails i "
 					+ " where i.invoiceId 		= '" + invoiceIdAddSales + "'";
 
