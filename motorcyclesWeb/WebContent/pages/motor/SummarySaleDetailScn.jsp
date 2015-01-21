@@ -325,6 +325,7 @@
 															<th style="text-align: center;">ราคาขาย</th>
 															<th style="text-align: center;">ราคาภาษี</th>
 															<th style="text-align: center;">ราคาขายสุทธิ</th>
+															<th style="text-align: center;">อ้างอิงจากใบกำกับภาษี</th>
 															<th style="text-align: center;">หมายเหต</th>
 														</tr>
 													</thead>
@@ -346,6 +347,7 @@
 															<td class="money-text"><%=bean.getPriceAmount()%></td>
 															<td class="money-text"><%=bean.getVatAmount()%></td>
 															<td class="money-text"><%=bean.getTotalAmount()%></td>
+															<td><%=bean.getMasterInvoiceId()%></td>
 															<td>
 																<%=bean.getRemark()%>
 																<input type="hidden" name="chassisDisp" value="<%=bean.getChassisDisp()%>" />

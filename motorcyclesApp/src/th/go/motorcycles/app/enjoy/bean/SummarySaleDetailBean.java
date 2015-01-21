@@ -13,6 +13,7 @@ public class SummarySaleDetailBean {
 	private String 						chassisDisp;
 	private String 						engineNoDisp;
 	private String 						flagAddSales;
+	private String						masterInvoiceId;
 	
 	public SummarySaleDetailBean(){
 		this.invoiceId 				= "";
@@ -26,6 +27,7 @@ public class SummarySaleDetailBean {
 		this.chassisDisp			= "";
 		this.engineNoDisp			= "";
 		this.flagAddSales			= "N";
+		this.masterInvoiceId		= "";
 	}
 
 	public String getInvoiceId() {
@@ -114,6 +116,14 @@ public class SummarySaleDetailBean {
 
 	public void setFlagAddSales(String flagAddSales) {
 		this.flagAddSales = flagAddSales;
+	}
+
+	public String getMasterInvoiceId() {
+		return masterInvoiceId;
+	}
+
+	public void setMasterInvoiceId(String masterInvoiceId) {
+		this.masterInvoiceId = masterInvoiceId;
 	}
 
 }

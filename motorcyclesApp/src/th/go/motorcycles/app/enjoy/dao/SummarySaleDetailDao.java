@@ -59,11 +59,13 @@ public class SummarySaleDetailDao {
 											+ " , i.vatAmount vatAmount"
 											+ " , i.totalAmount totalAmount"
 											+ " , i.commAmount commAmount"
-											+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate"
-											+ " ,i.remark remark"
+											+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate" 
+//											+ " ,i.remark remark"
+											+ " ,if(i.chassisDisp is null or i.chassisDisp = '' , i.remarkAddSales, i.remark) remark"
 											+ " ,i.chassisDisp chassisDisp"
 											+ " ,i.EngineNoDisp EngineNoDisp"
 											+ " ,i.flagAddSales flagAddSales"
+											+ " ,i.masterInvoiceId masterInvoiceId"
 											+ " from  invoicedetails i, customer c, motorcyclesdetails m, branddetails b"
 											+ " where c.cusCode         = i.cusCode"
 											+ "  and m.motorcyclesCode  = i.motorcyclesCode"
@@ -122,6 +124,7 @@ public class SummarySaleDetailDao {
 		    	bean.setChassisDisp			(EnjoyUtils.nullToStr(rs.getString("chassisDisp")));
 		    	bean.setEngineNoDisp		(EnjoyUtils.nullToStr(rs.getString("EngineNoDisp")));
 		    	bean.setFlagAddSales		(EnjoyUtils.chkBoxtoDb(rs.getString("flagAddSales")));
+		    	bean.setMasterInvoiceId		(EnjoyUtils.nullToStr(rs.getString("masterInvoiceId")));
 		    	
 		    	if(cou==10){
 		    		cou 	= 0;
