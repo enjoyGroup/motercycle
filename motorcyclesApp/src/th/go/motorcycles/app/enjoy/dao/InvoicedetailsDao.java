@@ -157,7 +157,7 @@ public class InvoicedetailsDao {
 					+ " , i.flagAddSales flagAddSales"
 					+ " , i.invoiceIdAddSales invoiceIdAddSales"
 					+ " , i.flagCredit flagCredit"
-					+ " , i.creditAmount creditAmount"
+					+ " , i.creditTotalAmount creditAmount"
 					+ " from  invoicedetails i, customer c, motorcyclesdetails m, branddetails b"
 					+ " where c.cusCode         = i.cusCode"
 					+ "  and m.motorcyclesCode  = i.motorcyclesCode"
