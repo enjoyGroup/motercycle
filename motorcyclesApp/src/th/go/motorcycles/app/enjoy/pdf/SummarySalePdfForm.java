@@ -70,7 +70,7 @@ public class SummarySalePdfForm extends MotorItext implements PdfFormService {
 	
 	private PdfPTable genProduct() throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {5f ,7f ,10f ,15f ,10f ,10f ,7f ,7f ,7f, 10f};
+		float[] 	widths	 		= {5f ,7f ,10f ,15f ,12f ,10f ,6f ,6f ,7f, 10f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		JSONObject 	jsonObjectMain  = null;
 		JSONObject 	jsonObjectDetail= null;

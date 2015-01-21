@@ -41,7 +41,7 @@ public class InvoicedetailsDao {
 					+ " , CONCAT(c.cusName, ' ', c.cusSurname) cusName"
 					+ " , CONCAT(b.brandName, ' รุ่น ' , m.model, ' สี ' , i.color ) motorcyclesdetails"
 					+ " , CONCAT(m.chassis, i.chassisDisp ) chassisDisp"
-					+ " , CONCAT(m.engineNo,'-' ,i.EngineNoDisp ) EngineNoDisp"
+					+ " , CONCAT(m.engineNo,i.EngineNoDisp ) EngineNoDisp"
 					+ " , b.brandName brandName"
 					+ " , m.model model"
 					+ " , i.priceAmount priceAmount"
@@ -49,8 +49,10 @@ public class InvoicedetailsDao {
 					+ " , i.totalAmount totalAmount"
 					+ " , i.commAmount commAmount"
 					+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate"
-					+ " , i.remark remark"
 					+ " , i.invoiceIdAddSales invoiceIdAddSales"
+					+ " , i.masterInvoiceId masterInvoiceId"
+					+ " , i.remark remark"
+					+ " , i.remarkAddSales remarkAddSales"
 					+ " from  invoicedetails i, customer c, motorcyclesdetails m, branddetails b"
 					+ " where c.cusCode         = i.cusCode"
 					+ "  and m.motorcyclesCode  = i.motorcyclesCode"
@@ -90,13 +92,17 @@ public class InvoicedetailsDao {
 		    		jsonObjectDetail.put("motorcyclesDisp", EnjoyUtils.nullToStr(rs.getString("motorcyclesdetails")));
 		    		jsonObjectDetail.put("chassisDisp", 	EnjoyUtils.nullToStr(rs.getString("chassisDisp")));
 		    		jsonObjectDetail.put("EngineNoDisp", 	EnjoyUtils.nullToStr(rs.getString("EngineNoDisp")));
-			    	jsonObjectDetail.put("remark",          "มีรายละเอียดส่งเสริมการขายที่" + " " +
-			    										    EnjoyUtils.nullToStr(rs.getString("invoiceIdAddSales")));
+//			    	jsonObjectDetail.put("remark",          "มีรายละเอียดส่งเสริมการขายที่" + " " +
+//			    										    EnjoyUtils.nullToStr(rs.getString("invoiceIdAddSales")));
+			    	jsonObjectDetail.put("remark",          EnjoyUtils.nullToStr(rs.getString("remark")));
 		    	} else {
-		    		jsonObjectDetail.put("motorcyclesDisp", EnjoyUtils.nullToStr(rs.getString("remark")));
+//		    		jsonObjectDetail.put("motorcyclesDisp", EnjoyUtils.nullToStr(rs.getString("remark")));
+		    		jsonObjectDetail.put("motorcyclesDisp", "อ้างอิงมาจากใบกำกับภาษีเลขที่ " + " " +
+						    								EnjoyUtils.nullToStr(rs.getString("masterInvoiceId")));
 		    		jsonObjectDetail.put("chassisDisp", 	" ");
 		    		jsonObjectDetail.put("EngineNoDisp", 	" ");
-			    	jsonObjectDetail.put("remark",          " - ");
+//			    	jsonObjectDetail.put("remark",          " - ");
+			    	jsonObjectDetail.put("remark",          EnjoyUtils.nullToStr(rs.getString("remarkAddSales")));
 		    	}
 		    	jsonObjectDetail.put("priceAmount",     EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("priceAmount"),"0"),2));
 		    	jsonObjectDetail.put("vatAmount",       EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("vatAmount"),"0"),2));
