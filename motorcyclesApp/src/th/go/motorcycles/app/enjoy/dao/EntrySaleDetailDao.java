@@ -1185,6 +1185,8 @@ public class EntrySaleDetailDao {
 					sql 		= "update invoicedetails set flagAddSales 		= 'N'"
 														+ ", invoiceIdAddSales 	= ''"
 														+ ", masterInvoiceId 	= ''"
+														+ ", remark			 	= ''"
+														+ ", remarkAddSales 	= ''"
 											+ " where invoiceId = '" + invoiceIdAddSales + "'";
 					db.execute(sql);
 				}else{
@@ -1201,6 +1203,24 @@ public class EntrySaleDetailDao {
 					this.saveInvoiceAddSales(form, invoiceId);
 				}
 				
+			}else{
+				if(flagAddSales.equals("Y")){
+					//รายการหลัก
+					sql 		= "update invoicedetails set commTotalAmount 	= '"+commTotalAmount+"'"
+														+ ", commVatAmount 		= '"+commVatAmount+"'"
+														+ ", commAmount 		= '"+commAmount+"'"
+														+ ", remarkAddSales 	= '"+remarkAddSales+"'"
+											+ " where invoiceId = '" + invoiceId + "'";
+					db.execute(sql);
+					
+					//รายการส่งเสริมการขาย
+					sql 		= "update invoicedetails set totalAmount 		= '"+commTotalAmount+"'"
+														+ ", vatAmount 			= '"+commVatAmount+"'"
+														+ ", priceAmount 		= '"+commAmount+"'"
+														+ ", remarkAddSales 	= '"+remarkAddSales+"'"
+											+ " where invoiceId = '" + invoiceIdAddSales + "'";
+					db.execute(sql);
+				}
 			}
 			
 			
