@@ -1254,7 +1254,7 @@ public class EntrySaleDetailDao {
 			sql 		= "SELECT invoiceId"
 							   + " FROM invoicedetails" 
 							   + " where invoiceId like('"+formatInvoie+"%')"
-							   + "  and chassisDisp is not null"
+							   + "  and ((chassisDisp is not null) or (flagAddSales = 'N'))"
 							   + " GROUP BY invoiceId"
 							   + " HAVING MIN(SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1)) > " + currentId
 							   + " order by invoiceId asc limit 1";
@@ -1301,7 +1301,7 @@ public class EntrySaleDetailDao {
 			sql 		= "SELECT invoiceId"
 							   + " FROM invoicedetails" 
 							   + " where invoiceId like('"+formatInvoie+"%')"
-							   + "  and chassisDisp is not null"
+							   + "  and ((chassisDisp is not null) or (flagAddSales = 'N'))"
 							   + " GROUP BY invoiceId"
 							   + " HAVING MAX(SUBSTRING_INDEX(SUBSTRING_INDEX(invoiceId, '/', 2), '/', -1)) < " + currentId
 							   + " order by invoiceId desc limit 1";

@@ -193,7 +193,7 @@ public class InvoicedetailsDao {
 		    	jsonObjectDetail.put("CompanyAddress",  userBean.getCompanyAddress());	
 		    	jsonObjectDetail.put("branchName",  	userBean.getBranchName());	
 		    	jsonObjectDetail.put("tin",  			userBean.getTin());	
-		    	jsonObjectDetail.put("invoiceIdAddSales", EnjoyUtils.nullToStr(rs.getString("invoiceIdAddSales")));		    
+		    	jsonObjectDetail.put("invoiceIdAddSales", EnjoyUtils.nullToStr(rs.getString("invoiceIdAddSales")));	    
 			    jsonObjectDetail.put("flagAddSales",    rs.getString("flagAddSales"));		    
 			    jsonObjectDetail.put("commAmount",      EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("commAmount"),"0"),2));		    
 			    jsonObjectDetail.put("flagCredit",  	rs.getString("flagCredit"));		    
