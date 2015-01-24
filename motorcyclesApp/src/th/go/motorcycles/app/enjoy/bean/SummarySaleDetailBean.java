@@ -14,6 +14,7 @@ public class SummarySaleDetailBean {
 	private String 						engineNoDisp;
 	private String 						flagAddSales;
 	private String						masterInvoiceId;
+	private String						recordAddDate;
 	
 	public SummarySaleDetailBean(){
 		this.invoiceId 				= "";
@@ -28,6 +29,15 @@ public class SummarySaleDetailBean {
 		this.engineNoDisp			= "";
 		this.flagAddSales			= "N";
 		this.masterInvoiceId		= "";
+		this.recordAddDate			= "";
+	}
+
+	public String getRecordAddDate() {
+		return recordAddDate;
+	}
+
+	public void setRecordAddDate(String recordAddDate) {
+		this.recordAddDate = recordAddDate;
 	}
 
 	public String getInvoiceId() {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import th.go.motorcycles.app.enjoy.bean.ComboBean;
 import th.go.motorcycles.app.enjoy.bean.SummarySaleDetailBean;
 import th.go.motorcycles.app.enjoy.form.SummarySaleDetailForm;
 import th.go.motorcycles.app.enjoy.utils.EnjoyConectDbs;
@@ -40,6 +41,7 @@ public class SummarySaleDetailDao {
         String 											vatAmount 			= null;
         String 											commAmount 			= null;
 		String											totalAmount			= null;
+		String											company				= null;
 		
 		try{
 			this.db    					= new EnjoyConectDbs();
@@ -49,6 +51,7 @@ public class SummarySaleDetailDao {
 			brandName					= EnjoyUtils.nullToStr(form.getBrandName());
 			model						= EnjoyUtils.nullToStr(form.getModel());
 			cusName						= EnjoyUtils.nullToStr(form.getCusName());
+			company						= EnjoyUtils.nullToStr(form.getCompany());
 						
 			sql 		= " select t.* from (select  i.invoiceId invoiceId"
 											+ " , CONCAT(c.cusName, ' ', c.cusSurname) cusName"
@@ -88,6 +91,10 @@ public class SummarySaleDetailDao {
 				where += " and t.model like ('" + model + "%')";
 			}
 			
+			if(!company.equals("")){
+				where += " and t.invoiceId like ('" + company + "%')";
+			}
+			
 			if(!invoiceDateFrom.equals("")){
 				
 				invoiceDateFrom				= EnjoyUtils.dateFormat(invoiceDateFrom, "dd/MM/yyyy", "yyyyMMdd");
@@ -125,6 +132,7 @@ public class SummarySaleDetailDao {
 		    	bean.setEngineNoDisp		(EnjoyUtils.nullToStr(rs.getString("EngineNoDisp")));
 		    	bean.setFlagAddSales		(EnjoyUtils.chkBoxtoDb(rs.getString("flagAddSales")));
 		    	bean.setMasterInvoiceId		(EnjoyUtils.nullToStr(rs.getString("masterInvoiceId")));
+		    	bean.setRecordAddDate(EnjoyUtils.dateFormat(rs.getString("invoiceDate"), "yyyy-MM-dd", "dd/MM/yyyy"));
 		    	
 		    	if(cou==10){
 		    		cou 	= 0;
@@ -178,4 +186,49 @@ public class SummarySaleDetailDao {
 		
 		return list;
 	}
+	
+	public List<ComboBean> companyList() throws Exception{
+		System.out.println("[SummarySaleDetail][companyList][Begin]");
+		
+		String 							sql			 		= null;
+		ResultSet 						rs 					= null;
+        List<ComboBean> 				list 				= new ArrayList<ComboBean>();
+        String							code 				= null;
+        String 							description 		= null;
+        ComboBean						comboBean			= null;
+		
+		try{
+			this.db    	= new EnjoyConectDbs();
+			sql 		= "select formatInvoie, branchName from company order by companyId asc limit 3";			
+			System.out.println("[SummarySaleDetail][companyList] sql :: " + sql);		
+			
+		    rs 			= this.db.executeQuery(sql);
+		    
+		    comboBean		= new ComboBean();
+	    	comboBean.setCode("");
+	    	comboBean.setDescription("ไม่ระบุ");
+	    	
+	    	list.add(comboBean);
+		    
+		    while(rs.next()){		
+		    	code 			= EnjoyUtils.nullToStr(rs.getString("formatInvoie"));
+		    	description 	= EnjoyUtils.nullToStr(rs.getString("branchName"));
+		    	comboBean		= new ComboBean();
+		    	
+		    	comboBean.setCode(code);
+		    	comboBean.setDescription(description);
+		    	
+		    	list.add(comboBean);
+		    }
+		    
+		}catch(Exception e){
+			throw e;
+		}finally{
+			this.db.setDisconnection(rs);
+			System.out.println("[SummarySaleDetail][companyList][End]");
+		}
+		
+		return list;
+	}
+	
 }

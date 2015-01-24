@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import th.go.motorcycles.app.enjoy.bean.ComboBean;
 import th.go.motorcycles.app.enjoy.bean.SummarySaleDetailBean;
 
 public class SummarySaleDetailForm {
@@ -18,6 +19,8 @@ public class SummarySaleDetailForm {
 	HashMap<Integer, List<SummarySaleDetailBean>>	hashTable;
 	int												pageNum;
     int												totalPage;
+    List<ComboBean>									companyComboList;
+    private String 									company;
 	
 	public SummarySaleDetailForm(){
 		this.invoiceId 				= "";
@@ -30,9 +33,26 @@ public class SummarySaleDetailForm {
 		this.hashTable				= new HashMap<Integer, List<SummarySaleDetailBean>>();
 		this.pageNum				= 1;
 		this.totalPage				= 0;
+		this.companyComboList		= new ArrayList<ComboBean>();
+		this.company				= "";
 	}
-	
-	
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public List<ComboBean> getCompanyComboList() {
+		return companyComboList;
+	}
+
+	public void setCompanyComboList(List<ComboBean> companyComboList) {
+		this.companyComboList = companyComboList;
+	}
+
 	public List<SummarySaleDetailBean> getDataList() {
 		return dataList;
 	}

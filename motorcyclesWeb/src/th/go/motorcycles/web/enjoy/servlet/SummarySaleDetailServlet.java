@@ -39,7 +39,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
    private HttpServletRequest          	request                     = null;
    private HttpServletResponse         	response                    = null;
    private HttpSession                 	session                     = null;
-   private UserDetailsBean             	userDetailsBean             = null;
+   private UserDetailsBean				userBean 					= null;
    private SummarySaleDetailDao			dao							= null;
 
    @Override
@@ -57,13 +57,18 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 			this.request            = request;
 			this.response           = response;
 			this.session            = request.getSession(false);
-			this.userDetailsBean    = (UserDetailsBean)session.getAttribute("userDetailsBean");
 			this.form               = (SummarySaleDetailForm)session.getAttribute(FORM_NAME);
 			this.dao				= new SummarySaleDetailDao();
+			this.userBean			= (UserDetailsBean) this.session.getAttribute("userBean");
 			
 			if(this.form == null || pageAction.equals("new")) this.form = new SummarySaleDetailForm();
 			
+			logger.info("[execute] userLevel :: " + this.userBean.getUserLevel());
+//			this.form.setUserLevel(this.userBean.getUserLevel());
+			
 			if(pageAction.equals("") || pageAction.equals("new")){
+				this.form.setCompany(this.userBean.getFormatInvoie());
+				this.lp_setCombo();
 				request.setAttribute("target", Constants.PAGE_URL + "/SummarySaleDetailScn.jsp");
 			}else if(pageAction.equals(SEARCH)){
 				this.lp_search();
@@ -86,6 +91,19 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		}
    }
    
+   private void lp_setCombo(){
+	   logger.info("[lp_setCombo][Begin]");
+	   
+	   try{
+		   this.form.setCompanyComboList(this.dao.companyList());
+	   }catch(Exception e){
+		   e.printStackTrace();
+		   logger.info("[SummarySaleDetailServlet][lp_setCombo] " + e.getMessage());
+	   }finally{
+		   logger.info("[lp_setCombo][End]");
+	   }
+   }
+   
    private void lp_search(){
 	   logger.info("[lp_search][Begin]");
 	   
@@ -95,6 +113,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
        String							brandName			= null;
        String							model				= null;
        String							cusName				= null;
+       String							company				= null;
        List<SummarySaleDetailBean> 		list 				= new ArrayList<SummarySaleDetailBean>();
        
 	   try{
@@ -104,6 +123,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   brandName					= EnjoyUtils.nullToStr(this.request.getParameter("brandName"));
 		   model						= EnjoyUtils.nullToStr(this.request.getParameter("model"));
 		   cusName						= EnjoyUtils.nullToStr(this.request.getParameter("cusName"));
+		   company						= EnjoyUtils.nullToStr(this.request.getParameter("company"));
 		   
 		   logger.info("[execute] invoiceId 			:: " + invoiceId);
 		   logger.info("[execute] invoiceDateFrom 		:: " + invoiceDateFrom);
@@ -111,6 +131,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   logger.info("[execute] brandName 			:: " + brandName);
 		   logger.info("[execute] model 				:: " + model);
 		   logger.info("[execute] cusName 				:: " + cusName);
+		   logger.info("[execute] company	 			:: " + company);
 		   
 		   this.form.setInvoiceId(invoiceId);
 		   this.form.setInvoiceDateFrom(invoiceDateFrom);
@@ -118,6 +139,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   this.form.setBrandName(brandName);
 		   this.form.setModel(model);
 		   this.form.setCusName(cusName);
+		   this.form.setCompany(company);
 		   
 		   this.dao.searchSaleDetails(this.form);
 		   

@@ -1,6 +1,6 @@
 <%@ include file="/pages/include/enjoyInclude.jsp"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ page import="th.go.motorcycles.app.enjoy.form.SummarySaleDetailForm, th.go.motorcycles.app.enjoy.bean.SummarySaleDetailBean"%>
+<%@ page import="th.go.motorcycles.app.enjoy.form.SummarySaleDetailForm, th.go.motorcycles.app.enjoy.bean.SummarySaleDetailBean, th.go.motorcycles.app.enjoy.bean.ComboBean"%>
 <%@ page import="java.util.*"%>
 <jsp:useBean id="summarySaleDetailForm" class="th.go.motorcycles.app.enjoy.form.SummarySaleDetailForm" scope="session"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -306,8 +306,26 @@
 													</tr>
 													<tr>
 														<td><label class="control-label" style="text-align:right">ชื่อลูกค้า : </label></td>
-														<td colspan="4" class="no-padd-left">
+														<td class="no-padd-left">
 															<input type="text" id="cusName" name="cusName" value="<%=summarySaleDetailForm.getCusName()%>" size="40" />
+														</td>
+														<td><label class="control-label" style="text-align:right">สาขา : </label></td>
+														<td class="no-padd-left">
+															<select id="company" name="company">
+																<%
+																	List<ComboBean> companyComboList = summarySaleDetailForm.getCompanyComboList();
+																	ComboBean 		comboBean 		= null;
+																	
+																	for(int i=0;i<companyComboList.size();i++){
+																		comboBean = companyComboList.get(i);
+																%>
+																	<option value="<%=comboBean.getCode()%>" <%if(summarySaleDetailForm.getCompany().equals(comboBean.getCode())){ %> selected <%} %>><%=comboBean.getDescription()%></option>
+																	<%}%>
+															</select>
+														</td>
+													</tr>
+													<tr>
+														<td colspan="4" align="center">
 															<input type="button" class="btn btn-primary" id="btnSearch" name="btnSearch" value="ค้นหา" />
 														</td>
 													</tr>
@@ -322,8 +340,7 @@
 															<th style="text-align: center;">เลขกำกับภาษี</th>
 															<th style="text-align: center;">ชื่อลูกค้า</th>
 															<th style="text-align: center;">รายละเอียดรถ</th>
-															<th style="text-align: center;">ราคาขาย</th>
-															<th style="text-align: center;">ราคาภาษี</th>
+															<th style="text-align: center;">วันที่บันทึก</th>
 															<th style="text-align: center;">ราคาขายสุทธิ</th>
 															<th style="text-align: center;">อ้างอิงจากใบกำกับภาษี</th>
 															<th style="text-align: center;">หมายเหต</th>
@@ -344,8 +361,7 @@
 															<td><%=bean.getInvoiceId()%></td>
 															<td><%=bean.getCusName()%></td>
 															<td><%=bean.getMotorcyclesdetails()%></td>
-															<td class="money-text"><%=bean.getPriceAmount()%></td>
-															<td class="money-text"><%=bean.getVatAmount()%></td>
+															<td><%=bean.getRecordAddDate()%></td>
 															<td class="money-text"><%=bean.getTotalAmount()%></td>
 															<td><%=bean.getMasterInvoiceId()%></td>
 															<td>
