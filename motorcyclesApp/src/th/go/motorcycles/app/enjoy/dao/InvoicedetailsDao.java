@@ -284,7 +284,12 @@ public class InvoicedetailsDao {
 		    	jsonObjectDetail.put("addSalesVatAmount",       EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("vatAmount"),"0"),2));
 		    	jsonObjectDetail.put("addSalesTotalAmount",     EnjoyUtils.convertFloatToDisplay(EnjoyUtils.nullToStr(rs.getString("totalAmount"),"0"),2));
 		    	jsonObjectDetail.put("addSalesTotalAmountThai", EnjoyUtils.displayAmountThai(EnjoyUtils.nullToStr(rs.getString("totalAmount"),"0")));
-		    	jsonObjectDetail.put("addSalesRemark", 			EnjoyUtils.nullToStr(rs.getString("remark")));
+//		    	jsonObjectDetail.put("addSalesRemark", 			EnjoyUtils.nullToStr(rs.getString("remark")));
+		    	if (EnjoyUtils.nullToStr(rs.getString("remark")).equals("")) {
+		    		jsonObjectDetail.put("addSalesRemark", 		"ค่าส่งเสริมการขาย");
+		    	} else {
+		    		jsonObjectDetail.put("addSalesRemark", 		"ค่าส่งเสริมการขาย " +	EnjoyUtils.nullToStr(rs.getString("remark")));
+		    	}	
 		    }
 		}catch(Exception e){
 			e.printStackTrace();
