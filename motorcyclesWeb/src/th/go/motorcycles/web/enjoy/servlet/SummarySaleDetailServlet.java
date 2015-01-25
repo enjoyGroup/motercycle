@@ -142,6 +142,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   this.form.setCompany(company);
 		   
 		   this.dao.searchSaleDetails(this.form);
+		   this.form.setPageNum(1);
 		   
 		   list = this.form.getHashTable().get(this.form.getPageNum());
 		   
