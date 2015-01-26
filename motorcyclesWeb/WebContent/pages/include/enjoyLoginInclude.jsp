@@ -37,3 +37,4 @@ response.setDateHeader ("Expires", 0);
 <script src="<%=jsURL%>/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="<%=jsURL%>/bootstrap.min.js" type="text/javascript"></script> 
 <script src="<%=jsURL%>/menu-script.js" type="text/javascript"></script>
+<script src="<%=jsURL%>/EnjoyUtil.js" type="text/javascript"></script>
