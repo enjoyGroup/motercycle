@@ -241,6 +241,9 @@ public class InvoicedetailsDao {
 				if (! EnjoyUtils.nullToStr(rs.getString("mooNumber")).equals("")) {
 					address.append(" หมู่ที่  ").append(EnjoyUtils.nullToStr(rs.getString("mooNumber")));
 				}	
+				if (! EnjoyUtils.nullToStr(rs.getString("SoiName")).equals("")) {
+					address.append(" ซอย  ").append(EnjoyUtils.nullToStr(rs.getString("SoiName")));
+				}	
 				if (! EnjoyUtils.nullToStr(rs.getString("streetName")).equals("")) {
 					address.append(" ถนน  ").append(EnjoyUtils.nullToStr(rs.getString("streetName")));
 				}	
