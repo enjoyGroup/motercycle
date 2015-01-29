@@ -80,8 +80,8 @@
 					var userId	= null;
 					var pass	= null;
 					var params	= null;
-					var d 		= new Date();
-				    var toDay 	= d.getDate() + '/' + (d.getMonth() + 1) + '/' + (d.getFullYear() + 543);
+					//var d 		= new Date();
+				    //var toDay 	= d.getDate() + '/' + (d.getMonth() + 1) + '/' + (d.getFullYear() + 543);
 					
 					try{
 						//var params = "op=edit&" + $('#frm').serialize();
@@ -89,10 +89,10 @@
 						pass 	= $('#user_pwd').val();
 						
 						/* Begin สำหรับ expiry date */
-						if(gp_toDate(toDay) >= gp_toDate("30/01/2558")){
+						/*if(gp_toDate(toDay) >= gp_toDate("30/01/2558")){
 							alert("เกิดข้อผิดพลาดในการใช้งานโปรแกรม");
 							return false;
-						}
+						}*/
 						/* End สำหรับ expiry date */
 						
 						if (userId == "") {
