@@ -59,11 +59,13 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
         		easUtil.writeMSG("OK:" + userBean.getCompanyId());
         	}
         	
-        }catch(EnjoyException e){
-        	e.printStackTrace();
-        	logger.info(e.getMessage());
-        	easUtil.writeMSG(e.getMessage());
-		}catch(Exception e){
+        }
+//        catch(EnjoyException e){
+//        	e.printStackTrace();
+//        	logger.info(e.getMessage());
+//        	easUtil.writeMSG(e.getMessage());
+//		}
+        catch(Exception e){
         	e.printStackTrace();
         	logger.info(e.getMessage());
         	easUtil.writeMSG(e.getMessage());
