@@ -1594,21 +1594,6 @@
 												</tr>
 												<tr>
 													<td>
-														<label class="col-sm-2 control-label pull-right" style="text-align:right">อาคาร:</label>
-													</td>
-													<td colspan="5" >
-														<input  type="text" 
-																class='pull-left'
-																style="width: 97%"
-																size="15"
-																id="buildingName" 
-																name="buildingName"
-																value="<%=customerBean.getBuildingName()%>"
-														/>
-													</td>													
-												</tr>
-												<tr>
-													<td>
 														<label class="col-sm-2 control-label pull-right" style="text-align:right">บ้านเลขที่ <font color="red">*</font>:</label>
 													</td>
 													<td>
@@ -1632,6 +1617,21 @@
 																	value="<%=customerBean.getMooNumber() %>"
 															/>
 													</td>
+												</tr>
+												<tr>
+													<td>
+														<label class="col-sm-2 control-label pull-right" style="text-align:right">อาคาร:</label>
+													</td>
+													<td colspan="5" >
+														<input  type="text" 
+																class='pull-left'
+																style="width: 97%"
+																size="15"
+																id="buildingName" 
+																name="buildingName"
+																value="<%=customerBean.getBuildingName()%>"
+														/>
+													</td>													
 												</tr>
 												<tr>
 													<td>

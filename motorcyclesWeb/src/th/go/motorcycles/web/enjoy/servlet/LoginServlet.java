@@ -41,7 +41,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
         	passWord 	= MotorUtil.nullToStr(request.getParameter("passWord"));
         	userDao		= new UserDetailsDao();
         	
-        	this.checkExpiryDate();
+//        	this.checkExpiryDate();
         	
         	logger.info("[EnjoyLoginSvc][execute] userId 	:: " + userId);
         	logger.info("[EnjoyLoginSvc][execute] passWord 	:: " + passWord);
