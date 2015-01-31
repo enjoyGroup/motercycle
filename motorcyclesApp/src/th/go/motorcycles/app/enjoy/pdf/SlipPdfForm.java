@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 
 import org.json.simple.JSONObject;
 
+import th.go.motorcycles.app.enjoy.main.ConfigFile;
 import th.go.motorcycles.app.enjoy.pdf.utils.MotorItext;
 import th.go.motorcycles.app.enjoy.pdf.utils.PdfFormService;
 
@@ -235,7 +236,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		
 		subTabR.addCell(setCell("\n มูลค่าสินค้า \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("priceAmount") + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));
-		subTabR.addCell(setCell("\n ภาษีมูลค่าเพิ่ม 7% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
+		subTabR.addCell(setCell("\n ภาษีมูลค่าเพิ่ม " + ConfigFile.getVAT_RATE() + "% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("vatAmount")   + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n จำนวนเงินรวมทั้งสิ้น \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("totalAmount") + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));
@@ -330,7 +331,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		
 		subTabR.addCell(setCell("\n มูลค่าสินค้า \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("addSalesPriceAmount") + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));
-		subTabR.addCell(setCell("\n ภาษีมูลค่าเพิ่ม 7% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
+		subTabR.addCell(setCell("\n ภาษีมูลค่าเพิ่ม " + ConfigFile.getVAT_RATE() + "% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("addSalesVatAmount")   + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n จำนวนเงินรวมทั้งสิ้น \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("addSalesTotalAmount") + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));

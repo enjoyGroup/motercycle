@@ -23,9 +23,9 @@ public class PdfTest {
 //			writePDF("SlipPdfTypeTwoForm", "D:/motor/JSON/motor.json", "D:/motor/PDF/SlipPdfTypeTwoForm.pdf");
 //			writePDF("SummarySalePdfForm", "D:/motor/JSON/motor.json", "D:/motor/PDF/SummarySalePdfForm.pdf");
 
-//			writeSlipPdfFormPDFFormDB("SlipPdfForm", "PT58/0001", "D:/SlipPdfForm.pdf");
+			writeSlipPdfFormPDFFormDB("SlipPdfForm", "PT58/0008", "D:/SlipPdfForm.pdf");
 //			writeSlipPdfTypeTwoFormPDFFormDB("SlipPdfTypeTwoForm", "5700000002", "D:/SlipPdfTypeTwoForm.pdf");
-			writeSummarySalePDFFormDB("SummarySalePdfForm", "D:/SummarySalePdfForm.pdf");
+//			writeSummarySalePDFFormDB("SummarySalePdfForm", "D:/SummarySalePdfForm.pdf");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
