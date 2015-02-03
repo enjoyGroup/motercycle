@@ -139,13 +139,13 @@ public class SlipPdfTypeTwoForm extends MotorItext implements PdfFormService {
 	
 	private PdfPTable genDetail(String      invoiceId) throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {70f ,7f ,33f};
+		float[] 	widths	 		= {65f ,7f ,38f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		
-		float[] 	subWL	 		= {5f, 65f};
+		float[] 	subWL	 		= {5f, 60f};
 		PdfPTable 	subTabL 		= new PdfPTable(subWL);
 		
-		float[] 	subWR	 		= {10f, 23f};
+		float[] 	subWR	 		= {10f, 28f};
 		PdfPTable 	subTabR 		= new PdfPTable(subWR);
 		JSONObject 	jsonObjectMain  = this.formDataObj;
 //		String      invoiceId		= (String) jsonObjectMain.get("invoiceId");

@@ -140,13 +140,13 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 	
 	private PdfPTable genDetail(String      invoiceId) throws DocumentException, MalformedURLException, IOException {
 		
-		float[] 	widths	 		= {70f ,7f ,33f};
+		float[] 	widths	 		= {65f ,7f ,38f};
 		PdfPTable 	table 			= new PdfPTable(widths);
 		
-		float[] 	subWL	 		= {5f, 65f};
+		float[] 	subWL	 		= {5f, 60f};
 		PdfPTable 	subTabL 		= new PdfPTable(subWL);
 		
-		float[] 	subWR	 		= {10f, 23f};
+		float[] 	subWR	 		= {10f, 28f};
 		PdfPTable 	subTabR 		= new PdfPTable(subWR);
 		JSONObject 	jsonObjectMain  = this.formDataObj;
 //		String      invoiceId		= (String) jsonObjectMain.get("invoiceId");
@@ -237,6 +237,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		subTabR.addCell(setCell("\n มูลค่าสินค้า \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("priceAmount") + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n ภาษีมูลค่าเพิ่ม " + ConfigFile.getVAT_RATE() + "% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
+//		subTabR.addCell(setCell("\n ภาษีมูลค่าเพิ่ม 7% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("vatAmount")   + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n จำนวนเงินรวมทั้งสิ้น \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("totalAmount") + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));
@@ -332,6 +333,7 @@ public class SlipPdfForm extends MotorItext implements PdfFormService {
 		subTabR.addCell(setCell("\n มูลค่าสินค้า \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("addSalesPriceAmount") + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n ภาษีมูลค่าเพิ่ม " + ConfigFile.getVAT_RATE() + "% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
+//		subTabR.addCell(setCell("\n ภาษีมูลค่าเพิ่ม 7% \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("addSalesVatAmount")   + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n จำนวนเงินรวมทั้งสิ้น \n", getFont8Bold(), 1, 1, Element.ALIGN_RIGHT));
 		subTabR.addCell(setCell("\n " + (String) jsonObjectDetail.get("addSalesTotalAmount") + " \n", getFont7(), 1, 1, Element.ALIGN_RIGHT));
