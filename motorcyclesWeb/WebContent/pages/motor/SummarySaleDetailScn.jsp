@@ -210,13 +210,53 @@
 		}
 	}
 	
+	//*********************************************************************************//
+	//    รายละเอียดเกี่ยวกับการกดปุ่ม First/Previous/Next/Last บนหน้าจอ				       //												
+	//*********************************************************************************//
+	function lp_first_page()
+	{
+		if ($("#selPage").val() != "1")
+		{
+			$("#selPage").val("1");
+			lp_selPage();
+		}	
+	}
+	
+	function lp_previous_page()
+	{
+		if ($("#selPage").val() != "1")
+		{
+			var lv_selPage = parseFloat($("#selPage").val()) - 1;
+			$("#selPage").val(lv_selPage);
+			lp_selPage();
+		}	
+	}
+	
+	function lp_next_page()
+	{
+		if ($("#selPage").val() != $("#txtMaxresult").val())
+		{
+			var lv_selPage = parseFloat($("#selPage").val()) + 1;
+			$("#selPage").val(lv_selPage);
+			lp_selPage();
+		}	
+	}
+	
+	function lp_last_page()
+	{
+		if ($("#selPage").val() != $("#txtMaxresult").val())
+		{
+			$("#selPage").val($("#txtMaxresult").val());
+			lp_selPage();
+		}	
+	}
+
 	function lp_selPage(){
 		
 		var lv_selPage = null;
 		
 		try{
 			lv_selPage = $("#selPage").val();
-			
 	    	params 	= "service=servlet.SummarySaleDetailServlet&pageAction=getPage&pageNum=" + lv_selPage;
 			$.ajax({
 				async:false,
@@ -233,6 +273,7 @@
 			alert("lp_selPage :: " + e);
 		}
 	}
+	//*********************************************************************************//
 	
 	function lp_checkFormatdate(){
 		
@@ -333,6 +374,24 @@
 											</div>
 											<header class="panel-heading font-bold">ข้อมูลสรุปการขาย</header>
 											<div class="panel-body">
+												<table border="0" cellpadding="0" cellspacing="5" class="table span12" style="width:95%;" >
+													<tr align="right">
+														<td>
+															<span style="top: -3px;">จำนวน&nbsp;</span>
+															<input type="text" id="i_txt_nvt_totalresult" name="i_txt_nvt_totalresult" style="top:0px;left:0px;width: 50px;"  readonly="readonly" value="<%=summarySaleDetailForm.getTotalRecord()%>" >
+															<span style="top: -3px;">&nbsp;รายการ&nbsp;&nbsp;</span>
+															<img id="i_img_nvt_first" name="i_img_nvt_first" src="/motorcyclesWeb/images/first.gif" style="cursor:hand;top:1px;" title="First" onclick="lp_first_page();">
+															<img id="i_img_nvt_prev"  name="i_img_nvt_prev"  src="/motorcyclesWeb/images/prv.gif"   style="cursor:hand;top:1px;" title="Previous" onclick="lp_previous_page();">
+															<input type="text" id="selPage" name="selPage" style="top:0px;left:0px;width: 30px;text-align: right;" maxlength="3" readonly="readonly" value="<%=summarySaleDetailForm.getPageNum()%>">
+										
+															<span class="c_field_label" style="top:-5px;">/</span>
+															<span id="i_txt_nvt_total" class="c_field_label" style="top:-5px;" name="i_txt_nvt_total"><%=summarySaleDetailForm.getTotalPage()%></span>
+															<input type="hidden" id="txtMaxresult" name="txtMaxresult" value="<%=summarySaleDetailForm.getTotalPage()%>" >
+															<img id="i_img_nvt_next"  name="i_img_nvt_next" src="/motorcyclesWeb/images/next.gif" style="cursor:hand;top:1px;" title="Next" onclick="lp_next_page();">
+															<img id="i_img_nvt_last"  name="i_img_nvt_last" src="/motorcyclesWeb/images/last.gif" style="cursor:hand;top:1px;" title="Last" onclick="lp_last_page();">
+														</td>
+													</tr>
+												</table>
 												<table id="tableResult" border="1" class="table span12" style="width:95%;" >
 													<thead> 
 														<tr bgcolor="#473636"  class="text_white" style="white-space: nowrap;">
@@ -374,21 +433,6 @@
 														<% seq++;} %>
 													</tbody>
 												</table>
-												<%if(summarySaleDetailForm.getTotalPage() > 1){ %>
-												<br/>
-												<table border="0" cellpadding="0" cellspacing="5" class="table span12" style="width:95%;" >
-													<tr align="center">
-														<td>
-															<span>หน้า</span>&nbsp;
-															<select id="selPage" name="selPage" style="width:50px;" onchange="lp_selPage();">
-																<%for(int i=1;i<=summarySaleDetailForm.getTotalPage();i++){ %>
-																<option value="<%=i%>" <%if(summarySaleDetailForm.getPageNum()==i){%>selected="selected" <%} %>><%=i%></option>
-																<%} %>
-															</select>
-														</td>
-													</tr>
-												</table>
-												<%} %>
 												<br/>
 												<table border="0" cellpadding="0" cellspacing="5" class="table span12" style="width:95%;" >
 													<tr align="center">

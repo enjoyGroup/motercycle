@@ -96,6 +96,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 	   
 	   try{
 		   this.form.setCompanyComboList(this.dao.companyList());
+		   this.form.setTotalRecord("0");
 	   }catch(Exception e){
 		   e.printStackTrace();
 		   logger.info("[SummarySaleDetailServlet][lp_setCombo] " + e.getMessage());
