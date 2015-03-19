@@ -42,7 +42,7 @@ public class SummarySaleDetailDao {
         String 											commAmount 			= null;
 		String											totalAmount			= null;
 		String											company				= null;
-		
+		int												totalRs				= 0;
 		try{
 			this.db    					= new EnjoyConectDbs();
 			invoiceId					= EnjoyUtils.nullToStr(form.getInvoiceId());
@@ -143,14 +143,16 @@ public class SummarySaleDetailDao {
 		    	list.add(bean);
 		    	hashTable.put(pageNum, list);
 		    	cou++;
-		    	
+		    	totalRs++;		    	
 		    }
 		    
 		    totalPage = hashTable.size();
 		    form.setTotalPage(totalPage);
+		    form.setTotalRecord(EnjoyUtils.convertFloatToDisplay(String.valueOf(totalRs) , 0));
 		    form.setHashTable(hashTable);
 		    
-		    System.out.println("[SummarySaleDetail][searchSaleDetails] totalPage :: " + totalPage);
+		    System.out.println("[SummarySaleDetail][searchSaleDetails] totalPage :: "   + totalPage);
+		    System.out.println("[SummarySaleDetail][searchSaleDetails] totalRecord :: " + form.getTotalRecord());
 			
 		}catch(Exception e){
 			e.printStackTrace();

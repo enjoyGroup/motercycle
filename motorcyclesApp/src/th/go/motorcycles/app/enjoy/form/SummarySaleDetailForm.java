@@ -19,6 +19,7 @@ public class SummarySaleDetailForm {
 	HashMap<Integer, List<SummarySaleDetailBean>>	hashTable;
 	int												pageNum;
     int												totalPage;
+    String											totalRecord;
     List<ComboBean>									companyComboList;
     private String 									company;
 	
@@ -129,7 +130,11 @@ public class SummarySaleDetailForm {
 	public void setCusName(String cusName) {
 		this.cusName = cusName;
 	}
-	
-	
+	public String getTotalRecord() {
+		return totalRecord;
+	}
 
+	public void setTotalRecord(String totalRecord) {
+		this.totalRecord = totalRecord;
+	}
 }
