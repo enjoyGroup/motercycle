@@ -409,6 +409,11 @@
 	$('#btnSave').click(function(){
 		    
 		    try{
+		    	
+		    	if(!confirm('ต้องการบันทึกข้อมูล ?')){
+		    		return;
+		    	}
+		    	
 		    	if(!lp_validate()){
 		    		return;
 		    	}

@@ -34,6 +34,7 @@ public class UserDetailsDao {
 			sql 		= " SELECT t1.userUniqueId, t1.userId, t1.userName, t1.userSurname, t1.userPrivilege, t1.userLevel, t1.companyId, ";
 			sql 		= sql + " t2.companyName, t2.branchName, t2.companyAddress, t2.tin, t2.tel, t2.formatInvoie ";
 			sql 		= sql + " FROM userdetails t1, company t2 where t1.companyId = t2.companyId and t1.userId = '" + userId + "' and t1.userPassword = '" + passWord + "' and t1.userStatus = 'A'";
+//			sql 		= sql + " FROM userdetails t1, company t2 where t1.companyId = t2.companyId and t1.userId = '" + userId + "' and t1.userStatus = 'A'";
 			
 			System.out.println("[EnjoyMotorUserDao][userSelect] sql :: " + sql);
 			
