@@ -67,7 +67,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 //			this.form.setUserLevel(this.userBean.getUserLevel());
 			
 			if(pageAction.equals("") || pageAction.equals("new")){
-				this.form.setCompany(this.userBean.getFormatInvoie());
+				this.form.setCompany(this.userBean.getUserUniqueId());
 				this.lp_setCombo();
 				request.setAttribute("target", Constants.PAGE_URL + "/SummarySaleDetailScn.jsp");
 			}else if(pageAction.equals(SEARCH)){

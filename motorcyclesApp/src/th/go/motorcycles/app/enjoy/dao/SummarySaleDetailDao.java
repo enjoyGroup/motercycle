@@ -69,6 +69,7 @@ public class SummarySaleDetailDao {
 											+ " ,i.EngineNoDisp EngineNoDisp"
 											+ " ,i.flagAddSales flagAddSales"
 											+ " ,i.masterInvoiceId masterInvoiceId"
+											+ " ,i.userUniqueId userUniqueId"
 											+ " from  invoicedetails i, customer c, motorcyclesdetails m, branddetails b"
 											+ " where c.cusCode         = i.cusCode"
 											+ "  and m.motorcyclesCode  = i.motorcyclesCode"
@@ -92,7 +93,7 @@ public class SummarySaleDetailDao {
 			}
 			
 			if(!company.equals("")){
-				where += " and t.invoiceId like ('" + company + "%')";
+				where += " and t.userUniqueId = " + company;
 			}
 			
 			if(!invoiceDateFrom.equals("")){
@@ -201,7 +202,7 @@ public class SummarySaleDetailDao {
 		
 		try{
 			this.db    	= new EnjoyConectDbs();
-			sql 		= "select formatInvoie, branchName from company order by companyId asc limit 3";			
+			sql 		= "select companyId, branchName from company order by companyId asc limit 3";			
 			System.out.println("[SummarySaleDetail][companyList] sql :: " + sql);		
 			
 		    rs 			= this.db.executeQuery(sql);
@@ -213,7 +214,7 @@ public class SummarySaleDetailDao {
 	    	list.add(comboBean);
 		    
 		    while(rs.next()){		
-		    	code 			= EnjoyUtils.nullToStr(rs.getString("formatInvoie"));
+		    	code 			= EnjoyUtils.nullToStr(rs.getString("companyId"));
 		    	description 	= EnjoyUtils.nullToStr(rs.getString("branchName"));
 		    	comboBean		= new ComboBean();
 		    	
