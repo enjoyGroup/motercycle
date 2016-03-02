@@ -270,7 +270,8 @@ public class EntrySaleDetailDao {
 								+ " , i.remarkAddSales remarkAddSales" 
 								+ " , i.remark remark"
 								+ " , i.flagAddSales flagAddSales"
-								+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate" 
+//								+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate" 
+								+ " , i.invoiceDate invoiceDate" 
 							 + " from  invoicedetails i, customer c, motorcyclesdetails m, branddetails b" 
 							   + " where c.cusCode          = i.cusCode"  
 							     + " and m.motorcyclesCode  = i.motorcyclesCode"  
@@ -283,7 +284,7 @@ public class EntrySaleDetailDao {
 		    while(rs.next()){ 
 		    	
 		    	form.setInvoiceId(invoiceId);
-		    	form.setRecordAddDate(EnjoyUtils.dateFormat(rs.getString("invoiceDate"), "yyyy-MM-dd", "dd/MM/yyyy"));
+		    	form.setRecordAddDate(EnjoyUtils.dateFormat(rs.getString("invoiceDate"), "yyyyMMdd", "dd/MM/yyyy"));
 		    	
 		    	cusCode 	= EnjoyUtils.nullToStr(rs.getString("cusCode"));
 		    	

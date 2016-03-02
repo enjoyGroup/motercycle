@@ -24,7 +24,8 @@ public class InvoicedetailsDao {
 									 String	brandName,
 									 String	model,
 									 String	cusName,
-									 UserDetailsBean userBean){
+									 UserDetailsBean userBean,
+									 String company){
 		System.out.println("[InvoicedetailsDao][SummarySalePDF][Begin]");
 		String 				sql			 	= null;
 		ResultSet 			rs 				= null;
@@ -48,11 +49,13 @@ public class InvoicedetailsDao {
 					+ " , i.vatAmount vatAmount"
 					+ " , i.totalAmount totalAmount"
 					+ " , i.commAmount commAmount"
-					+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate"
+//					+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate"
+					+ " , i.invoiceDate invoiceDate"
 					+ " , i.invoiceIdAddSales invoiceIdAddSales"
 					+ " , i.masterInvoiceId masterInvoiceId"
 					+ " , i.remark remark"
 					+ " , i.remarkAddSales remarkAddSales"
+					+ " , i.userUniqueId userUniqueId"
 					+ " from  invoicedetails i, customer c, motorcyclesdetails m, branddetails b"
 					+ " where c.cusCode         = i.cusCode"
 					+ "  and m.motorcyclesCode  = i.motorcyclesCode"
@@ -74,7 +77,14 @@ public class InvoicedetailsDao {
 				where += " and t.model like ('" + model + "%')";
 			}
 			
+			if(!company.equals("")){
+				where += " and t.invoiceId like ('" + company + "%')";
+			}
+
 			if(!invoiceDateFrom.equals("")){
+				invoiceDateFrom				= EnjoyUtils.dateFormat(invoiceDateFrom, "dd/MM/yyyy", "yyyyMMdd");
+				invoiceDateTo				= EnjoyUtils.dateFormat(invoiceDateTo, "dd/MM/yyyy", "yyyyMMdd");
+
 				where += " and invoiceDate BETWEEN STR_TO_DATE('" + invoiceDateFrom + "', '%Y%m%d') AND STR_TO_DATE('" + invoiceDateTo + "', '%Y%m%d')";
 			}
 			sql = sql + where + " ORDER BY t.invoiceId ";

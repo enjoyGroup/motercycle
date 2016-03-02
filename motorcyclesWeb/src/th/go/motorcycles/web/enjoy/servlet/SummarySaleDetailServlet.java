@@ -67,7 +67,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 //			this.form.setUserLevel(this.userBean.getUserLevel());
 			
 			if(pageAction.equals("") || pageAction.equals("new")){
-				this.form.setCompany(this.userBean.getUserUniqueId());
+				this.form.setCompany(this.userBean.getFormatInvoie());
 				this.lp_setCombo();
 				request.setAttribute("target", Constants.PAGE_URL + "/SummarySaleDetailScn.jsp");
 			}else if(pageAction.equals(SEARCH)){
@@ -193,6 +193,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 	   ByteArrayOutputStream			buffer				= null;
 	   byte[] 							bytes				= null;
 	   UserDetailsBean 					userBean			= null;
+       String							company				= null;
 	   try{
 		   invoiceId					= EnjoyUtils.nullToStr(this.request.getParameter("invoiceId"));
 		   invoiceDateFrom				= EnjoyUtils.nullToStr(this.request.getParameter("invoiceDateFrom"));
@@ -200,6 +201,7 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   brandName					= EnjoyUtils.nullToStr(this.request.getParameter("brandName"));
 		   model						= EnjoyUtils.nullToStr(this.request.getParameter("model"));
 		   cusName						= EnjoyUtils.nullToStr(this.request.getParameter("cusName"));
+		   company						= EnjoyUtils.nullToStr(this.request.getParameter("company"));
 		   
 		   logger.info("[SummarySaleDetailServlet][execute] invoiceId 			:: " + invoiceId);
 		   logger.info("[SummarySaleDetailServlet][execute] invoiceDateFrom 	:: " + invoiceDateFrom);
@@ -207,12 +209,13 @@ import th.go.motorcycles.web.enjoy.utils.MotorUtil;
 		   logger.info("[SummarySaleDetailServlet][execute] brandName 			:: " + brandName);
 		   logger.info("[SummarySaleDetailServlet][execute] model 				:: " + model);
 		   logger.info("[SummarySaleDetailServlet][execute] cusName 			:: " + cusName);
+		   logger.info("[SummarySaleDetailServlet][execute] company	 			:: " + company);
 		   
 		   userBean = (UserDetailsBean) request.getSession().getAttribute("userBean");
 		   
 		   viewPdfMainForm	= new ViewPdfMainForm();
 		   buffer = viewPdfMainForm.writeSummarySalePDFFormDB("SummarySalePdfForm", invoiceId, invoiceDateFrom, 
-				   											 invoiceDateTo, brandName, model, cusName, userBean );
+				   											 invoiceDateTo, brandName, model, cusName, userBean, company );
 		   response.setContentType( "application/pdf" );
 		   output 	= new DataOutputStream( this.response.getOutputStream() );
 		   bytes 	= buffer.toByteArray();

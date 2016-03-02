@@ -21,7 +21,8 @@ public class ViewPdfMainForm {
 														   String brandName,
 														   String model,
 														   String cusName,
-														   UserDetailsBean userBean) throws Exception{
+														   UserDetailsBean userBean,
+														   String company) throws Exception{
 	    String 					formClass					= null;
 		Document 				document					= null;
 		PdfWriter 				writer 						= null;
@@ -45,7 +46,7 @@ public class ViewPdfMainForm {
 			
 			// สร้าง json Object มาจาก DB
 			invoicedetailsDao			= new InvoicedetailsDao();
-			jsonObject 					= invoicedetailsDao.SummarySalePDF(invoiceId, invoiceDateFrom, invoiceDateTo, brandName, model, cusName, userBean);
+			jsonObject 					= invoicedetailsDao.SummarySalePDF(invoiceId, invoiceDateFrom, invoiceDateTo, brandName, model, cusName, userBean, company);
 					
 			pdfForm.setJSONObject(writer, jsonObject);
 			pdfForm.createForm(document);

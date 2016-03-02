@@ -215,7 +215,7 @@ public class PdfTest {
 			userBean.setCompanyAddress("10/102-104 ม.4 ถ.นนทบุรี-ปทุมธานี ต.บางขะแยง อ.เมือง จ.ปทุมธานี 12000");
 			userBean.setBranchName("สำนักงานใหญ่");
 			userBean.setTin("0135552000683");
-			jsonObject 					= invoicedetailsDao.SummarySalePDF("", "", "" , "","","",userBean);
+			jsonObject 					= invoicedetailsDao.SummarySalePDF("", "", "" , "","","",userBean, "");
 					
 			pdfForm.setJSONObject(writer, jsonObject);
 			pdfForm.createForm(document);

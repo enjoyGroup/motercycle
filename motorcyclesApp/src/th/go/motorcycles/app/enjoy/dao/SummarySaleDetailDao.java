@@ -62,7 +62,8 @@ public class SummarySaleDetailDao {
 											+ " , i.vatAmount vatAmount"
 											+ " , i.totalAmount totalAmount"
 											+ " , i.commAmount commAmount"
-											+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate" 
+//											+ " ,STR_TO_DATE(i.invoiceDate, '%Y%m%d') invoiceDate" // เอแก้ไขไม่ใช่ Function ของ MySQL  
+											+ " ,i.invoiceDate invoiceDate" 
 //											+ " ,i.remark remark"
 											+ " ,if(i.chassisDisp is null or i.chassisDisp = '' , i.remarkAddSales, i.remark) remark"
 											+ " ,i.chassisDisp chassisDisp"
@@ -93,7 +94,7 @@ public class SummarySaleDetailDao {
 			}
 			
 			if(!company.equals("")){
-				where += " and t.userUniqueId = " + company;
+				where += " and t.invoiceId like ('" + company + "%')";
 			}
 			
 			if(!invoiceDateFrom.equals("")){
@@ -133,7 +134,7 @@ public class SummarySaleDetailDao {
 		    	bean.setEngineNoDisp		(EnjoyUtils.nullToStr(rs.getString("EngineNoDisp")));
 		    	bean.setFlagAddSales		(EnjoyUtils.chkBoxtoDb(rs.getString("flagAddSales")));
 		    	bean.setMasterInvoiceId		(EnjoyUtils.nullToStr(rs.getString("masterInvoiceId")));
-		    	bean.setRecordAddDate(EnjoyUtils.dateFormat(rs.getString("invoiceDate"), "yyyy-MM-dd", "dd/MM/yyyy"));
+		    	bean.setRecordAddDate(EnjoyUtils.dateFormat(rs.getString("invoiceDate"), "yyyyMMdd", "dd/MM/yyyy"));
 		    	
 		    	if(cou==10){
 		    		cou 	= 0;
@@ -202,7 +203,7 @@ public class SummarySaleDetailDao {
 		
 		try{
 			this.db    	= new EnjoyConectDbs();
-			sql 		= "select companyId, branchName from company order by companyId asc limit 3";			
+			sql 		= "select formatInvoie, branchName from company order by companyId asc limit 3";			
 			System.out.println("[SummarySaleDetail][companyList] sql :: " + sql);		
 			
 		    rs 			= this.db.executeQuery(sql);
@@ -214,7 +215,7 @@ public class SummarySaleDetailDao {
 	    	list.add(comboBean);
 		    
 		    while(rs.next()){		
-		    	code 			= EnjoyUtils.nullToStr(rs.getString("companyId"));
+		    	code 			= EnjoyUtils.nullToStr(rs.getString("formatInvoie"));
 		    	description 	= EnjoyUtils.nullToStr(rs.getString("branchName"));
 		    	comboBean		= new ComboBean();
 		    	
